@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import { navItems } from '../../_nav';
+import { menu } from '../../mock-data/menus';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,7 +7,7 @@ import { navItems } from '../../_nav';
 })
 export class DefaultLayoutComponent {
   public sidebarMinimized = false;
-  public navItems = navItems;
+  public navItems = menu;
 
   toggleMinimize(e) {
     this.sidebarMinimized = e;
