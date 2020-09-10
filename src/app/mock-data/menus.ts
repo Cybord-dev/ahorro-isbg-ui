@@ -16,6 +16,11 @@ export const menu: INavData[] = [
     icon: 'icon-user',
     children: [
       {
+        name: 'Historico ahorro',
+        url: '/usuarios/reportes',
+        icon: 'icon-chart'
+      },
+      {
         name: 'Solicitud Ahorro',
         url: '/base/cards',
         icon: 'icon-doc'
