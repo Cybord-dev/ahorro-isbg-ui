@@ -7,9 +7,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReporteAhorroComponent implements OnInit {
 
-  constructor() { }
+  public bsValue: Date;
+  enabledDates = [
+    new Date('2020-09-15'),
+    new Date('2020-10-01'),
+    new Date('2020-10-15'),
+    new Date('2020-11-01'),
+    new Date('2020-11-15'),
+    new Date('2020-12-01'),
+    new Date('2020-12-15'),
+  ];
+  public bsConfig = {containerClass : 'theme-dark-blue'};
+
+
+  constructor() {
+
+  }
 
   ngOnInit(): void {
+
   }
 
 }

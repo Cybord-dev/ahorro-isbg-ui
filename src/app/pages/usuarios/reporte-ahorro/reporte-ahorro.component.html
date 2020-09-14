@@ -1,14 +1,326 @@
 <div class="animated fadeIn">
-    <div class="row">
-      <div class="col-sm-12 col-md-12">
-        <div class="card">
-          <div class="card-header">
-            Historico de ahorro
-          </div>
-          <div class="card-body">
-            Aqui estara el ahorro que se tiene por cuenta de usuario
-          </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          Trámites ahorro
         </div>
-      </div><!--/.col-->
-    </div><!--/.row-->
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <tabset>
+                <tab>
+                  <ng-template tabHeading><i class="icon-doc"></i>&nbsp; Solicitud</ng-template>
+                  <br>
+
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label">Nombre</label>
+                          <div class="col-md-9">
+                            <p class="form-control-static">NOMBRE EMPLEADO</p>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
+                          <div class="col-md-9">
+                            <input type="number" id="no-emp" name="text-input" class="form-control"
+                              placeholder="No empleado">
+                            <span class="help-block">Introducir no. empleado</span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="office">Oficina</label>
+                          <div class="col-md-9">
+                            <select id="office" name="office" class="form-control">
+                              <option value="*">Seleccionar</option>
+                              <option value="1">Oficina #1</option>
+                              <option value="2">Oficina #2</option>
+                              <option value="3">Oficina #3</option>
+                              <option value="4">Oficina #4</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
+                          <div class="col-md-9">
+                            <input type="number" id="quantity" name="text-input" class="form-control" min=100
+                              placeholder="100.00">
+                            <span class="help-block">Descuento quincenal</span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="start-date">Fecha inicio</label>
+                          <div class="col-md-9">
+                            <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
+                              [bsConfig]="bsConfig" [datesEnabled]="enabledDates" [bsValue]="bsValue">
+                            <span class="help-block">fecha inicio descuentos</span>
+                          </div>
+                        </div>
+
+
+                      </form>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+
+                      <span class="help-block">
+                        Yo NOMBRE DEL EMPLEADO con número de trabajador ########, adscrito a la Oficina de
+                        IDENTIFICADOR_OFICINA autorizo que por este medio se descuente de mi pago de nómina, la cantidad
+                        de $ ###.## de manera quincenal a partir de la siguiente fecha yyyy-MM-dd, durante el período
+                        correspondiente, autorizo que la cantidad retenida sea depositada en la cuenta del PROGRAMA DE
+                        AHORRO VOLUNTARIO.
+                        Estoy de acuerdo que la cantidad ahorrada y los intereses que se hubiesen generado me sean
+                        entregados al término del período.
+                      </span>
+                      <br>
+                      <br>
+                      <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                        Enviar solicitud</button>
+                    </div>
+
+                  </div>
+                </tab>
+                <tab>
+                  <ng-template tabHeading><i class="icon-refresh"></i>&nbsp; Modificación</ng-template>
+                  <br>
+
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label">Nombre</label>
+                          <div class="col-md-9">
+                            <p class="form-control-static">NOMBRE EMPLEADO</p>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
+                          <div class="col-md-9">
+                            <input type="number" id="no-emp" name="text-input" class="form-control"
+                              placeholder="No empleado">
+                            <span class="help-block">Introducir no. empleado</span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="office">Oficina</label>
+                          <div class="col-md-9">
+                            <select id="office" name="office" class="form-control">
+                              <option value="*">Seleccionar</option>
+                              <option value="1">Oficina #1</option>
+                              <option value="2">Oficina #2</option>
+                              <option value="3">Oficina #3</option>
+                              <option value="4">Oficina #4</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="quantity">Descuento actual</label>
+                          <div class="col-md-9">
+                            <input type="number" id="quantity" name="text-input" class="form-control" min=100
+                              placeholder="100.00">
+                            <span class="help-block">Descuento actual</span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="quantity">Nuevo descuento</label>
+                          <div class="col-md-9">
+                            <input type="number" id="quantity" name="text-input" class="form-control" min=100
+                              placeholder="100.00">
+                            <span class="help-block">Nueva cantidad</span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="start-date">Fecha modificacion</label>
+                          <div class="col-md-9">
+                            <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
+                              [bsConfig]="bsConfig" [datesEnabled]="enabledDates" [bsValue]="bsValue">
+                            <span class="help-block">fecha modificacion descuento</span>
+                          </div>
+                        </div>
+
+
+                      </form>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+
+                      <span class="help-block">
+                        Yo NOMBRE DEL EMPLEADO con número de trabajador ########, adscrito a la Oficina de OFICINA
+                        XX solicito por este medio se modifique el descuento de $ ##.## que se me aplica en mi pago de
+                        nómina por la
+                        por la cantidad de $##.## aplicable a partir de la fecha yyyy-MM-dd.
+                      </span>
+                      <br>
+                      <br>
+                      <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                        Enviar solicitud</button>
+                    </div>
+
+                  </div>
+                </tab>
+                <tab>
+                  <ng-template tabHeading><i class="icon-reload"></i>&nbsp; Retiro Parcial</ng-template>
+                  <br>
+
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label">Nombre</label>
+                          <div class="col-md-9">
+                            <p class="form-control-static">NOMBRE EMPLEADO</p>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
+                          <div class="col-md-9">
+                            <input type="number" id="no-emp" name="text-input" class="form-control"
+                              placeholder="No empleado">
+                            <span class="help-block">Introducir no. empleado</span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="office">Oficina</label>
+                          <div class="col-md-9">
+                            <select id="office" name="office" class="form-control">
+                              <option value="*">Seleccionar</option>
+                              <option value="1">Oficina #1</option>
+                              <option value="2">Oficina #2</option>
+                              <option value="3">Oficina #3</option>
+                              <option value="4">Oficina #4</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="quantity">Monto de retiro</label>
+                          <div class="col-md-9">
+                            <input type="number" id="quantity" name="text-input" class="form-control" min=100
+                              placeholder="100.00">
+                            <span class="help-block">Monto a retirar</span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="start-date">Cuenta deposito</label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" id="ccnumber" placeholder="0000 0000 0000 0000">
+                            <span class="help-block">cuenta deposito</span>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+
+                      <span class="help-block">
+                        Yo NOMBRE DEL EMPLEADO con número de trabajador ########, adscrito a la Oficina de
+                        IDENTIFICADOR_OFICINA solicito por este medio la cantidad de $ ###.##
+                        por concepto de Retiro Parcial de mi ahorro, que sea depositado a la cuenta
+                        0000 0000 0000 0000
+                      </span>
+                      <br>
+                      <br>
+                      <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                        Enviar solicitud</button>
+                    </div>
+
+                  </div>
+                </tab>
+                <tab>
+                  <ng-template tabHeading><i class="icon-envelope-open"></i>&nbsp; Cancelación</ng-template>
+                  <br>
+
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                      <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label">Nombre</label>
+                          <div class="col-md-9">
+                            <p class="form-control-static">NOMBRE EMPLEADO</p>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
+                          <div class="col-md-9">
+                            <input type="number" id="no-emp" name="text-input" class="form-control"
+                              placeholder="No empleado">
+                            <span class="help-block">Introducir no. empleado</span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="office">Oficina</label>
+                          <div class="col-md-9">
+                            <select id="office" name="office" class="form-control">
+                              <option value="*">Seleccionar</option>
+                              <option value="1">Oficina #1</option>
+                              <option value="2">Oficina #2</option>
+                              <option value="3">Oficina #3</option>
+                              <option value="4">Oficina #4</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
+                          <div class="col-md-9">
+                            <input type="number" id="quantity" name="text-input" class="form-control" min=100
+                              placeholder="100.00">
+                            <span class="help-block">Descuento quincenal</span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="start-date">Fecha efectiva reintegro</label>
+                          <div class="col-md-9">
+                            <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
+                              [bsConfig]="bsConfig" [datesEnabled]="enabledDates" [bsValue]="bsValue">
+                            <span class="help-block">Fecha efectiva reintegro</span>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="textarea-input">Motivo de cancelacion</label>
+                          <div class="col-md-9">
+                            <textarea id="textarea-input" name="textarea-input" rows="9" class="form-control" placeholder="Razón o motivo de cancelación del ahorro"></textarea>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-md-3 col-form-label" for="start-date">Cuenta deposito</label>
+                          <div class="col-md-9">
+                            <input type="text" class="form-control" id="ccnumber" placeholder="0000 0000 0000 0000">
+                            <span class="help-block">cuenta deposito</span>
+                          </div>
+                        </div>
+                        
+
+
+                      </form>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+
+                      <span class="help-block">
+                        Yo NOMBRE DEL EMPLEADO con número de trabajador ########, adscrito a la Oficina de
+                        IDENTIFICADOR_OFICINA solicito por este medio se cancele el
+                        descuento que se aplica en mi pago de nómina la cantidad de de $ ###.## de manera quincenal
+                        a partir de la siguiente fecha yyyy-MM-dd, debido a RAZON_MOTIVO_CANCELACIÓN y asimismo se me
+                        reintegre la
+                        cantidad ahorrada en la cuenta del PROGRAMA DE AHORRO VOLUNTARIO a mi cuenta 0000 0000 0000 0000
+                      </span>
+                      <br>
+                      <br>
+                      <button type="submit" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                        Enviar solicitud</button>
+                    </div>
+
+                  </div>
+                </tab>
+              </tabset>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
 </div>
