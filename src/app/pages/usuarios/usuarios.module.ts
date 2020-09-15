@@ -8,9 +8,10 @@ import { ReporteAhorroComponent } from './reporte-ahorro/reporte-ahorro.componen
 // Tabs Component
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TramitesAhorroComponent } from './tramites-ahorro/tramites-ahorro.component';
 
 @NgModule({
-  declarations: [ReporteAhorroComponent],
+  declarations: [ReporteAhorroComponent, TramitesAhorroComponent],
   imports: [
     CommonModule,
     TabsModule,

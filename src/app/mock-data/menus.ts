@@ -21,24 +21,9 @@ export const menu: INavData[] = [
         icon: 'icon-chart'
       },
       {
-        name: 'Solicitud Ahorro',
-        url: '/base/cards',
+        name: 'Trámites Ahorro',
+        url: '/usuarios/tramites',
         icon: 'icon-doc'
-      },
-      {
-        name: 'Cancelacion ahorro',
-        url: '/base/carousels',
-        icon: 'icon-envelope-open'
-      },
-      {
-        name: 'Modificacion ahorro',
-        url: '/base/collapses',
-        icon: 'icon-refresh'
-      },
-      {
-        name: 'Retiro Anticipado',
-        url: '/base/forms',
-        icon: 'icon-reload'
       }
     ]
   },
