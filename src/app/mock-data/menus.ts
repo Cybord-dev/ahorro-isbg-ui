@@ -29,7 +29,7 @@ export const menu: INavData[] = [
   },
   {
     name: 'Recursos Humanos',
-    url: '/buttons',
+    url: '/recursos-humanos',
     icon: 'icon-people',
     children: [
       {
@@ -39,7 +39,7 @@ export const menu: INavData[] = [
       },
       {
         name: 'Aprobación ahorro',
-        url: '/buttons/dropdowns',
+        url: '/recursos-humanos/validaciones',
         icon: 'icon-check'
       },
       {

@@ -12,6 +12,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
 
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+
 import { AppComponent } from './app.component';
 
 // Import containers
@@ -39,15 +41,17 @@ import { AppRoutingModule } from './app.routing';
 
 // Import 3rd party components
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
 
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
+import { HttpRequestInterceptor } from './http-request.interceptor';
 
 
 @NgModule({
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     AppAsideModule,
@@ -70,8 +74,14 @@ import { ChartsModule } from 'ng2-charts';
   ],
   providers: [{
     provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  }],
+    useClass: HashLocationStrategy,
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: HttpRequestInterceptor,
+    multi: true
+  }
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
