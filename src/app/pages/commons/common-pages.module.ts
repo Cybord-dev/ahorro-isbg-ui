@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './profile/profile.component';
-import { ValidacionesReportComponent } from './validaciones-report/validaciones-report.component';
 
 // Tabs Component
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ReporteSolicitudesComponent } from './reporte-solicitudes/reporte-solicitudes.component';
 
 
 
 @NgModule({
-  declarations: [ProfileComponent, ValidacionesReportComponent],
+  declarations: [ProfileComponent, ReporteSolicitudesComponent],
   imports: [
     CommonModule,
     TabsModule,
@@ -18,7 +18,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
   ],
   exports: [
     ProfileComponent,
-    ValidacionesReportComponent,
     CommonModule,
     TabsModule,
     BsDatepickerModule

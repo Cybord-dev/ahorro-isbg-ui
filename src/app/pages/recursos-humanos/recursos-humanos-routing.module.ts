@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ValidacionesReportComponent } from '../commons/validaciones-report/validaciones-report.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { ReporteSolicitudesComponent } from '../commons/reporte-solicitudes/reporte-solicitudes.component';
 
 const routes: Routes = [
   {
     path: 'validaciones',
-    component: ValidacionesReportComponent,
+    component: ReporteSolicitudesComponent,
     data: {
       title: 'Reporte Validaciones'
     }
@@ -16,6 +16,13 @@ const routes: Routes = [
     component: UsuariosComponent,
     data: {
       title: 'Alta y baja '
+    }
+  },
+  {
+    path: 'historico',
+    component: ReporteSolicitudesComponent,
+    data: {
+      title: 'Historico validaciones'
     }
   }
 

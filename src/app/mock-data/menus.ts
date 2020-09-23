@@ -34,7 +34,7 @@ export const menu: INavData[] = [
     children: [
       {
         name: 'Altas y bajas',
-        url: '/buttons/buttons',
+        url: '/recursos-humanos/usuarios',
         icon: 'icon-user-unfollow'
       },
       {
@@ -43,8 +43,8 @@ export const menu: INavData[] = [
         icon: 'icon-check'
       },
       {
-        name: 'Reportes',
-        url: '/buttons/brand-buttons',
+        name: 'Historico validaciones',
+        url: '/recursos-humanos/historico',
         icon: 'icon-list'
       },
       {

@@ -1,19 +1,25 @@
 <div class="animated fadeIn">
   <div class="row">
     <div class="col-sm-12 col-md-12">
+      
       <div class="card">
         <div class="card-header">
-          <strong>Histórico ahorro</strong>
+          Reporte ahorro
         </div>
         <div class="card-body">
-          <div class="row">
-            <div class="col-sm-12">
-              
-            </div>
+          <div class="chart-wrapper">
+            <canvas baseChart class="chart"
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="barChartLegend"
+            [chartType]="barChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"></canvas>
           </div>
-
         </div>
       </div>
+      
     </div>
     <!--/.col-->
   </div>

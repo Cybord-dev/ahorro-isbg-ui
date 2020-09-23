@@ -5,11 +5,14 @@ import { ReporteAhorroComponent } from './reporte-ahorro/reporte-ahorro.componen
 import { TramitesAhorroComponent } from './tramites-ahorro/tramites-ahorro.component';
 import { CommonsPagesModule } from '../commons/common-pages.module';
 
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
   declarations: [ReporteAhorroComponent, TramitesAhorroComponent],
   imports: [
     CommonsPagesModule,
-    UsuariosRoutingModule
+    UsuariosRoutingModule,
+    ChartsModule
   ]
 })
 export class UsuariosModule { }
