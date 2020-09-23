@@ -20,7 +20,7 @@ export class AhorroServicio {
   }
 
   public getSaldoByUsuarioAndId (idUsuario: number, idSaldo: number): Observable<SaldoAhorro[]>{
-    return this.http.get<SaldoAhorro[]>('../usuarios/{idUsuario}/ahorros/{idAhorro}');
+    return this.http.get<SaldoAhorro[]>('../usuarios/${idUsuario}/ahorros/${idAhorro}');
   }
 
 }
