@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ValidacionesReportComponent } from '../commons/validaciones-report/validaciones-report.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
 
 const routes: Routes = [
   {
@@ -9,7 +10,15 @@ const routes: Routes = [
     data: {
       title: 'Reporte Validaciones'
     }
+  },
+  {
+    path: 'usuarios',
+    component: UsuariosComponent,
+    data: {
+      title: 'Alta y baja '
+    }
   }
+
 ];
 
 @NgModule({

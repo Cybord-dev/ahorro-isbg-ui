@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsuariosComponent } from './usuarios/usuarios.component';
-import { UsuarioComponent } from './usuario/usuario.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ValidacionesReportComponent } from './validaciones-report/validaciones-report.component';
 
@@ -12,15 +10,13 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 @NgModule({
-  declarations: [UsuariosComponent, UsuarioComponent, ProfileComponent, ValidacionesReportComponent],
+  declarations: [ProfileComponent, ValidacionesReportComponent],
   imports: [
     CommonModule,
     TabsModule,
     BsDatepickerModule.forRoot(),
   ],
   exports: [
-    UsuariosComponent,
-    UsuarioComponent,
     ProfileComponent,
     ValidacionesReportComponent,
     CommonModule,
