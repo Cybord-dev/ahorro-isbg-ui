@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { TesoreriaRoutingModule } from './tesoreria-routing.module';
+import { CommonsPagesModule } from '../commons/common-pages.module';
 
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
+    CommonsPagesModule,
     TesoreriaRoutingModule
   ]
 })

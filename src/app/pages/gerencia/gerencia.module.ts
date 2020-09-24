@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { DashboardRoutingModule } from './dashboard-routing.module';
+import { GerenciaRoutingModule } from './gerencia-routing.module';
 import { CommonsPagesModule } from '../commons/common-pages.module';
 
 
@@ -8,7 +8,7 @@ import { CommonsPagesModule } from '../commons/common-pages.module';
   declarations: [],
   imports: [
     CommonsPagesModule,
-    DashboardRoutingModule
+    GerenciaRoutingModule
   ]
 })
-export class DashboardModule { }
+export class GerenciaModule { }

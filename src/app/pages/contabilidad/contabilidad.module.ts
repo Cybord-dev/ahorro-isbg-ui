@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { ContabilidadRoutingModule } from './contabilidad-routing.module';
+import { AhorroExternosComponent } from './ahorro-externos/ahorro-externos.component';
+import { ConciliacionContaComponent } from './conciliacion-conta/conciliacion-conta.component';
+import { CommonsPagesModule } from '../commons/common-pages.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [AhorroExternosComponent, ConciliacionContaComponent],
   imports: [
-    CommonModule,
+    CommonsPagesModule,
     ContabilidadRoutingModule
   ]
 })
