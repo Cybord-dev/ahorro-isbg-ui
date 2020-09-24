@@ -5,7 +5,7 @@ import { Solicitud } from './solicitud';
 export class Usuario {
 
     public id: number;
-    public estatus: boolean;
+    public activo: boolean;
     public nombre: string;
     public email: string;
     public tipoUsuario: string;

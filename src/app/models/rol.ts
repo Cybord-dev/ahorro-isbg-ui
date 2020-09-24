@@ -1,12 +1,10 @@
 import { RolCat } from './rolcat';
 export class Rol {
 
-    public id: number;
-    public idUsuario: number;
-    public idRol: number;
-    public rolcat: RolCat;
+    public id: number
+    public rolname: RolCat;
 
-    constructor() {
-        this.rolcat = new RolCat();
+    constructor( role: number) {
+        this.rolname = new RolCat(role); 
     }
 }
