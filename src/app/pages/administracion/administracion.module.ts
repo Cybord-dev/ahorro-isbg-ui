@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { AdministracionRoutingModule } from './administracion-routing.module';
+import { CommonsPagesModule } from '../commons/common-pages.module';
+import { AltaRolesComponent } from './alta-roles/alta-roles.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [AltaRolesComponent],
   imports: [
-    CommonModule,
+    CommonsPagesModule,
     AdministracionRoutingModule
   ]
 })

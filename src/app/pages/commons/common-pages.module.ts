@@ -1,27 +1,41 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProfileComponent } from './profile/profile.component';
-import { ValidacionesReportComponent } from './validaciones-report/validaciones-report.component';
 
-// Tabs Component
+// UI Component
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
+// Common components
+import { ProfileComponent } from './profile/profile.component';
+import { ReporteSolicitudesComponent } from './reporte-solicitudes/reporte-solicitudes.component';
+import { HistoricoSolicitudesComponent } from './historico-solicitudes/historico-solicitudes.component';
+import { ValidacionSolicitudComponent } from './validacion-solicitud/validacion-solicitud.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { UsuarioComponent } from './usuario/usuario.component';
 
 
 
 @NgModule({
-  declarations: [ProfileComponent, ValidacionesReportComponent],
+  declarations: [
+    ProfileComponent,
+    ReporteSolicitudesComponent,
+    HistoricoSolicitudesComponent,
+    ValidacionSolicitudComponent,
+    UsuariosComponent,
+    UsuarioComponent],
   imports: [
     CommonModule,
     TabsModule,
     BsDatepickerModule.forRoot(),
   ],
   exports: [
-    ProfileComponent,
-    ValidacionesReportComponent,
     CommonModule,
     TabsModule,
-    BsDatepickerModule
+    BsDatepickerModule,
+    ProfileComponent,
+    ReporteSolicitudesComponent,
+    HistoricoSolicitudesComponent,
+    ValidacionSolicitudComponent,
   ]
 })
 export class CommonsPagesModule { }

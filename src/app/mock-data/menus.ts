@@ -34,7 +34,7 @@ export const menu: INavData[] = [
     children: [
       {
         name: 'Altas y bajas',
-        url: '/buttons/buttons',
+        url: '/recursos-humanos/usuarios',
         icon: 'icon-user-unfollow'
       },
       {
@@ -43,91 +43,103 @@ export const menu: INavData[] = [
         icon: 'icon-check'
       },
       {
-        name: 'Reportes',
-        url: '/buttons/brand-buttons',
+        name: 'Historico validaciones',
+        url: '/recursos-humanos/historico',
         icon: 'icon-list'
       },
       {
-        name: 'Carga informacion',
-        url: '/buttons/brand-buttons',
+        name: 'Conciliación informacion',
+        url: '/recursos-humanos/conciliacion',
         icon: 'icon-cloud-upload'
       }
     ]
   },
   {
     name: 'Contabilidad',
-    url: '/icons',
+    url: '/contabilidad',
     icon: 'icon-briefcase',
     children: [
       {
-        name: 'Aprobación ahorro',
-        url: '/icons/coreui-icons',
-        icon: 'icon-check',
+        name: 'Altas y bajas',
+        url: '/contabilidad/usuarios',
+        icon: 'icon-user-unfollow'
       },
       {
-        name: 'Reportes',
-        url: '/icons/flags',
+        name: 'Aprobación ahorro',
+        url: '/contabilidad/validaciones',
+        icon: 'icon-check'
+      },
+      {
+        name: 'Historico validaciones',
+        url: '/contabilidad/historico',
         icon: 'icon-list'
       },
       {
         name: 'Conciliacion',
-        url: '/icons/font-awesome',
+        url: '/contabilidad/conciliacion',
         icon: 'icon-calculator',
       },
       {
-        name: 'Carga externa',
-        url: '/icons/simple-line-icons',
+        name: 'Carga ahorro externos',
+        url: '/contabilidad/carga-ahorro',
         icon: 'icon-globe'
       }
     ]
   },
   {
     name: 'Tesoreria',
-    url: '/notifications',
+    url: '/tesoreria',
     icon: 'icon-credit-card',
     children: [
       {
         name: 'Aprobación ahorro',
-        url: '/notifications/alerts',
-        icon: 'icon-check',
+        url: '/tesoreria/validaciones',
+        icon: 'icon-check'
       },
       {
-        name: 'Reportes',
-        url: '/notifications/badges',
+        name: 'Historico validaciones',
+        url: '/tesoreria/historico',
         icon: 'icon-list'
       },
+    ]
+  },
+  {
+    name: 'Gerencia',
+    url: '/gerencia',
+    icon: 'icon-speedometer',
+    children: [
       {
-        name: 'Retiros anticipados',
-        url: '/notifications/modals',
-        icon: 'icon-bell'
+        name: 'Aprobación ahorro',
+        url: '/administracion/validaciones',
+        icon: 'icon-check'
       },
       {
-        name: 'Cancelacion de ahorro',
-        url: '/notifications/modals',
-        icon: 'icon-bell'
+        name: 'Historico validaciones',
+        url: '/administracion/historico',
+        icon: 'icon-list'
       }
     ]
   },
   {
     name: 'Administracion',
-    url: '/pages',
+    url: '/administracion',
     icon: 'icon-speedometer',
     children: [
       {
-        name: 'Altas y bajas',
-        url: '/buttons/buttons',
+        name: 'Administracion roles',
+        url: '/administracion/usuarios',
         icon: 'icon-user-unfollow'
       },
       {
-        name: 'Reportes',
-        url: '/icons/flags',
-        icon: 'icon-list'
+        name: 'Aprobación ahorro',
+        url: '/administracion/validaciones',
+        icon: 'icon-check'
       },
       {
-        name: 'Indicadores',
-        url: '/charts',
-        icon: 'icon-pie-chart'
-      },
+        name: 'Historico validaciones',
+        url: '/administracion/historico',
+        icon: 'icon-list'
+      }
     ]
   }
 ];

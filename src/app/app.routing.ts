@@ -59,36 +59,20 @@ export const routes: Routes = [
         loadChildren: () => import('./pages/recursos-humanos/recursos-humanos.module').then(m => m.RecursosHumanosModule)
       },
       {
-        path: 'base',
-        loadChildren: () => import('./views/base/base.module').then(m => m.BaseModule)
+        path: 'contabilidad',
+        loadChildren: () => import('./pages/contabilidad/contabilidad.module').then(m => m.ContabilidadModule)
       },
       {
-        path: 'buttons',
-        loadChildren: () => import('./views/buttons/buttons.module').then(m => m.ButtonsModule)
+        path: 'tesoreria',
+        loadChildren: () => import('./pages/tesoreria/tesoreria.module').then(m => m.TesoreriaModule)
       },
       {
-        path: 'charts',
-        loadChildren: () => import('./views/chartjs/chartjs.module').then(m => m.ChartJSModule)
+        path: 'gerencia',
+        loadChildren: () => import('./pages/gerencia/gerencia.module').then(m => m.GerenciaModule)
       },
       {
-        path: 'dashboard',
-        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
-      },
-      {
-        path: 'icons',
-        loadChildren: () => import('./views/icons/icons.module').then(m => m.IconsModule)
-      },
-      {
-        path: 'notifications',
-        loadChildren: () => import('./views/notifications/notifications.module').then(m => m.NotificationsModule)
-      },
-      {
-        path: 'theme',
-        loadChildren: () => import('./views/theme/theme.module').then(m => m.ThemeModule)
-      },
-      {
-        path: 'widgets',
-        loadChildren: () => import('./views/widgets/widgets.module').then(m => m.WidgetsModule)
+        path: 'administracion',
+        loadChildren: () => import('./pages/administracion/administracion.module').then(m => m.AdministracionModule)
       }
     ]
   },

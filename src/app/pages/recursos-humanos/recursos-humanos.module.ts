@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { RecursosHumanosRoutingModule } from './recursos-humanos-routing.module';
-import { UsuariosComponent } from './usuarios/usuarios.component';
+import { ConciliacionRhComponent } from './conciliacion-rh/conciliacion-rh.component';
+import { CommonsPagesModule } from '../commons/common-pages.module';
 
 
 @NgModule({
-  declarations: [UsuariosComponent],
+  declarations: [ConciliacionRhComponent],
   imports: [
-    CommonModule,
+    CommonsPagesModule,
     RecursosHumanosRoutingModule
   ]
 })
