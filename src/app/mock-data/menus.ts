@@ -106,7 +106,7 @@ export const menu: INavData[] = [
   {
     name: 'Gerencia',
     url: '/gerencia',
-    icon: 'icon-speedometer',
+    icon: 'icon-user-follow',
     children: [
       {
         name: 'Aprobación ahorro',
