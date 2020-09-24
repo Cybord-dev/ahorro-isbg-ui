@@ -15,6 +15,10 @@ export class SolicitudesService {
     return this.http.get<Solicitud[]>('../solicitudes');
   }
 
+  public getSolicitudesById(idUsuario: number, idSolicitud: number): Observable<Solicitud>{
+    return this.http.get<Solicitud>(`../usuarios/${idUsuario}/solicitudes/${idSolicitud}`);
+  }
+
   public getSolicitudesByUsuario(idUsuario: number): Observable<Solicitud[]>{
     return this.http.get<Solicitud[]>(`../usuarios/${idUsuario}/solicitudes`);
   }

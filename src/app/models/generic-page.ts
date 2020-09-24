@@ -20,4 +20,3 @@ export class GenericPage<T> {
         this.numberOfElements = 0;
         this.empty = true;
     }
-}

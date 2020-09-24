@@ -46,6 +46,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { HttpRequestInterceptor } from './http-request.interceptor';
+import { CoreModule } from './core.module';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import { HttpRequestInterceptor } from './http-request.interceptor';
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    CoreModule.forRoot()
   ],
   declarations: [
     AppComponent,
