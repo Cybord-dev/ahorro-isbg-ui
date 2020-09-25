@@ -13,12 +13,17 @@
                   [disabled]="filterParams.nombre.length > 0" nbInput fullWidth id="inputCorreo"
                   placeholder="email usuario">
               </div>
-              <div class="col-md-3">
-                <label for="inputAlias"  class="label">Nombre Usuario</label>
+              <div class="col-md-2">
+                <label for="nombreusuario"  class="label">Nombre Usuario</label>
                 <input type="text" class="form-control" [(ngModel)]="filterParams.nombre"
-                  [disabled]="filterParams.email.length > 0" nbInput fullWidth id="inputAlias" placeholder="Alias usuario">
+                  [disabled]="filterParams.email.length > 0" nbInput fullWidth id="nombreusu" placeholder="nombreusuario">
               </div>
-              <div class="col-md-5">
+              <div class="col-md-2">
+                <label for="inputtipo"  class="label">Tipo Usuario</label>
+                <input type="text" class="form-control" [(ngModel)]="filterParams.tipoUsuario"
+                  [disabled]="filterParams.email.length > 0" nbInput fullWidth id="inputtipo" placeholder="Tipo de usuario">
+              </div>
+              <div class="col-md-6">
                 <label for="inputActivo" class="label">Estado cliente</label>
                 <div class="row form-inline">
                   <select id="inputActivo" class="form-control" [(ngModel)]="filterParams.estatus" style="display:block;"

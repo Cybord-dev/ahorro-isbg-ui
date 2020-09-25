@@ -15,7 +15,7 @@ export class UsuariosComponent implements OnInit {
   public page: GenericPage<any> = new GenericPage();
   public pageSize = '10';
 
-  public filterParams: any = {email: '', estatus: '*', nombre: ''};
+  public filterParams: any = {email: '', estatus: '*', nombre: '',tipoUsuario:''};
 
   constructor(
     private userService: UsuariosData,

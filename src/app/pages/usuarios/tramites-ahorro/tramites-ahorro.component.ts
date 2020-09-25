@@ -53,7 +53,7 @@ export class TramitesAhorroComponent implements OnInit {
       .subscribe(sol => this.success = 'Se ha enviado la solicitud correctamente');
   }
 
-  public bsValue: Date;
+ 
   enabledDates = [
     new Date('2020-09-15'),
     new Date('2020-10-01'),
