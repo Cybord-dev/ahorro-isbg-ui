@@ -6,13 +6,15 @@ import { TramitesAhorroComponent } from './tramites-ahorro/tramites-ahorro.compo
 import { CommonsPagesModule } from '../commons/common-pages.module';
 
 import { ChartsModule } from 'ng2-charts';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ReporteAhorroComponent, TramitesAhorroComponent],
   imports: [
     CommonsPagesModule,
     UsuariosRoutingModule,
-    ChartsModule
+    ChartsModule,
+    FormsModule
   ]
 })
 export class UsuariosModule { }

@@ -12,6 +12,7 @@ import { HistoricoSolicitudesComponent } from './historico-solicitudes/historico
 import { ValidacionSolicitudComponent } from './validacion-solicitud/validacion-solicitud.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UsuarioComponent } from './usuario/usuario.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -27,6 +28,8 @@ import { UsuarioComponent } from './usuario/usuario.component';
     CommonModule,
     TabsModule,
     BsDatepickerModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     CommonModule,

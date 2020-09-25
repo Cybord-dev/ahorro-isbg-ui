@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class UsuariosComponent implements OnInit {
 
-   public page: GenericPage<any> = new GenericPage();
+  public page: GenericPage<any> = new GenericPage();
   public pageSize = '10';
 
   public filterParams: any = {email: '', estatus: '*', nombre: ''};
@@ -33,11 +33,11 @@ export class UsuariosComponent implements OnInit {
   }
 
   public redirectToUser(id: string) {
-    this.router.navigate([`./recursos-humanos/usuario/${id}`]);
+    this.router.navigate([`../commons/usuarios/${id}`]);
   }
 
   public Editar(id:number){
-    this.router.navigate([`./recursos-humanos/usuario/${id}`]);
+    this.router.navigate([`./recursos-humanos/usuarios/${id}`]);
   }
  
 }
