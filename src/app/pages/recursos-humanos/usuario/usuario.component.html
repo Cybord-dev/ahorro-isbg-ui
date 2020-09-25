@@ -1,0 +1,146 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-sm-12 col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <strong>Usuarios</strong>
+          </div>
+          <div class="card-body">
+            
+
+                    
+                <div class="alert alert-warning" *ngIf="errorMessages.length > 0" role="alert">
+                    <p *ngFor="let message of errorMessages">{{message}}</p>
+                </div>
+                <p class="alert alert-success" *ngIf="Params.success.length > 0" role="alert">{{Params.success}}</p>
+                <div class="row slide_1">
+                    <form [formGroup]="registerForm" class="col" >
+                    <div class="row">
+                        <div class="col">
+                        <label for="inputCorreo" class="label">Email</label>
+                        <input type="text" formControlName="email" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f.email.errors }" [(ngModel)]="usuario.email"
+                            placeholder="Correo Electronico" />
+                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                            <div *ngIf="f.email.errors.required">El correo es requerido.</div>
+                            <div *ngIf="f.email.errors.email">La direccion introducida no es valida.</div>
+                            <div *ngIf="f.email.errors.pattern">Hay caracteres invalidos.</div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                        <label for="inputActivo" class="label">Activo</label>
+                        <select id="inputActivo" formControlName="activo" class="form-control" [(ngModel)]="usuario.activo" style="display:block;" 
+                            fullWidth>
+                            
+                            <option value="true">Si</option>
+                            <option value="false">No</option>
+        
+                        </select>
+                        </div>
+                        <div class="col-md-9">
+                        <label for="inputAlias"  class="label">Sobrenombre</label>
+                        <input type="text" formControlName="alias" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && f.alias.errors }" [(ngModel)]="usuario.nombre"
+                        placeholder="Sobrenombre o alias"  />
+                        <div *ngIf="submitted && f.alias.errors" class="invalid-feedback">
+                            <div *ngIf="f.alias.errors.required">El alias es requerido.</div>
+                            <div *ngIf="f.alias.errors.minlength">Nececitas un minimo de 2 caracteres.</div> 
+                            <div *ngIf="f.alias.errors.maxlength">No mas de 20 caracteres.</div>              
+                            <div *ngIf="f.alias.errors.pattern">Hay caracteres invalidos.</div>
+                        </div>
+                        </div>
+                    </div>
+                
+                    </form>
+                    <div class="col">
+                    <label for="InputActivo" class="label">Roles del Usuario</label>
+                    <div class="row form-inline">
+        
+                        <table class="tg">
+                        <thead>
+                            <tr>
+                            <th class="tg-nrix">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="rolesArrayUpdate[1]"
+                                    (checkedChange)="toggle($event,1)" id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        ADMINISTRADOR
+                                    </label>
+                                </div>
+                            </th>
+                            <th class="tg-0lax">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="rolesArrayUpdate[2]"
+                                    (checkedChange)="toggle($event,2)" id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        SOPORTE
+                                    </label>
+                                </div>
+                            </th>
+                            <th class="tg-0lax">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="rolesArrayUpdate[3]"
+                                    (checkedChange)="toggle($event,3)" id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        TESORERIA
+                                    </label>
+                                </div>
+                            </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td class="tg-0lax">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="rolesArrayUpdate[4]"
+                                    (checkedChange)="toggle($event,4)" id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        CONTABILIDAD
+                                    </label>
+                                </div>
+                            </td>
+                            <td class="tg-0lax">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="rolesArrayUpdate[5]"
+                                    (checkedChange)="toggle($event,5)" id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        RECURSOS-HUMANOS
+                                    </label>
+                                </div>
+                            </td>
+                            <td class="tg-0lax">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="rolesArrayUpdate[6]"
+                                    (checkedChange)="toggle($event,6)" id="defaultCheck1">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        USUARIO
+                                    </label>
+                                </div>
+                            </td>
+                        
+                        </tbody>
+                        </table>
+                    </div>        
+                    </div>       
+                </div>
+                <br>
+        
+                <div class="float-right slide_2">
+        
+                    <button class="btn btn-primary" *ngIf="usuario.id === undefined" [disabled]="this.Params.success !== ''" (click)="registry()"> Registrar</button>
+                    <button class="btn btn-primary" *ngIf="usuario.id !== undefined" [disabled]="this.actualizando == true" 
+                     (click)="update()"> Actualizar</button>
+        
+                </div>
+
+
+
+          </div>
+        </div>
+      </div>
+      <!--/.col-->
+    </div>
+   
+  </div>
