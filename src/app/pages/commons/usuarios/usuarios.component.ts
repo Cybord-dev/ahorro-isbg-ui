@@ -33,7 +33,7 @@ export class UsuariosComponent implements OnInit {
   }
 
   public redirectToUser(id: string) {
-    this.router.navigate([`../commons/usuarios/${id}`]);
+    this.router.navigate([`../recursos-humanos/usuarios/${id}`]);
   }
 
   public Editar(id:number){

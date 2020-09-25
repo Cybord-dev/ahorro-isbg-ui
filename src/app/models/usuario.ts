@@ -13,11 +13,11 @@ export class Usuario {
     public fechaActualizacion: Date;
 
     public roles: Rol[];
-    public datosusuario: DatosUsuario[];
+    public datosUsuario: DatosUsuario[];
     public solicitudes: Solicitud[];
 
     constructor() {
-        this.datosusuario = [];
+        this.datosUsuario = [];
         this.roles = [];
     }
 }

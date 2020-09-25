@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from '../models/usuario';
 import { Rol } from '../models/rol';
+import { DatosUsuario } from '../models/datosusuario';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,7 @@ export class UsuariosService {
   }
 
   public actualizaUser(user: Usuario): Observable<Object> {
-    return this.http.put(`../usuarios`, user);
+    return this.http.put(`../usuarios/${user.id}`, user);
   }
 
   //Roles
@@ -44,6 +45,20 @@ export class UsuariosService {
 
   public  deleteRoles(rolId: number): Observable <any> {
     return this.http.delete(`../rol/${rolId}`);
+  }
+
+  //datosUsuario
+
+  public insertarDatosUsuario( idUser: number,dato: DatosUsuario): Observable<Object> {
+    return this.http.post(`../usuarios/${idUser}/datos`,dato);
+  }
+
+  public actualizaDatoUsuario(idusuario: number,dato: DatosUsuario): Observable<Object> {
+    return this.http.put(`../usuarios/${idusuario}/datos`, dato);
+  }
+
+  public  deleteDatosUsuario(Id: number): Observable <any> {
+    return this.http.delete(`../datos/${Id}`);
   }
 
 }
