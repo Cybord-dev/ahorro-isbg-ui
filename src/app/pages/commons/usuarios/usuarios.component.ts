@@ -15,7 +15,8 @@ export class UsuariosComponent implements OnInit {
 
   public filterParams: any = {email: '', estatus: '*', nombre: ''};
 
-  constructor(private userService: UsuariosData,
+  constructor(
+    private userService: UsuariosData,
     private router: Router) { }
 
   ngOnInit() {
@@ -33,11 +34,13 @@ export class UsuariosComponent implements OnInit {
   }
 
   public redirectToUser(id: string) {
-    this.router.navigate([`./recursos-humanos/usuario/${id}`]);
+    console.log(`redirecting to ./recursos-humanos/usuarios/${id}`);
+    this.router.navigate([`./recursos-humanos/usuarios/${id}`]);
   }
 
   public Editar(id:number){
-    this.router.navigate([`./recursos-humanos/usuario/${id}`]);
+    console.log(`redirecting to ./recursos-humanos/usuarios/${id}`);
+    this.router.navigate([`./recursos-humanos/usuarios/${id}`]);
   }
  
 }

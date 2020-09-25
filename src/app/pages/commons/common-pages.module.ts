@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // UI Component
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -26,10 +26,14 @@ import { UsuarioComponent } from './usuario/usuario.component';
   imports: [
     CommonModule,
     TabsModule,
+    FormsModule,
+    ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
   ],
   exports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     TabsModule,
     BsDatepickerModule,
     ProfileComponent,
