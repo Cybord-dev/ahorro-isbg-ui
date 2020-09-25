@@ -5,6 +5,7 @@ import { UsuariosComponent } from '../commons/usuarios/usuarios.component';
 import { UsuarioComponent } from '../commons/usuario/usuario.component';
 import { HistoricoSolicitudesComponent } from '../commons/historico-solicitudes/historico-solicitudes.component';
 import { ConciliacionRhComponent } from './conciliacion-rh/conciliacion-rh.component';
+import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,13 @@ const routes: Routes = [
   {
     path: 'usuarios/:idUsuario',
     component: UsuarioComponent,
+    data: {
+      title: 'Usario ISBG'
+    }
+  },
+  {
+    path: 'validacione/:idUsuario',
+    component: ValidacionSolicitudComponent,
     data: {
       title: 'Usario ISBG'
     }

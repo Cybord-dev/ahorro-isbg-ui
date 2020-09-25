@@ -1,105 +1,117 @@
 <div class="animated fadeIn">
-    <div class="row">
-      <div class="col-sm-12 col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <strong>Validaciones</strong>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-12">
-                Filtros de busqueda
-              </div>
-            </div>
-  
-          </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Validaciones</strong>
         </div>
-      </div>
-      <!--/.col-->
-    </div>
-    <!--/.row-->
+        <div class="card-body">
+          <div class="row slide_1">
+
+            <div class="col-md-2">
+              <label for="nombreusuario" class="label">Nombre Usuario</label>
+              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="nombreusu"
+                placeholder="nombreusuario">
+            </div>
+            <div class="col-md-2">
+              <label for="inputtipo" class="label">Tipo Usuario</label>
+              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="inputtipo"
+                placeholder="Tipo de usuario">
+            </div>
+            <div class="col-md-2">
+              <label for="FechaSolicitud" class="label">Fecha Solicitud</label>
+              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="inputCorreo"
+                placeholder="Fecha Solicitud">
+            </div>
+            <div class="col-md-6">
+              <label for="inputActivo" class="label">Tipo Validacion</label>
+              <div class="row form-inline">
+                <select id="inputActivo" [disabled]="true" class="form-control" style="display:block;" fullWidth>
+                  <option value="*">Solicitud</option>
+                  <option value="1">Cancelacion</option>
+                  <option value="0">Cancelacion</option>
+                </select>
+
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <button class="btn btn-primary" [disabled]="true" (click)="updateDataTable(0,10)">BUSCAR</button>
 
 
-    <div class="row">
-      <div class="col-sm-12 col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <strong>Resultados</strong>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-12">
-                <table class="table table-bordered table-striped table-sm">
-                  <thead>
-                    <tr>
-                      <th>Nombre</th>
-                      <th>Fecha solicitud</th>
-                      <th>Tipo Usuario</th>
-                      <th>Tipo Validacion</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Vishnu Serghei</td>
-                      <td>2012/01/01</td>
-                      <td>Interno</td>
-                      <td>
-                        <span class="badge badge-success">Solicitud</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Zonia Phoibos</td>
-                      <td>2012/02/01</td>
-                      <td>Externo</td>
-                      <td>
-                        <span class="badge badge-danger">Cancelacion</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Einar Randall</td>
-                      <td>2012/02/01</td>
-                      <td>Admin</td>
-                      <td>
-                        <span class="badge badge-secondary">Modificacion</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Félix Troels</td>
-                      <td>2012/03/01</td>
-                      <td>Externo</td>
-                      <td>
-                        <span class="badge badge-warning">Retiro Parcial</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Aulus Agmundr</td>
-                      <td>2012/01/21</td>
-                      <td>Interno</td>
-                      <td>
-                        <span class="badge badge-success">Solicitud</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <nav>
-                  <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                    <li class="page-item active">
-                      <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                  </ul>
-                </nav>
               </div>
             </div>
-  
           </div>
+
         </div>
       </div>
-      <!--/.col-->
     </div>
-    <!--/.row-->
+    <!--/.col-->
   </div>
+  <!--/.row-->
+
+
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Resultados</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12">
+              <table class="table table-bordered table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>Acciones</th>
+                    <th>Nombre</th>
+                    <th>Fecha solicitud</th>
+                    <th>Tipo Usuario</th>
+                    <th>Tipo Validacion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let fila of page.content">
+                    <td scope="row">
+                      <button class="btn-sm btn-outline-primary" (click)="redirectToUser(fila.idUser)"><i
+                          class="fa fa-search fa-sm"></i></button>
+
+                    </td>
+                    <td scope="row">{{fila.nombre}}</td>
+                    <td scope="row">{{arrayfechas[fila.idSolicitud] | date:'yyyy-MM-dd'}}</td>
+
+                    <td scope="row">Interno</td>
+                    <td scope="row" *ngIf="(fila.idSolicitud) === 1"><span class="badge badge-success">Solicitud</span>
+                    </td>
+                    <td scope="row" *ngIf="(fila.idSolicitud) === 2"><span class="badge badge-danger">Cancelacion</span>
+                    </td>
+                    <td scope="row" *ngIf="(fila.idSolicitud) === 3"><span
+                        class="badge badge-secondary">Modificacion</span></td>
+                    <td scope="row" *ngIf="(fila.idSolicitud) === 4"><span class="badge badge-danger">Cancelacion</span>
+                    </td>
+                    <td scope="row" *ngIf="(fila.idSolicitud) === 5"><span
+                        class="badge badge-secondary">Modificacion</span></td>
+
+                    <td scope="row" *ngIf="(fila.idSolicitud) > 5"><span class="badge badge-success">Solicitud</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <nav>
+                <ul class="pagination" *ngIf="page.totalElements > 1">
+                  <li class="page-item" *ngIf="page.first==false"><a class="page-link"
+                      (click)="updateDataTable(page.number-1,page.size)">Prev</a></li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">{{page.number}}</a>
+                  </li>
+                  <li class="page-item" *ngIf="page.last==false"><a class="page-link"
+                      (click)="updateDataTable(page.number+1,page.size)">Next</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

@@ -20,8 +20,8 @@ export class TramitesAhorroComponent implements OnInit {
   public bsValue = new Date();
   public solicitud: Solicitud;
 
-  public  noEmpleado = '';
-  public  oficina = '*';
+  public noEmpleado = '';
+  public oficina = '*';
   public descuentoQuincenal = 100;
 
   constructor(
@@ -34,11 +34,11 @@ export class TramitesAhorroComponent implements OnInit {
     this.errorMessages = [];
     this.success = '';
     this.solicitud = new Solicitud();
-    
-      const id = 3;
-      this.userService.getUsuario(id).subscribe((user: Usuario) => {
-        this.usuario = user;
-      });
+
+    const id = 3;
+    this.userService.getUsuario(id).subscribe((user: Usuario) => {
+      this.usuario = user;
+    });
   }
 
 
@@ -53,7 +53,7 @@ export class TramitesAhorroComponent implements OnInit {
       .subscribe(sol => this.success = 'Se ha enviado la solicitud correctamente');
   }
 
- 
+
   enabledDates = [
     new Date('2020-09-15'),
     new Date('2020-10-01'),
@@ -63,7 +63,7 @@ export class TramitesAhorroComponent implements OnInit {
     new Date('2020-12-01'),
     new Date('2020-12-15'),
   ];
-  public bsConfig = {containerClass : 'theme-dark-blue'};
+  public bsConfig = { containerClass: 'theme-dark-blue' };
 
- 
+
 }

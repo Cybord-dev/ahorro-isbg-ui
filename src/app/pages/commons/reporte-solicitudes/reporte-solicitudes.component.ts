@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SolicitudesService } from 'src/app/services/solicitudes.service';
 import { GenericPage } from '../../../models/generic-page';
 
 @Component({
@@ -9,7 +10,7 @@ import { GenericPage } from '../../../models/generic-page';
 })
 export class ReporteSolicitudesComponent implements OnInit {
 
-
+  getSolicitudes
   public module: string = 'usuarios';
   public page: GenericPage<any> = new GenericPage();
   public pageSize = '10';
@@ -17,11 +18,42 @@ export class ReporteSolicitudesComponent implements OnInit {
   public userEmail: string;
   public loading = false;
 
-  constructor(private router: Router) { }
+  public arrayfechas: Date[] = [];
+
+  constructor(private router: Router,
+    private solicitudesService: SolicitudesService,
+
+  ) { }
 
   ngOnInit(): void {
-    this.module = this.router.url.split('/')[2];
+    this.module = this.router.url.split('/')[1];
+    this.updateDataTable(0, 10);
     console.log(this.module);
+
+    for (let index = 0; index < 11; index++) {
+
+      this.arrayfechas[index] = this.randomDate();
+    }
+  }
+
+  public randomDate() {
+    return new Date(new Date(2012, 0, 1).getTime() + Math.random() * (new Date().getTime() - new Date(2012, 0, 1).getTime()));
+  }
+
+  public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any) {
+    const pageValue = currentPage || 0;
+    const sizeValue = pageSize || 10;
+    this.solicitudesService.getSolicitudes(pageValue, sizeValue, this.filterParams).subscribe(data => this.page = data);
+  }
+
+  public onChangePageSize(pageSize: number) {
+    this.updateDataTable(this.page.number, pageSize);
+  }
+
+  public redirectToUser(id: string) {
+
+    this.router.navigate([`./recursos-humanos/validacione/${id}`]);
+    //this.router.navigate(['./validaciones']); 
   }
 
 }
