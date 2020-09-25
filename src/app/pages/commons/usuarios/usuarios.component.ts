@@ -10,7 +10,9 @@ import { Router } from '@angular/router';
 })
 export class UsuariosComponent implements OnInit {
 
-   public page: GenericPage<any> = new GenericPage();
+
+  public module = 'usuario';
+  public page: GenericPage<any> = new GenericPage();
   public pageSize = '10';
 
   public filterParams: any = {email: '', estatus: '*', nombre: ''};
@@ -20,6 +22,8 @@ export class UsuariosComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
+    this.module = this.router.url.split('/')[1];
+    console.log(this.module);
     this.updateDataTable(0, 10);
   }
 
