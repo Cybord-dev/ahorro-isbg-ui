@@ -19,10 +19,11 @@ export class UsuarioComponent implements OnInit {
   submitted = false;
   public loading = true;
   public usuario: Usuario = new Usuario();
+  public errorMessages: string[] = [];
   
   public rolesArrayUpdate = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false };
 
-  public errorMessages: string[] = [];
+  
  
   public Params: any = { success: '', message: '', id: '*'};
 

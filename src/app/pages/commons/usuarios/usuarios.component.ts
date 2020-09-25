@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GenericPage } from '../../../models/generic-page';
 import { UsuariosData } from '../../../data/usuarios-data';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'cybord-usuarios',
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class UsuariosComponent implements OnInit {
 
 
-  public module = 'usuario';
+  public module = 'recursos-humanos';
   public page: GenericPage<any> = new GenericPage();
   public pageSize = '10';
 
@@ -23,7 +23,6 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit() {
     this.module = this.router.url.split('/')[1];
-    console.log(this.module);
     this.updateDataTable(0, 10);
   }
 
@@ -42,9 +41,14 @@ export class UsuariosComponent implements OnInit {
     this.router.navigate([`./recursos-humanos/usuarios/${id}`]);
   }
 
-  public Editar(id:number){
+  public editar(id:number){
     console.log(`redirecting to ./recursos-humanos/usuarios/${id}`);
     this.router.navigate([`./recursos-humanos/usuarios/${id}`]);
+  }
+
+  public redirectToRoles(id:number){
+    console.log(`redirecting to ./administracion/roles/${id}`);
+    this.router.navigate([`./administracion/roles/${id}`]);
   }
  
 }

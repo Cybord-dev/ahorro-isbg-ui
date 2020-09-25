@@ -65,7 +65,10 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let fila of page.content">
-                       <td scope="row" ><button  class="btn-sm btn-outline-primary" (click)="Editar(fila.id)"><i class="cui-magnifying-glass icons"></i></button></td>
+                       <td scope="row" >
+                         <button  class="btn-sm btn-outline-primary" (click)="editar(fila.id)"><i class="fa fa-search fa-sm"></i></button>
+                         <button  class="btn-sm btn-outline-primary" (click)="redirectToRoles(fila.id)" *ngIf="module==='administracion'"><i class="fa fa-users fa-sm"></i></button>
+                        </td>
                        <td scope="row">{{fila.id}}</td>
                        <td scope="row">{{fila.nombre}}</td>
                        <td scope="row">{{fila.email}}</td>
