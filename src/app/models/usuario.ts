@@ -1,5 +1,4 @@
 import { DatosUsuario } from './datosusuario';
-import { Rol } from './rol';
 import { Solicitud } from './solicitud';
 
 export class Usuario {
@@ -12,7 +11,7 @@ export class Usuario {
     public fechaCreacion: Date;
     public fechaActualizacion: Date;
 
-    public roles: Rol[];
+    public roles: string[];
     public datosusuario: DatosUsuario[];
     public solicitudes: Solicitud[];
 

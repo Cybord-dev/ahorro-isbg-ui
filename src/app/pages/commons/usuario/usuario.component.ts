@@ -20,11 +20,7 @@ export class UsuarioComponent implements OnInit {
   public loading = true;
   public usuario: Usuario = new Usuario();
   public errorMessages: string[] = [];
-  
-  public rolesArrayUpdate = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false };
 
-  
- 
   public Params: any = { success: '', message: '', id: '*'};
 
   constructor(
@@ -78,21 +74,6 @@ export class UsuarioComponent implements OnInit {
       this.usuarioServicio.actualizaUser(this.usuario).toPromise()
       .then(async updateduser => {
           this.Params.success = 'El usuario ha sido actualizado satisfactoriamente.';
-          for (const role in this.rolesArrayUpdate) { // QUITA ROLES EXISTENTES
-            if (this.rolesArrayUpdate[role] === false // ROLE EN FALSO
-                    && this.usuario.roles.find(x => x.rolname.id === +role)) { // PERO YA EXISTE EN EL USER
-              await this.usuarioServicio.deleteRoles(
-                this.usuario.roles.find(x => x.rolname.id === +role).id).toPromise();
-            }
-          }
-          for (const role in this.rolesArrayUpdate) { // AGREGAR NUEVOS ROLES
-
-            if (this.rolesArrayUpdate[role] === true // ROLE EN TRUE
-              && !this.usuario.roles.find(x => x.rolname.id === +role)) { // PERO NO EXISTE EN EL USER
-                console.log("sss  "+role);
-                await this.usuarioServicio.insertarRoles( updateduser.id, new Rol(+role)).toPromise();
-            }
-          }
         }, (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
           || `${error.statusText} : ${error.message}`))
       .then(() => this.updateUserInfo(id));
@@ -105,30 +86,12 @@ export class UsuarioComponent implements OnInit {
       this.usuarioServicio.insertarUsuario(this.usuario).subscribe(
         createdUser => {
           this.Params.success = 'El usuario ha sido creado satisfactoriamente.';
-          for (const role in this.rolesArrayUpdate) {
-            if (this.rolesArrayUpdate[role] !== false) {
-              console.log("sss  "+role);
-              this.usuarioServicio.insertarRoles( createdUser.id,new Rol(+role)).subscribe(
-                data => {
-                  this.Params.success = 'El usuario ha sido creado satisfactoriamente.';
-                },
-                (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
-                  || `${error.statusText} : ${error.message}`));
-            }
-          }
         }, (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
           || `${error.statusText} : ${error.message}`));
   }
 
-  toggle(checked: boolean, rol: string) {
-    this.rolesArrayUpdate[rol] = checked;
-  }
-
   public clearInput(){
     this.usuario = new Usuario();
-    for (const role in this.rolesArrayUpdate) {     
-        this.rolesArrayUpdate[role] = false;   
-    }
     this.Params.success = '';
     this.errorMessages = [];
     this.submitted = false;
@@ -139,11 +102,6 @@ export class UsuarioComponent implements OnInit {
     this.usuarioServicio.getUsuario(id).subscribe(
       userdata => {
         this.usuario = userdata;
-        for (const role in this.usuario.roles) {
-          if (role) {
-            this.rolesArrayUpdate[this.usuario.roles[role].id] = true;
-          }
-        }
         this.loading = false;
       },
       (error: HttpErrorResponse) => this.errorMessages.push(error.error.message

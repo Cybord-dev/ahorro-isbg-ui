@@ -29,7 +29,7 @@ export class AltaRolesComponent implements OnInit {
       this.userService.getUsuario(id).subscribe((user: Usuario) => {
         this.usuario = user;
         for (const role of user.roles) {
-          this.roles[role.rolname.nombre] = true;
+          this.roles[role] = true;
         }
       });
     });
