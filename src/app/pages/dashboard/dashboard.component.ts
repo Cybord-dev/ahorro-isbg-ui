@@ -9,6 +9,11 @@ export class DashboardComponent implements OnInit {
 
   radioModel: string = 'Month';
 
+
+  constructor(){
+    console.log('stating dashboard');
+  }
+
   // lineChart1
   public lineChart1Data: Array<any> = [
     {
@@ -378,6 +383,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('stating dashboard');
     // generate random values for mainChart
     for (let i = 0; i <= this.mainChartElements; i++) {
       this.mainChartData1.push(this.random(50, 200));

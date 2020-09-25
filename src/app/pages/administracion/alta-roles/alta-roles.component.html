@@ -1,1 +1,75 @@
-<p>alta-roles works!</p>
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Administracion de roles</strong>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" *ngIf="errorMessages.length > 0" role="alert">
+                        <p *ngFor="let message of errorMessages">{{message}}</p>
+                    </div>
+                    <p class="alert alert-success" *ngIf="success.length>0" role="alert">{{success}}</p>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label"><strong>Roles</strong></label>
+                                <div class="col-md-9 col-form-label">
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox1" (checkedChange)="toggle($event,2)" [(ngModel)]="roles.USUARIO">
+                                    <label class="form-check-label" for="checkbox1">
+                                      USUARIO
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox2" (checkedChange)="toggle($event,2)" [(ngModel)]="roles.RECURSOS_HUMANOS">
+                                    <label class="form-check-label" for="checkbox2">
+                                      RECURSOS HUMANOS
+                                    </label>
+                                  </div>
+                                  <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox3" (checkedChange)="toggle($event,3)" [(ngModel)]="roles.CONTABILIDAD">
+                                    <label class="form-check-label" for="checkbox3">
+                                      CONTABILIDAD
+                                    </label>
+                                  </div>
+                                  <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox4" (checkedChange)="toggle($event,4)" [(ngModel)]="roles.TESORERIA">
+                                    <label class="form-check-label" for="checkbox4">
+                                      TESORERIA
+                                    </label>
+                                  </div>
+                                  <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox5" (checkedChange)="toggle($event,5)" [(ngModel)]="roles.GERENCIA">
+                                    <label class="form-check-label" for="checkbox5">
+                                      GERENCIA
+                                    </label>
+                                  </div>
+                                  <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox6" (checkedChange)="toggle($event,6)" [(ngModel)]="roles.ADMINISTRACION">
+                                    <label class="form-check-label" for="checkbox6">
+                                      ADMINISTRACION
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                          
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-6">
+                                <div class="form-group row">
+                                    <button type="button" class="btn btn-success" (click)="updateRoles()"><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                                        Actualizar info</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+    
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

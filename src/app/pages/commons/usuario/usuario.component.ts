@@ -2,15 +2,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { UsuariosData } from 'src/app/data/usuarios-data';
 import { Rol } from 'src/app/models/rol';
 import { Usuario } from 'src/app/models/usuario';
 import { RolCat } from '../../../models/rolcat';
 import { DatosUsuario } from '../../../models/datosusuario';
-
-interface IHash {
-  [key: string]: boolean;
-}
 
 @Component({
   selector: 'cybord-usuario',
@@ -28,6 +25,7 @@ export class UsuarioComponent implements OnInit {
   public Params: any = { success: '', message: '', id: '*', module: 'usuarios' };
   public date = new Date;
   public datos: any = { ANTIGUEDAD: this.date, SUELDO: 0, NO_EMPLEADO: 0, OFICINA: '*' };
+
 
   constructor(
     private route: ActivatedRoute,
@@ -91,12 +89,12 @@ export class UsuarioComponent implements OnInit {
               updateduser.datosUsuario.find(x => x.tipoDato === d).id).toPromise();
           }
         }
-
         for (const d in this.datos) {
           await this.usuarioServicio.actualizaDatoUsuario(this.usuario.id, new DatosUsuario(d, this.datos[d], true)).toPromise();
         }
       }, (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
         || `${error.statusText} : ${error.message}`))
+
       .then(() => this.updateUserInfo(id));
   }
 
@@ -126,7 +124,6 @@ export class UsuarioComponent implements OnInit {
 
   public clearInput() {
     this.usuario = new Usuario();
-
     this.Params.success = '';
     this.errorMessages = [];
     this.submitted = false;
@@ -137,6 +134,7 @@ export class UsuarioComponent implements OnInit {
     this.usuarioServicio.getUsuario(id).subscribe(
       userdata => {
         this.usuario = userdata;
+
         for (const u in this.usuario.datosUsuario) {
           for (const i in this.datos) {
             if (this.usuario.datosUsuario[u].tipoDato === i) {
@@ -146,10 +144,10 @@ export class UsuarioComponent implements OnInit {
         }
         if (this.datos.ANTIGUEDAD)
           this.date = new Date(this.datos.ANTIGUEDAD);
+
       },
       (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
         || `${error.statusText} : ${error.message}`));
 
   }
-
 }
