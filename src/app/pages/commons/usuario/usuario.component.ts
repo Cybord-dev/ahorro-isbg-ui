@@ -2,14 +2,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UsuariosData } from 'src/app/data/usuarios-data';
-import { Rol } from 'src/app/models/rol';
-import { Usuario } from 'src/app/models/usuario';
-import { RolCat } from '../../../models/rolcat';
 
-interface IHash {
-  [key: number]: boolean;
-}
+import { UsuariosData } from '../../../data/usuarios-data';
+import { Usuario } from '../../../models/usuario';
+
 
 @Component({
   selector: 'cybord-usuario',
@@ -23,11 +19,11 @@ export class UsuarioComponent implements OnInit {
   public loading = true;
   public usuario: Usuario = new Usuario();
   
-  public rolesArrayUpdate: IHash = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false };
+  public rolesArrayUpdate = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false };
 
   public errorMessages: string[] = [];
  
-  public Params: any = { success: '', message: '', id: '*',module:'usuarios'};
+  public Params: any = { success: '', message: '', id: '*'};
 
   constructor(
     private route: ActivatedRoute,
@@ -134,6 +130,23 @@ export class UsuarioComponent implements OnInit {
     this.Params.success = '';
     this.errorMessages = [];
     this.submitted = false;
+  }
+
+  private updateUserInfo(id: number) {
+    this.errorMessages = [];
+    this.usuarioServicio.getUsuario(id).subscribe(
+      userdata => {
+        this.usuario = userdata;
+        for (const role in this.usuario.roles) {
+          if (role) {
+            
+            this.rolesArrayUpdate[this.usuario.roles[role].id] = true;
+          }
+        }
+        this.loading = false;
+      },
+      (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
+        || `${error.statusText} : ${error.message}`));
   }
 
   private updateUserInfo(id: number) {
