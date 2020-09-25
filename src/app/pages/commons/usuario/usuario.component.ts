@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { UsuariosData } from '../../../data/usuarios-data';
 import { Usuario } from '../../../models/usuario';
+import { Rol } from '../../../models/rol';
 
 
 @Component({
@@ -139,7 +140,6 @@ export class UsuarioComponent implements OnInit {
         this.usuario = userdata;
         for (const role in this.usuario.roles) {
           if (role) {
-            
             this.rolesArrayUpdate[this.usuario.roles[role].id] = true;
           }
         }
@@ -148,22 +148,4 @@ export class UsuarioComponent implements OnInit {
       (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
         || `${error.statusText} : ${error.message}`));
   }
-
-  private updateUserInfo(id: number) {
-    this.errorMessages = [];
-    this.usuarioServicio.getUsuario(id).subscribe(
-      userdata => {
-        this.usuario = userdata;
-        for (const role in this.usuario.roles) {
-          if (role) {
-            
-            this.rolesArrayUpdate[this.usuario.roles[role].id] = true;
-          }
-        }
-        this.loading = false;
-      },
-      (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
-        || `${error.statusText} : ${error.message}`));
-  }
-
 }
