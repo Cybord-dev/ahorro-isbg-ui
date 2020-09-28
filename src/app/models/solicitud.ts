@@ -5,11 +5,10 @@ export class Solicitud {
 
     public id: number;
     public idUsuario: number;
-    public tipo: number;
-    public status: number;
+    public tipo: string;
+    public status: string;
     public statusDetalle: string;
-    public porcentaje: number;
-    public cantidad: number;
+
     public fechaEjecucion: Date;
     public fechaCreacion: Date;
     public fechaActualizacion: Date;

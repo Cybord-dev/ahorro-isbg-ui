@@ -14,7 +14,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'usuarios/:idUsuario',
+    path: 'roles/:idUsuario',
     component: AltaRolesComponent,
     data: {
       title: 'Usario ISBG'

@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { UsuariosService } from '../../../services/usuarios.service';
+import { SolicitudesService } from '../../../services/solicitudes.service';
+import { Solicitud } from '../../../models/solicitud';
+import { Usuario } from '../../../models/usuario';
+
 
 @Component({
   selector: 'cybord-validacion-solicitud',
@@ -7,9 +13,64 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ValidacionSolicitudComponent implements OnInit {
 
-  constructor() { }
+
+  public usuario: Usuario = new Usuario();
+  public errorMessages: string[] = [];
+  public success = '';
+  public bsValue = new Date();
+  public bsConfig = { containerClass: 'theme-dark-blue' };
+
+
+  constructor(
+    private userService: UsuariosService,
+    private solicitudService: SolicitudesService,
+    private route: ActivatedRoute,
+  ) { }
+
+  public solicitud: Solicitud;
+
+  public enabledDates = [
+    new Date('2020-09-15'),
+    new Date('2020-10-01'),
+    new Date('2020-10-15'),
+    new Date('2020-11-01'),
+    new Date('2020-11-15'),
+    new Date('2020-12-01'),
+    new Date('2020-12-15'),
+  ];
+
+  public noEmpleado: number;
+  public oficina: number;
+  public descuentoQuincenal: number;
+
+  public requestSolicitud(tipo: string) {
+
+    this.solicitud.idUsuario = this.usuario.id;
+    this.solicitud.status = "Solicitud";
+    this.solicitud.tipo = tipo;
+    this.solicitud.statusDetalle = 'Solicitud inicial';
+
+    this.solicitudService.postSolictudUsuario(this.usuario.id, this.solicitud)
+      .subscribe(sol => this.success = 'Se ha enviado la solicitud correctamente');
+  }
 
   ngOnInit(): void {
+    this.solicitud = new Solicitud();
+    this.route.paramMap.subscribe(route => {
+      const id = route.get('idUsuario');
+      console.log("id " + id)
+      this.userService.getUsuario(+id).subscribe((user: Usuario) => {
+        this.usuario = user;
+
+        this.noEmpleado = Math.floor(Math.random() * 60) + 1;
+        this.oficina = Math.floor(Math.random() * 2) + 1;
+        this.descuentoQuincenal = Math.floor(Math.random() * 60) + 1;
+      });
+
+
+    });
+
+
   }
 
 }

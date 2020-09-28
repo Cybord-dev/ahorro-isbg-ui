@@ -3,6 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from '../models/usuario';
 import { Rol } from '../models/rol';
+import { DatosUsuario } from '../models/datosusuario';
+import { RolCat } from '../models/rolcat';
 
 @Injectable({
   providedIn: 'root'
@@ -21,29 +23,43 @@ export class UsuariosService {
         }
       }
     }
-    return this.http.get('../usuarios', { params: pageParams });
+    return this.http.get('../api/v1/usuarios', { params: pageParams });
   }
 
-  public getUsuario(userid: number): Observable<Object> {
-    return this.http.get(`../usuarios/${userid}`);
+  public getUsuario(userid: number): Observable<Usuario> {
+    return this.http.get<Usuario>(`../api/v1/usuarios/${userid}`);
   } 
 
-  public insertarUsuario(user: Usuario): Observable<Object> {
-    return this.http.post('../usuarios', user);
+  public insertarUsuario(user: Usuario): Observable<Usuario> {
+    return this.http.post<Usuario>('../api/v1/usuarios', user);
   }
 
-  public actualizaUser(user: Usuario): Observable<Object> {
-    return this.http.put(`../usuarios`, user);
+  public actualizaUser(user: Usuario): Observable<Usuario> {
+    return this.http.put<Usuario>(`../api/v1/usuarios/${user.id}`, user);
   }
 
   //Roles
 
-  public insertarRoles( idUser: number,rol: Rol): Observable<Object> {
-    return this.http.post(`../usuarios/${idUser}/roles`,rol);
+  public insertarRoles( idUser: number,rol: RolCat ): Observable<any> {
+    return this.http.post(`../api/v1/usuarios/${idUser}/roles`, rol);
   }
 
-  public  deleteRoles(rolId: number): Observable <any> {
-    return this.http.delete(`../rol/${rolId}`);
+  public  deleteRoles(userId: number, rolName: string): Observable <any> {
+    return this.http.delete(`../api/v1/usuarios/${userId}/roles/${rolName}`);
+  }
+
+  //datosUsuario
+
+  public insertarDatosUsuario( idUser: number,dato: DatosUsuario): Observable<DatosUsuario> {
+    return this.http.post<DatosUsuario>(`../api/v1/usuarios/${idUser}/datos`, dato);
+  }
+
+  public actualizaDatoUsuario(idusuario: number,dato: DatosUsuario): Observable<DatosUsuario> {
+    return this.http.put<DatosUsuario>(`../api/v1/usuarios/${idusuario}/datos`, dato);
+  }
+
+  public  deleteDatosUsuario(Id: number): Observable <any> {
+    return this.http.delete(`../api/v1/datos/${Id}`);
   }
 
 }

@@ -12,15 +12,15 @@ export class PrestamosService {
   constructor(private http: HttpClient) { }
 
   public getPrestamosByUsuario (idUsuario: number): Observable<SaldoPrestamo[]>{
-    return this.http.get<SaldoPrestamo[]>('../usuarios/${idUsuario}/prestamos');
+    return this.http.get<SaldoPrestamo[]>('../api/v1/usuarios/${idUsuario}/prestamos');
   }
 
   public getPrestamosByUsuairoAndPrestamoAndSaldo (idUsuario: number, idPrestamo: number, idSaldo: number): Observable<SaldoPrestamo[]>{
-    return this.http.get<SaldoPrestamo[]>('../usuarios/${idUsuario}/prestamos/${idPrestamo}/saldos/${idSaldo}');
+    return this.http.get<SaldoPrestamo[]>('../api/v1/usuarios/${idUsuario}/prestamos/${idPrestamo}/saldos/${idSaldo}');
   }
 
   public postPrestamosByUsuario (idUsuario: number, prestamo: SaldoPrestamo): Observable<SaldoPrestamo[]>{
-    return this.http.post<SaldoPrestamo[]>('../usuarios/${idUsuario}/prestamos', prestamo);
+    return this.http.post<SaldoPrestamo[]>('../api/v1/usuarios/${idUsuario}/prestamos', prestamo);
   }
 
 }

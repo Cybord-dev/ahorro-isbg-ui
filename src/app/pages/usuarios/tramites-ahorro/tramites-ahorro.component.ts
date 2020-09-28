@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { TabsetComponent } from 'ngx-bootstrap/tabs';
+import { Usuario } from '../../../models/usuario';
+import { ActivatedRoute } from '@angular/router';
+import { SolicitudesService } from '../../../services/solicitudes.service';
+import { UsuariosService } from '../../../services/usuarios.service';
+import { Solicitud } from '../../../models/solicitud';
 
 @Component({
   selector: 'cybord-tramites-ahorro',
@@ -7,8 +13,48 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TramitesAhorroComponent implements OnInit {
 
-  public bsValue: Date;
-  enabledDates = [
+  public loading = true;
+  public usuario: Usuario = new Usuario();
+  public errorMessages: string[] = [];
+  public success = '';
+  public bsValue = new Date();
+  public solicitud: Solicitud;
+
+  public noEmpleado = '';
+  public oficina = '*';
+  public descuentoQuincenal = 100;
+
+  constructor(
+    private route: ActivatedRoute,
+    private userService: UsuariosService,
+    private solicitudService: SolicitudesService,
+  ) { }
+
+  ngOnInit(): void {
+    this.errorMessages = [];
+    this.success = '';
+    this.solicitud = new Solicitud();
+
+    const id = 3;
+    this.userService.getUsuario(id).subscribe((user: Usuario) => {
+      this.usuario = user;
+    });
+  }
+
+
+  public requestSolicitud(tipo: string) {
+
+    this.solicitud.idUsuario = this.usuario.id;
+    this.solicitud.status = "Solicitud";
+    this.solicitud.tipo = tipo;
+    this.solicitud.statusDetalle = 'Solicitud inicial';
+
+    this.solicitudService.postSolictudUsuario(this.usuario.id, this.solicitud)
+      .subscribe(sol => this.success = 'Se ha enviado la solicitud correctamente');
+  }
+
+
+  public enabledDates = [
     new Date('2020-09-15'),
     new Date('2020-10-01'),
     new Date('2020-10-15'),
@@ -17,11 +63,7 @@ export class TramitesAhorroComponent implements OnInit {
     new Date('2020-12-01'),
     new Date('2020-12-15'),
   ];
-  public bsConfig = {containerClass : 'theme-dark-blue'};
+  public bsConfig = { containerClass: 'theme-dark-blue' };
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

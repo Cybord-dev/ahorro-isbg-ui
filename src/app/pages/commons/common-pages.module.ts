@@ -29,6 +29,8 @@ import { UsuarioComponent } from './usuario/usuario.component';
     FormsModule,
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     CommonModule,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GenericPage } from '../../../models/generic-page';
 import { UsuariosData } from '../../../data/usuarios-data';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'cybord-usuarios',
@@ -10,16 +10,19 @@ import { Router } from '@angular/router';
 })
 export class UsuariosComponent implements OnInit {
 
-   public page: GenericPage<any> = new GenericPage();
+
+  public module = 'recursos-humanos';
+  public page: GenericPage<any> = new GenericPage();
   public pageSize = '10';
 
-  public filterParams: any = {email: '', estatus: '*', nombre: ''};
+  public filterParams: any = {email: '', estatus: '*', nombre: '',tipoUsuario:''};
 
   constructor(
     private userService: UsuariosData,
     private router: Router) { }
 
   ngOnInit() {
+    this.module = this.router.url.split('/')[1];
     this.updateDataTable(0, 10);
   }
 
@@ -34,13 +37,17 @@ export class UsuariosComponent implements OnInit {
   }
 
   public redirectToUser(id: string) {
+    this.router.navigate([`../recursos-humanos/usuarios/${id}`]);
+  }
+
+  public editar(id:number){
     console.log(`redirecting to ./recursos-humanos/usuarios/${id}`);
     this.router.navigate([`./recursos-humanos/usuarios/${id}`]);
   }
 
-  public Editar(id:number){
-    console.log(`redirecting to ./recursos-humanos/usuarios/${id}`);
-    this.router.navigate([`./recursos-humanos/usuarios/${id}`]);
+  public redirectToRoles(id:number){
+    console.log(`redirecting to ./administracion/roles/${id}`);
+    this.router.navigate([`./administracion/roles/${id}`]);
   }
  
 }

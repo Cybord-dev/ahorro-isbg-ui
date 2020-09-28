@@ -13,12 +13,17 @@
                   [disabled]="filterParams.nombre.length > 0" nbInput fullWidth id="inputCorreo"
                   placeholder="email usuario">
               </div>
-              <div class="col-md-3">
-                <label for="inputAlias"  class="label">Nombre Usuario</label>
+              <div class="col-md-2">
+                <label for="nombreusuario"  class="label">Nombre Usuario</label>
                 <input type="text" class="form-control" [(ngModel)]="filterParams.nombre"
-                  [disabled]="filterParams.email.length > 0" nbInput fullWidth id="inputAlias" placeholder="Alias usuario">
+                  [disabled]="filterParams.email.length > 0" nbInput fullWidth id="nombreusu" placeholder="nombreusuario">
               </div>
-              <div class="col-md-5">
+              <div class="col-md-2">
+                <label for="inputtipo"  class="label">Tipo Usuario</label>
+                <input type="text" class="form-control" [(ngModel)]="filterParams.tipoUsuario"
+                  [disabled]="filterParams.email.length > 0" nbInput fullWidth id="inputtipo" placeholder="Tipo de usuario">
+              </div>
+              <div class="col-md-6">
                 <label for="inputActivo" class="label">Estado cliente</label>
                 <div class="row form-inline">
                   <select id="inputActivo" class="form-control" [(ngModel)]="filterParams.estatus" style="display:block;"
@@ -65,7 +70,10 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let fila of page.content">
-                       <td scope="row" ><button  class="btn-sm btn-outline-primary" (click)="Editar(fila.id)"><i class="cui-magnifying-glass icons"></i></button></td>
+                       <td scope="row" >
+                         <button  class="btn-sm btn-outline-primary" (click)="editar(fila.id)"><i class="fa fa-search fa-sm"></i></button>
+                         <button  class="btn-sm btn-outline-primary" (click)="redirectToRoles(fila.id)" *ngIf="module==='administracion'"><i class="fa fa-users fa-sm"></i></button>
+                        </td>
                        <td scope="row">{{fila.id}}</td>
                        <td scope="row">{{fila.nombre}}</td>
                        <td scope="row">{{fila.email}}</td>
