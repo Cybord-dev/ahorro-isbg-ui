@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AhorroServicio } from '../../../services/ahorro.service';
 
 @Component({
   selector: 'cybord-reporte-ahorro',
@@ -17,16 +18,23 @@ export class ReporteAhorroComponent implements OnInit {
   public barChartType = 'bar';
   public barChartLegend = true;
 
-  public barChartData: any[] = [
-    { data: [250, 500, 750, 1000, 1250, 1500, 1750, 2000], label: 'Mi ahorro' }
-  ];
+  public barChartData: any[] = [];
 
-  constructor() {
+  constructor(private saldosAhorro: AhorroServicio) {
 
   }
 
   ngOnInit(): void {
+    // https://www.chartjs.org/samples/latest/
+    console.log('inicio');
+    this.saldosAhorro.getSaldoByUsuario(1)
+      .subscribe(resultado => {
+        console.log('otras cosas');
+        console.log(resultado);
+      });
+    console.log('fin');
 
+    this.barChartData = [{ data: [250, 500, 750, 1000, 1250, 1500, 1750, 2000], label: 'Mi ahorro' }];
   }
 
   // events
