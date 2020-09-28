@@ -21,27 +21,27 @@ export class SolicitudesService {
         }
       }
     }
-    return this.http.get('../solicitudes', { params: pageParams });
+    return this.http.get('../api/v1/solicitudes', { params: pageParams });
   }
 
 
   public getSolicitudesById(idUsuario: number, idSolicitud: number): Observable<Solicitud>{
-    return this.http.get<Solicitud>(`../usuarios/${idUsuario}/solicitudes/${idSolicitud}`);
+    return this.http.get<Solicitud>(`../api/v1/usuarios/${idUsuario}/solicitudes/${idSolicitud}`);
   }
 
   public getSolicitudesByUsuario(idUsuario: number): Observable<Solicitud[]>{
-    return this.http.get<Solicitud[]>(`../usuarios/${idUsuario}/solicitudes`);
+    return this.http.get<Solicitud[]>(`../api/v1/usuarios/${idUsuario}/solicitudes`);
   }
 
   public postSolictudUsuario(idUsuario: number, solicitud: Solicitud): Observable<Solicitud[]>{
-    return this.http.post<Solicitud[]>(`../usuarios/${idUsuario}/solicitudes`, solicitud);
+    return this.http.post<Solicitud[]>(`../api/v1/usuarios/${idUsuario}/solicitudes`, solicitud);
   }
 
   public putSolictud(idSolicitud: number, solicitud: Solicitud): Observable<Solicitud[]>{
-    return this.http.post<Solicitud[]>(`../solicitudes/${idSolicitud}`, solicitud);
+    return this.http.post<Solicitud[]>(`../api/v1/solicitudes/${idSolicitud}`, solicitud);
   }
 
   public deleteSolictud(idSolicitud: number): Observable<any>{
-    return this.http.delete<Solicitud[]>(`../solicitudes/${idSolicitud}`);
+    return this.http.delete<Solicitud[]>(`../api/v1/solicitudes/${idSolicitud}`);
   }
 }

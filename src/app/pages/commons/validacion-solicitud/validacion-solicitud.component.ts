@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Solicitud } from 'src/app/models/solicitud';
-import { Usuario } from 'src/app/models/usuario';
-import { SolicitudesService } from 'src/app/services/solicitudes.service';
-import { UsuariosService } from 'src/app/services/usuarios.service';
+import { UsuariosService } from '../../../services/usuarios.service';
+import { SolicitudesService } from '../../../services/solicitudes.service';
+import { Solicitud } from '../../../models/solicitud';
+import { Usuario } from '../../../models/usuario';
+
 
 @Component({
   selector: 'cybord-validacion-solicitud',
@@ -17,6 +18,8 @@ export class ValidacionSolicitudComponent implements OnInit {
   public errorMessages: string[] = [];
   public success = '';
   public bsValue = new Date();
+  public bsConfig = { containerClass: 'theme-dark-blue' };
+
 
   constructor(
     private userService: UsuariosService,
@@ -25,6 +28,16 @@ export class ValidacionSolicitudComponent implements OnInit {
   ) { }
 
   public solicitud: Solicitud;
+
+  public enabledDates = [
+    new Date('2020-09-15'),
+    new Date('2020-10-01'),
+    new Date('2020-10-15'),
+    new Date('2020-11-01'),
+    new Date('2020-11-15'),
+    new Date('2020-12-01'),
+    new Date('2020-12-15'),
+  ];
 
   public noEmpleado: number;
   public oficina: number;

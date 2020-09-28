@@ -54,7 +54,7 @@ export class TramitesAhorroComponent implements OnInit {
   }
 
 
-  enabledDates = [
+  public enabledDates = [
     new Date('2020-09-15'),
     new Date('2020-10-01'),
     new Date('2020-10-15'),

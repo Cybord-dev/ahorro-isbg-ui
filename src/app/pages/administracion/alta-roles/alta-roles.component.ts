@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../../../models/usuario';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { ActivatedRoute } from '@angular/router';
+import { RolCat } from '../../../models/rolcat';
 
 @Component({
   selector: 'cybord-alta-roles',
@@ -36,9 +37,24 @@ export class AltaRolesComponent implements OnInit {
   }
 
 
-  public  updateRoles() {
+  public async updateRoles() {
     console.log('Updating user roles');
     this.success = "La informacion de usuario ha sido actualizada";
+
+    for (const role in this.roles) { // QUITA ROLES EXISTENTES
+      if (this.roles[role] === false // ROLE EN FALSO
+              && this.usuario.roles.find(x => x === role)) { // PERO YA EXISTE EN EL USER
+        await this.userService.deleteRoles(this.usuario.id,
+          this.roles[role]).toPromise();
+      }
+    }
+    for (const role in this.roles) { // AGREGAR NUEVOS ROLES
+
+      if (this.roles[role] === true // ROLE EN TRUE
+        && !this.usuario.roles.find(x => x === role)) { // PERO NO EXISTE EN EL USER
+          await this.userService.insertarRoles(this.usuario.id, new RolCat(role)).toPromise();
+      }
+    }
   }
 
 

@@ -64,7 +64,7 @@
                 a la Oficina
                 <strong>{{oficina}}</strong> autorizo que por este medio se descuente de mi pago de nómina, la cantidad
                 de <strong>{{descuentoQuincenal | currency }} </strong>de manera quincenal a partir de la siguiente
-                fecha <strong>{{bsDate | date}}</strong>, durante el período
+                fecha <strong>{{bsValue | date}}</strong>, durante el período
                 correspondiente, autorizo que la cantidad retenida sea depositada en la cuenta del PROGRAMA DE
                 AHORRO VOLUNTARIO.
                 Estoy de acuerdo que la cantidad ahorrada y los intereses que se hubiesen generado me sean
@@ -72,9 +72,13 @@
               </span>
               <br>
               <br>
-              <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('SolicitudAhorro')"><i
-                  class="fa fa-dot-circle-o"></i>&nbsp;
-                Enviar solicitud</button>
+              <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('SolicitudAhorro')">
+                <i class="fa fa-dot-circle-o"></i>&nbsp;
+                Validar solicitud</button>
+
+                <button type="button" class="btn btn-sm btn-danger" (click)="requestSolicitud('SolicitudAhorro')">
+                  <i class="fa fa-dot-circle-o"></i>&nbsp;
+                Rechazar solicitud</button>
             </div>
 
           </div>

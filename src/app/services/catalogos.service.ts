@@ -12,19 +12,19 @@ export class CatalogosService {
   constructor(private http: HttpClient) { }
 
   public getCatalogosByTipo(tipo: string): Observable<Catalogo[]>{
-    return this.http.get<Catalogo[]>(`../catalogos/${tipo}`);
+    return this.http.get<Catalogo[]>(`../api/v1/catalogos/${tipo}`);
   }
 
   public getCatalogoByTipoAndNombre(tipo: string, nombre: string): Observable<Catalogo[]>{
-    return this.http.get<Catalogo[]>(`../catalogos/${tipo}/${nombre}`);
+    return this.http.get<Catalogo[]>(`../api/v1/catalogos/${tipo}/${nombre}`);
   }
 
   public postCatalogo(catalogo: Catalogo): Observable<Catalogo[]>{
-    return this.http.post<Catalogo[]>(`../catalogos`, catalogo);
+    return this.http.post<Catalogo[]>(`../api/v1/catalogos`, catalogo);
   }
 
   public deleteCatalogo(id: number): Observable<any>{
-    return this.http.delete<Catalogo[]>(`../catalogos/${id}`);
+    return this.http.delete<Catalogo[]>(`../api/v1/catalogos/${id}`);
   }
 
 }
