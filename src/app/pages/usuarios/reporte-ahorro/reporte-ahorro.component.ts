@@ -51,30 +51,31 @@ export class ReporteAhorroComponent implements OnInit {
       this.barChartLabels.push(this.months[i]);
       this.datos.push(0);
     }
+    //todaysMonth = this.monthChanger(todaysMonth);
     for(var i = 0; i < this.datos.length; i++){
       var currentQ = 0;
-      if(i != 0){
+      
         for(let ahorro of this.ahorros){
           var fecha = new Date(ahorro.fechaCreacion);
           var mes = this.monthChanger(fecha.getMonth());
-          if((mes <= todaysMonth && fecha.getFullYear() == todaysYear) || (mes == 1 && fecha.getFullYear() == todaysYear-1)){
-            if(fecha.getMonth() == i){
+          if(i >1){
+            if(fecha.getMonth() <= todaysMonth && fecha.getFullYear() == todaysYear){
+              if(mes == i)
+              {currentQ += ahorro.monto;}
+            }
+            //Primer y segundo mes
+          }else{
+            if((mes == 0 || mes == 1) && fecha.getFullYear() == todaysYear-1){
               currentQ += ahorro.monto;
             }
           }
         }
-        currentQ += this.datos[this.monthChanger(i-1)];
-        this.datos[this.monthChanger(i)] = this.truncate(currentQ);
-      }else{
-        for(let ahorro of this.ahorros){
-          var fecha = new Date(ahorro.fechaCreacion);
-          var mes = this.monthChanger(fecha.getMonth());
-          if(mes == 0 && fecha.getFullYear() == todaysYear-1){
-            currentQ += ahorro.monto;
-          }
-        }
-        this.datos[i] = this.truncate(currentQ);
-      }
+        if(i != 0){
+          currentQ += this.datos[i-1];
+          this.datos[i] = this.truncate(currentQ);
+        }else{
+          this.datos[i] = this.truncate(currentQ);
+        } 
     }
     for(var i = 0; i < this.datos.length; i++) {
       this.datosTabla.push({"mes": this.barChartLabels[i], "cant": this.datos[i]})
@@ -82,6 +83,10 @@ export class ReporteAhorroComponent implements OnInit {
   }
   private truncate (num): number {
     return Math.trunc(num * Math.pow(10, 2)) / Math.pow(10, 2);
+  }
+
+  private offsetHelper(mesHoy, mesAhorro): boolean{
+    return false;
   }
 
   private monthChanger(num): number {
