@@ -7,6 +7,8 @@ export class Usuario {
     public activo: boolean;
     public nombre: string;
     public email: string;
+    public urlImagenPerfil: string;
+    public menu: any;
     public tipoUsuario: string;
     public fechaCreacion: Date;
     public fechaActualizacion: Date;
@@ -20,5 +22,6 @@ export class Usuario {
     constructor() {
         this.datosUsuario = [];
         this.roles = [];
+        this.menu = [];
     }
 }

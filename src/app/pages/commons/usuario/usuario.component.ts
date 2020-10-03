@@ -2,12 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { UsuariosData } from 'src/app/data/usuarios-data';
-import { Rol } from 'src/app/models/rol';
-import { Usuario } from 'src/app/models/usuario';
-import { RolCat } from '../../../models/rolcat';
 import { DatosUsuario } from '../../../models/datosusuario';
+import { UsuariosService } from '../../../services/usuarios.service';
+import { Usuario } from '../../../models/usuario';
 
 @Component({
   selector: 'cybord-usuario',
@@ -29,7 +26,7 @@ export class UsuarioComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private usuarioServicio: UsuariosData,
+    private usuarioServicio: UsuariosService,
     private formBuilder: FormBuilder,
     private router: Router
   ) { }

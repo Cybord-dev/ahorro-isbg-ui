@@ -5,6 +5,7 @@ import { Usuario } from '../models/usuario';
 import { Rol } from '../models/rol';
 import { DatosUsuario } from '../models/datosusuario';
 import { RolCat } from '../models/rolcat';
+import { GenericPage } from '../models/generic-page';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class UsuariosService {
 
   constructor(private http: HttpClient) { }
 
-  public getUsuarios(page: number, size: number, filterParams?: any): Observable<Object> {
+  public getUsuarios(page: number, size: number, filterParams?: any): Observable<any> {
     let pageParams: HttpParams = new HttpParams().append('page', page.toString()).append('size', size.toString());
     for (const key in filterParams) {
       if (filterParams[key] !== undefined) {
@@ -24,6 +25,10 @@ export class UsuariosService {
       }
     }
     return this.http.get('../api/v1/usuarios', { params: pageParams });
+  }
+
+  public myInfo(): Observable<Usuario> {
+    return this.http.get<Usuario>(`../api/v1/usuarios/myInfo`);
   }
 
   public getUsuario(userid: number): Observable<Usuario> {
