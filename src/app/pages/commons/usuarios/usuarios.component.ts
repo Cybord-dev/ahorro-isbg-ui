@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GenericPage } from '../../../models/generic-page';
-import { UsuariosData } from '../../../data/usuarios-data';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router} from '@angular/router';
+import { UsuariosService } from '../../../services/usuarios.service';
 
 @Component({
   selector: 'cybord-usuarios',
@@ -18,7 +18,7 @@ export class UsuariosComponent implements OnInit {
   public filterParams: any = {email: '', estatus: '*', nombre: '',tipoUsuario:''};
 
   constructor(
-    private userService: UsuariosData,
+    private userService: UsuariosService,
     private router: Router) { }
 
   ngOnInit() {

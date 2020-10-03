@@ -19,7 +19,7 @@ export class AtributoService {
     }
 
     public getAtributosById(idUsuario: number, idSolicitud: number, idAtributo: number): Observable<Atributo>{
-        return this.http.get<Atributo>('../api/v1/usuarios/${idUsuario}/solicitudes/${idSolicitud}/atributos/${idAtributo}');
+        return this.http.get<Atributo>(`../api/v1/usuarios/${idUsuario}/solicitudes/${idSolicitud}/atributos/${idAtributo}`);
     }
 
     public postAtributo(idUsuario: number, idSolicitud: number, atributo: Atributo): Observable<Atributo[]>{
