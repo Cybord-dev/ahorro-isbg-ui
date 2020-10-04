@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { UsuariosService } from '../../../services/usuarios.service';
+import { Usuario } from '../../../models/usuario';
 @Component({
   selector: 'cybord-profile',
   templateUrl: './profile.component.html',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileComponent implements OnInit {
 
-  constructor() { }
+
+  public profileInfo: Usuario;
+
+  constructor(private userService: UsuariosService) { }
 
   ngOnInit(): void {
+    this.userService.myInfo().subscribe(user => {
+      this.userService.getUsuario(user.id).subscribe(u => this.profileInfo = u);
+    });
   }
 
 }

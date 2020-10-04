@@ -11,7 +11,7 @@
 
               
               <tabset #staticTabs>
-                <tab>
+                <tab *ngIf="solicitudAhorro === undefined || solicitudAhorro.status!='Finalizada'">
                     
                     <ng-template tabHeading ><i class="icon-docs"></i>&nbsp; Solicitud</ng-template>
               
@@ -79,13 +79,13 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('SolicitudAhorro')"><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                        <button type="button" class="btn btn-sm btn-success" (click)="sendSolicitud('SolicitudAhorro')"><i class="fa fa-dot-circle-o" ></i>&nbsp;
                           Enviar solicitud</button>
                       </div>
   
                     </div>
                   </tab>
-                  <tab >
+                  <tab *ngIf="solicitudAhorro !== undefined">
                     <ng-template tabHeading  ><i class="icon-refresh"></i>&nbsp; Modificación</ng-template>
                     <br>
   
@@ -163,7 +163,7 @@
   
                     </div>
                   </tab>
-                  <tab >
+                  <tab *ngIf="solicitudAhorro !== undefined">
                     <ng-template tabHeading><i class="icon-reload"></i>&nbsp; Retiro Parcial</ng-template>
                     <br>
   
@@ -230,7 +230,7 @@
   
                     </div>
                   </tab>
-                  <tab >
+                  <tab *ngIf="solicitudAhorro !== undefined">
                     <ng-template tabHeading><i class="icon-envelope-open"></i>&nbsp; Cancelación</ng-template>
                     <br>
   

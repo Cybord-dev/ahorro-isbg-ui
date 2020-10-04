@@ -1,6 +1,6 @@
 <app-header [navbarBrandRouterLink]="['/dashboard']" [fixed]="true"
-  [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'CoreUI Logo'}"
-  [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo'}"
+  [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'ISBG Logo'}"
+  [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'ISBG Logo'}"
   [sidebarToggler]="'lg'" [asideMenuToggler]="'lg'">
 
   <ul class="nav navbar-nav ml-auto">
@@ -9,11 +9,11 @@
         dropdownToggle (click)="false">
         <strong>{{usuario.nombre}}</strong>
 
-        <img src="{{usuario.urlImagenPerfil}}" class="img-avatar" alt="admin@bootstrapmaster.com" />
+        <img src="{{usuario.urlImagenPerfil}}" class="img-avatar" alt="Usuario no registrado" />
       </a>
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
-        <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
-        <a class="dropdown-item" href="#"><i class="fa fa-lock"></i> Logout</a>
+        <a class="dropdown-item" href="#/commons/profile"><i class="fa fa-user"></i> Profile</a>
+        <a class="dropdown-item" href="#/commons/dashboard"><i class="fa fa-lock"></i> Logout</a>
       </div>
     </li>
   </ul>

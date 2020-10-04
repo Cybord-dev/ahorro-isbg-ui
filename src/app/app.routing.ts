@@ -12,7 +12,7 @@ import { RegisterComponent } from './views/register/register.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'commons',
     pathMatch: 'full',
   },
   {
@@ -51,8 +51,8 @@ export const routes: Routes = [
     },
     children: [
       {
-        path: 'dashboard',
-        loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule)
+        path: 'commons',
+        loadChildren: () => import('./pages/commons/common-pages.module').then(m => m.CommonsPagesModule)
       },
       {
         path: 'usuarios',

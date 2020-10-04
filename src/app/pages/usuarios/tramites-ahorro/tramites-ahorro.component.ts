@@ -25,6 +25,13 @@ export class TramitesAhorroComponent implements OnInit {
   public solicitudes: Solicitud[] = [];
   public solicitud: Solicitud;
 
+
+  public solicitudAhorro: Solicitud;
+  public solicitudModificacion: Solicitud;
+  public solicitudRetiro: Solicitud;
+  public solicitudCancelacion: Solicitud;
+
+
   public noEmpleado = '';
   public oficina = '*';
   public descuentoQuincenal = 100;
@@ -49,7 +56,7 @@ export class TramitesAhorroComponent implements OnInit {
   }
 
 
-  public requestSolicitud(tipo: string) {
+  public sendSolicitud(tipo: string) {
 
     this.solicitud.idUsuario = this.usuario.id;
     this.solicitud.status = "Solicitud";
