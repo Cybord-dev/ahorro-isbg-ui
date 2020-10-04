@@ -24,7 +24,7 @@ export class UsuariosService {
         }
       }
     }
-    return this.http.get('../api/v1/usuarios', { params: pageParams });
+    return this.http.get(`../api/v1/usuarios`, { params: pageParams });
   }
 
   public myInfo(): Observable<Usuario> {
@@ -36,7 +36,7 @@ export class UsuariosService {
   } 
 
   public insertarUsuario(user: Usuario): Observable<Usuario> {
-    return this.http.post<Usuario>('../api/v1/usuarios', user);
+    return this.http.post<Usuario>(`../api/v1/usuarios`, user);
   }
 
   public actualizaUser(user: Usuario): Observable<Usuario> {

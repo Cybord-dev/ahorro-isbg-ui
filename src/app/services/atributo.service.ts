@@ -11,11 +11,11 @@ import { Atributo } from '../models/atributo';
 export class AtributoService {
     constructor(private http: HttpClient) { }
     public getAtributos(): Observable<Atributo[]>{
-        return this.http.get<Atributo[]>('../api/v1/atributos');
+        return this.http.get<Atributo[]>(`../api/v1/atributos`);
     }
 
     public getAtributosBySolicitud(idUsuario: number, idSolicitud: number): Observable<Atributo[]>{
-        return this.http.get<Atributo[]>('../api/v1/usuarios/${idUsuario}/solicitudes/${idSolicitud}/atributos');
+        return this.http.get<Atributo[]>(`../api/v1/usuarios/${idUsuario}/solicitudes/${idSolicitud}/atributos`);
     }
 
     public getAtributosById(idUsuario: number, idSolicitud: number, idAtributo: number): Observable<Atributo>{
@@ -23,15 +23,15 @@ export class AtributoService {
     }
 
     public postAtributo(idUsuario: number, idSolicitud: number, atributo: Atributo): Observable<Atributo[]>{
-        return this.http.post<Atributo[]>('../api/v1/usuarios/${idUsuario}/solicitudes/${idSolicitud}/atributos', atributo);
+        return this.http.post<Atributo[]>(`../api/v1/usuarios/${idUsuario}/solicitudes/${idSolicitud}/atributos`, atributo);
     }
 
     public putAtributo(idAtributo: number, atributo: Atributo): Observable<Atributo[]>{
-        return this.http.put<Atributo[]>('../api/v1/atributos/${idAtributo}', atributo);
+        return this.http.put<Atributo[]>(`../api/v1/atributos/${idAtributo}`, atributo);
     }
 
     public deleteAtributo(idAtributo: number): Observable<any>{
-        return this.http.delete<Atributo[]>('../api/v1/atributos/${idAtributo}');
+        return this.http.delete<Atributo[]>(`../api/v1/atributos/${idAtributo}`);
     }
 
 }
