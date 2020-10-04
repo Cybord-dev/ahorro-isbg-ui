@@ -12,14 +12,13 @@ export class DefaultLayoutComponent implements OnInit {
   public sidebarMinimized = false;
   public usuario = new Usuario();
 
-  public navItems = menu;
 
   public constructor(private userService: UsuariosService){
   }
 
 
   ngOnInit(): void {
-    this.userService.myInfo().subscribe((user: any) => {this.usuario = user;});
+    this.userService.myInfo().subscribe((user: Usuario) => this.usuario = user);
   }
 
   toggleMinimize(e) {

@@ -8,7 +8,8 @@
       <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
         dropdownToggle (click)="false">
         <strong>{{usuario.nombre}}</strong>
-        <img src="assets/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com" />
+
+        <img src="{{usuario.urlImagenPerfil}}" class="img-avatar" alt="admin@bootstrapmaster.com" />
       </a>
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
         <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
@@ -20,7 +21,7 @@
 <div class="app-body">
   <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized"
     (minimizedChange)="toggleMinimize($event)">
-    <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
+    <app-sidebar-nav [navItems]="usuario.menu" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
     <app-sidebar-minimizer></app-sidebar-minimizer>
   </app-sidebar>
   <!-- Main content -->
