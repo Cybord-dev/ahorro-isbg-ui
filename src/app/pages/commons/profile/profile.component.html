@@ -7,8 +7,14 @@
                 </div>
                 <div class="card-body">
 
+                    <div *ngFor="let alert of alerts">
+                        <alert type="danger" [dismissible]="true">{{ alert }}</alert>
+                      </div>
+
                     {{profileInfo | json}}
                     
+
+                    {{error | json}}
                 </div>
                 <div class="card-footer">
                     <div class="float-right slide_2">

@@ -21,7 +21,15 @@ export class DefaultLayoutComponent implements OnInit {
     this.userService.myInfo().subscribe((user: Usuario) => this.usuario = user);
   }
 
-  toggleMinimize(e) {
+  public logout(): void {
+    this.userService.logout().subscribe({
+      next(r) { console.log(r) },
+      error(e) { console.error(e) },
+      complete() { this.document.location.href = "https://mail.google.com/mail/u/0/?logout&hl=en"}
+    });
+  }
+
+  public toggleMinimize(e): void{
     this.sidebarMinimized = e;
   }
 }

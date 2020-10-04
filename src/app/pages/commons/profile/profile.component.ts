@@ -9,14 +9,18 @@ import { Usuario } from '../../../models/usuario';
 export class ProfileComponent implements OnInit {
 
 
+
   public profileInfo: Usuario;
+
+  public alerts: string[] = [];
 
   constructor(private userService: UsuariosService) { }
 
   ngOnInit(): void {
-    this.userService.myInfo().subscribe(user => {
-      this.userService.getUsuario(user.id).subscribe(u => this.profileInfo = u);
-    });
+    this.userService.myInfo().toPromise()
+    .then(user => {
+      this.userService.getUsuario(user.id).toPromise().then(u => this.profileInfo = u);
+    }).catch((error) => this.alerts.push(error));
   }
 
 }

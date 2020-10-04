@@ -2,9 +2,15 @@
   <div class="row">
     <div class = "col">
     <div class="card">
-      <div class="card-body">
+      <div class="card-header">
+        <strong>Mi reporte ahorro</strong>
+      </div>
+      <div class="card-body" >
         <div class="row">
         <div class="col-4">
+          <strong>Mis ahorros</strong>
+          <br/>
+          <br/>
           <table class="table table-bordered table-striped table-sm">
             <thead class="thead-dark">
               <tr>
@@ -14,8 +20,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let fila of datosTabla">
-                <td scope="row">{{fila.fecha | date: 'dd/mm/yyyy hh:mm'}}</td>
-                <td scope="row">{{fila.cant}}</td>
+                <td scope="row">{{fila.fecha | date: 'dd/MM/yyyy'}}</td>
+                <td scope="row">{{fila.cant | currency }}</td>
               </tr>
             </tbody>
           </table>

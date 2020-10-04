@@ -31,6 +31,10 @@ export class UsuariosService {
     return this.http.get<Usuario>(`../api/v1/usuarios/myInfo`);
   }
 
+  public logout(): Observable<any> {
+    return this.http.post('../api/logout', {});
+  }
+
   public getUsuario(userid: number): Observable<Usuario> {
     return this.http.get<Usuario>(`../api/v1/usuarios/${userid}`);
   } 

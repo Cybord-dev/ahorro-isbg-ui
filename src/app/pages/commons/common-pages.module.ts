@@ -6,6 +6,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ChartsModule } from 'ng2-charts';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 
 // Common components
@@ -34,6 +35,7 @@ import { UsuarioComponent } from './usuario/usuario.component';
     FormsModule,
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
+    AlertModule.forRoot(),
     FormsModule,
     FormsModule,
     ChartsModule,
@@ -46,6 +48,7 @@ import { UsuarioComponent } from './usuario/usuario.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    AlertModule,
     BsDatepickerModule,
     ProfileComponent,
     ReporteSolicitudesComponent,

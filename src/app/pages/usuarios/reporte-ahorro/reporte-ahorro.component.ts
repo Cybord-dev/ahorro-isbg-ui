@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AhorroServicio } from '../../../services/ahorro.service';
+import { UsuariosService } from '../../../services/usuarios.service';
 import { SaldoAhorro } from '../../../models/saldoahorro';
-import { NumberSymbol } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'cybord-reporte-ahorro',
@@ -27,19 +26,22 @@ export class ReporteAhorroComponent implements OnInit {
   public barChartData: any[] = [];
   private months: string[] = ['noviembre', 'diciembre','enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio','agosto', 'septiembre', 'octubre']
   private ahorros: SaldoAhorro[] = [];
-  public datosTabla: {fecha:Date, cant:number}[] = [];
-  constructor(private saldosAhorro: AhorroServicio) {
+  public datosTabla: {fecha: Date, cant:number}[] = [];
+  constructor(
+    private userService : UsuariosService,
+    private saldosAhorro: AhorroServicio) {
 
   }
 
   ngOnInit(): void {
-    console.log('inicio');
-    this.saldosAhorro.getSaldoByUsuario(1).subscribe(resultado => {
-      this.ahorros = resultado
-      this.setCharInfo();
-      this.barChartData = [{ data:this.datos, label: this.barChartLabels }];
-    });
-    this.barChartData = [{ data:["100", "200", "300"], label: ["enero", "febrero", "marzo"] }];
+    this.userService.myInfo().toPromise()
+      .then((user) => {
+        this.saldosAhorro.getSaldoByUsuario(user.id).subscribe(resultado => {
+          this.ahorros = resultado;
+          this.setCharInfo();
+          this.barChartData = [{ data:this.datos, label: this.barChartLabels }];
+        });
+      }).catch(error => this.errorMessages.push(error));
   }
 
   private setCharInfo(): void{
