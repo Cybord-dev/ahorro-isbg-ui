@@ -85,10 +85,6 @@ export class ReporteAhorroComponent implements OnInit {
     return Math.trunc(num * Math.pow(10, 2)) / Math.pow(10, 2);
   }
 
-  private offsetHelper(mesHoy, mesAhorro): boolean{
-    return false;
-  }
-
   private monthChanger(num): number {
     for(let x = 0; x<2; x++){
       num++;
