@@ -27,7 +27,7 @@ export class ReporteAhorroComponent implements OnInit {
   public barChartData: any[] = [];
   private months: string[] = ['noviembre', 'diciembre','enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio','agosto', 'septiembre', 'octubre']
   private ahorros: SaldoAhorro[] = [];
-  public datosTabla: {mes:string, cant:number}[] = [];
+  public datosTabla: {fecha:Date, cant:number}[] = [];
   constructor(private saldosAhorro: AhorroServicio) {
 
   }
@@ -77,8 +77,8 @@ export class ReporteAhorroComponent implements OnInit {
           this.datos[i] = this.truncate(currentQ);
         } 
     }
-    for(var i = 0; i < this.datos.length; i++) {
-      this.datosTabla.push({"mes": this.barChartLabels[i], "cant": this.datos[i]})
+    for(let ahorro of this.ahorros) {
+      this.datosTabla.push({"fecha": new Date(ahorro.fechaCreacion), "cant": ahorro.monto})
     }
   }
   private truncate (num): number {
