@@ -13,11 +13,16 @@ import { Solicitud } from '../../../models/solicitud';
 })
 export class TramitesAhorroComponent implements OnInit {
 
+
+  @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
+
+
   public loading = true;
   public usuario: Usuario = new Usuario();
   public errorMessages: string[] = [];
   public success = '';
   public bsValue = new Date();
+  public solicitudes: Solicitud[] = [];
   public solicitud: Solicitud;
 
   public noEmpleado = '';
@@ -25,7 +30,6 @@ export class TramitesAhorroComponent implements OnInit {
   public descuentoQuincenal = 100;
 
   constructor(
-    private route: ActivatedRoute,
     private userService: UsuariosService,
     private solicitudService: SolicitudesService,
   ) { }
@@ -35,9 +39,12 @@ export class TramitesAhorroComponent implements OnInit {
     this.success = '';
     this.solicitud = new Solicitud();
 
-    const id = 3;
-    this.userService.getUsuario(id).subscribe((user: Usuario) => {
-      this.usuario = user;
+    this.userService.myInfo().subscribe((user: Usuario) => {
+      this.solicitudService.getSolicitudesByUsuario(user.id).subscribe((solicitudes: Solicitud[]) => {
+        this.solicitudes = solicitudes;
+        console.log(this.staticTabs);
+        this.staticTabs.tabs[0].active = true;
+      });
     });
   }
 

@@ -7,6 +7,7 @@ import { CommonsPagesModule } from '../commons/common-pages.module';
 
 import { ChartsModule } from 'ng2-charts';
 import { FormsModule } from '@angular/forms';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
   declarations: [ReporteAhorroComponent, TramitesAhorroComponent],
@@ -14,6 +15,7 @@ import { FormsModule } from '@angular/forms';
     CommonsPagesModule,
     UsuariosRoutingModule,
     ChartsModule,
+    TabsModule.forRoot(),
     FormsModule
   ]
 })
