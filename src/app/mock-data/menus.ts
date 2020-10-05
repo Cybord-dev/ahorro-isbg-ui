@@ -11,7 +11,7 @@ export const menu: INavData[] = [
     name: 'MODULOS'
   },
   {
-    name: 'Usuario ISBG',
+    name: 'Usuario',
     url: '/usuarios',
     icon: 'icon-user',
     children: [

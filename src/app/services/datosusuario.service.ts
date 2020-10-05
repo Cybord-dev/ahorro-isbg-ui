@@ -12,15 +12,15 @@ import { DatosUsuario } from '../models/datosusuario';
     constructor(private http: HttpClient) { }
   
     public postDatosUsuarios (datos: DatosUsuario): Observable<DatosUsuario[]>{
-      return this.http.post<DatosUsuario[]>('../api/v1/datos', datos);
+      return this.http.post<DatosUsuario[]>(`../api/v1/datos`, datos);
     }
   
     public putSaldo (idSaldo: number, saldo: DatosUsuario): Observable<DatosUsuario[]>{
-      return this.http.put<DatosUsuario[]>('../api/v1/datos/${idSaldo}', saldo);
+      return this.http.put<DatosUsuario[]>(`../api/v1/datos/${idSaldo}`, saldo);
     }
   
-    public deleteSaldo (idUsuario: number): Observable<any>{
-      return this.http.delete<DatosUsuario[]>('../api/v1/datos/${idSaldo}');
+    public deleteSaldo (idSaldo: number): Observable<any>{
+      return this.http.delete<DatosUsuario[]>(`../api/v1/datos/${idSaldo}`);
     }
   
   }

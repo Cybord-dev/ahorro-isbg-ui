@@ -1,32 +1,41 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-sm-12 col-md-12">
-      
-      <div class="card">
-        <div class="card-header">
-          Reporte ahorro
+    <div class = "col">
+    <div class="card">
+      <div class="card-header">
+        <strong>Mi reporte ahorro</strong>
+      </div>
+      <div class="card-body" >
+        <div class="row">
+        <div class="col-4">
+          <strong>Mis ahorros</strong>
+          <br/>
+          <br/>
+          <table class="table table-bordered table-striped table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th>Fecha</th>
+                <th>Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let fila of datosTabla">
+                <td scope="row">{{fila.fecha | date: 'dd/MM/yyyy'}}</td>
+                <td scope="row">{{fila.cant | currency }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="card-body">
-          <div class="chart-wrapper">
-            <canvas baseChart class="chart"
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [chartType]="barChartType"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></canvas>
-          </div>
-
-
-          <br>
-          <h2>Aqui poner la tabla de los ahorros</h2>
+        <div class="chart-wrapper col-8">
+          <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
+            [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"
+            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        </div>
         </div>
       </div>
       
     </div>
-    <!--/.col-->
+    
   </div>
-  <!--/.row-->
+  </div>
 </div>
-

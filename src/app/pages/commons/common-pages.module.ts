@@ -2,16 +2,23 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // UI Component
-import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ChartsModule } from 'ng2-charts';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { AlertModule } from 'ngx-bootstrap/alert';
+
 
 // Common components
+import { CommonsRoutingModule } from './commons-routing.module';
+
 import { ProfileComponent } from './profile/profile.component';
 import { ReporteSolicitudesComponent } from './reporte-solicitudes/reporte-solicitudes.component';
 import { HistoricoSolicitudesComponent } from './historico-solicitudes/historico-solicitudes.component';
 import { ValidacionSolicitudComponent } from './validacion-solicitud/validacion-solicitud.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UsuarioComponent } from './usuario/usuario.component';
+
 
 
 
@@ -25,18 +32,23 @@ import { UsuarioComponent } from './usuario/usuario.component';
     UsuarioComponent],
   imports: [
     CommonModule,
-    TabsModule,
     FormsModule,
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
+    AlertModule.forRoot(),
     FormsModule,
-    ReactiveFormsModule
+    FormsModule,
+    ChartsModule,
+    BsDropdownModule,
+    ButtonsModule.forRoot(),
+    ReactiveFormsModule,
+    CommonsRoutingModule
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    TabsModule,
+    AlertModule,
     BsDatepickerModule,
     ProfileComponent,
     ReporteSolicitudesComponent,
