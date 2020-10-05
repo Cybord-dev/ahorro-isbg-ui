@@ -9,7 +9,10 @@
           <div class="row">
             <div class="col-sm-12">
 
-              
+              <div *ngFor="let alert of alerts">
+                <alert type="danger" [dismissible]="true">{{ alert }}</alert>
+              </div>
+
               <tabset #staticTabs>
                 <tab *ngIf="solicitudAhorro === undefined || solicitudAhorro.status!='Finalizada'">
                     
@@ -27,28 +30,22 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
                             <div class="col-md-9">
-                              <input type="number" id="no-emp" name="text-input" class="form-control"
-                                placeholder="No empleado" [(ngModel)]="noEmpleado">
-                              <span class="help-block">Introducir no. empleado</span>
+                              <input type="number" id="no-emp" name="text-input" class="form-control" disabled
+                                placeholder="No empleado" [(ngModel)]="usuario.datosUsuario.NO_EMPLEADO">
                             </div>
                           </div>
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="office">Oficina</label>
                             <div class="col-md-9" >
-                              <select id="office" name="office" class="form-control" [(ngModel)]="oficina">
-                                <option value="*">Seleccionar</option>
-                                <option value="1">Oficina #1</option>
-                                <option value="2">Oficina #2</option>
-                                <option value="3">Oficina #3</option>
-                                <option value="4">Oficina #4</option>
-                              </select>
+                              <input type="text" id="oficina" name="oficina" class="form-control" disabled
+                                placeholder="Oficina empleado" [(ngModel)]="usuario.datosUsuario.OFICINA">
                             </div>
                           </div>
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
                             <div class="col-md-9">
-                              <input type="number" id="quantity" name="text-input" class="form-control" min=100
-                                placeholder="100.00"  [(ngModel)]="descuentoQuincenal">
+                              <input type="number" id="quantity" name="quantity" class="form-control" min=100
+                                placeholder="100.00"  [(ngModel)]="descuentoQuincenal" min="100" max="20000">
                               <span class="help-block">Descuento quincenal</span>
                             </div>
                           </div>
@@ -56,21 +53,19 @@
                             <label class="col-md-3 col-form-label" for="start-date">Fecha inicio</label>
                             <div class="col-md-9">
                               <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
-                                [bsConfig]="bsConfig" [datesEnabled]="enabledDates"
-                                 [bsValue]="bsValue">
+                                [bsConfig]="{ containerClass: 'theme-dark-blue' }" [datesEnabled]="enabledDates"
+                                 [(bsValue)]="bsValue">
                               <span class="help-block">fecha inicio descuentos</span>
                             </div>
                           </div>
-  
-  
                         </form>
                       </div>
   
                       <div class="col-xs-12 col-sm-12 col-md-6 form-group">
   
                         <span class="help-block">
-                          Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{noEmpleado}}</strong> adscrito a la Oficina 
-                          <strong>{{oficina}}</strong> autorizo que por este medio se descuente de mi pago de nómina, la cantidad
+                          Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.datosUsuario.NO_EMPLEADO}}</strong> adscrito a la Oficina 
+                          <strong>{{usuario.datosUsuario.OFICINA}}</strong> autorizo que por este medio se descuente de mi pago de nómina, la cantidad
                           de <strong>{{descuentoQuincenal | currency }} </strong>de manera quincenal a partir de la siguiente fecha <strong>{{bsValue | date}}</strong>, durante el período
                           correspondiente, autorizo que la cantidad retenida sea depositada en la cuenta del PROGRAMA DE
                           AHORRO VOLUNTARIO.

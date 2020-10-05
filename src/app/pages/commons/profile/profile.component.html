@@ -9,17 +9,119 @@
 
                     <div *ngFor="let alert of alerts">
                         <alert type="danger" [dismissible]="true">{{ alert }}</alert>
-                      </div>
+                    </div>
 
-                    {{profileInfo | json}}
-                    
+                    <h5>{{profileInfo.nombre}}</h5>
 
-                    {{error | json}}
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-8">
+                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                <div class="form-group row">
+                                    <strong class="col-md-3 col-form-label">Email</strong>
+                                    <div class="col-md-9">
+                                        <p class="form-control-static">{{profileInfo.email}}</p>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <strong class="col-md-3 col-form-label">Usuario activo</strong>
+                                    <div class="col-md-9">
+                                        <label class="switch switch-label switch-primary">
+                                            <input type="checkbox" class="switch-input" [checked]="profileInfo.activo">
+                                            <span class="switch-slider" data-checked="ON" data-unchecked="OFF"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <strong class="col-md-3 col-form-label">Tipo Usuario</strong>
+                                    <div class="col-md-9 col-form-label">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="radios" id="radio3"
+                                                value="option3" [checked]="profileInfo.tipoUsuario === 'INTERNO'"
+                                                disabled>
+                                            <label class="form-check-label" for="radio3">
+                                                INTERNO
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="radios" id="radio4"
+                                                value="option4" [checked]="profileInfo.tipoUsuario === 'EXTERNO'"
+                                                disabled>
+                                            <label class="form-check-label" for="radio4">
+                                                EXTERNO
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row" *ngIf="profileInfo.datosUsuario.NO_EMPLEADO!==undefined">
+                                    <strong class="col-md-3 col-form-label" for="no-emp">No empleado</strong>
+                                    <div class="col-md-9">
+                                        <input type="number" id="no-emp" name="no-emp" class="form-control"
+                                            placeholder="No empleado" [(ngModel)]="profileInfo.datosUsuario.NO_EMPLEADO"
+                                            disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row" *ngIf="profileInfo.datosUsuario.ANTIGUEDAD!==undefined">
+                                    <strong class="col-md-3 col-form-label" for="antiguedad">Antiguedad
+                                        empleado</strong>
+                                    <div class="col-md-9">
+                                        <input type="text" id="antiguedad" name="ANTIGUEDAD" class="form-control"
+                                            placeholder="ANTIGUEDAD" [(ngModel)]="profileInfo.datosUsuario.ANTIGUEDAD"
+                                            disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row" *ngIf="profileInfo.datosUsuario.OFICINA!==undefined">
+                                    <strong class="col-md-3 col-form-label" for="oficina">Oficina Empleado</strong>
+                                    <div class="col-md-9">
+                                        <input type="text" id="oficina" name="oficina" class="form-control"
+                                            placeholder="oficina" [(ngModel)]="profileInfo.datosUsuario.OFICINA"
+                                            disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row" *ngIf="profileInfo.datosUsuario.SUELDO!==undefined">
+                                    <strong class="col-md-3 col-form-label" for="sueldo">Sueldo actual</strong>
+                                    <div class="col-md-9">
+                                        <input type="text" id="sueldo" name="sueldo" class="form-control"
+                                            placeholder="Sueldo" [(ngModel)]="profileInfo.datosUsuario.SUELDO" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row" *ngIf="profileInfo.datosUsuario.MONTO_AHORRO!==undefined">
+                                    <strong class="col-md-3 col-form-label" for="ahorro">Monto ahorro quincenal</strong>
+                                    <div class="col-md-9">
+                                        <input type="number" id="ahorro" name="ahorro" class="form-control"
+                                            placeholder="Ahorro quincenal"
+                                            [(ngModel)]="profileInfo.datosUsuario.MONTO_AHORRO" disabled>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label"><strong>Roles activos</strong></label>
+                                <div class="col-md-9 col-form-label">
+                                    <div class="form-check" *ngFor="let rol of profileInfo.roles">
+                                        <input class="form-check-input" type="checkbox" value="option1" id="checkbox1"
+                                            checked disabled>
+                                        <label class="form-check-label" for="checkbox1">
+                                            {{rol}}
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
                 <div class="card-footer">
                     <div class="float-right slide_2">
 
-                   
+
 
                     </div>
                 </div>

@@ -10,9 +10,11 @@ export class ProfileComponent implements OnInit {
 
 
 
-  public profileInfo: Usuario;
+  public profileInfo: Usuario = new Usuario();
 
   public alerts: string[] = [];
+
+  public bsConfig = { containerClass: 'theme-dark-blue' };
 
   constructor(private userService: UsuariosService) { }
 

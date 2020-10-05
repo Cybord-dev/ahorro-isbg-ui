@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { ReporteAhorroComponent } from './reporte-ahorro/reporte-ahorro.component';
 
@@ -9,6 +10,7 @@ import { ChartsModule } from 'ng2-charts';
 import { FormsModule } from '@angular/forms';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 
+
 @NgModule({
   declarations: [ReporteAhorroComponent, TramitesAhorroComponent],
   imports: [
@@ -17,6 +19,9 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     ChartsModule,
     TabsModule.forRoot(),
     FormsModule
+  ],
+  providers: [
+    DatePipe
   ]
 })
 export class UsuariosModule { }
