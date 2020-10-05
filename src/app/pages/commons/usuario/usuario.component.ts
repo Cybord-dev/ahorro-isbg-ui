@@ -76,6 +76,7 @@ export class UsuarioComponent implements OnInit {
 
     if (this.registerForm.invalid) { this.loading = false; return; }
     const id = this.usuario.id;
+    /*
     this.usuarioServicio.actualizaUser(this.usuario).toPromise()
       .then(async updateduser => {
         this.Params.success = 'El usuario ha sido actualizado satisfactoriamente.';
@@ -92,7 +93,7 @@ export class UsuarioComponent implements OnInit {
       }, (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
         || `${error.statusText} : ${error.message}`))
 
-      .then(() => this.updateUserInfo(id));
+      .then(() => this.updateUserInfo(id));*/
   }
 
   public registry() {
@@ -104,14 +105,14 @@ export class UsuarioComponent implements OnInit {
         this.Params.success = 'El usuario ha sido creado satisfactoriamente.';
 
         for (const i in this.datos) {
-          if (this.datos[i] !== undefined) {
+          /*if (this.datos[i] !== undefined) {
             this.usuarioServicio.insertarDatosUsuario(createdUser.id, new DatosUsuario(i, this.datos[i], true)).subscribe(
               data => {
                 this.Params.success = 'Datos insertados satisfactoriamente.';
               },
               (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
                 || `${error.statusText} : ${error.message}`));
-          }
+          }*/
         }
 
       }, (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
@@ -134,9 +135,9 @@ export class UsuarioComponent implements OnInit {
 
         for (const u in this.usuario.datosUsuario) {
           for (const i in this.datos) {
-            if (this.usuario.datosUsuario[u].tipoDato === i) {
+           /* if (this.usuario.datosUsuario[u].tipoDato === i) {
               this.datos[i] = this.usuario.datosUsuario[u].dato;
-            }
+            }*/
           }
         }
         if (this.datos.ANTIGUEDAD)
