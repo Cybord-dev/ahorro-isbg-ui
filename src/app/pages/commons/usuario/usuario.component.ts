@@ -24,7 +24,7 @@ export class UsuarioComponent implements OnInit {
   public datos: any = { NO_EMPLEADO: 0, ANTIGUEDAD: this.date, OFICINA: '*', SUELDO: 0}
   public actualizando: boolean = false;
   public profileInfo: Usuario = new Usuario();
-  public tipoCheck:boolean = false;
+  public tipoCheck:string = "";
 
   constructor(
     private route: ActivatedRoute,
@@ -81,42 +81,39 @@ export class UsuarioComponent implements OnInit {
 
     if (this.registerForm.invalid) { this.loading = false; return; }
     const id = this.usuario.id;
-    /*
+    this.usuario.tipoUsuario = this.tipoCheck;
     this.usuarioServicio.actualizaUser(this.usuario).toPromise()
       .then(async updateduser => {
+        
         this.Params.success = 'El usuario ha sido actualizado satisfactoriamente.';
-        for (const d in this.datos) {
-          if (this.datos[d] === undefined || this.datos[d] === '' || this.datos[d] === 0
-            && updateduser.datosUsuario.find(x => x.tipoDato === d)) {
-            await this.usuarioServicio.deleteDatosUsuario(
-              updateduser.datosUsuario.find(x => x.tipoDato === d).id).toPromise();
+          const datosUsuario = new DatosUsuario;
+          for(const i in this.datos){
+            datosUsuario[i] = this.datos[i];
           }
-        }
-        for (const d in this.datos) {
-          await this.usuarioServicio.actualizaDatoUsuario(this.usuario.id, new DatosUsuario(d, this.datos[d], true)).toPromise();
-        }
+          for (const d in this.datos) {
+            await this.usuarioServicio.actualizaDatoUsuario(this.usuario.id, {tipoDato:d, dato:this.datos[d], relevancia:true}).toPromise();
+          }
+        
+        
       }, (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
         || `${error.statusText} : ${error.message}`))
 
-      .then(() => this.updateUserInfo(id));*/
+      .then(() => this.updateUserInfo(id));
   }
 
   public registry() {
     this.submitted = true;
     if (this.registerForm.invalid) { this.loading = false; return; }
     this.errorMessages = [];
-    this.usuario.activo = true;
     
-    this.usuario.tipoUsuario = (this.tipoCheck === true) ? "INTERNO" : "EXTERNO";
-    console.log("tipo: "+this.usuario.tipoUsuario);
-    console.log('tpo :'+this.usuario.tipoUsuario)
+    this.usuario.tipoUsuario = this.tipoCheck;
+    console.log(this.usuario.tipoUsuario);
     this.usuarioServicio.insertarUsuario(this.usuario).subscribe(
       createdUser => {
         this.Params.success = 'Usuario creado';
         const datosUsuario = new DatosUsuario;
         for(const i in this.datos){
           datosUsuario[i] = this.datos[i];
-          console.log(datosUsuario[i]);
         }
             for (const iterator in this.datos) {
               this.usuarioServicio.insertarDatosUsuario(createdUser.id, {tipoDato:iterator, dato:this.datos[iterator], relevancia:true}).subscribe(

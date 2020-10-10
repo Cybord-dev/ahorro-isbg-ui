@@ -57,11 +57,11 @@ export class UsuariosService {
     return this.http.delete(`../api/v1/usuarios/${userId}/roles/${rolName}`);
   }
 
-  public insertarDatosUsuario( idUser: number,dato: any): Observable<DatosUsuario> {
+  public insertarDatosUsuario( idUser: number,dato: {tipoDato:string, dato:string, relevancia:boolean}): Observable<DatosUsuario> {
     return this.http.post<DatosUsuario>(`../api/v1/usuarios/${idUser}/datos`, dato);
   }
 
-  public actualizaDatoUsuario(idusuario: number,dato: DatosUsuario): Observable<DatosUsuario> {
+  public actualizaDatoUsuario(idusuario: number,dato: {tipoDato:string, dato:string, relevancia:boolean}): Observable<DatosUsuario> {
     return this.http.put<DatosUsuario>(`../api/v1/usuarios/${idusuario}/datos`, dato);
   }
 

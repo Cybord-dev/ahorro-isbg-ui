@@ -47,7 +47,7 @@
                                     <strong class="col-md-3 col-form-label">Usuario activo</strong>
                                     <div class="col-md-7">
                                         <label class="switch switch-label switch-primary">
-                                            <input type="checkbox" formControlName="activo" class="switch-input" [checked]="this.usuario.activo">
+                                            <input type="checkbox" formControlName="activo" class="switch-input" [checked]="this.usuario.activo" [(ngModel)]="this.usuario.activo">
                                             <span class="switch-slider" data-checked="ON" data-unchecked="OFF"></span>
                                         </label>
                                     </div>
@@ -58,14 +58,14 @@
                                     <div class="col-md-7 col-form-label">
                                         <div class="form-check">
                                             <input class="form-check-input" formControlName="tipo" type="radio" name="tipo" id="radio3"
-                                                value="option3" [checked]="usuario.tipoUsuario === 'INTERNO'" [(ngModel)]="tipoCheck">
+                                                value="INTERNO" [checked]="usuario.tipoUsuario === 'INTERNO'" [(ngModel)]="tipoCheck">
                                             <label class="form-check-label" for="radio3">
                                                 INTERNO
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" formControlName="tipo" type="radio" name="tipo" id="radio4"
-                                                value="option4" [checked]="usuario.tipoUsuario === 'EXTERNO'">
+                                                value="EXTERNO" [checked]="usuario.tipoUsuario === 'EXTERNO'" [(ngModel)]="tipoCheck">
                                             <label class="form-check-label" for="radio4">
                                                 EXTERNO
                                             </label>
