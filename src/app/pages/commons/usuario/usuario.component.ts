@@ -21,7 +21,7 @@ export class UsuarioComponent implements OnInit {
 
   public Params: any = { success: '', message: '', id: '*', module: 'usuarios' };
   public date = new Date;
-  public datos: any = { ANTIGUEDAD: this.date, SUELDO: 0, NO_EMPLEADO: 0, OFICINA: '*'};
+  public datos: any = { NO_EMPLEADO: 0, ANTIGUEDAD: this.date, OFICINA: '*', SUELDO: 0}
   public actualizando: boolean = false;
   public profileInfo: Usuario = new Usuario();
   public tipoCheck:boolean = false;
@@ -108,14 +108,18 @@ export class UsuarioComponent implements OnInit {
     this.usuario.activo = true;
     
     this.usuario.tipoUsuario = (this.tipoCheck === true) ? "INTERNO" : "EXTERNO";
-    
+    console.log("tipo: "+this.usuario.tipoUsuario);
     console.log('tpo :'+this.usuario.tipoUsuario)
     this.usuarioServicio.insertarUsuario(this.usuario).subscribe(
       createdUser => {
         this.Params.success = 'Usuario creado';
+        const datosUsuario = new DatosUsuario;
+        for(const i in this.datos){
+          datosUsuario[i] = this.datos[i];
+          console.log(datosUsuario[i]);
+        }
             for (const iterator in this.datos) {
-              console.log(this.datos[iterator]);
-              this.usuarioServicio.insertarDatosUsuario(createdUser.id, new DatosUsuario().set(iterator, this.datos[iterator], true)).subscribe(
+              this.usuarioServicio.insertarDatosUsuario(createdUser.id, {tipoDato:iterator, dato:this.datos[iterator], relevancia:true}).subscribe(
               data => {
                 this.Params.success = 'Datos insertados satisfactoriamente';
               },
@@ -141,13 +145,10 @@ export class UsuarioComponent implements OnInit {
     this.usuarioServicio.getUsuario(id).subscribe(
       userdata => {
         this.usuario = userdata;
-        for (const u in this.usuario.datosUsuario) {
-          for (const i in this.datos) {
-              if (u === i) {
-                this.datos[i] = this.usuario.datosUsuario[u];
-              }
-          }
+        for (const i in this.datos) {
+            this.datos[i] = userdata.datosUsuario[i]; 
         }
+        
         if (this.datos.ANTIGUEDAD)
           this.date = new Date(this.datos.ANTIGUEDAD);
 
