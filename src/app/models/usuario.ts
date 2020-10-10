@@ -15,12 +15,12 @@ export class Usuario {
     public menu: INavData[];
 
     public roles: string[];
-    public datosUsuario: DatosUsuario;
+    public datosUsuario: DatosUsuario[];
 
     public solicitudes: Solicitud[];
 
     constructor() {
-        this.datosUsuario = new DatosUsuario();
+        this.datosUsuario = [];
         this.roles = [];
         this.menu = [];
     }

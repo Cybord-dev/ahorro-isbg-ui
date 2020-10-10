@@ -21,8 +21,10 @@ export class UsuarioComponent implements OnInit {
 
   public Params: any = { success: '', message: '', id: '*', module: 'usuarios' };
   public date = new Date;
-  public datos: any = { ANTIGUEDAD: this.date, SUELDO: 0, NO_EMPLEADO: 0, OFICINA: '*' };
-
+  public datos: any = { ANTIGUEDAD: this.date, SUELDO: 0, NO_EMPLEADO: 0, OFICINA: '*'};
+  public actualizando: boolean = false;
+  public profileInfo: Usuario = new Usuario();
+  public tipoCheck:boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,7 +41,9 @@ export class UsuarioComponent implements OnInit {
     this.route.paramMap.subscribe(route => {
       const id = route.get('idUsuario');
       if (id !== '*') {
+        this.actualizando=false;
         // actualiza informacion usuario
+
         this.updateUserInfo(+id);
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: true }],
@@ -51,6 +55,7 @@ export class UsuarioComponent implements OnInit {
 
       } else {
         //nuevo usuario
+        this.actualizando=true;
         this.date = new Date;
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: false, },
@@ -100,20 +105,24 @@ export class UsuarioComponent implements OnInit {
     this.submitted = true;
     if (this.registerForm.invalid) { this.loading = false; return; }
     this.errorMessages = [];
+    this.usuario.activo = true;
+    
+    this.usuario.tipoUsuario = (this.tipoCheck === true) ? "INTERNO" : "EXTERNO";
+    
+    console.log('tpo :'+this.usuario.tipoUsuario)
     this.usuarioServicio.insertarUsuario(this.usuario).subscribe(
       createdUser => {
-        this.Params.success = 'El usuario ha sido creado satisfactoriamente.';
-
-        for (const i in this.datos) {
-          /*if (this.datos[i] !== undefined) {
-            this.usuarioServicio.insertarDatosUsuario(createdUser.id, new DatosUsuario(i, this.datos[i], true)).subscribe(
+        this.Params.success = 'Usuario creado';
+            for (const iterator in this.datos) {
+              console.log(this.datos[iterator]);
+              this.usuarioServicio.insertarDatosUsuario(createdUser.id, new DatosUsuario().set(iterator, this.datos[iterator], true)).subscribe(
               data => {
-                this.Params.success = 'Datos insertados satisfactoriamente.';
+                this.Params.success = 'Datos insertados satisfactoriamente';
               },
               (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
                 || `${error.statusText} : ${error.message}`));
-          }*/
-        }
+            }
+        
 
       }, (error: HttpErrorResponse) => this.errorMessages.push(error.error.message
         || `${error.statusText} : ${error.message}`));
@@ -132,12 +141,11 @@ export class UsuarioComponent implements OnInit {
     this.usuarioServicio.getUsuario(id).subscribe(
       userdata => {
         this.usuario = userdata;
-
         for (const u in this.usuario.datosUsuario) {
           for (const i in this.datos) {
-           /* if (this.usuario.datosUsuario[u].tipoDato === i) {
-              this.datos[i] = this.usuario.datosUsuario[u].dato;
-            }*/
+              if (u === i) {
+                this.datos[i] = this.usuario.datosUsuario[u];
+              }
           }
         }
         if (this.datos.ANTIGUEDAD)

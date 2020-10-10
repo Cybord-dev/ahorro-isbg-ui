@@ -57,8 +57,6 @@ export class UsuariosService {
     return this.http.delete(`../api/v1/usuarios/${userId}/roles/${rolName}`);
   }
 
-  //datosUsuario
-
   public insertarDatosUsuario( idUser: number,dato: DatosUsuario): Observable<DatosUsuario> {
     return this.http.post<DatosUsuario>(`../api/v1/usuarios/${idUser}/datos`, dato);
   }
