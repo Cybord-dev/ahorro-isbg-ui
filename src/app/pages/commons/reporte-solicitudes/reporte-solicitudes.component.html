@@ -78,19 +78,14 @@
                     <td scope="row">{{arrayfechas[fila.idSolicitud] | date:'yyyy-MM-dd'}}</td>
 
                     <td scope="row">Interno</td>
-                    <td scope="row" *ngIf="(fila.idSolicitud) === 1"><span class="badge badge-success">Solicitud</span>
-                    </td>
-                    <td scope="row" *ngIf="(fila.idSolicitud) === 2"><span class="badge badge-danger">Cancelacion</span>
-                    </td>
-                    <td scope="row" *ngIf="(fila.idSolicitud) === 3"><span
-                        class="badge badge-secondary">Modificacion</span></td>
-                    <td scope="row" *ngIf="(fila.idSolicitud) === 4"><span class="badge badge-danger">Cancelacion</span>
-                    </td>
-                    <td scope="row" *ngIf="(fila.idSolicitud) === 5"><span
-                        class="badge badge-secondary">Modificacion</span></td>
+                    <td scope="row">
+                      <span class="badge badge-success" *ngIf="fila.tipo === 'SolicitudAhorro'">SOLICITUD AHORRO</span>
+                      <span class="badge badge-danger" *ngIf="fila.tipo === 'CancelacionAhorro'" >CANCELACION AHORRO</span>
+                      <span class="badge badge-primary" *ngIf="fila.tipo === 'RetiroParcialAhorro'" >RETIRO PARCIAL</span>
+                      <span class="badge badge-warning" *ngIf="fila.tipo === 'ModificacionAhorro'" >MODIFICACION AHORRO</span>
 
-                    <td scope="row" *ngIf="(fila.idSolicitud) > 5"><span class="badge badge-success">Solicitud</span>
                     </td>
+                    
                   </tr>
                 </tbody>
               </table>
