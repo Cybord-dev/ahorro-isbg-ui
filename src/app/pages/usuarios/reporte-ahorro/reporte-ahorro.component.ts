@@ -16,7 +16,7 @@ export class ReporteAhorroComponent implements OnInit {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public barChartLabels: string[]= [];
+  public barChartLabels: string[] = [];
   public barChartType = 'bar';
   public barChartLegend = true;
   public datos: number[] = [];
@@ -26,7 +26,7 @@ export class ReporteAhorroComponent implements OnInit {
   public barChartData: any[] = [];
   private months: string[] = ['noviembre', 'diciembre','enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio','agosto', 'septiembre', 'octubre']
   private ahorros: SaldoAhorro[] = [];
-  public datosTabla: {fecha: Date, cant:number}[] = [];
+  public datosTabla: {fecha: Date, cant: number}[] = [];
   constructor(
     private userService : UsuariosService,
     private saldosAhorro: AhorroServicio) {

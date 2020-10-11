@@ -24,8 +24,11 @@ export class SolicitudesService {
     return this.http.get('../api/v1/solicitudes', { params: pageParams });
   }
 
+  public getSolicitudesById(idSolicitud: number): Observable<Solicitud>{
+    return this.http.get<Solicitud>(`../api/v1/solicitudes/${idSolicitud}`);
+  }
 
-  public getSolicitudesById(idUsuario: number, idSolicitud: number): Observable<Solicitud>{
+  public getSolicitudesByUsuarioAndId(idUsuario: number, idSolicitud: number): Observable<Solicitud>{
     return this.http.get<Solicitud>(`../api/v1/usuarios/${idUsuario}/solicitudes/${idSolicitud}`);
   }
 

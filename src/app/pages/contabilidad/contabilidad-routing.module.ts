@@ -6,6 +6,7 @@ import { ConciliacionContaComponent } from './conciliacion-conta/conciliacion-co
 import { AhorroExternosComponent } from './ahorro-externos/ahorro-externos.component';
 import { UsuariosComponent } from '../commons/usuarios/usuarios.component';
 import { UsuarioComponent } from '../commons/usuario/usuario.component';
+import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,13 @@ const routes: Routes = [
     component: ReporteSolicitudesComponent,
     data: {
       title: 'Reporte Validaciones'
+    }
+  },
+  {
+    path: 'validacion/:idSolicitud',
+    component: ValidacionSolicitudComponent,
+    data: {
+      title: 'Usario ISBG'
     }
   },
   {

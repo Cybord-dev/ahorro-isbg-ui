@@ -37,7 +37,7 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="radios" id="radio3"
                                                 value="option3" [checked]="profileInfo.tipoUsuario === 'INTERNO'"
-                                                disabled>
+                                                [disabled]="module === 'commons'">
                                             <label class="form-check-label" for="radio3">
                                                 INTERNO
                                             </label>
@@ -45,7 +45,7 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="radios" id="radio4"
                                                 value="option4" [checked]="profileInfo.tipoUsuario === 'EXTERNO'"
-                                                disabled>
+                                                [disabled]="module === 'commons'">
                                             <label class="form-check-label" for="radio4">
                                                 EXTERNO
                                             </label>
@@ -58,7 +58,7 @@
                                     <div class="col-md-9">
                                         <input type="number" id="no-emp" name="no-emp" class="form-control"
                                             placeholder="No empleado" [(ngModel)]="profileInfo.datosUsuario.NO_EMPLEADO"
-                                            disabled>
+                                            [disabled]="module === 'commons'">
                                     </div>
                                 </div>
 
@@ -68,7 +68,7 @@
                                     <div class="col-md-9">
                                         <input type="text" id="antiguedad" name="ANTIGUEDAD" class="form-control"
                                             placeholder="ANTIGUEDAD" [(ngModel)]="profileInfo.datosUsuario.ANTIGUEDAD"
-                                            disabled>
+                                            [disabled]="module === 'commons'">
                                     </div>
                                 </div>
 
@@ -77,7 +77,7 @@
                                     <div class="col-md-9">
                                         <input type="text" id="oficina" name="oficina" class="form-control"
                                             placeholder="oficina" [(ngModel)]="profileInfo.datosUsuario.OFICINA"
-                                            disabled>
+                                            [disabled]="module === 'commons'">
                                     </div>
                                 </div>
 
@@ -85,7 +85,7 @@
                                     <strong class="col-md-3 col-form-label" for="sueldo">Sueldo actual</strong>
                                     <div class="col-md-9">
                                         <input type="text" id="sueldo" name="sueldo" class="form-control"
-                                            placeholder="Sueldo" [(ngModel)]="profileInfo.datosUsuario.SUELDO" disabled>
+                                            placeholder="Sueldo" [(ngModel)]="profileInfo.datosUsuario.SUELDO" [disabled]="module === 'commons'">
                                     </div>
                                 </div>
 
@@ -94,7 +94,7 @@
                                     <div class="col-md-9">
                                         <input type="number" id="ahorro" name="ahorro" class="form-control"
                                             placeholder="Ahorro quincenal"
-                                            [(ngModel)]="profileInfo.datosUsuario.MONTO_AHORRO" disabled>
+                                            [(ngModel)]="profileInfo.datosUsuario.MONTO_AHORRO" [disabled]="module === 'commons'">
                                     </div>
                                 </div>
                             </form>
@@ -105,7 +105,7 @@
                                 <div class="col-md-9 col-form-label">
                                     <div class="form-check" *ngFor="let rol of profileInfo.roles">
                                         <input class="form-check-input" type="checkbox" value="option1" id="checkbox1"
-                                            checked disabled>
+                                            checked [disabled]="module === 'commons'">
                                         <label class="form-check-label" for="checkbox1">
                                             {{rol}}
                                         </label>

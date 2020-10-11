@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SolicitudesService } from 'src/app/services/solicitudes.service';
+import { SolicitudesService } from '../../../services/solicitudes.service';
 import { GenericPage } from '../../../models/generic-page';
 
 @Component({
@@ -10,8 +10,7 @@ import { GenericPage } from '../../../models/generic-page';
 })
 export class ReporteSolicitudesComponent implements OnInit {
 
-  getSolicitudes
-  public module: string = 'usuarios';
+  public module = 'usuarios';
   public page: GenericPage<any> = new GenericPage();
   public pageSize = '10';
   public filterParams: any = { emisor: '', remitente: '', prefolio: '', status: '*', since: undefined, to: undefined, lineaEmisor: '', solicitante: '', page: '0', size: '10' };
@@ -20,10 +19,9 @@ export class ReporteSolicitudesComponent implements OnInit {
 
   public arrayfechas: Date[] = [];
 
-  constructor(private router: Router,
-    private solicitudesService: SolicitudesService,
-
-  ) { }
+  constructor(
+    private router: Router,
+    private solicitudesService: SolicitudesService) { }
 
   ngOnInit(): void {
     this.module = this.router.url.split('/')[1];
@@ -50,10 +48,8 @@ export class ReporteSolicitudesComponent implements OnInit {
     this.updateDataTable(this.page.number, pageSize);
   }
 
-  public redirectToUser(id: string) {
-
-    this.router.navigate([`./recursos-humanos/validacione/${id}`]);
-    //this.router.navigate(['./validaciones']); 
+  public redirectToValidation(id: string) {
+    this.router.navigate([`./${this.module}/validacion/${id}`]);
   }
 
 }
