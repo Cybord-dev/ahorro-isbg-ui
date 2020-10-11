@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { Solicitud } from '../../../models/solicitud';
 import { Usuario } from '../../../models/usuario';
+import { ValidacionesService } from '../../../services/validaciones.service';
+import { Validacion } from '../../../models/validacion';
 
 
 @Component({
@@ -13,64 +15,58 @@ import { Usuario } from '../../../models/usuario';
 })
 export class ValidacionSolicitudComponent implements OnInit {
 
+  public validador: Usuario = new Usuario();
 
+  public solicitud: Solicitud = new Solicitud();
   public usuario: Usuario = new Usuario();
-  public errorMessages: string[] = [];
-  public success = '';
-  public bsValue = new Date();
-  public bsConfig = { containerClass: 'theme-dark-blue' };
 
+  public module = '';
+  public alerts: string[] = [];
+  public success = '';
+
+  public validated = false;
 
   constructor(
     private userService: UsuariosService,
     private solicitudService: SolicitudesService,
+    private validacionService: ValidacionesService,
     private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
-  public solicitud: Solicitud;
-
-  public enabledDates = [
-    new Date('2020-09-15'),
-    new Date('2020-10-01'),
-    new Date('2020-10-15'),
-    new Date('2020-11-01'),
-    new Date('2020-11-15'),
-    new Date('2020-12-01'),
-    new Date('2020-12-15'),
-  ];
-
-  public noEmpleado: number;
-  public oficina: number;
-  public descuentoQuincenal: number;
-
-  public requestSolicitud(tipo: string) {
-
-    this.solicitud.idUsuario = this.usuario.id;
-    this.solicitud.status = "Solicitud";
-    this.solicitud.tipo = tipo;
-    this.solicitud.statusDetalle = 'Solicitud inicial';
-
-    this.solicitudService.postSolictudUsuario(this.usuario.id, this.solicitud)
-      .subscribe(sol => this.success = 'Se ha enviado la solicitud correctamente');
-  }
 
   ngOnInit(): void {
+
+    this.module = this.router.url.split('/')[1];
+
+    this.userService.myInfo().toPromise()
+    .then(user => this.validador = user)
+    .catch(error => this.alerts.push(error));
+
     this.solicitud = new Solicitud();
     this.route.paramMap.subscribe(route => {
-      const id = route.get('idUsuario');
-      console.log("id " + id)
-      this.userService.getUsuario(+id).subscribe((user: Usuario) => {
-        this.usuario = user;
-
-        this.noEmpleado = Math.floor(Math.random() * 60) + 1;
-        this.oficina = Math.floor(Math.random() * 2) + 1;
-        this.descuentoQuincenal = Math.floor(Math.random() * 60) + 1;
-      });
-
-
+      const id = route.get('idSolicitud');
+      this.solicitudService.getSolicitudesById(+id).toPromise()
+        .then((solicitud: Solicitud) => {
+          this.solicitud = solicitud;
+          this.userService.getUsuario(solicitud.idUsuario).toPromise()
+            .then(user => this.usuario = user);
+        }).catch(error => this.alerts.push(error));
     });
+  }
 
+  aprobarSolicitud(): void{
+    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module,this.validador.email, true);
+    this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
+      .toPromise().then((result) => {this.success = 'Solicitud validada correctamente.'; this.validated = true;})
+      .catch(error => this.alerts.push(error));
+  }
 
+  rechazarSolicitud(): void{
+    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module,this.validador.email, false);
+    this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
+      .toPromise().then((result) => {this.success = 'Solicitud rechazada correctamente.'; this.validated = true;})
+      .catch(error => this.alerts.push(error));
   }
 
 }

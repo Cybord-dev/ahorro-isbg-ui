@@ -1,5 +1,5 @@
 import { Validacion } from './validacion';
-import { Atributo } from './atributo';
+import { Atributos } from './atributos';
 
 export class Solicitud {
 
@@ -14,10 +14,10 @@ export class Solicitud {
     public fechaActualizacion: Date;
 
     public validaciones: Validacion[];
-    public atributos: Atributo[];
+    public atributos: Atributos;
 
     constructor() {
         this.validaciones = [];
-        this.atributos = [];
+        this.atributos = new Atributos();
     }
 }

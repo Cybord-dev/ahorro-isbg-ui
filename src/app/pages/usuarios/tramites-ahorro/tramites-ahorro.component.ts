@@ -5,7 +5,6 @@ import { Usuario } from '../../../models/usuario';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Solicitud } from '../../../models/solicitud';
-import { Atributo } from '../../../models/atributo';
 
 @Component({
   selector: 'cybord-tramites-ahorro',
@@ -22,7 +21,6 @@ export class TramitesAhorroComponent implements OnInit {
   public usuario: Usuario = new Usuario();
   public errorMessages: string[] = [];
   public success = '';
-  
   public solicitudes: Solicitud[] = [];
   public solicitud: Solicitud;
 
@@ -66,8 +64,8 @@ export class TramitesAhorroComponent implements OnInit {
     this.solicitud.tipo = tipo;
     this.solicitud.statusDetalle = 'Solicitud inicial';
     this.solicitud.fechaEjecucion = this.bsValue;
-    this.solicitud.atributos.push(new Atributo('MONTO', this.descuentoQuincenal.toString()));
-    this.solicitud.atributos.push(new Atributo('FECHA', this.datepipe.transform(this.bsValue, 'yyyy-MM-dd')));
+    this.solicitud.atributos.MONTO = this.descuentoQuincenal.toString();
+    this.solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
 
     this.solicitudService.postSolictudUsuario(this.usuario.id, this.solicitud).toPromise()
       .then(sol => this.success = 'Se ha enviado la solicitud correctamente')

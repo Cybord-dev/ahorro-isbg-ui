@@ -10,8 +10,7 @@ import { GenericPage } from '../../../models/generic-page';
 })
 export class ReporteSolicitudesComponent implements OnInit {
 
-  getSolicitudes
-  public module: string = 'usuarios';
+  public module = 'usuarios';
   public page: GenericPage<any> = new GenericPage();
   public pageSize = '10';
   public filterParams: any = { emisor: '', remitente: '', prefolio: '', status: '*', since: undefined, to: undefined, lineaEmisor: '', solicitante: '', page: '0', size: '10' };
@@ -50,10 +49,8 @@ export class ReporteSolicitudesComponent implements OnInit {
     this.updateDataTable(this.page.number, pageSize);
   }
 
-  public redirectToUser(id: string) {
-
-    this.router.navigate([`./recursos-humanos/validacione/${id}`]);
-    //this.router.navigate(['./validaciones']); 
+  public redirectToValidation(id: string) {
+    this.router.navigate([`./${this.module}/validacione/${id}`]);
   }
 
 }
