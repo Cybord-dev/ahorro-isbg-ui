@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SolicitudesService } from 'src/app/services/solicitudes.service';
+import { SolicitudesService } from '../../../services/solicitudes.service';
 import { GenericPage } from '../../../models/generic-page';
 
 @Component({
@@ -19,10 +19,9 @@ export class ReporteSolicitudesComponent implements OnInit {
 
   public arrayfechas: Date[] = [];
 
-  constructor(private router: Router,
-    private solicitudesService: SolicitudesService,
-
-  ) { }
+  constructor(
+    private router: Router,
+    private solicitudesService: SolicitudesService) { }
 
   ngOnInit(): void {
     this.module = this.router.url.split('/')[1];
@@ -50,7 +49,7 @@ export class ReporteSolicitudesComponent implements OnInit {
   }
 
   public redirectToValidation(id: string) {
-    this.router.navigate([`./${this.module}/validacione/${id}`]);
+    this.router.navigate([`./${this.module}/validacion/${id}`]);
   }
 
 }

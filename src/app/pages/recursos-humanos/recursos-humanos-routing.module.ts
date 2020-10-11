@@ -44,7 +44,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'validacione/:idSolicitud',
+    path: 'validacion/:idSolicitud',
     component: ValidacionSolicitudComponent,
     data: {
       title: 'Usario ISBG'

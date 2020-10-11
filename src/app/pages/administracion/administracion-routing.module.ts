@@ -4,6 +4,7 @@ import { ReporteSolicitudesComponent } from '../commons/reporte-solicitudes/repo
 import { HistoricoSolicitudesComponent } from '../commons/historico-solicitudes/historico-solicitudes.component';
 import { UsuariosComponent } from '../commons/usuarios/usuarios.component';
 import { AltaRolesComponent } from './alta-roles/alta-roles.component';
+import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,13 @@ const routes: Routes = [
     component: ReporteSolicitudesComponent,
     data: {
       title: 'Reporte Validaciones'
+    }
+  },
+  {
+    path: 'validacion/:idSolicitud',
+    component: ValidacionSolicitudComponent,
+    data: {
+      title: 'Usario ISBG'
     }
   },
   {

@@ -56,50 +56,80 @@
         </div>
         <div class="card-body">
           <div class="row">
-            <div class="col-sm-12">
-              <table class="table table-bordered table-striped table-sm">
-                <thead>
-                  <tr>
-                    <th>Acciones</th>
-                    <th>Nombre</th>
-                    <th>Fecha solicitud</th>
-                    <th>Tipo Usuario</th>
-                    <th>Tipo Validacion</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let fila of page.content">
-                    <td scope="row">
-                      <button class="btn-sm btn-outline-primary" (click)="redirectToValidation(fila.idSolicitud)"><i
-                          class="fa fa-search fa-sm"></i></button>
+            <div class="col">
 
-                    </td>
-                    <td scope="row">{{fila.nombre}}</td>
-                    <td scope="row">{{arrayfechas[fila.idSolicitud] | date:'yyyy-MM-dd'}}</td>
+              <div *ngIf="page.empty === true" class="alert alert-primary" role="alert">
+                No se encontraron resultados
+              </div>
+              <div class="clearfix" *ngIf="page.empty === false">
 
-                    <td scope="row">Interno</td>
-                    <td scope="row">
-                      <span class="badge badge-success" *ngIf="fila.tipo === 'SolicitudAhorro'">SOLICITUD AHORRO</span>
-                      <span class="badge badge-danger" *ngIf="fila.tipo === 'CancelacionAhorro'" >CANCELACION AHORRO</span>
-                      <span class="badge badge-primary" *ngIf="fila.tipo === 'RetiroParcialAhorro'" >RETIRO PARCIAL</span>
-                      <span class="badge badge-warning" *ngIf="fila.tipo === 'ModificacionAhorro'" >MODIFICACION AHORRO</span>
 
-                    </td>
-                    
-                  </tr>
-                </tbody>
-              </table>
-              <nav>
-                <ul class="pagination" *ngIf="page.totalElements > 1">
-                  <li class="page-item" *ngIf="page.first==false"><a class="page-link"
-                      (click)="updateDataTable(page.number-1,page.size)">Prev</a></li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">{{page.number}}</a>
-                  </li>
-                  <li class="page-item" *ngIf="page.last==false"><a class="page-link"
-                      (click)="updateDataTable(page.number+1,page.size)">Next</a></li>
-                </ul>
-              </nav>
+                
+                <select id="inputunidad" style="display:block;width: 95px; margin-right: 15px;" class="float-right form-control form-control-sm"
+                  [(ngModel)]="filterParams.size" *ngIf="page.last==false || page.first==true"
+                  (change)="onChangePageSize($event.target.value)">
+                  <option value="10">10</option>
+                  <option *ngIf="page.number<(page.totalElements/20)" value="20">20</option>
+                  <option *ngIf="page.number<(page.totalElements/50)" value="50">50</option>
+                </select>
+                <strong class="float-right"> Tamaño Pagina &nbsp;&nbsp;&nbsp;&nbsp;</strong>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+
+              <div class="table-responsive" *ngIf="page.empty == false">
+                <table class="table table-bordered table-sm">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th class="text-center">ACCIONES</th>
+                      <th class="text-center">SOLICITANTE</th>
+                      <th class="text-center">FECHA SOLICITUD</th>
+                      <th class="text-center">TIPO USUARIO</th>
+                      <th class="text-center">TIPO VALIDACION</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let fila of page.content">
+                      <td scope="row" class="text-center">
+                        <button class="btn-sm btn-outline-primary" (click)="redirectToValidation(fila.idSolicitud)"><i
+                            class="fa fa-search fa-sm"></i></button>
+
+                      </td>
+                      <td scope="row">{{fila.nombre}}</td>
+                      <td scope="row">{{arrayfechas[fila.idSolicitud] | date:'yyyy-MM-dd'}}</td>
+
+                      <td scope="row">Interno</td>
+                      <td scope="row" class="text-center">
+                        <span class="badge badge-success" *ngIf="fila.tipo === 'SolicitudAhorro'">SOLICITUD
+                          AHORRO</span>
+                        <span class="badge badge-danger" *ngIf="fila.tipo === 'CancelacionAhorro'">CANCELACION
+                          AHORRO</span>
+                        <span class="badge badge-primary" *ngIf="fila.tipo === 'RetiroParcialAhorro'">RETIRO
+                          PARCIAL</span>
+                        <span class="badge badge-warning" *ngIf="fila.tipo === 'ModificacionAhorro'">MODIFICACION
+                          AHORRO</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="clearfix" *ngIf="page.empty == false">
+                  <ul class="pagination float-right" *ngIf="page.totalElements > 1">
+                    <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
+                        (click)="updateDataTable(0,page.size)"><i class="nb-arrow-left"></i></button></li>
+                    <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
+                    <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
+                    <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
+                    <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="nb-arrow-right"></i></button>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
             </div>
           </div>
 
