@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // UI Component
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -54,6 +55,9 @@ import { UsuarioComponent } from './usuario/usuario.component';
     ReporteSolicitudesComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
+  ],
+  providers: [
+    DatePipe
   ]
 })
 export class CommonsPagesModule { }

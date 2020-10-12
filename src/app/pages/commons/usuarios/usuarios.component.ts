@@ -15,13 +15,13 @@ export class UsuariosComponent implements OnInit {
   public page: GenericPage<any> = new GenericPage();
   public pageSize = '10';
 
-  public filterParams: any = {email: '', estatus: '*', nombre: '',tipoUsuario:''};
+  public filterParams: any = {email: '', estatus: '*', nombre: '',tipoUsuario:'', page: '0', size: '10' };
 
   constructor(
     private userService: UsuariosService,
     private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.module = this.router.url.split('/')[1];
     this.updateDataTable(0, 10);
   }
@@ -36,18 +36,8 @@ export class UsuariosComponent implements OnInit {
     this.updateDataTable(this.page.number, pageSize);
   }
 
-  public redirectToUser(id: string) {
-    this.router.navigate([`../recursos-humanos/usuarios/${id}`]);
+  public redirectToUser(id: string): void {
+    this.router.navigate([`../${this.module}/usuarios/${id}`]);
   }
 
-  public editar(id:number){
-    console.log(`redirecting to ./recursos-humanos/usuarios/${id}`);
-    this.router.navigate([`./recursos-humanos/usuarios/${id}`]);
-  }
-
-  public redirectToRoles(id:number){
-    console.log(`redirecting to ./administracion/roles/${id}`);
-    this.router.navigate([`./administracion/roles/${id}`]);
-  }
- 
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { Usuario } from '../../../models/usuario';
 import { SolicitudesService } from '../../../services/solicitudes.service';

@@ -42,6 +42,7 @@ export class ReporteAhorroComponent implements OnInit {
           this.barChartData = [{ data:this.datos, label: this.barChartLabels }];
         });
       }).catch(error => this.errorMessages.push(error));
+      this.barChartData = [{data:[22, 11], label: ["enero", "febrero"]}];
   }
 
   private setCharInfo(): void{
