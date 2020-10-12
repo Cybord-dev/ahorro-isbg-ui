@@ -2,10 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from '../models/usuario';
-import { Rol } from '../models/rol';
-import { DatosUsuario } from '../models/datosusuario';
 import { RolCat } from '../models/rolcat';
-import { GenericPage } from '../models/generic-page';
+import { DatoUsuario } from '../models/dato-usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -57,15 +55,15 @@ export class UsuariosService {
     return this.http.delete(`../api/v1/usuarios/${userId}/roles/${rolName}`);
   }
 
-  public insertarDatosUsuario( idUser: number,dato: {tipoDato:string, dato:string, relevancia:boolean}): Observable<DatosUsuario> {
-    return this.http.post<DatosUsuario>(`../api/v1/usuarios/${idUser}/datos`, dato);
+  public insertarDatoUsuario( idUser: number, dato: DatoUsuario): Observable<DatoUsuario> {
+    return this.http.post<DatoUsuario>(`../api/v1/usuarios/${idUser}/datos`, dato);
   }
 
-  public actualizaDatoUsuario(idusuario: number,dato: {tipoDato:string, dato:string, relevancia:boolean}): Observable<DatosUsuario> {
-    return this.http.put<DatosUsuario>(`../api/v1/usuarios/${idusuario}/datos`, dato);
+  public actualizaDatoUsuario(idusuario: number,tipoDato: string , dato: DatoUsuario): Observable<DatoUsuario> {
+    return this.http.put<DatoUsuario>(`../api/v1/usuarios/${idusuario}/datos/${tipoDato}`, dato);
   }
 
-  public  deleteDatosUsuario(Id: number): Observable <any> {
+  public  deleteDatoUsuario(Id: number): Observable <any> {
     return this.http.delete(`../api/v1/datos/${Id}`);
   }
 

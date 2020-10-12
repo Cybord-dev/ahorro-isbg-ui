@@ -1,4 +1,4 @@
-import { DatosUsuario } from './datosusuario';
+import { DatosUsuario } from './datos-usuario';
 import { Solicitud } from './solicitud';
 import { INavData } from '@coreui/angular';
 
@@ -20,8 +20,9 @@ export class Usuario {
     public solicitudes: Solicitud[];
 
     constructor() {
-        this.datosUsuario = new DatosUsuario;
+        this.datosUsuario = new DatosUsuario();
         this.roles = [];
         this.menu = [];
+        this.tipoUsuario = 'INTERNO';
     }
 }

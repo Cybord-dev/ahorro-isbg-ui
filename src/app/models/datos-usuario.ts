@@ -7,5 +7,4 @@ export class DatosUsuario {
     public MONTO_AHORRO: string;
     
     public constructor(){}
-   
 }
