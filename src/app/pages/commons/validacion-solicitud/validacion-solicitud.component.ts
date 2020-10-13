@@ -6,6 +6,7 @@ import { Solicitud } from '../../../models/solicitud';
 import { Usuario } from '../../../models/usuario';
 import { ValidacionesService } from '../../../services/validaciones.service';
 import { Validacion } from '../../../models/validacion';
+import { __makeTemplateObject } from 'tslib';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class ValidacionSolicitudComponent implements OnInit {
 
   public solicitud: Solicitud = new Solicitud();
   public usuario: Usuario = new Usuario();
-
+  public loading = false;
   public module = '';
   public alerts: string[] = [];
   public success = '';
@@ -56,17 +57,19 @@ export class ValidacionSolicitudComponent implements OnInit {
   }
 
   aprobarSolicitud(): void{
+    this.loading = true;
     const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module,this.validador.email, true);
     this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
-      .toPromise().then((result) => {this.success = 'Solicitud validada correctamente.'; this.validated = true;})
-      .catch(error => this.alerts.push(error));
+      .toPromise().then((result) => {this.success = 'Solicitud validada correctamente.'; this.validated = true; this.loading = false;})
+      .catch(error => {this.alerts.push(error);this.loading = false;});
   }
 
   rechazarSolicitud(): void{
+    this.loading = true;
     const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module,this.validador.email, false);
     this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
-      .toPromise().then((result) => {this.success = 'Solicitud rechazada correctamente.'; this.validated = true;})
-      .catch(error => this.alerts.push(error));
+      .toPromise().then((result) => {this.success = 'Solicitud rechazada correctamente.'; this.validated = true; this.loading = false;})
+      .catch(error => {this.alerts.push(error);this.loading = false;});
   }
 
 }

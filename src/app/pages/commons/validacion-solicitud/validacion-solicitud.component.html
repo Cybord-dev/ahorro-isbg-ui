@@ -66,10 +66,12 @@
               </span>
               <br>
               <br>
-              <button type="button" class="btn btn-sm btn-success" (click)="aprobarSolicitud()" [disabled] = "validated"><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                Aprobar solicitud</button>
-                <button type="button" class="btn btn-sm btn-danger" (click)="rechazarSolicitud()" [disabled] = "validated" ><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                Rechazar solicitud</button>
+              <button type="button" class="btn btn-sm btn-success" (click)="aprobarSolicitud()" [disabled] = "validated || loading"><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                Aprobar solicitud
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                <button type="button" class="btn btn-sm btn-danger" (click)="rechazarSolicitud()" [disabled] = "validated || loading" ><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                Rechazar solicitud
+                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
             </div>
 
           </div>

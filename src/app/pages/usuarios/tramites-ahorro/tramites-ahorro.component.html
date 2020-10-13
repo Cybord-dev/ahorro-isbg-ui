@@ -74,8 +74,10 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="sendSolicitud('SolicitudAhorro')"><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                          Enviar solicitud</button>
+                        <button type="button" class="btn btn-sm btn-success" (click)="sendSolicitud('SolicitudAhorro')" [disabled]="loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                          Enviar solicitud
+                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
                       </div>
   
                     </div>
@@ -152,8 +154,10 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('ModificacionAhorro')"><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                          Enviar solicitud</button>
+                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('ModificacionAhorro')" [disabled] ="loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                          Enviar solicitud
+                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
                       </div>
   
                     </div>
@@ -219,8 +223,10 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('RetiroParcial')"><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                          Enviar solicitud</button>
+                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('RetiroParcial')" [disabled] = "loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                          Enviar solicitud
+                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
                       </div>
   
                     </div>
@@ -302,8 +308,10 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('CancelacionAhorro')"><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                          Enviar solicitud</button>
+                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('CancelacionAhorro')" [disabled]="loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                          Enviar solicitud
+                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
                       </div>
   
                     </div>

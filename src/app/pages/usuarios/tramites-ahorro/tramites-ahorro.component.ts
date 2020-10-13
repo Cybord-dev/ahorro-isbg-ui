@@ -17,7 +17,7 @@ export class TramitesAhorroComponent implements OnInit {
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
 
 
-  public loading = true;
+  public loading = false;
   public usuario: Usuario = new Usuario();
   public errorMessages: string[] = [];
   public success = '';
@@ -53,23 +53,25 @@ export class TramitesAhorroComponent implements OnInit {
         this.staticTabs.tabs[0].active = true;
       });
       this.userService.getUsuario(user.id).toPromise().then(u => this.usuario = u);
-    }).catch((error) => this.alerts.push(error));
+    }).catch((error) => {this.alerts.push(error);this.loading = false;});
   }
 
 
   public sendSolicitud(tipo: string): void {
+    this.loading = true;
     this.alerts = [];
     this.solicitud.idUsuario = this.usuario.id;
     this.solicitud.status = 'Solicitud';
     this.solicitud.tipo = tipo;
     this.solicitud.statusDetalle = 'Solicitud inicial';
-    this.solicitud.fechaEjecucion = this.bsValue;
+    this.solicitud.fechaEjecucion = new Date(this.bsValue);
+    console.log("fecha: 1 "+this.solicitud.fechaEjecucion);
     this.solicitud.atributos.MONTO = this.descuentoQuincenal.toString();
     this.solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
-
+    console.log("fecha: 2 "+this.datepipe.transform(this.bsValue, 'yyyy-MM-dd'));
     this.solicitudService.postSolictudUsuario(this.usuario.id, this.solicitud).toPromise()
-      .then(sol => this.success = 'Se ha enviado la solicitud correctamente')
-      .catch((error) => this.alerts.push(error));
+      .then(sol => {this.success = 'Se ha enviado la solicitud correctamente'; this.loading = false;})
+      .catch((error) => {this.alerts.push(error);this.loading = false;});
   }
 
 

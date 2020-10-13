@@ -16,7 +16,7 @@ export class UsuarioComponent implements OnInit {
 
   registerForm: FormGroup;
   public submitted = false;
-  public loading = true;
+  public loading = false;
   public usuario: Usuario = new Usuario();
   public errorMessages: string[] = [];
 
@@ -157,6 +157,7 @@ export class UsuarioComponent implements OnInit {
             await this.usuarioServicio.insertarRoles(createdUser.id, new RolCat(role)).toPromise();
           }
         }
+        
         this.submitted = true;
         this.params.success = 'El usuario ha sido creado satisfactoriamente.';
       })
