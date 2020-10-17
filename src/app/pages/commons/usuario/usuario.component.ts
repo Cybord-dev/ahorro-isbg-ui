@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -47,7 +47,6 @@ export class UsuarioComponent implements OnInit {
     this.route.paramMap.subscribe(route => {
       const id = route.get('idUsuario');
       if (id !== '*') {
-        this.mensajeModal = '¿Actualizar usuario?';
         this.updateUserInfo(+id);
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: true }],
@@ -59,7 +58,6 @@ export class UsuarioComponent implements OnInit {
 
       } else {
         this.antiguedad = new Date();
-        this.mensajeModal = '¿Registrar usuario?';
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: false, },
           [Validators.required, Validators.email, Validators.pattern('^[a-z0-9A-Z._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
@@ -99,27 +97,22 @@ export class UsuarioComponent implements OnInit {
   }
 
   public selector(): void{
-    if(this.mensajeModal === '¿Actualizar usuario?'){
+    this.modalConfirmacion.hide();
+    if(this.usuario.id !== undefined){
       this.update();
-    }else if((this.mensajeModal === '¿Crear usuario?')){
-      this.register();
     }else{
-      console.log('Error en el selector de metodos');
+      this.register();
     }
   }
 
 
   public openModal(): void {
-    this.modalConfirmacion.show();
-  }
-
-  public confirm(): void {
-    console.log('Confirmado');
     if(this.usuario.id !== undefined){
-      console.log('actualizo');
+      this.mensajeModal = '¿Actualizar usuario?';
     }else{
-      console.log('registrar');
+      this.mensajeModal = '¿Registrar usuario?';
     }
+    this.modalConfirmacion.show();
   }
 
   public decline(): void {
@@ -132,9 +125,6 @@ export class UsuarioComponent implements OnInit {
   get f() { return this.registerForm.controls; }
 
   public update(): void {
-
-
-    this.modalConfirmacion.show();
 
     this.loading = true;
 
@@ -178,6 +168,7 @@ export class UsuarioComponent implements OnInit {
   }
 
   public register(): void {
+    console.log('register');
     let id = 0;
     this.loading = true;
     if (this.registerForm.invalid) { this.loading = false; return; }

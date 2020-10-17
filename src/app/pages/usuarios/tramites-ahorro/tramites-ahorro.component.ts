@@ -5,6 +5,7 @@ import { Usuario } from '../../../models/usuario';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Solicitud } from '../../../models/solicitud';
+import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 
 @Component({
   selector: 'cybord-tramites-ahorro',
@@ -13,7 +14,7 @@ import { Solicitud } from '../../../models/solicitud';
 })
 export class TramitesAhorroComponent implements OnInit {
 
-
+  @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
   @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
 
 
@@ -23,9 +24,12 @@ export class TramitesAhorroComponent implements OnInit {
   public success = '';
   public solicitudes: Solicitud[] = [];
   public solicitud: Solicitud;
+  public mensajeModal: string = '';
 
   public alerts: string[] = [];
 
+  private tipoSol: string = '';
+  private solicitudSat: boolean = false;
 
   public solicitudAhorro: Solicitud;
   public solicitudModificacion: Solicitud;
@@ -64,7 +68,7 @@ export class TramitesAhorroComponent implements OnInit {
   }
 
 
-  public sendSolicitud(tipo: string): void {
+  public requestSolicitud(tipo: string): void {
     this.loading = true;
     this.alerts = [];
     this.solicitud.idUsuario = this.usuario.id;
@@ -79,6 +83,28 @@ export class TramitesAhorroComponent implements OnInit {
     this.solicitudService.postSolictudUsuario(this.usuario.id, this.solicitud).toPromise()
       .then(sol => {this.success = 'Se ha enviado la solicitud correctamente'; this.loading = false;})
       .catch((error) => {this.alerts.push(error);this.loading = false;});
+  }
+
+  public openModal(tipo:string): void{
+    this.tipoSol = tipo;
+    this.solicitudSat = true;
+    this.modalConfirmacion.show();
+  }
+
+  public cancelar(): void{
+    this.modalConfirmacion.hide();
+  }
+
+  public aceptar(): void{
+    this.modalConfirmacion.hide();
+    if(this.solicitudSat){
+      this.requestSolicitud(this.tipoSol);
+    }else{
+      console.log('Tipo de solicitud no seteado');
+      this.alerts.push('Error en el modal');
+    }
+    this.solicitudSat = false;
+    this.tipoSol = '';
   }
 
 
