@@ -11,6 +11,7 @@ import { SaldoAhorro } from '../../../models/saldoahorro';
 export class ReporteAhorroComponent implements OnInit {
 
 
+  public total: number;
   // barChart
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -25,8 +26,7 @@ export class ReporteAhorroComponent implements OnInit {
 
   public barChartData: any[] = [];
   private months: string[] = ['noviembre', 'diciembre','enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio','agosto', 'septiembre', 'octubre']
-  private ahorros: SaldoAhorro[] = [];
-  public datosTabla: {fecha: Date, cant: number}[] = [];
+  public ahorros: SaldoAhorro[] = [];
   constructor(
     private userService : UsuariosService,
     private saldosAhorro: AhorroServicio) {
@@ -38,6 +38,7 @@ export class ReporteAhorroComponent implements OnInit {
       .then((user) => {
         this.saldosAhorro.getSaldoByUsuario(user.id).subscribe(resultado => {
           this.ahorros = resultado;
+          this.total = resultado.map(r=>r.monto).reduce((a,b) => a + b);
           this.setCharInfo();
           this.barChartData = [{ data:this.datos, label: this.barChartLabels }];
         });
@@ -79,9 +80,6 @@ export class ReporteAhorroComponent implements OnInit {
         }else{
           this.datos[i] = this.truncate(currentQ);
         } 
-    }
-    for(let ahorro of this.ahorros) {
-      this.datosTabla.push({"fecha": new Date(ahorro.fechaCreacion), "cant": ahorro.monto})
     }
   }
   private truncate (num): number {
