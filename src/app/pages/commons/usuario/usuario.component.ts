@@ -21,7 +21,7 @@ export class UsuarioComponent implements OnInit {
   public errorMessages: string[] = [];
 
   public params: any = { success: '', message: '', id: '*', module: 'usuarios', interno: false };
-  public antiguedad = new Date();
+  public antiguedad: Date;
 
   public roles = { USUARIO: true, RECURSOS_HUMANOS: false, TESORERIA: false, CONTABILIDAD: false, GERENCIA: false, ADMINISTRACION: false };
 
@@ -37,6 +37,7 @@ export class UsuarioComponent implements OnInit {
     this.loading = true;
     this.errorMessages = [];
     this.params.module = this.router.url.split('/')[1];
+    this.antiguedad = new Date();
 
     this.route.paramMap.subscribe(route => {
       const id = route.get('idUsuario');
@@ -52,7 +53,6 @@ export class UsuarioComponent implements OnInit {
 
       } else {
         //nuevo usuario
-        this.antiguedad = new Date();
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: false, },
           [Validators.required, Validators.email, Validators.pattern('^[a-z0-9A-Z._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
@@ -103,6 +103,7 @@ export class UsuarioComponent implements OnInit {
     this.usuarioServicio.actualizaUser(this.usuario).toPromise()
       .then(async updateduser => {
         console.log(updateduser);
+        this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
         for (const key in this.usuario.datosUsuario) {
           if (key !== undefined && this.usuario.datosUsuario[key] !== undefined) {
             if (updateduser.datosUsuario[key] !== this.usuario.datosUsuario[key]) {
