@@ -27,10 +27,10 @@ export class TramitesAhorroComponent implements OnInit {
   public alerts: string[] = [];
 
 
-  public solicitudAhorro: Solicitud;
-  public solicitudModificacion: Solicitud;
-  public solicitudRetiro: Solicitud;
-  public solicitudCancelacion: Solicitud;
+  public solicitudAhorro: Solicitud = new Solicitud();
+  public solicitudModificacion: Solicitud = new Solicitud();
+  public solicitudRetiro: Solicitud = new Solicitud();
+  public solicitudCancelacion: Solicitud = new Solicitud();
 
   public descuentoQuincenal = 100;
   public bsValue: Date;
@@ -51,7 +51,7 @@ export class TramitesAhorroComponent implements OnInit {
       this.solicitudService.getSolicitudesByUsuario(user.id).subscribe((solicitudes: Solicitud[]) => {
         this.solicitudes = solicitudes;
 
-        this.solicitudAhorro = solicitudes.find(s => s.tipo === 'SolicitudAhorro') || new Solicitud();
+        this.solicitudAhorro = solicitudes.find(s => s.tipo === 'SolicitudAhorro');
 
 
 
