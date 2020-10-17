@@ -50,6 +50,13 @@ export class TramitesAhorroComponent implements OnInit {
     .then(user => {
       this.solicitudService.getSolicitudesByUsuario(user.id).subscribe((solicitudes: Solicitud[]) => {
         this.solicitudes = solicitudes;
+
+        this.solicitudAhorro = solicitudes.find(s => s.tipo === 'SolicitudAhorro') || new Solicitud();
+
+
+
+
+
         this.staticTabs.tabs[0].active = true;
       });
       this.userService.getUsuario(user.id).toPromise().then(u => this.usuario = u);
