@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,9 +16,9 @@ import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 })
 export class UsuarioComponent implements OnInit {
 
-  
-  @ViewChild('modalConfirmacion') public myModal: ModalDirective;
-  
+
+  @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
+
   registerForm: FormGroup;
   public submitted = false;
   public loading = false;
@@ -108,9 +108,33 @@ export class UsuarioComponent implements OnInit {
     }
   }
 
+
+  public openModal(): void {
+    this.modalConfirmacion.show();
+  }
+
+  public confirm(): void {
+    console.log('Confirmado');
+    if(this.usuario.id !== undefined){
+      console.log('actualizo');
+    }else{
+      console.log('registrar');
+    }
+  }
+
+  public decline(): void {
+    this.modalConfirmacion.hide();
+  }
+
+
+
+
   get f() { return this.registerForm.controls; }
 
   public update(): void {
+
+
+    this.modalConfirmacion.show();
 
     this.loading = true;
 
