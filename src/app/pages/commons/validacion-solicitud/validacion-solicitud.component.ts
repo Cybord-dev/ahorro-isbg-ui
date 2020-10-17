@@ -20,7 +20,8 @@ import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 export class ValidacionSolicitudComponent implements OnInit {
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
   public validador: Usuario = new Usuario();
-  public mensajeModal: string = '';
+  public aprobacion = false;
+  public razonRechazo = '';
   public solicitud: Solicitud = new Solicitud();
   public usuario: Usuario = new Usuario();
   public loading = false;
@@ -59,32 +60,19 @@ export class ValidacionSolicitudComponent implements OnInit {
     });
   }
 
-  public openModal(selector:boolean): void{
-    if(selector){
-      this.mensajeModal = '¿Deseas APROBAR la solicitud?';
-      this.modalConfirmacion.show();
-    }else{
-      this.mensajeModal = '¿Deseas RECHAZAR la solicitud?';
-      this.modalConfirmacion.show();
-    }
+  public openModal(aprobacion: boolean): void{
+    this.aprobacion = aprobacion;
+    this.modalConfirmacion.show();
   }
 
-  public decline(): void{
+  public cancelar(): void {
+    this.aprobacion = false;
     this.modalConfirmacion.hide();
-  }
-
-  public selector(): void{
-    this.modalConfirmacion.hide();
-    if(this.mensajeModal === '¿Deseas APROBAR la solicitud?'){
-      this.aprobarSolicitud();
-    }
-    else if(this.mensajeModal === '¿Deseas RECHAZAR la solicitud?'){
-      this.rechazarSolicitud();
-    }
   }
 
   public aprobarSolicitud(): void{
     this.loading = true;
+    this.modalConfirmacion.hide();
     const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module,this.validador.email, true);
     this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
       .toPromise().then((result) => {this.success = 'Solicitud validada correctamente.'; this.validated = true; this.loading = false;})
@@ -93,7 +81,8 @@ export class ValidacionSolicitudComponent implements OnInit {
 
   public rechazarSolicitud(): void{
     this.loading = true;
-    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module,this.validador.email, false);
+    this.modalConfirmacion.hide();
+    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module, this.validador.email, false);
     this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
       .toPromise().then((result) => {this.success = 'Solicitud rechazada correctamente.'; this.validated = true; this.loading = false;})
       .catch(error => {this.alerts.push(error);this.loading = false;});

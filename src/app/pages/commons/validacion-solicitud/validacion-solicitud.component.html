@@ -95,11 +95,15 @@
         </button>
       </div>
       <div class="modal-body">
-          {{mensajeModal}}
+          <strong *ngIf="aprobacion">¿Esta seguro de aprobar la solicitud?</strong>
+          <strong *ngIf="!aprobacion">Especifique la razon o motivo del rechazo de la solicitud</strong>
+          <input type="text" id="rejectReason" class="form-control"
+          placeholder="Razon de rechazo solicitud" [(ngModel)]="razonRechazo">
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="selector()" >Si</button>
-          <button type="button" class="btn btn-secondary" (click)="decline()" >no</button>
+          <button type="button" *ngIf="aprobacion" class="btn btn-primary" (click)="aprobarSolicitud()" >Aprobar</button>
+          <button type="button" *ngIf="!aprobacion" [disabled]="razonRechazo.length < 10" class="btn btn-danger" (click)="rechazarSolicitud()" >Rechazar</button>
+          <button type="button" class="btn btn-warning" (click)="cancelar()" >Salir</button>
       </div>
     </div>
   </div>
