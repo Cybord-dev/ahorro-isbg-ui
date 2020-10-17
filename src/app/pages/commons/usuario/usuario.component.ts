@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,8 @@ import { DatoUsuario } from '../../../models/dato-usuario';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Usuario } from '../../../models/usuario';
 import { RolCat } from '../../../models/rolcat';
+import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
+
 
 @Component({
   selector: 'cybord-usuario',
@@ -14,12 +16,15 @@ import { RolCat } from '../../../models/rolcat';
 })
 export class UsuarioComponent implements OnInit {
 
+  
+  @ViewChild('modalConfirmacion') public myModal: ModalDirective;
+  
   registerForm: FormGroup;
   public submitted = false;
   public loading = false;
   public usuario: Usuario = new Usuario();
   public errorMessages: string[] = [];
-
+  public mensajeModal: string = '';
   public params: any = { success: '', message: '', id: '*', module: 'usuarios', interno: false };
   public antiguedad: Date;
 
@@ -42,6 +47,7 @@ export class UsuarioComponent implements OnInit {
     this.route.paramMap.subscribe(route => {
       const id = route.get('idUsuario');
       if (id !== '*') {
+        this.mensajeModal = '¿Actualizar usuario?';
         this.updateUserInfo(+id);
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: true }],
@@ -52,7 +58,8 @@ export class UsuarioComponent implements OnInit {
         });
 
       } else {
-        //nuevo usuario
+        this.antiguedad = new Date();
+        this.mensajeModal = '¿Registrar usuario?';
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: false, },
           [Validators.required, Validators.email, Validators.pattern('^[a-z0-9A-Z._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
@@ -91,6 +98,15 @@ export class UsuarioComponent implements OnInit {
     }
   }
 
+  public selector(): void{
+    if(this.mensajeModal === '¿Actualizar usuario?'){
+      this.update();
+    }else if((this.mensajeModal === '¿Crear usuario?')){
+      this.register();
+    }else{
+      console.log('Error en el selector de metodos');
+    }
+  }
 
   get f() { return this.registerForm.controls; }
 
@@ -137,7 +153,7 @@ export class UsuarioComponent implements OnInit {
       .catch(error => this.errorMessages.push(error));
   }
 
-  public registry(): void {
+  public register(): void {
     let id = 0;
     this.loading = true;
     if (this.registerForm.invalid) { this.loading = false; return; }
