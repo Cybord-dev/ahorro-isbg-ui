@@ -79,6 +79,43 @@
           <br>
           <p class="alert alert-success" *ngIf="success.length > 0" role="alert">{{success}}</p>
 
+          <br>
+          <div class="row" *ngIf="solicitud !== undefined && solicitud.validaciones.length>0">
+            <div class="col"></div>
+            <div class="col-6">
+              <strong>Autorizaciones</strong>
+              <br/>
+              <br/>
+              <table class="table table-bordered table-striped table-sm">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>FECHA</th>
+                    <th>AREA</th>
+                    <th>VALIDADOR</th>
+                    <th>ESTATUS</th>
+                    <th>OBSERVACIONES</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let fila of solicitud.validaciones">
+                    <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                    <td scope="row">{{fila.area }}</td>
+                    <td scope="row">{{fila.email}}</td>
+                    <td scope="row">
+                      <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
+                      <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
+                    </td>
+                    <td scope="row">{{fila.statusDetalle}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col"></div>
+
+          </div>
+
+          
+
         </div><!-- card body-->
       </div>
     </div>
