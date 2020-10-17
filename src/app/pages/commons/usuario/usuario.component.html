@@ -110,11 +110,9 @@
                                     <strong class="col-md-3 col-form-label">Fecha Antiguiedad</strong>
                                     <div class="col-md-7">
                                         <input id="start-date" type="text" class="form-control" #dp="bsDatepicker"
-                                                bsDatepicker [bsValue]="antiguedad">
+                                                bsDatepicker [(bsValue)]="antiguedad">
                                     </div>
                                 </div>
-
-                                {{antiguedad | date}}
                             </form>
                             
                         </div>
