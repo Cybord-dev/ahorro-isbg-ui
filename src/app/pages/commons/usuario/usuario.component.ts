@@ -146,7 +146,6 @@ export class UsuarioComponent implements OnInit {
     this.usuarioServicio.insertarUsuario(this.usuario).toPromise()
       .then(async createdUser => {
         id = createdUser.id;
-        this.params.success = 'Usuario creado exitosamente';
         for (const key in this.usuario.datosUsuario) {
           if (key !== undefined && this.usuario.datosUsuario[key] !== undefined) {
             const valor = this.usuario.datosUsuario[key];
@@ -158,12 +157,12 @@ export class UsuarioComponent implements OnInit {
             await this.usuarioServicio.insertarRoles(createdUser.id, new RolCat(role)).toPromise();
           }
         }
-        
         this.submitted = true;
-        this.params.success = 'El usuario ha sido creado satisfactoriamente.';
       })
-      .then(() => this.updateUserInfo(id))
-      .catch(error => this.errorMessages.push(error));
+      .then(() => {
+        this.params.success = 'El usuario ha sido creado satisfactoriamente.';
+        this.updateUserInfo(id);
+      }).catch(error => this.errorMessages.push(error));
   }
 
   private async updateRoles() {
