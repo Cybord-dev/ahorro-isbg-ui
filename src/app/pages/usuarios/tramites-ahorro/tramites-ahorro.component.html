@@ -76,7 +76,7 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="sendSolicitud('SolicitudAhorro')" *ngIf="solicitudAhorro.id === undefined" [disabled]="loading">
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('SolicitudAhorro')" *ngIf="solicitudAhorro.id === undefined" [disabled]="loading">
                           <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud</button>
                           <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                       </div>
@@ -187,7 +187,7 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('ModificacionAhorro')" [disabled] ="loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('ModificacionAhorro')" [disabled] ="loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
                           Enviar solicitud
                           <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                         </button>
@@ -256,7 +256,7 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('RetiroParcial')" [disabled] = "loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('RetiroParcial')" [disabled] = "loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
                           Enviar solicitud
                           <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                         </button>
@@ -341,7 +341,7 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('CancelacionAhorro')" [disabled]="loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('CancelacionAhorro')" [disabled]="loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
                           Enviar solicitud
                           <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                         </button>
@@ -362,4 +362,24 @@
     <!--/.col-->
   </div>
   <!--/.row-->
+</div>
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelar()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          ¿Estas seguro que quieres enviar la solicitud?
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="aceptar()" >Si</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelar()" >No</button>
+      </div>
+    </div>
+  </div>
 </div>
