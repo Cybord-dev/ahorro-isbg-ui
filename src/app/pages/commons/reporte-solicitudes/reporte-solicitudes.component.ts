@@ -26,7 +26,6 @@ export class ReporteSolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
     this.module = this.router.url.split('/')[1];
-    this.updateDataTable(0, 10);
     console.log(this.module);
 
     switch (this.module) {
@@ -37,18 +36,18 @@ export class ReporteSolicitudesComponent implements OnInit {
         this.filterParams.estatus = 'ValidacionTeso';
         break;
       case 'contabilidad':
-        this.filterParams.estatus = 'ValidacionConta';
+        this.filterParams.estatus = 'ValdiacionConta';
         break;
       case 'gerencia':
         this.filterParams.estatus = 'ValidacionGerencia';
         break;
       case 'administracion':
-        this.filterParams.estatus = 'ValidacionAdminstracion';
+        this.filterParams.estatus = 'ValidaAdmin';
         break;
       default:
         break;
     }
-
+    this.updateDataTable(0, 10, this.filterParams);
   }
 
 
