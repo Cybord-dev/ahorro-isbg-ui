@@ -85,10 +85,13 @@
                     <tr>
                       <th class="text-center">ACCIONES</th>
                       <th class="text-center">ID SOLICITUD</th>
+                      <th class="text-center">NO EMPLEADO</th>
                       <th class="text-center">SOLICITANTE</th>
                       <th class="text-center">FECHA SOLICITUD</th>
+                      <th class="text-center">FECHA EJECUCION</th>
                       <th class="text-center">TIPO USUARIO</th>
                       <th class="text-center">TIPO VALIDACION</th>
+                      <th class="text-center">ESTATUS</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -98,9 +101,11 @@
                             class="fa fa-search fa-sm"></i></button>
 
                       </td>
-                      <td scope="row">{{fila.idSolicitud}}</td>
+                      <td scope="row">{{fila.id}}</td>
+                      <td scope="row">{{fila.noEmpleado}}</td>
                       <td scope="row">{{fila.nombre}}</td>
-                      <td scope="row">{{arrayfechas[fila.idSolicitud] | date:'yyyy-MM-dd'}}</td>
+                      <td scope="row">{{fila.fechaCreacion}}</td>
+                      <td scope="row">{{fila.fechaEjecucion}}</td>
 
                       <td scope="row">Interno</td>
                       <td scope="row" class="text-center">
@@ -113,6 +118,7 @@
                         <span class="badge badge-warning" *ngIf="fila.tipo === 'ModificacionAhorro'">MODIFICACION
                           AHORRO</span>
                       </td>
+                      <td scope="row">{{fila.status}}</td>
                     </tr>
                   </tbody>
                 </table>

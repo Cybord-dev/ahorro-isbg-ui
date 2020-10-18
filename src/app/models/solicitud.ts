@@ -6,9 +6,10 @@ export class Solicitud {
     public id: number;
     public idUsuario: number;
     public tipo: string;
+    public noEmpleado: string;
+    public nombre: string;
     public status: string;
     public statusDetalle: string;
-
     public fechaEjecucion: Date;
     public fechaCreacion: Date;
     public fechaActualizacion: Date;

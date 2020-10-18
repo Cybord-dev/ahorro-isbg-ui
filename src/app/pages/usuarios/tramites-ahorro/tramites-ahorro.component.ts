@@ -48,9 +48,9 @@ export class TramitesAhorroComponent implements OnInit {
         this.solicitudService.getSolicitudesByUsuario(user.id).subscribe((solicitudes: Solicitud[]) => {
 
           this.solicitudAhorro = solicitudes.find(s => s.tipo === 'SolicitudAhorro') || new Solicitud('SolicitudAhorro');
-          this.solicitudAhorro = solicitudes.find(s => s.tipo === 'CancelacionAhorro') || new Solicitud('CancelacionAhorro');
-          this.solicitudAhorro = solicitudes.find(s => s.tipo === 'RetiroParcialAhorro') || new Solicitud('RetiroParcialAhorro');
-          this.solicitudAhorro = solicitudes.find(s => s.tipo === 'ModificacionAhorro') || new Solicitud('ModificacionAhorro');
+          this.solicitudCancelacion = solicitudes.find(s => s.tipo === 'CancelacionAhorro') || new Solicitud('CancelacionAhorro');
+          this.solicitudRetiro = solicitudes.find(s => s.tipo === 'RetiroParcialAhorro') || new Solicitud('RetiroParcialAhorro');
+          this.solicitudModificacion = solicitudes.find(s => s.tipo === 'ModificacionAhorro') || new Solicitud('ModificacionAhorro');
           this.staticTabs.tabs[0].active = true;
         });
         this.userService.getUsuario(user.id).toPromise().then(u => this.usuario = u);
@@ -73,6 +73,7 @@ export class TramitesAhorroComponent implements OnInit {
 
   public openModal(tipo: string): void {
     this.tipoSolicitud = tipo;
+    console.log(`requesting ${tipo}`);
     this.modalConfirmacion.show();
   }
 
@@ -81,7 +82,7 @@ export class TramitesAhorroComponent implements OnInit {
   }
 
   public aceptar(): void {
-
+    console.log(`acepting ${this.tipoSolicitud}`);
     switch (this.tipoSolicitud) {
       case 'SolicitudAhorro':
         this.requestSolicitud(this.solicitudAhorro);
