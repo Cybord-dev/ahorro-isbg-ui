@@ -134,7 +134,7 @@
       <div class="modal-body">
           <strong *ngIf="aprobacion">¿Esta seguro de aprobar la solicitud?</strong>
           <strong *ngIf="!aprobacion">Especifique la razon o motivo del rechazo de la solicitud</strong>
-          <input type="text" id="rejectReason" class="form-control"
+          <input type="text" id="rejectReason" class="form-control" *ngIf="!aprobacion"
           placeholder="Razon de rechazo solicitud" [(ngModel)]="razonRechazo">
       </div>
       <div class="modal-footer">

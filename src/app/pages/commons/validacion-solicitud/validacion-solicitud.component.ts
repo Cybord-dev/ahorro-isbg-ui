@@ -18,14 +18,17 @@ import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 
 
 export class ValidacionSolicitudComponent implements OnInit {
+
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
+
+  public module = 'usuarios';
+
   public validador: Usuario = new Usuario();
   public aprobacion = false;
   public razonRechazo = '';
   public solicitud: Solicitud = new Solicitud();
   public usuario: Usuario = new Usuario();
   public loading = false;
-  public module = '';
   public alerts: string[] = [];
   public success = '';
 
@@ -75,8 +78,12 @@ export class ValidacionSolicitudComponent implements OnInit {
     this.modalConfirmacion.hide();
     const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module,this.validador.email, true);
     this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
-      .toPromise().then((result) => {this.success = 'Solicitud validada correctamente.'; this.validated = true; this.loading = false;})
-      .catch(error => {this.alerts.push(error);this.loading = false;});
+      .toPromise().then((result) => {
+        this.success = 'Solicitud validada correctamente.'; 
+        this.validated = true;
+        this.loading = false;
+        this.router.navigate([`../${this.module}/validaciones`]);
+      }).catch(error => {this.alerts.push(error); this.loading = false; });
   }
 
   public rechazarSolicitud(): void{
@@ -84,8 +91,12 @@ export class ValidacionSolicitudComponent implements OnInit {
     this.modalConfirmacion.hide();
     const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module, this.validador.email, false);
     this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
-      .toPromise().then((result) => {this.success = 'Solicitud rechazada correctamente.'; this.validated = true; this.loading = false;})
-      .catch(error => {this.alerts.push(error);this.loading = false;});
+      .toPromise().then((result) => {
+        this.success = 'Solicitud rechazada correctamente.';
+        this.validated = true;
+        this.loading = false;
+        this.router.navigate([`../${this.module}/validaciones`]);
+      }).catch(error => {this.alerts.push(error);this.loading = false; });
   }
 
 }

@@ -16,7 +16,8 @@ export class Solicitud {
     public validaciones: Validacion[];
     public atributos: Atributos;
 
-    constructor() {
+    constructor( tipo?: string) {
+        this.tipo = tipo;
         this.validaciones = [];
         this.atributos = new Atributos();
     }

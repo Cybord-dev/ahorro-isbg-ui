@@ -24,7 +24,7 @@ export class UsuarioComponent implements OnInit {
   public loading = false;
   public usuario: Usuario = new Usuario();
   public errorMessages: string[] = [];
-  public mensajeModal: string = '';
+  public mensajeModal = '';
   public params: any = { success: '', message: '', id: '*', module: 'usuarios', interno: false };
   public antiguedad: Date;
 
@@ -163,7 +163,7 @@ export class UsuarioComponent implements OnInit {
         this.submitted = true;
         this.params.success = 'El usuario ha sido actualizado satisfactoriamente.';
       })
-      .then(() => this.updateUserInfo(this.usuario.id))
+      .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
       .catch(error => this.errorMessages.push(error));
   }
 
@@ -190,13 +190,11 @@ export class UsuarioComponent implements OnInit {
         }
         this.submitted = true;
       })
-      .then(() => {
-        this.params.success = 'El usuario ha sido creado satisfactoriamente.';
-        this.updateUserInfo(id);
-      }).catch(error => this.errorMessages.push(error));
+      .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
+      .catch(error => this.errorMessages.push(error));
   }
 
-  private async updateRoles() {
+  private async updateRoles(): Promise<void> {
     for (const role in this.roles) { // QUITA ROLES EXISTENTES
       if (this.roles[role] === false // ROLE EN FALSO
         && this.usuario.roles.find(x => x === role)) { // PERO YA EXISTE EN EL USER

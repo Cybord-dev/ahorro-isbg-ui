@@ -55,7 +55,7 @@
                               <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
                                 [bsConfig]="{ containerClass: 'theme-dark-blue' }" [datesEnabled]="enabledDates"
                                  [(bsValue)]="bsValue" *ngIf="solicitudAhorro.atributos.FECHA === undefined">
-                                 <input type="text" id="start-date" name="start-date" class="form-control" disabled
+                                 <input type="text" id="start-date" name="start-date" class="form-control" disabled *ngIf="solicitudAhorro.atributos.FECHA !== undefined"
                                  placeholder="fecha inicio descuentos" [(ngModel)]="solicitudAhorro.atributos.FECHA">
                               <span class="help-block" *ngIf="solicitudAhorro.atributos.FECHA === undefined">fecha inicio descuentos</span>
                             </div>
@@ -83,7 +83,7 @@
   
                     </div>
 
-                    <div class="row" *ngIf="solicitudAhorro.id !== undefined">
+                    <div class="row" *ngIf="solicitudAhorro.id !== undefined && solicitudAhorro.validaciones.length>0">
                       <div class="col"></div>
                       <div class="col-6">
                         <strong>Autorizaciones</strong>
@@ -115,7 +115,7 @@
 
                     </div>
                   </tab>
-                  <tab *ngIf="solicitudAhorro !== undefined">
+                  <tab *ngIf="solicitudAhorro.status==='Finalizada'">
                     <ng-template tabHeading  ><i class="icon-refresh"></i>&nbsp; Modificación</ng-template>
                     <br>
   
@@ -195,7 +195,7 @@
   
                     </div>
                   </tab>
-                  <tab *ngIf="solicitudAhorro !== undefined">
+                  <tab *ngIf="solicitudAhorro.status==='Finalizada'">
                     <ng-template tabHeading><i class="icon-reload"></i>&nbsp; Retiro Parcial</ng-template>
                     <br>
   
@@ -264,7 +264,7 @@
   
                     </div>
                   </tab>
-                  <tab *ngIf="solicitudAhorro !== undefined">
+                  <tab *ngIf="solicitudAhorro.status==='Finalizada'">
                     <ng-template tabHeading><i class="icon-envelope-open"></i>&nbsp; Cancelación</ng-template>
                     <br>
   

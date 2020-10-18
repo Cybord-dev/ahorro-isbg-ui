@@ -38,9 +38,9 @@ export class ReporteAhorroComponent implements OnInit {
       .then((user) => {
         this.saldosAhorro.getSaldoByUsuario(user.id).subscribe(resultado => {
           this.ahorros = resultado;
-          this.total = resultado.map(r=>r.monto).reduce((a,b) => a + b);
+          this.total = resultado.map(r => r.monto).reduce((a, b) => a + b);
           this.setCharInfo();
-          this.barChartData = [{ data:this.datos, label: this.barChartLabels }];
+          this.barChartData = [{ data: this.datos, label: this.barChartLabels }];
         });
       }).catch(error => this.errorMessages.push(error));
       this.barChartData = [{data:[22, 11], label: ["enero", "febrero"]}];
