@@ -20,7 +20,7 @@ const routes: Routes = [
     path: 'usuarios/:idUsuario',
     component: UsuarioComponent,
     data: {
-      title: 'Usario Externo'
+      title: 'Usario ISBG'
     }
   },
   {

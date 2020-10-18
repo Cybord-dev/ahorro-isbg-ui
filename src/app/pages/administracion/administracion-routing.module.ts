@@ -3,8 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { ReporteSolicitudesComponent } from '../commons/reporte-solicitudes/reporte-solicitudes.component';
 import { HistoricoSolicitudesComponent } from '../commons/historico-solicitudes/historico-solicitudes.component';
 import { UsuariosComponent } from '../commons/usuarios/usuarios.component';
-import { AltaRolesComponent } from './alta-roles/alta-roles.component';
 import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
+import { UsuarioComponent } from '../commons/usuario/usuario.component';
 
 const routes: Routes = [
   {
@@ -15,8 +15,8 @@ const routes: Routes = [
     }
   },
   {
-    path: 'roles/:idUsuario',
-    component: AltaRolesComponent,
+    path: 'usuarios/:idUsuario',
+    component: UsuarioComponent,
     data: {
       title: 'Usario ISBG'
     }

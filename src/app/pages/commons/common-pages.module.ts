@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // UI Component
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -7,6 +8,7 @@ import { ChartsModule } from 'ng2-charts';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 // Common components
@@ -36,6 +38,7 @@ import { UsuarioComponent } from './usuario/usuario.component';
     ReactiveFormsModule,
     BsDatepickerModule.forRoot(),
     AlertModule.forRoot(),
+    ModalModule.forRoot(),
     FormsModule,
     FormsModule,
     ChartsModule,
@@ -49,11 +52,15 @@ import { UsuarioComponent } from './usuario/usuario.component';
     FormsModule,
     ReactiveFormsModule,
     AlertModule,
+    ModalModule,
     BsDatepickerModule,
     ProfileComponent,
     ReporteSolicitudesComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
+  ],
+  providers: [
+    DatePipe
   ]
 })
 export class CommonsPagesModule { }

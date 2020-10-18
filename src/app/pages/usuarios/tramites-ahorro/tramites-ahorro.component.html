@@ -14,7 +14,7 @@
               </div>
 
               <tabset #staticTabs>
-                <tab *ngIf="solicitudAhorro === undefined || solicitudAhorro.status!='Finalizada'">
+                <tab *ngIf="solicitudAhorro.id === undefined || solicitudAhorro.status!=='Finalizada'">
                     
                     <ng-template tabHeading ><i class="icon-docs"></i>&nbsp; Solicitud</ng-template>
               
@@ -44,9 +44,9 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
                             <div class="col-md-9">
-                              <input type="number" id="quantity" name="quantity" class="form-control" min=100
-                                placeholder="100.00"  [(ngModel)]="descuentoQuincenal" min="100" max="20000">
-                              <span class="help-block">Descuento quincenal</span>
+                              <input type="number" id="quantity" name="quantity" class="form-control" min=100 [disabled] = "solicitudAhorro.id !== undefined"
+                                placeholder="100.00"  [(ngModel)]="solicitudAhorro.atributos.MONTO" min="100" max="20000">
+                              <span class="help-block" *ngIf="solicitudAhorro.id === undefined">Descuento quincenal</span>
                             </div>
                           </div>
                           <div class="form-group row">
@@ -54,8 +54,10 @@
                             <div class="col-md-9">
                               <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
                                 [bsConfig]="{ containerClass: 'theme-dark-blue' }" [datesEnabled]="enabledDates"
-                                 [(bsValue)]="bsValue">
-                              <span class="help-block">fecha inicio descuentos</span>
+                                 [(bsValue)]="bsValue" *ngIf="solicitudAhorro.atributos.FECHA === undefined">
+                                 <input type="text" id="start-date" name="start-date" class="form-control" disabled
+                                 placeholder="fecha inicio descuentos" [(ngModel)]="solicitudAhorro.atributos.FECHA">
+                              <span class="help-block" *ngIf="solicitudAhorro.atributos.FECHA === undefined">fecha inicio descuentos</span>
                             </div>
                           </div>
                         </form>
@@ -74,10 +76,42 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="sendSolicitud('SolicitudAhorro')"><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                          Enviar solicitud</button>
+                        <button type="button" class="btn btn-sm btn-success" (click)="sendSolicitud('SolicitudAhorro')" *ngIf="solicitudAhorro.id === undefined">
+                          <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud</button>
                       </div>
   
+                    </div>
+
+                    <div class="row" *ngIf="solicitudAhorro.id !== undefined">
+                      <div class="col"></div>
+                      <div class="col-6">
+                        <strong>Autorizaciones</strong>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered table-striped table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th>FECHA</th>
+                              <th>AREA</th>
+                              <th>ESTATUS</th>
+                              <th>OBSERVACIONES</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let fila of solicitudAhorro.validaciones">
+                              <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                              <td scope="row">{{fila.area }}</td>
+                              <td scope="row">
+                                <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
+                                <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
+                              </td>
+                              <td scope="row">{{fila.statusDetalle}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col"></div>
+
                     </div>
                   </tab>
                   <tab *ngIf="solicitudAhorro !== undefined">
