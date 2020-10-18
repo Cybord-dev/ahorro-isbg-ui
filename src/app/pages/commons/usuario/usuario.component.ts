@@ -127,7 +127,7 @@ export class UsuarioComponent implements OnInit {
   public update(): void {
 
     this.loading = true;
-
+    console.log(this.usuario.noEmpleado);
     if (this.registerForm.invalid) { this.loading = false; return; }
     this.errorMessages = [];
     this.usuarioServicio.actualizaUser(this.usuario).toPromise()
@@ -168,7 +168,6 @@ export class UsuarioComponent implements OnInit {
   }
 
   public register(): void {
-    console.log('register');
     let id = 0;
     this.loading = true;
     if (this.registerForm.invalid) { this.loading = false; return; }
@@ -191,7 +190,7 @@ export class UsuarioComponent implements OnInit {
         this.submitted = true;
       })
       .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
-      .catch(error => this.errorMessages.push(error));
+      .catch(error => {this.errorMessages.push(error); this.loading = false;});
   }
 
   private async updateRoles(): Promise<void> {

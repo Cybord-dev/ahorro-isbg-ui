@@ -8,6 +8,7 @@ export class Usuario {
     public activo: boolean;
     public nombre: string;
     public email: string;
+    public noEmpleado: string;
     public urlImagenPerfil: string;
     public tipoUsuario: string;
     public fechaCreacion: Date;
