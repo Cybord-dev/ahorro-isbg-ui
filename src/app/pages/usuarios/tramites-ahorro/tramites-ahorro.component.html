@@ -187,6 +187,37 @@
                       </div>
   
                     </div>
+
+                    <div class="row" *ngIf="solicitudModificacion.id !== undefined && solicitudModificacion.validaciones.length>0">
+                      <div class="col"></div>
+                      <div class="col-6">
+                        <strong>Autorizaciones</strong>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered table-striped table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th>FECHA</th>
+                              <th>AREA</th>
+                              <th>ESTATUS</th>
+                              <th>OBSERVACIONES</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let fila of solicitudModificacion.validaciones">
+                              <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                              <td scope="row">{{fila.area }}</td>
+                              <td scope="row">
+                                <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
+                                <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
+                              </td>
+                              <td scope="row">{{fila.statusDetalle}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col"></div>
+                    </div>
                   </tab>
                   <tab *ngIf="solicitudAhorro.status==='Finalizada'">
                     <ng-template tabHeading><i class="icon-reload"></i>&nbsp; Retiro Parcial</ng-template>
@@ -249,6 +280,37 @@
                         </button>
                       </div>
   
+                    </div>
+
+                    <div class="row" *ngIf="solicitudRetiro.id !== undefined && solicitudRetiro.validaciones.length>0">
+                      <div class="col"></div>
+                      <div class="col-6">
+                        <strong>Autorizaciones</strong>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered table-striped table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th>FECHA</th>
+                              <th>AREA</th>
+                              <th>ESTATUS</th>
+                              <th>OBSERVACIONES</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let fila of solicitudRetiro.validaciones">
+                              <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                              <td scope="row">{{fila.area }}</td>
+                              <td scope="row">
+                                <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
+                                <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
+                              </td>
+                              <td scope="row">{{fila.statusDetalle}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col"></div>
                     </div>
                   </tab>
                   <tab *ngIf="solicitudAhorro.status==='Finalizada'">
@@ -331,6 +393,37 @@
                         </button>
                       </div>
   
+                    </div>
+
+                    <div class="row" *ngIf="solicitudCancelacion.id !== undefined && solicitudCancelacion.validaciones.length>0">
+                      <div class="col"></div>
+                      <div class="col-6">
+                        <strong>Autorizaciones</strong>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered table-striped table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th>FECHA</th>
+                              <th>AREA</th>
+                              <th>ESTATUS</th>
+                              <th>OBSERVACIONES</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let fila of solicitudCancelacion.validaciones">
+                              <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                              <td scope="row">{{fila.area }}</td>
+                              <td scope="row">
+                                <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
+                                <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
+                              </td>
+                              <td scope="row">{{fila.statusDetalle}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col"></div>
                     </div>
                   </tab>
               </tabset>
