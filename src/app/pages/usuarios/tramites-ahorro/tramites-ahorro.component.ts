@@ -51,6 +51,7 @@ export class TramitesAhorroComponent implements OnInit {
           this.solicitudCancelacion = solicitudes.find(s => s.tipo === 'CancelacionAhorro') || new Solicitud('CancelacionAhorro');
           this.solicitudRetiro = solicitudes.find(s => s.tipo === 'RetiroParcialAhorro') || new Solicitud('RetiroParcialAhorro');
           this.solicitudModificacion = solicitudes.find(s => s.tipo === 'ModificacionAhorro') || new Solicitud('ModificacionAhorro');
+          this.solicitudModificacion.atributos.MONTO = this.solicitudAhorro.atributos.MONTO;
           this.staticTabs.tabs[0].active = true;
         });
         this.userService.getUsuario(user.id).toPromise().then(u => this.usuario = u);
