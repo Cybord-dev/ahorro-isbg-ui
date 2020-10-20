@@ -29,7 +29,7 @@ export class UsuarioComponent implements OnInit {
   public antiguedad: Date;
 
   public roles = { USUARIO: true, RECURSOS_HUMANOS: false, TESORERIA: false, CONTABILIDAD: false, GERENCIA: false, ADMINISTRACION: false };
-
+  private nombreRoles = Object.keys(this.roles);
   constructor(
     public datepipe: DatePipe,
     private route: ActivatedRoute,
@@ -125,7 +125,7 @@ export class UsuarioComponent implements OnInit {
   get f() { return this.registerForm.controls; }
 
   public update(): void {
-
+    console.log("nombres: "+this.nombreRoles);
     this.loading = true;
     console.log(this.usuario.noEmpleado);
     if (this.registerForm.invalid) { this.loading = false; return; }
@@ -145,12 +145,14 @@ export class UsuarioComponent implements OnInit {
         }
         if (this.params.module === 'administracion') {
           console.log('Updating user roles');
+          var i = 0;
           for (const role in this.roles) { // QUITA ROLES EXISTENTES
             if (this.roles[role] === false // ROLE EN FALSO
               && this.usuario.roles.find(x => x === role)) { // PERO YA EXISTE EN EL USER
               await this.usuarioServicio.deleteRoles(this.usuario.id,
-                this.roles[role]).toPromise();
+                this.nombreRoles[i]).toPromise();
             }
+            i++;
           }
           for (const role in this.roles) { // AGREGAR NUEVOS ROLES
 
@@ -164,7 +166,7 @@ export class UsuarioComponent implements OnInit {
         this.params.success = 'El usuario ha sido actualizado satisfactoriamente.';
       })
       .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
-      .catch(error => this.errorMessages.push(error));
+      .catch(error => {this.errorMessages.push(error); this.loading = false;});
   }
 
   public register(): void {
