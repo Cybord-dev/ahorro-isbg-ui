@@ -15,8 +15,6 @@ import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 export class TramitesAhorroComponent implements OnInit {
 
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
-  @ViewChild('staticTabs', { static: false }) staticTabs: TabsetComponent;
-
 
   public loading = false;
   public usuario: Usuario = new Usuario();
@@ -24,7 +22,8 @@ export class TramitesAhorroComponent implements OnInit {
   public success = '';
   public tipoSolicitud = 'SolicitudAhorro';
   public alerts: string[] = [];
-  private solicitudSat: boolean = false;
+
+  public enabledDates = [];
 
   public solicitudAhorro: Solicitud = new Solicitud();
   public solicitudModificacion: Solicitud = new Solicitud();
@@ -43,16 +42,21 @@ export class TramitesAhorroComponent implements OnInit {
     this.errorMessages = [];
     this.success = '';
 
+    this.calculateEnabledDates();
     this.userService.myInfo().toPromise()
       .then(user => {
         this.solicitudService.getSolicitudesByUsuario(user.id).subscribe((solicitudes: Solicitud[]) => {
 
-          this.solicitudAhorro = solicitudes.find(s => s.tipo === 'SolicitudAhorro') || new Solicitud('SolicitudAhorro');
-          this.solicitudCancelacion = solicitudes.find(s => s.tipo === 'CancelacionAhorro') || new Solicitud('CancelacionAhorro');
-          this.solicitudRetiro = solicitudes.find(s => s.tipo === 'RetiroParcialAhorro') || new Solicitud('RetiroParcialAhorro');
-          this.solicitudModificacion = solicitudes.find(s => s.tipo === 'ModificacionAhorro') || new Solicitud('ModificacionAhorro');
+          this.solicitudAhorro = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
+            .find(s => s.tipo === 'SolicitudAhorro') || new Solicitud('SolicitudAhorro');
+          this.solicitudCancelacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
+            .find(s => s.tipo === 'CancelacionAhorro') || new Solicitud('CancelacionAhorro');
+          this.solicitudRetiro = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
+            .find(s => s.tipo === 'RetiroParcialAhorro') || new Solicitud('RetiroParcialAhorro');
+          this.solicitudModificacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
+            .find(s => s.tipo === 'ModificacionAhorro') || new Solicitud('ModificacionAhorro');
           this.solicitudModificacion.atributos.MONTO = this.solicitudAhorro.atributos.MONTO;
-          this.staticTabs.tabs[0].active = true;
+
         });
         this.userService.getUsuario(user.id).toPromise().then(u => this.usuario = u);
       }).catch((error) => { this.alerts.push(error); this.loading = false; });
@@ -62,6 +66,7 @@ export class TramitesAhorroComponent implements OnInit {
   public requestSolicitud(solicitud: Solicitud): void {
     this.loading = true;
     this.alerts = [];
+    solicitud.id = undefined;
     solicitud.idUsuario = this.usuario.id;
     solicitud.status = 'Solicitud';
     solicitud.statusDetalle = 'Solicitud inicial';
@@ -105,14 +110,25 @@ export class TramitesAhorroComponent implements OnInit {
   }
 
 
-  public enabledDates = [
-    new Date('2020-09-15'),
-    new Date('2020-10-01'),
-    new Date('2020-10-15'),
-    new Date('2020-11-01'),
-    new Date('2020-11-15'),
-    new Date('2020-12-01'),
-    new Date('2020-12-15'),
-  ];
+  public calculateEnabledDates(): void {
+    const currentDate = new Date();
+    if(currentDate.getDate() < 15){
+      currentDate.setDate(15);
+      currentDate.setMonth(currentDate.getMonth());
+      this.enabledDates.push(currentDate);
+    }
+    for (let i = 1; i < 5; i++) {
+ 
+      const date1 = new Date();
+      date1.setDate(1);
+      date1.setMonth(date1.getMonth() + i);
+      this.enabledDates.push(date1);
+
+      const date2 = new Date();
+      date2.setDate(15);
+      date2.setMonth(date2.getMonth() + i);
+      this.enabledDates.push(date2);
+    }
+  }
 
 }

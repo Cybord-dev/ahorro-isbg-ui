@@ -48,8 +48,8 @@ export class ValidacionSolicitudComponent implements OnInit {
     this.module = this.router.url.split('/')[1];
 
     this.userService.myInfo().toPromise()
-    .then(user => this.validador = user)
-    .catch(error => this.alerts.push(error));
+      .then(user => this.validador = user)
+      .catch(error => this.alerts.push(error));
 
     this.solicitud = new Solicitud();
     this.route.paramMap.subscribe(route => {
@@ -63,7 +63,7 @@ export class ValidacionSolicitudComponent implements OnInit {
     });
   }
 
-  public openModal(aprobacion: boolean): void{
+  public openModal(aprobacion: boolean): void {
     this.aprobacion = aprobacion;
     this.modalConfirmacion.show();
   }
@@ -73,30 +73,31 @@ export class ValidacionSolicitudComponent implements OnInit {
     this.modalConfirmacion.hide();
   }
 
-  public aprobarSolicitud(): void{
+  public aprobarSolicitud(): void {
     this.loading = true;
     this.modalConfirmacion.hide();
-    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module,this.validador.email, true);
+    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module, this.validador.email, true);
     this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
       .toPromise().then((result) => {
-        this.success = 'Solicitud validada correctamente.'; 
+        this.success = 'Solicitud validada correctamente.';
         this.validated = true;
         this.loading = false;
         this.router.navigate([`../${this.module}/validaciones`]);
-      }).catch(error => {this.alerts.push(error); this.loading = false; });
+      }).catch(error => { this.alerts.push(error); this.loading = false; });
   }
 
-  public rechazarSolicitud(): void{
+  public rechazarSolicitud(): void {
     this.loading = true;
     this.modalConfirmacion.hide();
-    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module, this.validador.email, false);
+    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id,
+      this.module, this.validador.email, false, this.razonRechazo);
     this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
       .toPromise().then((result) => {
         this.success = 'Solicitud rechazada correctamente.';
         this.validated = true;
         this.loading = false;
         this.router.navigate([`../${this.module}/validaciones`]);
-      }).catch(error => {this.alerts.push(error);this.loading = false; });
+      }).catch(error => { this.alerts.push(error); this.loading = false; });
   }
 
 }

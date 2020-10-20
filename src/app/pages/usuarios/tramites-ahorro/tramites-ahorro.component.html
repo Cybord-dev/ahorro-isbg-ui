@@ -14,9 +14,8 @@
               </div>
 
               <tabset #staticTabs>
-                <tab *ngIf="solicitudAhorro.id === undefined || solicitudAhorro.status!=='Finalizada'">
+                <tab>
                     <ng-template tabHeading ><i class="icon-docs"></i>&nbsp; Solicitud</ng-template>
-              
                     <div class="row">
                       <div class="col-xs-12 col-sm-12 col-md-6 form-group">
                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
@@ -43,7 +42,7 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
                             <div class="col-md-9">
-                              <input type="number" id="quantity" name="quantity" class="form-control" min=100 [disabled] = "solicitudAhorro.id !== undefined"
+                              <input type="number" id="quantity" name="quantity" class="form-control" min=100 [disabled] = "solicitudAhorro.id !== undefined && solicitudAhorro.status !=='Rechazada'"
                                 placeholder="100.00"  [(ngModel)]="solicitudAhorro.atributos.MONTO" min="100" max="20000">
                               <span class="help-block" *ngIf="solicitudAhorro.id === undefined">Descuento quincenal</span>
                             </div>
@@ -53,8 +52,8 @@
                             <div class="col-md-9">
                               <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
                                 [bsConfig]="{ containerClass: 'theme-dark-blue' }" [datesEnabled]="enabledDates"
-                                 [(bsValue)]="bsValue" *ngIf="solicitudAhorro.atributos.FECHA === undefined">
-                                 <input type="text" id="start-date" name="start-date" class="form-control" disabled *ngIf="solicitudAhorro.atributos.FECHA !== undefined"
+                                 [(bsValue)]="bsValue" *ngIf="solicitudAhorro.atributos.FECHA === undefined || solicitudAhorro.status ==='Rechazada'">
+                                 <input type="text" id="start-date" name="start-date" class="form-control" disabled *ngIf="solicitudAhorro.atributos.FECHA !== undefined && solicitudAhorro.status !=='Rechazada'"
                                  placeholder="fecha inicio descuentos" [(ngModel)]="solicitudAhorro.atributos.FECHA">
                               <span class="help-block" *ngIf="solicitudAhorro.atributos.FECHA === undefined">fecha inicio descuentos</span>
                             </div>
@@ -75,7 +74,8 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('SolicitudAhorro')" *ngIf="solicitudAhorro.id === undefined" [disabled]="loading">
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('SolicitudAhorro')" 
+                              *ngIf="solicitudAhorro.id === undefined || solicitudAhorro.status ==='Rechazada'" [disabled]="loading">
                           <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud</button>
                           <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                       </div>
@@ -85,6 +85,16 @@
                     <div class="row" *ngIf="solicitudAhorro.id !== undefined && solicitudAhorro.validaciones.length>0">
                       <div class="col"></div>
                       <div class="col-6">
+                        <div class="alert alert-success" role="alert" *ngIf="solicitudAhorro.status === 'Finalizada'" >
+                          La solicitud de ahorro fue exitosamente aprobada.
+                        </div>
+                        <div class="alert alert-danger" role="alert" *ngIf="solicitudAhorro.status === 'Rechazada'">
+                          La solicitud de ahorro fue rechazada, el motivo es : {{solicitudAhorro.statusDetalle}}.
+                        </div>
+                        <div class="alert alert-warning" role="alert" *ngIf="solicitudAhorro.status !== 'Rechazada' && solicitudAhorro.status !== 'Finalizada'">
+                          La solicitud de ahorro se encuentra en tramite.
+                        </div>
+
                         <strong>Autorizaciones</strong>
                         <br/>
                         <br/>
@@ -94,7 +104,6 @@
                               <th>FECHA</th>
                               <th>AREA</th>
                               <th>ESTATUS</th>
-                              <th>OBSERVACIONES</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -105,7 +114,6 @@
                                 <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
                                 <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
                               </td>
-                              <td scope="row">{{fila.statusDetalle}}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -191,6 +199,16 @@
                     <div class="row" *ngIf="solicitudModificacion.id !== undefined && solicitudModificacion.validaciones.length>0">
                       <div class="col"></div>
                       <div class="col-6">
+
+                        <div class="alert alert-success" role="alert" *ngIf="solicitudModificacion.status === 'Finalizada'" >
+                          La modificación del ahorro fue exitosamente aprobada.
+                        </div>
+                        <div class="alert alert-danger" role="alert" *ngIf="solicitudModificacion.status === 'Rechazada'">
+                          La modificación del ahorro fue rechazada, el motivo es : {{solicitudModificacion.statusDetalle}}.
+                        </div>
+                        <div class="alert alert-warning" role="alert" *ngIf="solicitudModificacion.status !== 'Rechazada' && solicitudModificacion.status !== 'Finalizada'">
+                          La modificación del ahorro se encuentra en tramite.
+                        </div>
                         <strong>Autorizaciones</strong>
                         <br/>
                         <br/>
@@ -200,7 +218,6 @@
                               <th>FECHA</th>
                               <th>AREA</th>
                               <th>ESTATUS</th>
-                              <th>OBSERVACIONES</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -211,7 +228,7 @@
                                 <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
                                 <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
                               </td>
-                              <td scope="row">{{fila.statusDetalle}}</td>
+                              
                             </tr>
                           </tbody>
                         </table>
