@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Validacion } from '../models/validacion';
+import { GenericPage } from '../models/generic-page';
+import { HistoricoValidacion } from '../models/historico-validacion';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +13,21 @@ export class ValidacionesService {
 
     constructor(private http: HttpClient) { }
 
-    public getValidaciones (): Observable<Validacion[]>{
-      return this.http.get<Validacion[]>('../api/v1/validaciones');
+    private getHttpParams(filterParams: any): HttpParams {
+      let pageParams: HttpParams =  new HttpParams();
+      for (const key in filterParams) {
+        if (filterParams[key] !== undefined) {
+        const value: string = filterParams[key].toString();
+        if ( value !== null && value.length > 0 && value !== '*') {
+            pageParams = pageParams.append(key, value);
+          }
+        }
+      }
+      return pageParams;
+    }
+
+    public getValidaciones(filterParams: any): Observable<GenericPage<HistoricoValidacion>> {
+      return this.http.get<GenericPage<HistoricoValidacion>>('../api/v1/validaciones', {params: this.getHttpParams(filterParams)});
     }
 
     public getValidacionesBySolicitud (idUsuario: number, idSolicitud: number): Observable<Validacion[]>{

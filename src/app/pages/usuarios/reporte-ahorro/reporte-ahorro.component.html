@@ -6,7 +6,12 @@
         <strong>Mi reporte ahorro</strong>
       </div>
       <div class="card-body" >
-        <div class="row">
+        <div class="row" *ngIf="ahorros.length === 0">
+          <div class="alert alert-primary" role="alert">
+            No hay registros de ahorro
+          </div>
+        </div>
+        <div class="row" *ngIf="ahorros.length > 0">
         <div class="col-4">
           <strong>Mis ahorros</strong>
           <br/>
