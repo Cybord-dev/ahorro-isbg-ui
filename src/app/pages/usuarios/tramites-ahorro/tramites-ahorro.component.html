@@ -75,7 +75,7 @@
                         <br>
                         <br>
                         <button type="button" class="btn btn-sm btn-success" (click)="openModal('SolicitudAhorro')" 
-                              *ngIf="solicitudAhorro.id === undefined || solicitudAhorro.status ==='Rechazada'" [disabled]="loading">
+                              *ngIf="solicitudAhorro.id === undefined || !bloqueo" [disabled]="loading || bloqueo">
                           <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud</button>
                           <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                       </div>
