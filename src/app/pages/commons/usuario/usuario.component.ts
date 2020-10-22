@@ -133,9 +133,11 @@ export class UsuarioComponent implements OnInit {
     this.usuarioServicio.actualizaUser(this.usuario).toPromise()
       .then(async updateduser => {
         console.log(updateduser);
-        this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
+        if(this.usuario.datosUsuario.ANTIGUEDAD !== undefined){
+          this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
+        }
         for (const key in this.usuario.datosUsuario) {
-          if (key !== undefined && this.usuario.datosUsuario[key] !== undefined) {
+          if (key !== undefined && this.usuario.datosUsuario[key] !== undefined && this.usuario.datosUsuario[key] !== "" && this.usuario.datosUsuario[key] !== null) {
             if (updateduser.datosUsuario[key] !== this.usuario.datosUsuario[key]) {
               const dato = new DatoUsuario(key, this.usuario.datosUsuario[key]);
               await this.usuarioServicio.actualizaDatoUsuario(this.usuario.id, key, dato)

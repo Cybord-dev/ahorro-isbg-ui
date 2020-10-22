@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AhorroServicio } from '../../../services/ahorro.service';
 import { ReporteSaldos } from '../../../models/reportesaldos';
+
+
 @Component({
-  templateUrl: './dashboard.component.html',
+  selector: 'cybord-resumen',
+  templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
 
@@ -95,4 +98,5 @@ export class DashboardComponent implements OnInit {
     var a = fecha.split("-");
     return a[1];
   }
+
 }
