@@ -6,6 +6,7 @@ import { SolicitudesService } from '../../../services/solicitudes.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Solicitud } from '../../../models/solicitud';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
+import { AhorroServicio } from 'src/app/services/ahorro.service';
 
 @Component({
   selector: 'cybord-tramites-ahorro',
@@ -29,13 +30,14 @@ export class TramitesAhorroComponent implements OnInit {
   public solicitudModificacion: Solicitud = new Solicitud();
   public solicitudRetiro: Solicitud = new Solicitud();
   public solicitudCancelacion: Solicitud = new Solicitud();
-
+  public bloqueo: boolean = false;
   public bsValue: Date;
 
   constructor(
     public datepipe: DatePipe,
     private userService: UsuariosService,
     private solicitudService: SolicitudesService,
+    private ahorroService: AhorroServicio,
   ) { }
 
   ngOnInit(): void {
@@ -46,7 +48,13 @@ export class TramitesAhorroComponent implements OnInit {
     this.userService.myInfo().toPromise()
       .then(user => {
         this.solicitudService.getSolicitudesByUsuario(user.id).subscribe((solicitudes: Solicitud[]) => {
-
+          
+          solicitudes.forEach(element => {
+            if(element.tipo === "SolicitudAhorro" && element.status !== "Rechazada"){
+              this.bloqueo = true;
+            }
+          });
+          
           this.solicitudAhorro = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
             .find(s => s.tipo === 'SolicitudAhorro') || new Solicitud('SolicitudAhorro');
           this.solicitudCancelacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
@@ -92,7 +100,11 @@ export class TramitesAhorroComponent implements OnInit {
     console.log(`acepting ${this.tipoSolicitud}`);
     switch (this.tipoSolicitud) {
       case 'SolicitudAhorro':
-        this.requestSolicitud(this.solicitudAhorro);
+        if(!this.bloqueo){
+          this.requestSolicitud(this.solicitudAhorro);
+        }else{
+          this.alerts.push("Ya tienes una solicitud en progreso o finalizada");
+        }
         break;
       case 'CancelacionAhorro':
         this.requestSolicitud(this.solicitudCancelacion);

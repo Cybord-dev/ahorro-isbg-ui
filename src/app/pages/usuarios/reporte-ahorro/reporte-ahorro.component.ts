@@ -41,9 +41,10 @@ export class ReporteAhorroComponent implements OnInit {
           this.total = resultado.map(r => r.monto).reduce((a, b) => a + b);
           this.setCharInfo();
           this.barChartData = [{ data: this.datos, label: "Ahorro acumulado" }];
+          
         });
       }).catch(error => this.errorMessages.push(error));
-      this.barChartData = [{data:[22, 11], label: "Ahorro acumulado"}];
+      this.barChartData = [{data:[0, 0], label: "Ahorro acumulado"}];
   }
 
   private setCharInfo(): void{
