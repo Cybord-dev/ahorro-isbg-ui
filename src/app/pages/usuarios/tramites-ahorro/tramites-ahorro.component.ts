@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { Usuario } from '../../../models/usuario';
 import { SolicitudesService } from '../../../services/solicitudes.service';
+import { AhorroServicio } from '../../../services/ahorro.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Solicitud } from '../../../models/solicitud';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
-import { AhorroServicio } from 'src/app/services/ahorro.service';
+
 
 @Component({
   selector: 'cybord-tramites-ahorro',
@@ -48,13 +48,11 @@ export class TramitesAhorroComponent implements OnInit {
     this.userService.myInfo().toPromise()
       .then(user => {
         this.solicitudService.getSolicitudesByUsuario(user.id).subscribe((solicitudes: Solicitud[]) => {
-          
           solicitudes.forEach(element => {
             if(element.tipo === "SolicitudAhorro" && element.status !== "Rechazada"){
               this.bloqueo = true;
             }
           });
-          
           this.solicitudAhorro = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
             .find(s => s.tipo === 'SolicitudAhorro') || new Solicitud('SolicitudAhorro');
           this.solicitudCancelacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
