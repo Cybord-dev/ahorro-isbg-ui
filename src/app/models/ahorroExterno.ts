@@ -1,19 +1,16 @@
 export class AhorroExterno {
 
-    public aceptar: boolean;
+    public validado: boolean;
     public clave: string;
-    public NSS: string;
     public nombre: string;
-    public ahorra:string;
     public importe: number;
+    public observaciones: string;
+
     
-    constructor(aceptar?:boolean, clave?:string, NSS?: string, nombre?: string,ahorra?:string, importe?:number){
-        this.aceptar = aceptar;
+    constructor(validado?:boolean, clave?: string, nombre?: string, importe?:number){
+        this.validado = validado;
         this.clave = clave;
-        this.NSS = NSS;
         this.nombre=nombre;
-        this.ahorra= ahorra;
         this.importe = importe;
-        this.aceptar = aceptar;
     }
 }
