@@ -197,7 +197,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="selector()">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="decline()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -205,7 +205,8 @@
             {{mensajeModal}}
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" (click)="selector()" >Si</button>
+            <button type="button" class="btn btn-primary"  *ngIf="usuario.id !== undefined" (click)="update()" >Si</button>
+            <button type="button" class="btn btn-primary"  *ngIf="usuario.id === undefined" (click)="register()" >Si</button>
             <button type="button" class="btn btn-secondary" (click)="decline()" >no</button>
         </div>
       </div>

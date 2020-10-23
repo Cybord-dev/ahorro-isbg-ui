@@ -96,15 +96,6 @@ export class UsuarioComponent implements OnInit {
     }
   }
 
-  public selector(): void{
-    this.modalConfirmacion.hide();
-    if(this.usuario.id !== undefined){
-      this.update();
-    }else{
-      this.register();
-    }
-  }
-
 
   public openModal(): void {
     if(this.usuario.id !== undefined){
@@ -125,10 +116,10 @@ export class UsuarioComponent implements OnInit {
   get f() { return this.registerForm.controls; }
 
   public update(): void {
-    console.log("nombres: "+this.nombreRoles);
     this.loading = true;
     console.log(this.usuario.noEmpleado);
-    if (this.registerForm.invalid) { this.loading = false; return; }
+    this.modalConfirmacion.hide();
+    //if (this.registerForm.invalid) { this.loading = false; return; }
     this.errorMessages = [];
     this.usuarioServicio.actualizaUser(this.usuario).toPromise()
       .then(async updateduser => {
@@ -173,9 +164,12 @@ export class UsuarioComponent implements OnInit {
 
   public register(): void {
     let id = 0;
+    console.log('registering',this.registerForm.invalid);
     this.loading = true;
-    if (this.registerForm.invalid) { this.loading = false; return; }
+    this.modalConfirmacion.hide();
+    //if (this.registerForm.invalid) { this.loading = false; return; }
     this.errorMessages = [];
+    console.log('registering');
     this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
     this.usuarioServicio.insertarUsuario(this.usuario).toPromise()
       .then(async createdUser => {

@@ -56,6 +56,7 @@ export class TramitesAhorroComponent implements OnInit {
           this.solicitudModificacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
             .find(s => s.tipo === 'ModificacionAhorro') || new Solicitud('ModificacionAhorro');
           this.solicitudModificacion.atributos.MONTO = this.solicitudAhorro.atributos.MONTO;
+          this.solicitudCancelacion.atributos.MONTO = this.solicitudAhorro.atributos.MONTO;
 
         });
         this.userService.getUsuario(user.id).toPromise().then(u => this.usuario = u);

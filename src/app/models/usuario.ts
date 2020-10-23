@@ -8,6 +8,7 @@ export class Usuario {
     public activo: boolean;
     public nombre: string;
     public email: string;
+    public ahorrador: boolean;
     public noEmpleado: string;
     public urlImagenPerfil: string;
     public tipoUsuario: string;
@@ -24,6 +25,8 @@ export class Usuario {
         this.datosUsuario = new DatosUsuario();
         this.roles = [];
         this.menu = [];
+        this.activo = true;
+        this.ahorrador = false;
         this.tipoUsuario = 'INTERNO';
     }
 }
