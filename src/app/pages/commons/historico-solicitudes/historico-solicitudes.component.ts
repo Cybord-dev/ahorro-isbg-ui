@@ -27,7 +27,6 @@ export class HistoricoSolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
     this.module = this.router.url.split('/')[1];
-
     this.filterParams.area = this.module;
     this.updateDataTable(0, 10, this.filterParams);
   }
@@ -47,7 +46,7 @@ export class HistoricoSolicitudesComponent implements OnInit {
   }
 
   public redirectToValidation(id: string): void {
-    this.router.navigate([`./${this.module}/validacion/${id}`]);
+    this.router.navigate([`./${this.module}/historico/${id}`]);
   }
 
 }

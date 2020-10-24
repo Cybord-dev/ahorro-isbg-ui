@@ -30,7 +30,7 @@ export class TramitesAhorroComponent implements OnInit {
   public solicitudModificacion: Solicitud = new Solicitud();
   public solicitudRetiro: Solicitud = new Solicitud();
   public solicitudCancelacion: Solicitud = new Solicitud();
-  public bloqueo: boolean = false;
+
   public bsValue: Date;
 
   constructor(
@@ -48,11 +48,6 @@ export class TramitesAhorroComponent implements OnInit {
     this.userService.myInfo().toPromise()
       .then(user => {
         this.solicitudService.getSolicitudesByUsuario(user.id).subscribe((solicitudes: Solicitud[]) => {
-          solicitudes.forEach(element => {
-            if(element.tipo === "SolicitudAhorro" && element.status !== "Rechazada"){
-              this.bloqueo = true;
-            }
-          });
           this.solicitudAhorro = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
             .find(s => s.tipo === 'SolicitudAhorro') || new Solicitud('SolicitudAhorro');
           this.solicitudCancelacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
@@ -98,11 +93,7 @@ export class TramitesAhorroComponent implements OnInit {
     console.log(`acepting ${this.tipoSolicitud}`);
     switch (this.tipoSolicitud) {
       case 'SolicitudAhorro':
-        if(!this.bloqueo){
-          this.requestSolicitud(this.solicitudAhorro);
-        }else{
-          this.alerts.push("Ya tienes una solicitud en progreso o finalizada");
-        }
+        this.requestSolicitud(this.solicitudAhorro);
         break;
       case 'CancelacionAhorro':
         this.requestSolicitud(this.solicitudCancelacion);
@@ -123,13 +114,12 @@ export class TramitesAhorroComponent implements OnInit {
 
   public calculateEnabledDates(): void {
     const currentDate = new Date();
-    if(currentDate.getDate() < 15){
+    if ( currentDate.getDate() < 15){
       currentDate.setDate(15);
       currentDate.setMonth(currentDate.getMonth());
       this.enabledDates.push(currentDate);
     }
     for (let i = 1; i < 5; i++) {
- 
       const date1 = new Date();
       date1.setDate(1);
       date1.setMonth(date1.getMonth() + i);
@@ -140,6 +130,7 @@ export class TramitesAhorroComponent implements OnInit {
       date2.setMonth(date2.getMonth() + i);
       this.enabledDates.push(date2);
     }
+    this.bsValue = this.enabledDates[0];
   }
 
 }
