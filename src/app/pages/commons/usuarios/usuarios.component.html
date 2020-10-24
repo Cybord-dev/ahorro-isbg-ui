@@ -1,111 +1,135 @@
 <div class="animated fadeIn">
-    <div class="row">
-      <div class="col-sm-12 col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <strong>Altas y bajas de usuarios</strong>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-12">
-                Filtros de busqueda
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Altas y bajas de usuarios - Filtros de busqueda</strong>
+        </div>
+        <div class="card-body">
+          <div class="row slide_1">
+            <div class="col-md-2">
+              <label for="inputCorreo" class="label">Correo Usuario</label>
+              <input type="text" class="form-control" [(ngModel)]="filterParams.email"
+                [disabled]="filterParams.nombre.length > 0" nbInput fullWidth id="inputCorreo"
+                placeholder="email usuario">
+            </div>
+            <div class="col-md-2">
+              <label for="nombreusuario" class="label">Nombre Usuario</label>
+              <input type="text" class="form-control" [(ngModel)]="filterParams.nombre"
+                [disabled]="filterParams.email.length > 0" nbInput fullWidth id="nombreusu" placeholder="nombreusuario">
+            </div>
+            <div class="col-md-2">
+              <label for="inputtipo" class="label">Tipo Usuario</label>
+              <input type="text" class="form-control" [(ngModel)]="filterParams.tipoUsuario"
+                [disabled]="filterParams.email.length > 0" nbInput fullWidth id="inputtipo"
+                placeholder="Tipo de usuario">
+            </div>
+            <div class="col-md-6">
+              <label for="inputActivo" class="label">Estado cliente</label>
+              <div class="row form-inline">
+                <select id="inputActivo" class="form-control" [(ngModel)]="filterParams.estatus" style="display:block;"
+                  fullWidth>
+                  <option value="*">TODOS</option>
+                  <option value="1">ACTIVO</option>
+                  <option value="0">INACTIVO</option>
+                </select>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <button class="btn btn-primary" (click)="redirectToUser('*')">NUEVO USUARIO</button>
+
               </div>
             </div>
-  
           </div>
         </div>
       </div>
-      <!--/.col-->
     </div>
-    <!--/.row-->
+    <!--/.col-->
+  </div>
+  <!--/.row-->
 
 
-    <div class="row">
-      <div class="col-sm-12 col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <strong>Resultados</strong>
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Resultados</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+
+              <div *ngIf="page.empty === true" class="alert alert-primary" role="alert">
+                No se encontraron resultados
+              </div>
+              <div class="clearfix" *ngIf="page.empty === false">
+                <select id="inputunidad" style="display:block;width: 95px; margin-right: 15px;"
+                  class="float-right form-control form-control-sm" [(ngModel)]="filterParams.size"
+                  *ngIf="page.last==false || page.first==true" (change)="onChangePageSize($event.target.value)">
+                  <option value="10">10</option>
+                  <option *ngIf="page.number<(page.totalElements/20)" value="20">20</option>
+                  <option *ngIf="page.number<(page.totalElements/50)" value="50">50</option>
+                </select>
+                <strong class="float-right"> Tamaño Pagina &nbsp;&nbsp;&nbsp;&nbsp;</strong>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-12">
-                <table class="table table-bordered table-striped table-sm">
-                  <thead>
+          <div class="row">
+            <div class="col">
+
+              <div class="table-responsive" *ngIf="page.empty == false">
+                <table class="table table-bordered table-sm">
+                  <thead class="thead-dark">
                     <tr>
-                      <th>Id</th>
-                      <th>Nombre</th>
-                      <th>Correo</th>
-                      <th>Tipo</th>
-                      <th>Status</th>
+                      <th>ACCIONES</th>
+                      <th>NO. EMPLEADO</th>
+                      <th>NOMBRE</th>
+                      <th>CORREO</th>
+                      <th>TIPO</th>
+                      <th>STATUS</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Vishnu Serghei</td>
-                      <td>vish.serg@gmail.com</td>
-                      <td>Interno</td>
-                      <td>
-                        <span class="badge badge-success">ACTIVO</span>
+                    <tr *ngFor="let fila of page.content">
+                      <td scope="row">
+                        <button class="btn-sm btn-outline-primary" (click)="redirectToUser(fila.id)"><i
+                            class="fa fa-search fa-sm"></i></button>
                       </td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Zonia Phoibos</td>
-                      <td>zoe_phantom@gmail.com</td>
-                      <td>Externo</td>
-                      <td>
-                        <span class="badge badge-danger">INACTIVO</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>Einar Randall</td>
-                      <td>edgar.ramos@gmail.com</td>
-                      <td>Admin</td>
-                      <td>
-                        <span class="badge badge-success">ACTIVO</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>4</td>  
-                      <td>Félix Troels</td>
-                      <td>elgatofeli@gmail.com</td>
-                      <td>Externo</td>
-                      <td>
-                        <span class="badge badge-success">ACTIVO</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>5</td>  
-                      <td>Aulus Agmundr</td>
-                      <td>Shalalalalala@gmail.com</td>
-                      <td>Interno</td>
-                      <td>
-                        <span class="badge badge-success">ACTIVO</span>
+                      <td scope="row">{{fila.noEmpleado}}</td>
+                      <td scope="row">{{fila.nombre}}</td>
+                      <td scope="row">{{fila.email}}</td>
+                      <td scope="row">{{fila.tipoUsuario}}</td>
+                      <td scope="row" *ngIf="fila.activo === true"><span class="badge badge-success">ACTIVO</span></td>
+                      <td scope="row" *ngIf="fila.activo === false"><span class="badge badge-danger">INACTIVO</span>
                       </td>
                     </tr>
                   </tbody>
                 </table>
-                <nav>
-                  <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                    <li class="page-item active">
-                      <a class="page-link" href="#">1</a>
+                <div class="clearfix" *ngIf="page.empty == false">
+                  <ul class="pagination float-right" *ngIf="page.totalElements > 1">
+                    <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
+                        (click)="updateDataTable(0,page.size)"><i class="icon-control-rewind icons"></i></button>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
+                    <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
+                    <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
+                    <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="icon-control-forward icons"></i></button>
+                    </li>
                   </ul>
-                </nav>
+                </div>
+
               </div>
             </div>
-  
           </div>
+
         </div>
       </div>
-      <!--/.col-->
     </div>
-    <!--/.row-->
+    <!--/.col-->
   </div>
+  <!--/.row-->
+
+</div>

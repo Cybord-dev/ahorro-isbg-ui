@@ -62,7 +62,7 @@ import { HttpRequestInterceptor } from './http-request.interceptor';
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule
+    ChartsModule,
   ],
   declarations: [
     AppComponent,

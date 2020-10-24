@@ -1,28 +1,53 @@
 <div class="animated fadeIn">
   <div class="row">
-    <div class="col-sm-12 col-md-12">
-      
-      <div class="card">
-        <div class="card-header">
-          Reporte ahorro
-        </div>
-        <div class="card-body">
-          <div class="chart-wrapper">
-            <canvas baseChart class="chart"
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [chartType]="barChartType"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"></canvas>
+    <div class = "col">
+    <div class="card">
+      <div class="card-header">
+        <strong>Mi reporte ahorro</strong>
+      </div>
+      <div class="card-body" >
+        <div class="row" *ngIf="ahorros.length === 0">
+          <div class="alert alert-primary" role="alert">
+            No hay registros de ahorro
           </div>
+        </div>
+        <div class="row" *ngIf="ahorros.length > 0">
+        <div class="col-4">
+          <strong>Mis ahorros</strong>
+          <br/>
+          <br/>
+          <table class="table table-bordered table-striped table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th>FECHA</th>
+                <th>TIPO</th>
+                <th>MONTO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let fila of ahorros">
+                <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                <td scope="row">{{fila.tipo }}</td>
+                <td scope="row">{{fila.monto | currency }}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><strong>TOTAL</strong></td>
+                <td><strong>{{total | currency}}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="chart-wrapper col-8">
+          <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
+            [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"
+            (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+        </div>
         </div>
       </div>
       
     </div>
-    <!--/.col-->
+    
   </div>
-  <!--/.row-->
+  </div>
 </div>
-

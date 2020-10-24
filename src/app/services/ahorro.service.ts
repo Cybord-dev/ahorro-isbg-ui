@@ -1,9 +1,31 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ReporteSaldos } from '../models/reportesaldos';
+import { SaldoAhorro } from '../models/saldoahorro';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AhorroService {
+export class AhorroServicio {
+  
+  constructor(private http: HttpClient) { }
 
-  constructor() { }
+  public getSaldoByUsuario(idUsuario: number): Observable<SaldoAhorro[]>{
+    return this.http.get<SaldoAhorro[]>(`../api/v1/usuarios/${idUsuario}/ahorros`);
+  }
+
+  public postSaldo (idUsuario: number, saldo: SaldoAhorro): Observable<SaldoAhorro[]>{
+    return this.http.post<SaldoAhorro[]>(`../api/v1/usuarios/${idUsuario}/ahorro`, saldo);
+  }
+
+  public getSaldoByUsuarioAndId (idUsuario: number, idAhorro: number): Observable<SaldoAhorro[]>{
+    return this.http.get<SaldoAhorro[]>(`../api/v1/usuarios/${idUsuario}/ahorros/${idAhorro}`);
+  }
+
+  public getReporteSaldos (): Observable<ReporteSaldos[]>{
+    return this.http.get<ReporteSaldos[]>(`../api/v1/saldosAhorro`);
+  }
+
 }
+

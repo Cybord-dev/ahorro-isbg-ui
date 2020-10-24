@@ -1,1 +1,147 @@
-<p>validacion-solicitud works!</p>
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Aprobaciones ahorro</strong>
+        </div>
+        <div class="card-body">
+
+          <div *ngFor="let alert of alerts">
+            <alert type="danger" [dismissible]="true">{{ alert }}</alert>
+          </div>
+
+          <br/>
+
+          <div class="row"> <!-- SOLICITUD AHORRO-->
+            <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+              <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label">Nombre</label>
+                  <div class="col-md-9">
+                    <p class="form-control-static"><strong>{{usuario.nombre}}</strong></p>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
+                  <div class="col-md-9">
+                    <input type="number" id="no-emp" name="text-input" class="form-control" disabled
+                      placeholder="No empleado" [(ngModel)]="usuario.noEmpleado">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="office">Oficina</label>
+                  <div class="col-md-9" >
+                    <input type="text" id="oficina" name="oficina" class="form-control" disabled
+                      placeholder="Oficina empleado" [(ngModel)]="usuario.datosUsuario.OFICINA">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
+                  <div class="col-md-9">
+                    <input type="text" id="quantity" name="quantity" class="form-control" disabled
+                    [(ngModel)]="solicitud.atributos.MONTO">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="start-date">Fecha inicio</label>
+                  <div class="col-md-9">
+                    <input type="text" id="festart-datecha" name="fecha" class="form-control" disabled
+                    [(ngModel)]="solicitud.atributos.FECHA">
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+
+              <span class="help-block">
+                Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina 
+                <strong>{{usuario.datosUsuario.OFICINA}}</strong> autorizo que por este medio se descuente de mi pago de nómina, la cantidad
+                de <strong>{{solicitud.atributos.MONTO}} $ </strong>de manera quincenal a partir de la siguiente fecha <strong>{{solicitud.atributos.FECHA }}</strong>, durante el período
+                correspondiente, autorizo que la cantidad retenida sea depositada en la cuenta del PROGRAMA DE
+                AHORRO VOLUNTARIO.
+                Estoy de acuerdo que la cantidad ahorrada y los intereses que se hubiesen generado me sean
+                entregados al término del período.
+              </span>
+              <br>
+              <br>
+              <button type="button" class="btn btn-sm btn-success" (click)="openModal(true)" [disabled] = "validated || loading"><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                Aprobar solicitud
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                <button type="button" class="btn btn-sm btn-danger" (click)="openModal(false)" [disabled] = "validated || loading" ><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                Rechazar solicitud
+                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+            </div>
+
+          </div>
+
+          <br>
+          <p class="alert alert-success" *ngIf="success.length > 0" role="alert">{{success}}</p>
+
+          <br>
+          <div class="row" *ngIf="solicitud !== undefined && solicitud.validaciones.length>0">
+            <div class="col"></div>
+            <div class="col-6">
+              <strong>Autorizaciones</strong>
+              <br/>
+              <br/>
+              <table class="table table-bordered table-striped table-sm">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>FECHA</th>
+                    <th>AREA</th>
+                    <th>VALIDADOR</th>
+                    <th>ESTATUS</th>
+                    <th>OBSERVACIONES</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let fila of solicitud.validaciones">
+                    <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                    <td scope="row">{{fila.area }}</td>
+                    <td scope="row">{{fila.email}}</td>
+                    <td scope="row">
+                      <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
+                      <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
+                    </td>
+                    <td scope="row">{{fila.statusDetalle}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col"></div>
+
+          </div>
+
+          
+
+        </div><!-- card body-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelar()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <strong *ngIf="aprobacion">¿Esta seguro de aprobar la solicitud?</strong>
+          <strong *ngIf="!aprobacion">Especifique la razon o motivo del rechazo de la solicitud</strong>
+          <input type="text" id="rejectReason" class="form-control" *ngIf="!aprobacion"
+          placeholder="Razon de rechazo solicitud" [(ngModel)]="razonRechazo">
+      </div>
+      <div class="modal-footer">
+          <button type="button" *ngIf="aprobacion" class="btn btn-primary" (click)="aprobarSolicitud()" >Aprobar</button>
+          <button type="button" *ngIf="!aprobacion" [disabled]="razonRechazo.length < 10" class="btn btn-danger" (click)="rechazarSolicitud()" >Rechazar</button>
+          <button type="button" class="btn btn-warning" (click)="cancelar()" >Salir</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,46 @@
-// Here you can add other styles
+// Variable overrides
+
+.app-header{
+    border: 0px;
+}
+
+.ng-tns-0-0{
+    background-color: #d8d8d8;
+}
+
+.app-footer{
+    
+    border:0px;
+   
+}
+
+.card{
+    border: 0px;
+    border-radius: 20px;  
+   
+}
+.card-header:first-child{
+   
+    border-radius: 20px 20px 0px 0px;  
+   
+}
+
+.card-footer:last-child{
+   
+    border-radius: 0px 0px 20px 20px;  
+  
+}
+.nav-tabs{
+    
+    border: 0px;
+}
+
+.nav-tabs .nav-link.active{
+    
+    border: 0px;
+}
+
+.aside-menu{
+ 
+    border-left: 0px;
+}
