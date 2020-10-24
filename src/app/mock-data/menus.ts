@@ -3,7 +3,7 @@ import { INavData } from '@coreui/angular';
 export const menu: INavData[] = [
   {
     name: 'Dashboard',
-    url: '/dashboard',
+    url: '/commons/dashboard',
     icon: 'icon-notebook',
   },
   {

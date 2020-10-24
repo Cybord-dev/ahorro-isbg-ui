@@ -82,7 +82,7 @@
                   <thead class="thead-dark">
                     <tr>
                       <th>ACCIONES</th>
-                      <th>USUARIO</th>
+                      <th>NO. EMPLEADO</th>
                       <th>NOMBRE</th>
                       <th>CORREO</th>
                       <th>TIPO</th>
@@ -95,7 +95,7 @@
                         <button class="btn-sm btn-outline-primary" (click)="redirectToUser(fila.id)"><i
                             class="fa fa-search fa-sm"></i></button>
                       </td>
-                      <td scope="row">{{fila.id}}</td>
+                      <td scope="row">{{fila.noEmpleado}}</td>
                       <td scope="row">{{fila.nombre}}</td>
                       <td scope="row">{{fila.email}}</td>
                       <td scope="row">{{fila.tipoUsuario}}</td>
@@ -108,14 +108,15 @@
                 <div class="clearfix" *ngIf="page.empty == false">
                   <ul class="pagination float-right" *ngIf="page.totalElements > 1">
                     <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
-                        (click)="updateDataTable(0,page.size)"><i class="nb-arrow-left"></i></button></li>
+                        (click)="updateDataTable(0,page.size)"><i class="icon-control-rewind icons"></i></button>
+                    </li>
                     <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
                         (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
                     <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
                     <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
                         (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
                     <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
-                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="nb-arrow-right"></i></button>
+                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="icon-control-forward icons"></i></button>
                     </li>
                   </ul>
                 </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { GenericPage } from '../../../models/generic-page';
+import { Solicitud } from '../../../models/solicitud';
 
 @Component({
   selector: 'cybord-reporte-solicitudes',
@@ -11,9 +12,9 @@ import { GenericPage } from '../../../models/generic-page';
 export class ReporteSolicitudesComponent implements OnInit {
 
   public module = 'usuarios';
-  public page: GenericPage<any> = new GenericPage();
+  public page: GenericPage<Solicitud> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = { emisor: '', remitente: '', prefolio: '', status: '*', since: undefined, to: undefined, lineaEmisor: '', solicitante: '', page: '0', size: '10' };
+  public filterParams: any = { tipoSolicitud : '', idSolicitud: '', estatus: '', nombre: '', noEmpleado: '', tipoUsuario: '', page: '0', size: '10' };
   public userEmail: string;
   public loading = false;
 
@@ -25,30 +26,45 @@ export class ReporteSolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
     this.module = this.router.url.split('/')[1];
-    this.updateDataTable(0, 10);
     console.log(this.module);
 
-    for (let index = 0; index < 11; index++) {
-
-      this.arrayfechas[index] = this.randomDate();
+    switch (this.module) {
+      case 'recursos-humanos':
+        this.filterParams.estatus = 'ValidacionRH';
+        break;
+      case 'tesoreria':
+        this.filterParams.estatus = 'ValidacionTeso';
+        break;
+      case 'contabilidad':
+        this.filterParams.estatus = 'ValdiacionConta';
+        break;
+      case 'gerencia':
+        this.filterParams.estatus = 'ValidacionGerencia';
+        break;
+      case 'administracion':
+        this.filterParams.estatus = 'ValidaAdmin';
+        break;
+      default:
+        break;
     }
+    this.updateDataTable(0, 10, this.filterParams);
   }
 
-  public randomDate() {
-    return new Date(new Date(2012, 0, 1).getTime() + Math.random() * (new Date().getTime() - new Date(2012, 0, 1).getTime()));
+
+  public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any): void {
+    const params: any = this.filterParams;
+
+    params.page = currentPage !== undefined ? currentPage : this.filterParams.page;
+    params.size = pageSize !== undefined ? pageSize : this.filterParams.size;
+
+    this.solicitudesService.getSolicitudes(params).subscribe(data => this.page = data);
   }
 
-  public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any) {
-    const pageValue = currentPage || 0;
-    const sizeValue = pageSize || 10;
-    this.solicitudesService.getSolicitudes(pageValue, sizeValue, this.filterParams).subscribe(data => this.page = data);
-  }
-
-  public onChangePageSize(pageSize: number) {
+  public onChangePageSize(pageSize: number): void {
     this.updateDataTable(this.page.number, pageSize);
   }
 
-  public redirectToValidation(id: string) {
+  public redirectToValidation(id: string): void {
     this.router.navigate([`./${this.module}/validacion/${id}`]);
   }
 
