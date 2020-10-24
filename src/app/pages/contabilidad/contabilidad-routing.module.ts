@@ -38,6 +38,13 @@ const routes: Routes = [
     }
   },
   {
+    path: 'historico/:idSolicitud',
+    component: ValidacionSolicitudComponent,
+    data: {
+      title: 'Usario ISBG'
+    }
+  },
+  {
     path: 'historico',
     component: HistoricoSolicitudesComponent,
     data: {

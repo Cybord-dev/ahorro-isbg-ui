@@ -3,10 +3,16 @@
     <div class = "col">
     <div class="card">
       <div class="card-header">
-        <strong>Mi reporte ahorro</strong>
+        <strong>Mi reporte ahorro </strong>
       </div>
       <div class="card-body" >
-        <div class="row">
+        
+        <alert type="md-local" *ngIf="ahorros.length==0">
+          <strong>BIENVENIDO</strong> 
+          <br>
+          <p>Aun no tienes ningun ahorro en tu cuenta, dirigete a trámites de ahorro para inicar.</p>
+        </alert>
+        <div class="row" *ngIf="ahorros.length>0">
         <div class="col-4">
           <strong>Mis ahorros</strong>
           <br/>

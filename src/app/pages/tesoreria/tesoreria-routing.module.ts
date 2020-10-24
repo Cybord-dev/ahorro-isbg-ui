@@ -25,6 +25,13 @@ const routes: Routes = [
     data: {
       title: 'Historico validaciones'
     }
+  },
+  {
+    path: 'historico/:idSolicitud',
+    component: ValidacionSolicitudComponent,
+    data: {
+      title: 'Usario ISBG'
+    }
   }
 ];
 
