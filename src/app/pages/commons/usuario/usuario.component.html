@@ -79,7 +79,7 @@
                                     <strong class="col-md-3 col-form-label">No. Empleado</strong>
                                     <div class="col-md-9">
                                         <input type="number" id="no-emp" name="text-inputa" class="form-control"
-                                            placeholder="No empleado" [(ngModel)]="usuario.datosUsuario.NO_EMPLEADO">
+                                            placeholder="No empleado" [(ngModel)]="usuario.noEmpleado">
 
                                     </div>
                                 </div>
@@ -170,19 +170,18 @@
                     <div class="float-right slide_2">
 
                         <button class="btn btn-primary" *ngIf="usuario.id === undefined"
-                        (click)="registry()"> Registrar</button>
+                        (click)="openModal()" [disabled] = "loading"> Registrar
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
 
                         <button class="btn btn-primary" *ngIf="usuario.id !== undefined"
-                        (click)="update()"> Actualizar</button>
+                        (click)="openModal()" [disabled] = "loading"> Actualizar 
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
 
                     </div>
                 </div>
             </div>
-
-            <!-- <row *ngIf="Params.module === 'administracion'">
-                     
-                </row> -->
-           
         </div>
 
     </div>
@@ -191,3 +190,25 @@
 
 
 </div>
+
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="decline()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            {{mensajeModal}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary"  *ngIf="usuario.id !== undefined" (click)="update()" >Si</button>
+            <button type="button" class="btn btn-primary"  *ngIf="usuario.id === undefined" (click)="register()" >Si</button>
+            <button type="button" class="btn btn-secondary" (click)="decline()" >no</button>
+        </div>
+      </div>
+    </div>
+  </div>

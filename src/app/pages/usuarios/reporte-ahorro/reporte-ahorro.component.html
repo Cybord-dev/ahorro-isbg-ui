@@ -6,13 +6,12 @@
         <strong>Mi reporte ahorro </strong>
       </div>
       <div class="card-body" >
-        
-        <alert type="md-local" *ngIf="ahorros.length==0">
-          <strong>BIENVENIDO</strong> 
-          <br>
-          <p>Aun no tienes ningun ahorro en tu cuenta, dirigete a trámites de ahorro para inicar.</p>
-        </alert>
-        <div class="row" *ngIf="ahorros.length>0">
+        <div class="row" *ngIf="ahorros.length === 0">
+          <div class="alert alert-primary" role="alert">
+            No hay registros de ahorro
+          </div>
+        </div>
+        <div class="row" *ngIf="ahorros.length > 0">
         <div class="col-4">
           <strong>Mis ahorros</strong>
           <br/>
