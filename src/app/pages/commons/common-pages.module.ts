@@ -20,6 +20,7 @@ import { HistoricoSolicitudesComponent } from './historico-solicitudes/historico
 import { ValidacionSolicitudComponent } from './validacion-solicitud/validacion-solicitud.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UsuarioComponent } from './usuario/usuario.component';
+import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.component';
 
 
 
@@ -31,7 +32,8 @@ import { UsuarioComponent } from './usuario/usuario.component';
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
     UsuariosComponent,
-    UsuarioComponent],
+    UsuarioComponent,
+    ReporteAhorrosComponent],
   imports: [
     CommonModule,
     FormsModule,

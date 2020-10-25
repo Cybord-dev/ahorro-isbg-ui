@@ -89,7 +89,7 @@ export class TramitesAhorroComponent implements OnInit {
     solicitud.fechaEjecucion = new Date(this.bsValue);
     solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
     this.solicitudService.postSolictudUsuario(this.usuario.id, solicitud).toPromise()
-      .then(sol => { this.loading = false; this.solicitudEnProgreso = 'La solicitud se encuentra en progreso'; })
+      .then(sol => { this.loading = false; this.solicitudEnProgreso = 'La solicitud se encuentra en progreso'; this.success = 'La solicitud se envio correctamente'; })
       .catch((error) => { this.alerts.push(error); this.loading = false; });
   }
 
