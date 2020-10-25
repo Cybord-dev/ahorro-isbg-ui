@@ -3,6 +3,7 @@ import { GenericPage } from '../../../models/generic-page';
 import { ValidacionesService } from '../../../services/validaciones.service';
 import { Router } from '@angular/router';
 import { HistoricoValidacion } from '../../../models/historico-validacion';
+import { ɵNoopAnimationDriver } from '@angular/animations/browser';
 
 @Component({
   selector: 'cybord-historico-solicitudes',
@@ -15,8 +16,8 @@ export class HistoricoSolicitudesComponent implements OnInit {
   public page: GenericPage<HistoricoValidacion> = new GenericPage();
   public pageSize = '10';
 
-  public filterParams: any = { idSolicitud:'', nombre: '', noEmpleado: '', tipoUsuario: '', tipo: '', 
-  fechaCreacion: '',fechaEjecucion: '',  status: '', area:'', aprobada:'', page: '0', size: '10' };
+  public filterParams: any = { idSolicitud:'', nombre: '', noEmpleado: '', tipoUsuario: '', tipoSolicitud: '', 
+  since: '',to: '', fechaEjecucion: '',  estatus: '', area:'', aprobada:'', page: '0', size: '10' };
   public userEmail: string;
   public loading = false;
 

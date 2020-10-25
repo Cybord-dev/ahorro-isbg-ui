@@ -29,8 +29,15 @@
             </div>
 
             <div class="col-md-2">
-              <label for="fechacre" class="label">Fecha Creacion</label>
-                <input type="text" class="form-control" nbInput fullWidth id="fechacre" [(ngModel)]="filterParams.fechaCreacion"
+              <label for="fechacre" class="label">Fecha Creacion: Desde</label>
+                <input type="text" class="form-control" nbInput fullWidth id="fechacre" [(ngModel)]="filterParams.since"
+                placeholder="AAAA-MM-DD">
+              
+            </div>
+
+            <div class="col-md-2">
+              <label for="fechacre" class="label">Fecha Creacion: Hasta</label>
+                <input type="text" class="form-control" nbInput fullWidth id="fechacre" [(ngModel)]="filterParams.to"
                 placeholder="AAAA-MM-DD">
               
             </div>
@@ -59,7 +66,7 @@
             <div class="col-md-2">
               <label for="inputTipo" class="label" >Tipo Validacion</label>
               <div>
-                <select id="inputTipo"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipo">
+                <select id="inputTipo"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoSolicitud">
                   <option value="*">Todos</option>
                   <option value="SolicitudAhorro">Solicitud</option>
                   <option value="CancelacionAhorro">Cancelacion</option>
@@ -72,7 +79,7 @@
             <div class="col-md-2">
               <label for="tipoValidacion" class="label">Estatus</label>
               <div>
-                <select id="tipoValidacion"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.status">
+                <select id="tipoValidacion"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.estatus">
                   <option value="*">TODOS</option>
                   <option value="Finalizada">Finalizada</option>
                   <option value="Rechazada">Rechazada</option>
