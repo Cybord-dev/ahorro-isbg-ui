@@ -18,7 +18,6 @@ export class ReporteSolicitudesComponent implements OnInit {
   public userEmail: string;
   public loading = false;
 
-  public arrayfechas: Date[] = [];
 
   constructor(
     private router: Router,
@@ -26,7 +25,6 @@ export class ReporteSolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
     this.module = this.router.url.split('/')[1];
-    console.log(this.module);
 
     switch (this.module) {
       case 'recursos-humanos':
@@ -54,8 +52,8 @@ export class ReporteSolicitudesComponent implements OnInit {
   public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any): void {
     const params: any = this.filterParams;
 
-    params.page = currentPage !== undefined ? currentPage : this.filterParams.page;
-    params.size = pageSize !== undefined ? pageSize : this.filterParams.size;
+    params.page = currentPage !== undefined ? currentPage.toString() : this.filterParams.page;
+    params.size = pageSize !== undefined ? pageSize.toString() : this.filterParams.size;
 
     this.solicitudesService.getSolicitudes(params).subscribe(data => this.page = data);
   }

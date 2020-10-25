@@ -23,7 +23,6 @@ export class TramitesAhorroComponent implements OnInit {
   public success = '';
   public tipoSolicitud = 'SolicitudAhorro';
   public alerts: string[] = [];
-
   public enabledDates = [];
 
   public solicitudAhorro: Solicitud = new Solicitud();
@@ -32,6 +31,7 @@ export class TramitesAhorroComponent implements OnInit {
   public solicitudCancelacion: Solicitud = new Solicitud();
 
   public bsValue: Date;
+  public solicitudEnProgreso = '';
 
   constructor(
     public datepipe: DatePipe,
@@ -59,6 +59,20 @@ export class TramitesAhorroComponent implements OnInit {
           this.solicitudModificacion.atributos.MONTO = this.solicitudAhorro.atributos.MONTO;
           this.solicitudCancelacion.atributos.MONTO = this.solicitudAhorro.atributos.MONTO;
 
+          if (this.solicitudCancelacion.status !== undefined && this.solicitudCancelacion.status !== 'Rechazada'
+          && this.solicitudCancelacion.status !== 'Finalizada') {
+            this.solicitudEnProgreso = 'La solicitud de cancelación se encuentra en progreso';
+          }
+          if (this.solicitudRetiro.status !== undefined && this.solicitudRetiro.status !== 'Rechazada'
+          && this.solicitudRetiro.status !== 'Finalizada') {
+            this.solicitudEnProgreso = 'La solicitud de retiro se encuentra en progreso';
+          }
+
+          if ( this.solicitudModificacion.status !== undefined && this.solicitudModificacion.status !== 'Rechazada'
+          && this.solicitudModificacion.status !== 'Finalizada') {
+            this.solicitudEnProgreso = 'La modificacón de ahorro se encuentra en progreso';
+          }
+
         });
         this.userService.getUsuario(user.id).toPromise().then(u => this.usuario = u);
       }).catch((error) => { this.alerts.push(error); this.loading = false; });
@@ -75,7 +89,7 @@ export class TramitesAhorroComponent implements OnInit {
     solicitud.fechaEjecucion = new Date(this.bsValue);
     solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
     this.solicitudService.postSolictudUsuario(this.usuario.id, solicitud).toPromise()
-      .then(sol => { this.success = 'Se ha enviado la solicitud correctamente'; this.loading = false; })
+      .then(sol => { this.loading = false; this.solicitudEnProgreso = 'La solicitud se encuentra en progreso'; })
       .catch((error) => { this.alerts.push(error); this.loading = false; });
   }
 

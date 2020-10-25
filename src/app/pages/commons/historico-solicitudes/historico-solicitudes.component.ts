@@ -15,7 +15,7 @@ export class HistoricoSolicitudesComponent implements OnInit {
   public page: GenericPage<HistoricoValidacion> = new GenericPage();
   public pageSize = '10';
   public filterParams: any = { validador : '', idSolicitud: '', status: '', nombre: '', noEmpleado: '',
-              idUsuario: '', tipo: '', aprobada:'',fechaCreacion: '', area : '', page: '0', size: '10' };
+              idUsuario: '', tipo: '', aprobada: '', fechaCreacion: '', area : '', page: '0', size: '10' };
   public userEmail: string;
   public loading = false;
 
