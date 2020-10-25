@@ -6,11 +6,11 @@ export class AhorroExterno {
     public importe: number;
     public observaciones: string;
 
-    
-    constructor(validado?:boolean, clave?: string, nombre?: string, importe?:number){
+
+    constructor(validado?: boolean, clave?: string, nombre?: string, importe?: number){
         this.validado = validado;
         this.clave = clave;
-        this.nombre=nombre;
+        this.nombre = nombre;
         this.importe = importe;
     }
 }
