@@ -154,16 +154,15 @@
                             <label class="col-md-3 col-form-label" for="quantity1">Descuento quincenal actual</label>
                             <div class="col-md-9">
                               <input type="number" id="quantity1" name="quantity1" class="form-control" min=100 [disabled] = "solicitudModificacion.atributos.MONTO !== undefined"
-                                placeholder="100.00"  [(ngModel)]="solicitudModificacion.atributos.MONTO" min="100" max="20000">
-                              <span class="help-block" *ngIf="solicitudModificacion.atributos.MONTO === undefined">Descuento actual</span>
+                                placeholder="100.00"  [(ngModel)]="usuario.datosUsuario.AHORRO" min="100" max="20000">
                             </div>
                           </div>
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="quantity">Nuevo descuento</label>
                             <div class="col-md-9">
                               <input type="number" id="quantity" name="quantity" class="form-control" min=100 [disabled] = "solicitudEnProgreso.length !== 0"
-                                placeholder="100.00"  [(ngModel)]="solicitudModificacion.atributos.MONTO_MODIFICACION" min="100" max="20000">
-                              <span class="help-block" *ngIf="solicitudModificacion.id === undefined">Nueva cantidad</span>
+                                placeholder="100.00"  [(ngModel)]="solicitudModificacion.atributos.MONTO" min="100" max="20000">
+                              <span class="help-block" *ngIf="solicitudEnProgreso.length === 0">Nueva cantidad</span>
                             </div>
                           </div>
                           <div class="form-group row">
@@ -386,8 +385,7 @@
                             <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
                             <div class="col-md-9">
                               <input type="number" id="quantity" name="quantity" class="form-control" min=100 disabled
-                                placeholder="100.00"  [(ngModel)]="solicitudCancelacion.atributos.MONTO" min="100" max="20000">
-                              <span class="help-block" *ngIf="solicitudCancelacion.id === undefined">Descuento quincenal</span>
+                                placeholder="100.00"  [(ngModel)]="usuario.datosUsuario.AHORRO" min="100" max="20000">
                             </div>
                           </div>
                           <div class="form-group row">

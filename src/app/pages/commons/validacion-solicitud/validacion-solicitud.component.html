@@ -62,12 +62,28 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="start-date">Fecha inicio</label>
+                  <label class="col-md-3 col-form-label" for="start-date">Feche de ejecucion solicitud</label>
                   <div class="col-md-9">
                     <input type="text" id="festart-datecha" name="fecha" class="form-control" disabled
                     [(ngModel)]="solicitud.atributos.FECHA">
                   </div>
                 </div>
+                <div class="form-group row"  *ngIf="solicitud.atributos.NO_CUENTA != undefined">
+                  <label class="col-md-3 col-form-label" for="account">Cuenta CLABE deposito</label>
+                  <div class="col-md-9">
+                    <input type="text" id="account" name="account" class="form-control" disabled
+                    placeholder="0000 0000 0000 0000"  [(ngModel)]="solicitud.atributos.NO_CUENTA" >
+                  </div>
+                </div>
+                <div class="form-group row" *ngIf="solicitud.atributos.RAZON_CANCELACION != undefined">
+                  <label class="col-md-3 col-form-label" for="textarea-input">Motivo de cancelacion</label>
+                  <div class="col-md-9">
+                    <textarea id="textarea-input" name="textarea-input" rows="9" class="form-control"  disabled
+                    placeholder="Razón o motivo de cancelación del ahorro" [(ngModel)]="solicitud.atributos.RAZON_CANCELACION">
+                  </textarea>
+                  </div>
+                </div>
+                
               </form>
             </div>
 
