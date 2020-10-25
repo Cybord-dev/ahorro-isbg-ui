@@ -14,7 +14,7 @@ export class ReporteSolicitudesComponent implements OnInit {
   public module = 'usuarios';
   public page: GenericPage<Solicitud> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = { tipoSolicitud : '', idSolicitud: '', estatus: '', nombre: '', noEmpleado: '', tipoUsuario: '', page: '0', size: '10' };
+  public filterParams: any = { fechaEjecucion :'' ,tipoSolicitud:'', since:'', to: '',  idSolicitud: '', estatus: '', nombre: '', noEmpleado: '', tipoUsuario: '', page: '0', size: '10' };
   public userEmail: string;
   public loading = false;
 
@@ -28,19 +28,19 @@ export class ReporteSolicitudesComponent implements OnInit {
 
     switch (this.module) {
       case 'recursos-humanos':
-        this.filterParams.estatus = 'ValidacionRH';
+        this.filterParams.status = 'ValidacionRH';
         break;
       case 'tesoreria':
-        this.filterParams.estatus = 'ValidacionTeso';
+        this.filterParams.status = 'ValidacionTeso';
         break;
       case 'contabilidad':
-        this.filterParams.estatus = 'ValdiacionConta';
+        this.filterParams.status = 'ValdiacionConta';
         break;
       case 'gerencia':
-        this.filterParams.estatus = 'ValidacionGerencia';
+        this.filterParams.status = 'ValidacionGerencia';
         break;
       case 'administracion':
-        this.filterParams.estatus = 'ValidaAdmin';
+        this.filterParams.status = 'ValidaAdmin';
         break;
       default:
         break;
@@ -50,12 +50,10 @@ export class ReporteSolicitudesComponent implements OnInit {
 
 
   public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any): void {
-    const params: any = this.filterParams;
 
-    params.page = currentPage !== undefined ? currentPage.toString() : this.filterParams.page;
-    params.size = pageSize !== undefined ? pageSize.toString() : this.filterParams.size;
-
-    this.solicitudesService.getSolicitudes(params).subscribe(data => this.page = data);
+    this.filterParams.page = currentPage || 0;
+    this.filterParams.size = pageSize || 10;
+    this.solicitudesService.getSolicitudes(this.filterParams).subscribe(data => this.page = data);
   }
 
   public onChangePageSize(pageSize: number): void {

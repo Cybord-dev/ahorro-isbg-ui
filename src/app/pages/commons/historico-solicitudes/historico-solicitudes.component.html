@@ -39,7 +39,6 @@
               <label for="fechacre" class="label">Fecha Creacion: Hasta</label>
                 <input type="text" class="form-control" nbInput fullWidth id="fechacre" [(ngModel)]="filterParams.to"
                 placeholder="AAAA-MM-DD">
-              
             </div>
 
           </div>
@@ -56,7 +55,7 @@
               <label for="tipoUsuario" class="label">Tipo de Usuario</label>
               <div>
                 <select id="inputTipoUsuario"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoUsuario">
-                  <option value="*">TODOS</option>
+                  <option value="*" >TODOS</option>
                   <option value="INTERNO">INTERNO</option>
                   <option value="EXTERNO">EXTERNO</option>
                 </select>
@@ -67,7 +66,7 @@
               <label for="inputTipo" class="label" >Tipo Validacion</label>
               <div>
                 <select id="inputTipo"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoSolicitud">
-                  <option value="*">Todos</option>
+                  <option value="*" >Todos</option>
                   <option value="SolicitudAhorro">Solicitud</option>
                   <option value="CancelacionAhorro">Cancelacion</option>
                   <option value="ModificacionAhorro">Modificacion</option>
@@ -80,10 +79,14 @@
               <label for="tipoValidacion" class="label">Estatus</label>
               <div>
                 <select id="tipoValidacion"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.estatus">
-                  <option value="*">TODOS</option>
+                  <option value="*" >TODOS</option>
                   <option value="Finalizada">Finalizada</option>
                   <option value="Rechazada">Rechazada</option>
+                  <option value="ValidacionRH">Validacion Recursos Humanos</option>
+                  <option value="ValidacionTeso">Validacion Tesoreria</option>
+                  <option value="ValdiacionConta">Validacion Contabilidad</option>
                   <option value="ValidacionGerencia">Validacion Gerencia</option>
+                  <option value="ValidaAdmin">Validacion Administracion</option>
                 </select>
 
                 

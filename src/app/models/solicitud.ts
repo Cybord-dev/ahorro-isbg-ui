@@ -13,7 +13,7 @@ export class Solicitud {
     public fechaEjecucion: Date;
     public fechaCreacion: Date;
     public fechaActualizacion: Date;
-
+    public tipoUsuario: string;
     public validaciones: Validacion[];
     public atributos: Atributos;
 
