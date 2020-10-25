@@ -14,8 +14,9 @@ export class HistoricoSolicitudesComponent implements OnInit {
   public module = 'usuarios';
   public page: GenericPage<HistoricoValidacion> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = { validador : '', idSolicitud: '', status: '', nombre: '', noEmpleado: '',
-              idUsuario: '', tipo: '', aprobada: '', fechaCreacion: '', area : '', page: '0', size: '10' };
+
+  public filterParams: any = { idSolicitud:'', nombre: '', noEmpleado: '', tipoUsuario: '', tipo: '', 
+  fechaCreacion: '',fechaEjecucion: '',  status: '', area:'', aprobada:'', page: '0', size: '10' };
   public userEmail: string;
   public loading = false;
 
@@ -33,12 +34,14 @@ export class HistoricoSolicitudesComponent implements OnInit {
 
 
   public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any): void {
-    const params: any = this.filterParams;
+    for(const a in this.filterParams){
+      console.log(a+": "+this.filterParams[a]);
+    }
+    
+    this.filterParams.page = currentPage || 0;
+    this.filterParams.size  || 10;
 
-    params.page = currentPage !== undefined ? currentPage : this.filterParams.page;
-    params.size = pageSize !== undefined ? pageSize : this.filterParams.size;
-
-    this.validacionService.getValidaciones(params).subscribe(data => this.page = data);
+    this.validacionService.getValidaciones(this.filterParams).subscribe(data => this.page = data);
   }
 
   public onChangePageSize(pageSize: number): void {

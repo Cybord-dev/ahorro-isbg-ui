@@ -6,40 +6,89 @@
           <strong>Validaciones</strong>
         </div>
         <div class="card-body">
+        
+         
           <div class="row slide_1">
 
             <div class="col-md-2">
-              <label for="nombreusuario" class="label">Nombre Usuario</label>
-              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="nombreusu"
-                placeholder="nombreusuario">
+              <label for="idsol" class="label">Id Solicitud</label>
+              <input type="text" class="form-control" nbInput fullWidth id="idsol" [(ngModel)]="filterParams.idSolicitud"
+                placeholder="Id Sol.">
             </div>
+
             <div class="col-md-2">
-              <label for="inputtipo" class="label">Tipo Usuario</label>
-              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="inputtipo"
-                placeholder="Tipo de usuario">
+              <label for="nombreusuario" class="label">Nombre</label>
+              <input type="text" class="form-control" nbInput fullWidth id="nombreusuario" [(ngModel)]="filterParams.nombre"
+                placeholder="Nombre">
             </div>
+
             <div class="col-md-2">
-              <label for="FechaSolicitud" class="label">Fecha Solicitud</label>
-              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="inputCorreo"
-                placeholder="Fecha Solicitud">
+              <label for="noempleado" class="label">No. Empleado</label>
+              <input type="text" class="form-control" nbInput fullWidth id="noempleado" [(ngModel)]="filterParams.noEmpleado"
+                placeholder="No. Empleado">
             </div>
-            <div class="col-md-6">
-              <label for="inputActivo" class="label">Tipo Validacion</label>
-              <div class="row form-inline">
-                <select id="inputActivo" [disabled]="true" class="form-control" style="display:block;" fullWidth>
-                  <option value="*">Solicitud</option>
-                  <option value="1">Cancelacion</option>
-                  <option value="0">Cancelacion</option>
+
+            <div class="col-md-2">
+              <label for="fechacre" class="label">Fecha Creacion</label>
+                <input type="text" class="form-control" nbInput fullWidth id="fechacre" [(ngModel)]="filterParams.fechaCreacion"
+                placeholder="AAAA-MM-DD">
+              
+            </div>
+
+          </div>
+          <br>
+          <div class="row slide_1">
+
+            <div class= "col-md-2">
+              <label for="fechaejec" class="label">Fecha Ejecucion</label>
+                <input type="text" class="form-control" nbInput fullWidth id="fechaejec" [(ngModel)]="filterParams.fechaEjecucion"
+                placeholder="AAAA-MM-DD">
+            </div>
+
+            <div class="col-md-2">
+              <label for="tipoUsuario" class="label">Tipo de Usuario</label>
+              <div>
+                <select id="inputTipoUsuario"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoUsuario">
+                  <option value="*">TODOS</option>
+                  <option value="INTERNO">INTERNO</option>
+                  <option value="EXTERNO">EXTERNO</option>
                 </select>
-
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                <button class="btn btn-primary" [disabled]="true" (click)="updateDataTable(0,10)">BUSCAR</button>
-
-
               </div>
             </div>
-          </div>
 
+            <div class="col-md-2">
+              <label for="inputTipo" class="label" >Tipo Validacion</label>
+              <div>
+                <select id="inputTipo"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipo">
+                  <option value="*">Todos</option>
+                  <option value="SolicitudAhorro">Solicitud</option>
+                  <option value="CancelacionAhorro">Cancelacion</option>
+                  <option value="ModificacionAhorro">Modificacion</option>
+                  <option value="RetiroParcialAhorro">Retiro Parcial</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <label for="tipoValidacion" class="label">Estatus</label>
+              <div>
+                <select id="tipoValidacion"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.status">
+                  <option value="*">TODOS</option>
+                  <option value="Finalizada">Finalizada</option>
+                  <option value="Rechazada">Rechazada</option>
+                  <option value="ValidacionGerencia">Validacion Gerencia</option>
+                </select>
+
+                
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
+            </div>
+            
+          </div>
         </div>
       </div>
     </div>

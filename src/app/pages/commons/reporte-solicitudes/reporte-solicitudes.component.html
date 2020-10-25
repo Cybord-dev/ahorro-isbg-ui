@@ -10,30 +10,30 @@
 
             <div class="col-md-2">
               <label for="nombreusuario" class="label">Nombre Usuario</label>
-              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="nombreusu"
+              <input type="text" class="form-control"  nbInput fullWidth id="nombreusu"
                 placeholder="nombreusuario">
             </div>
             <div class="col-md-2">
               <label for="inputtipo" class="label">Tipo Usuario</label>
-              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="inputtipo"
+              <input type="text" class="form-control"  nbInput fullWidth id="inputtipo"
                 placeholder="Tipo de usuario">
             </div>
             <div class="col-md-2">
               <label for="FechaSolicitud" class="label">Fecha Solicitud</label>
-              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="inputCorreo"
+              <input type="text" class="form-control"  nbInput fullWidth id="inputCorreo"
                 placeholder="Fecha Solicitud">
             </div>
             <div class="col-md-6">
               <label for="inputActivo" class="label">Tipo Validacion</label>
               <div class="row form-inline">
-                <select id="inputActivo" [disabled]="true" class="form-control" style="display:block;" fullWidth>
+                <select id="inputActivo" class="form-control" style="display:block;" fullWidth>
                   <option value="*">Solicitud</option>
                   <option value="1">Cancelacion</option>
                   <option value="0">Cancelacion</option>
                 </select>
 
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                <button class="btn btn-primary" [disabled]="true" (click)="updateDataTable(0,10)">BUSCAR</button>
+                <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
 
 
               </div>

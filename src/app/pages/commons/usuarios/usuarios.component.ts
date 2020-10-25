@@ -27,9 +27,9 @@ export class UsuariosComponent implements OnInit {
   }
 
   public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any) {
-    const pageValue = currentPage || 0;
-    const sizeValue = pageSize || 10;
-    this.userService.getUsuarios(pageValue, sizeValue, this.filterParams).subscribe(data => this.page = data);
+    this.filterParams.page = currentPage || 0;
+    this.filterParams.size  || 10;
+    this.userService.getUsuarios(this.filterParams).subscribe(data => this.page = data);
   }
 
   public onChangePageSize(pageSize: number) {

@@ -12,8 +12,8 @@ export class UsuariosService {
 
   constructor(private http: HttpClient) { }
 
-  public getUsuarios(page: number, size: number, filterParams?: any): Observable<any> {
-    let pageParams: HttpParams = new HttpParams().append('page', page.toString()).append('size', size.toString());
+  public getUsuarios(filterParams?: any): Observable<any> {
+    let pageParams: HttpParams = new HttpParams();
     for (const key in filterParams) {
       if (filterParams[key] !== undefined) {
         const value: string = filterParams[key];
