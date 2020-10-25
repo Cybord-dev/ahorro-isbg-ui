@@ -31,7 +31,7 @@ export class ValidacionSolicitudComponent implements OnInit {
   public loading = false;
   public alerts: string[] = [];
   public success = '';
-
+  public historico = true;
   public validated = false;
 
   constructor(
@@ -45,8 +45,10 @@ export class ValidacionSolicitudComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.module = this.router.url.split('/')[1];
-
+    this.module = this.router.url.split('/')[2];
+    if(this.module !== "historico"){
+      this.historico = false;
+    }
     this.userService.myInfo().toPromise()
       .then(user => this.validador = user)
       .catch(error => this.alerts.push(error));
@@ -74,30 +76,34 @@ export class ValidacionSolicitudComponent implements OnInit {
   }
 
   public aprobarSolicitud(): void {
-    this.loading = true;
-    this.modalConfirmacion.hide();
-    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module, this.validador.email, true);
-    this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
-      .toPromise().then((result) => {
-        this.success = 'Solicitud validada correctamente.';
-        this.validated = true;
-        this.loading = false;
-        this.router.navigate([`../${this.module}/validaciones`]);
-      }).catch(error => { this.alerts.push(error); this.loading = false; });
+    if(!this.historico){
+      this.loading = true;
+      this.modalConfirmacion.hide();
+      const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module, this.validador.email, true);
+      this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
+        .toPromise().then((result) => {
+          this.success = 'Solicitud validada correctamente.';
+          this.validated = true;
+          this.loading = false;
+          this.router.navigate([`../${this.module}/validaciones`]);
+        }).catch(error => { this.alerts.push(error); this.loading = false; });
+    }
   }
 
   public rechazarSolicitud(): void {
-    this.loading = true;
-    this.modalConfirmacion.hide();
-    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id,
-      this.module, this.validador.email, false, this.razonRechazo);
-    this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
-      .toPromise().then((result) => {
-        this.success = 'Solicitud rechazada correctamente.';
-        this.validated = true;
-        this.loading = false;
-        this.router.navigate([`../${this.module}/validaciones`]);
-      }).catch(error => { this.alerts.push(error); this.loading = false; });
+    if(!this.historico){
+      this.loading = true;
+      this.modalConfirmacion.hide();
+      const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id,
+        this.module, this.validador.email, false, this.razonRechazo);
+      this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
+        .toPromise().then((result) => {
+          this.success = 'Solicitud rechazada correctamente.';
+          this.validated = true;
+          this.loading = false;
+          this.router.navigate([`../${this.module}/validaciones`]);
+        }).catch(error => { this.alerts.push(error); this.loading = false; });
+    }
   }
 
 }

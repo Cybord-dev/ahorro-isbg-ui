@@ -100,10 +100,10 @@
               </span>
               <br>
               <br>
-              <button type="button" class="btn btn-sm btn-success" (click)="openModal(true)" [disabled] = "validated || loading"><i class="fa fa-dot-circle-o" ></i>&nbsp;
+              <button type="button" class="btn btn-sm btn-success" (click)="openModal(true)" [hidden] = "historico" [disabled] = "validated || loading || historico"><i class="fa fa-dot-circle-o" ></i>&nbsp;
                 Aprobar solicitud
                   <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
-                <button type="button" class="btn btn-sm btn-danger" (click)="openModal(false)" [disabled] = "validated || loading" ><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                <button type="button" class="btn btn-sm btn-danger" (click)="openModal(false)" [hidden] = "historico" [disabled] = "validated || loading || historico" ><i class="fa fa-dot-circle-o" ></i>&nbsp;
                 Rechazar solicitud
                 <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
             </div>
