@@ -1,12 +1,14 @@
-import { Component, OnInit, Renderer2, ViewChild, resolveForwardRef } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, resolveForwardRef, ElementRef } from '@angular/core';
 import * as XLSX from 'xlsx';
 import {AhorroExterno} from '../../../models/ahorroExterno' ;
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { AhorroServicio } from 'src/app/services/ahorro.service';
 import { Usuario } from 'src/app/models/usuario';
 import { SaldoAhorro} from 'src/app/models/saldoahorro';
 import { Validators } from '@angular/forms';
 import { UsuarioComponent } from '../../commons/usuario/usuario.component';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 
@@ -19,21 +21,21 @@ export class AhorroExternosComponent implements OnInit {
 
 
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
+  @ViewChild('fileInput') public fileInput: ElementRef;
 
   public datosAhorro: AhorroExterno[];
-  public ahorroCarga: AhorroExterno[];
   public errorMessages: string[] = [];
   public loading = false;
   public tablaValida = true;
 
   constructor(
     private renderer: Renderer2,
-    public userService: UsuariosService
+    private userService: UsuariosService,
+    private ahorroService: AhorroServicio
     ) { }
 
   ngOnInit(): void {
     this.datosAhorro = new Array<AhorroExterno>();
-    this.ahorroCarga = new Array<AhorroExterno>();
   }
 
 
@@ -60,8 +62,6 @@ export class AhorroExternosComponent implements OnInit {
    await this.onFileChange(files);
    this.loading = false;
    console.log(' Tabla validada ' + this.tablaValida);
-   this.datosAhorro = this.ahorroCarga;
-
   }
 
 
@@ -92,19 +92,17 @@ export class AhorroExternosComponent implements OnInit {
           let usuario: Usuario = new Usuario();
 
           if (jsonActual[keys[0]] !== undefined){
+            const ahorroActual: AhorroExterno =  new AhorroExterno(!aceptar, jsonActual[keys[0]],
+              jsonActual[keys[1]], jsonActual[keys[2]]);
+
+            this.datosAhorro.push(ahorroActual);
             this.userService.getUsuario(jsonActual[keys[0]]).toPromise()
-             .then(user => {
+            .then(user => {
               usuario = user;
-              const ahorroActual: AhorroExterno =  new AhorroExterno(!aceptar, jsonActual[keys[0]],
-                jsonActual[keys[1]], jsonActual[keys[2]]);
               this.validar(user, ahorroActual);
-              this.ahorroCarga.push(ahorroActual);
           })
           .catch(error => {
-            const ahorroActual: AhorroExterno =  new AhorroExterno(false, jsonActual[keys[0]],
-              jsonActual[keys[1]], jsonActual[keys[2]]);
             ahorroActual.observaciones = (' No es valida la clave del ahorrador ' );
-            this.ahorroCarga.push(ahorroActual);
             this.tablaValida = false;
           });
           }
@@ -116,8 +114,8 @@ export class AhorroExternosComponent implements OnInit {
   }
 
   clean(): void {
+    this.fileInput.nativeElement.value = null;
     this.datosAhorro = new Array<AhorroExterno>();
-    this.ahorroCarga = new Array<AhorroExterno>();
     this.errorMessages = [];
   }
 
@@ -127,7 +125,7 @@ export class AhorroExternosComponent implements OnInit {
 
     this.datosAhorro.forEach(ahorro => {
       const saldoAhorroActual: SaldoAhorro = new SaldoAhorro();
-      saldoAhorroActual.id = ahorro.clave;
+      saldoAhorroActual.idUsuario = ahorro.clave;
       saldoAhorroActual.tipo = 'ahorro';
       saldoAhorroActual.monto = ahorro.importe;
       saldoAhorroActual.validado = true;
@@ -135,8 +133,17 @@ export class AhorroExternosComponent implements OnInit {
 
     });
 
-    console.log('Saldo Ahorro' + JSON.stringify(saldoAhorro));
 
+    this.ahorroService.postSaldoBulk(saldoAhorro).toPromise()
+    .then(saldo => {
+        alert('Se registraron depositos de ' + saldo.length + ' ahorradores');
+        this.clean();
+        this.modalConfirmacion.hide();
+      })
+    .catch(error=>{
+      alert('Se registro un error al cargar los ahorros ' + error);
+      this.modalConfirmacion.hide();
+    });
    }
 
 

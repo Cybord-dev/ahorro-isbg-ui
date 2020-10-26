@@ -14,7 +14,7 @@
           <div class="form-group row">
             <label class="col-md-2 col-form-label" for="file-input">Subir Archivo</label>
             <div class="col-md-9">
-            <input id="file-input" type="file" accept=".xlsx, .xls, .csv  " name="file-input" (change)="cargaValida($event.target.files)" class="file-input">
+            <input #fileInput id="file-input" type="file" accept=".xlsx, .xls, .csv  " name="file-input" (change)="cargaValida($event.target.files)" class="file-input">
             </div>
             </div>
 
@@ -71,7 +71,7 @@
           </button>
         </div>
         <div class="modal-body">
-           '¿Resgistrar ahorros externos?'
+           ¿Resgistrar ahorros externos?
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary"  (click)="cargar()" >Si</button>
