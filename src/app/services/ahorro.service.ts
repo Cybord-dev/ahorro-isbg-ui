@@ -29,8 +29,8 @@ export class AhorroServicio {
     return this.http.get<SaldoAhorro[]>(`../api/v1/usuarios/${idUsuario}/ahorros`);
   }
 
-  public postSaldo (idUsuario: number, saldo: SaldoAhorro): Observable<SaldoAhorro[]>{
-    return this.http.post<SaldoAhorro[]>(`../api/v1/usuarios/${idUsuario}/ahorro`, saldo);
+  public postSaldo(idUsuario: number, saldo: SaldoAhorro): Observable<SaldoAhorro[]>{
+    return this.http.post<SaldoAhorro[]>(`../api/v1/usuarios/${idUsuario}/ahorros`, saldo);
   }
 
   public getSaldoByUsuarioAndId (idUsuario: number, idAhorro: number): Observable<SaldoAhorro[]>{

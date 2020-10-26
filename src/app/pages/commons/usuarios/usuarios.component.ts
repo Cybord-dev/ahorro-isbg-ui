@@ -40,4 +40,8 @@ export class UsuariosComponent implements OnInit {
     this.router.navigate([`../${this.module}/usuarios/${id}`]);
   }
 
+  public redirectToAdjustment(id: string): void {
+    this.router.navigate([`../contabilidad/ajustes/${id}`]);
+  }
+
 }

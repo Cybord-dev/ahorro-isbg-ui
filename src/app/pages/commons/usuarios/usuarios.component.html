@@ -94,6 +94,8 @@
                       <td scope="row">
                         <button class="btn-sm btn-outline-primary" (click)="redirectToUser(fila.id)"><i
                             class="fa fa-search fa-sm"></i></button>
+                        <button class="btn-sm btn-outline-primary" *ngIf="module === 'contabilidad'" (click)="redirectToAdjustment(fila.id)"><i
+                              class="fa fa-money fa-sm"></i></button>
                       </td>
                       <td scope="row">{{fila.noEmpleado}}</td>
                       <td scope="row">{{fila.nombre}}</td>

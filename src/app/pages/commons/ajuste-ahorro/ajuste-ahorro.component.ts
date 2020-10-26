@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Usuario } from '../../../models/usuario';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { ActivatedRoute } from '@angular/router';
 import { AhorroServicio } from '../../../services/ahorro.service';
 import { SaldoAhorro } from '../../../models/saldoahorro';
+import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 
 @Component({
   selector: 'cybord-ajuste-ahorro',
@@ -12,11 +13,14 @@ import { SaldoAhorro } from '../../../models/saldoahorro';
 })
 export class AjusteAhorroComponent implements OnInit {
 
+  @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
+
   public usuario: Usuario = new Usuario();
   public ajustador: Usuario = new Usuario();
   public ahorros: SaldoAhorro[] = [];
   public total: number;
   public alerts: string[] = [];
+  public loading = false;
 
   public ajusteAhorro: SaldoAhorro = new SaldoAhorro();
 
@@ -46,6 +50,8 @@ export class AjusteAhorroComponent implements OnInit {
   }
 
   public createAdjustemnt(): void{
+    this.loading = true;
+    this.ajusteAhorro.tipo = 'ajuste';
     this.ajusteAhorro.idUsuario = this.usuario.id;
     this.ajusteAhorro.validado = true;
     this.ajusteAhorro.solicitante = this.ajustador.email;
@@ -55,8 +61,18 @@ export class AjusteAhorroComponent implements OnInit {
       .then(resultado => {
         this.ahorros = resultado;
         this.total = resultado.map(r => r.monto).reduce((a, b) => a + b);
+        this.loading = false;
       });
-    }).catch((error) => this.alerts.push(error));
+    }).catch((error) => { this.alerts.push(error); this.loading = false;});
+    this.modalConfirmacion.hide();
+  }
+
+  public openModal(): void {
+    this.modalConfirmacion.show();
+  }
+
+  public cancelar(): void {
+    this.modalConfirmacion.hide();
   }
 
 }
