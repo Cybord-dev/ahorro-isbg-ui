@@ -19,7 +19,7 @@ export class UsuarioComponent implements OnInit {
 
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
 
-  registerForm: FormGroup;
+  public registerForm: FormGroup;
   public submitted = false;
   public loading = false;
   public usuario: Usuario = new Usuario();
@@ -54,6 +54,12 @@ export class UsuarioComponent implements OnInit {
           Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡" \' ]+)$')]],
           activo: ['Si', Validators.required],
           tipo: [this.usuario.tipoUsuario],
+          oficina: [this.usuario.datosUsuario.OFICINA],
+          banco: [this.usuario.datosUsuario.BANCO],
+          noEmpleado: [this.usuario.noEmpleado],
+          cuenta: [this.usuario.datosUsuario.CUENTA],
+          sueldo: [this.usuario.datosUsuario.SUELDO],
+          antiguedad: [this.usuario.datosUsuario.ANTIGUEDAD]
         });
 
       } else {
@@ -65,6 +71,12 @@ export class UsuarioComponent implements OnInit {
           Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡"\' ]+)$')]],
           activo: ['Si', Validators.required],
           tipo: [this.usuario.tipoUsuario],
+          oficina: [this.usuario.datosUsuario.OFICINA],
+          banco: [this.usuario.datosUsuario.BANCO],
+          noEmpleado: [this.usuario.noEmpleado],
+          cuenta: [this.usuario.datosUsuario.CUENTA],
+          sueldo: [this.usuario.datosUsuario.SUELDO],
+          antiguedad: [this.usuario.datosUsuario.ANTIGUEDAD]
         });
         this.loading = false;
       }
@@ -123,7 +135,6 @@ export class UsuarioComponent implements OnInit {
     this.errorMessages = [];
     this.usuarioServicio.actualizaUser(this.usuario).toPromise()
       .then(async updateduser => {
-        console.log(updateduser);
         if(this.usuario.datosUsuario.ANTIGUEDAD !== undefined){
           this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
         }

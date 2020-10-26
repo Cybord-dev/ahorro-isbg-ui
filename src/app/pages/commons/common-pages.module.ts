@@ -21,6 +21,7 @@ import { ValidacionSolicitudComponent } from './validacion-solicitud/validacion-
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.component';
+import { AjusteAhorroComponent } from './ajuste-ahorro/ajuste-ahorro.component';
 
 
 
@@ -33,6 +34,7 @@ import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.compo
     ValidacionSolicitudComponent,
     UsuariosComponent,
     UsuarioComponent,
+    AjusteAhorroComponent,
     ReporteAhorrosComponent],
   imports: [
     CommonModule,
@@ -57,6 +59,7 @@ import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.compo
     ModalModule,
     BsDatepickerModule,
     ProfileComponent,
+    AjusteAhorroComponent,
     ReporteSolicitudesComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,

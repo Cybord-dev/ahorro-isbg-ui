@@ -7,6 +7,8 @@ import { AhorroExternosComponent } from './ahorro-externos/ahorro-externos.compo
 import { UsuariosComponent } from '../commons/usuarios/usuarios.component';
 import { UsuarioComponent } from '../commons/usuario/usuario.component';
 import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
+import { ReporteAhorrosComponent } from '../commons/reporte-ahorros/reporte-ahorros.component';
+import { AjusteAhorroComponent } from '../commons/ajuste-ahorro/ajuste-ahorro.component';
 
 const routes: Routes = [
   {
@@ -64,7 +66,21 @@ const routes: Routes = [
     data: {
       title: 'Ahorro usuarios externos'
     }
-  }
+  },
+  {
+    path: 'reportes-ahorro',
+    component: ReporteAhorrosComponent,
+    data: {
+      title: 'Reporte de ahorro caja',
+    }
+  },
+  {
+    path: 'ajustes/:idUsuario',
+    component: AjusteAhorroComponent,
+    data: {
+      title: 'Ajustes de ahorro'
+    }
+  },
 ];
 
 @NgModule({

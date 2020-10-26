@@ -107,7 +107,7 @@
                       <td scope="row">{{fila.fechaCreacion}}</td>
                       <td scope="row">{{fila.fechaEjecucion}}</td>
 
-                      <td scope="row">Interno</td>
+                      <td scope="row">{{fila.tipoUsuario}}</td>
                       <td scope="row" class="text-center">
                         <span class="badge badge-success" *ngIf="fila.tipo === 'SolicitudAhorro'">SOLICITUD
                           AHORRO</span>
@@ -125,14 +125,15 @@
                 <div class="clearfix" *ngIf="page.empty == false">
                   <ul class="pagination float-right" *ngIf="page.totalElements > 1">
                     <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
-                        (click)="updateDataTable(0,page.size)"><i class="nb-arrow-left"></i></button></li>
+                        (click)="updateDataTable(0,page.size)"><i class="icon-control-rewind icons"></i></button>
+                    </li>
                     <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
                         (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
                     <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
                     <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
                         (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
                     <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
-                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="nb-arrow-right"></i></button>
+                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="icon-control-forward icons"></i></button>
                     </li>
                   </ul>
                 </div>
