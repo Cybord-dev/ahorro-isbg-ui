@@ -9,35 +9,95 @@
           <div class="row slide_1">
 
             <div class="col-md-2">
-              <label for="nombreusuario" class="label">Nombre Usuario</label>
-              <input type="text" class="form-control"  nbInput fullWidth id="nombreusu"
-                placeholder="nombreusuario">
+              <label for="idsol" class="label">Id Solicitud</label>
+              <input type="text" class="form-control" nbInput fullWidth id="idsol" [(ngModel)]="filterParams.idSolicitud"
+                placeholder="Id Sol.">
             </div>
+
             <div class="col-md-2">
-              <label for="inputtipo" class="label">Tipo Usuario</label>
-              <input type="text" class="form-control"  nbInput fullWidth id="inputtipo"
-                placeholder="Tipo de usuario">
+              <label for="nombreusuario" class="label">Nombre</label>
+              <input type="text" class="form-control" nbInput fullWidth id="nombreusuario" [(ngModel)]="filterParams.nombre"
+                placeholder="Nombre">
             </div>
+
             <div class="col-md-2">
-              <label for="FechaSolicitud" class="label">Fecha Solicitud</label>
-              <input type="text" class="form-control"  nbInput fullWidth id="inputCorreo"
-                placeholder="Fecha Solicitud">
+              <label for="noempleado" class="label">No. Empleado</label>
+              <input type="text" class="form-control" nbInput fullWidth id="noempleado" [(ngModel)]="filterParams.noEmpleado"
+                placeholder="No. Empleado">
             </div>
-            <div class="col-md-6">
-              <label for="inputActivo" class="label">Tipo Validacion</label>
-              <div class="row form-inline">
-                <select id="inputActivo" class="form-control" style="display:block;" fullWidth>
-                  <option value="*">Solicitud</option>
-                  <option value="1">Cancelacion</option>
-                  <option value="0">Cancelacion</option>
+
+            <div class="col-md-2">
+              <label for="estatus" class="label">Estatus</label>
+              <div>
+                <select id="estatus"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.estatus">
+                  <option value="*">TODOS</option>
+                  <option value="Finalizada">Finalizada</option>
+                  <option value="Rechazada">Rechazada</option>
+                  <option value="ValidacionRH">Validacion Recursos H.</option>
+                  <option value="ValidacionTeso">Validacion Tesoreria</option>
+                  <option value="ValdiacionConta">Validacion Contabilidad</option>
+                  <option value="ValidacionGerencia">Validacion Gerencia</option>
+                  <option value="ValidaAdmin">Validacion Administracion</option>
+                  
+
+                  
                 </select>
-
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
-
-
               </div>
             </div>
+
+            <div class="col-md-2">
+              <label for="tipoUsuario" class="label">Tipo Usuario</label>
+              <div>
+                <select id="tipoUsuario"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoUsuario">
+                  <option value="*">TODOS</option>
+                  <option value="INTERNO">INTERNO</option>
+                  <option value="EXTERNO">EXTERNO</option>
+                </select>
+                
+              </div>
+            </div>
+   
+          </div>
+          <br>
+          <div class ="row slide_1">
+            <div class="col-md-2">
+              <label for="fechacre" class="label">Fecha Creacion: Desde</label>
+                <input type="text" class="form-control" nbInput fullWidth id="fechacre" [(ngModel)]="filterParams.since"
+                placeholder="AAAA-MM-DD">
+              
+            </div>
+
+            <div class="col-md-2">
+              <label for="fechacre" class="label">Fecha Creacion: Hasta</label>
+                <input type="text" class="form-control" nbInput fullWidth id="fechacre" [(ngModel)]="filterParams.to"
+                placeholder="AAAA-MM-DD">
+
+            </div>
+
+            <div class="col-md-2">
+              <label for="inputTipo" class="label" >Tipo Validacion</label>
+              <div>
+                <select id="inputTipo"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoSolicitud">
+                  <option value="*" >Todos</option>
+                  <option value="SolicitudAhorro">Solicitud</option>
+                  <option value="CancelacionAhorro">Cancelacion</option>
+                  <option value="ModificacionAhorro">Modificacion</option>
+                  <option value="RetiroParcialAhorro">Retiro Parcial</option>
+                </select>
+              </div>
+            </div>
+
+            <div class= "col-md-2">
+              <label for="fechaejec" class="label">Fecha Ejecucion</label>
+                <input type="text" class="form-control" nbInput fullWidth id="fechaejec" [(ngModel)]="filterParams.fechaEjecucion"
+                placeholder="AAAA-MM-DD">
+            </div>
+
+            <div class="col-md-2">
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
+            </div>
+
           </div>
 
         </div>

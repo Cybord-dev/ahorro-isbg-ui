@@ -35,12 +35,8 @@ export class HistoricoSolicitudesComponent implements OnInit {
 
 
   public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any): void {
-    for(const a in this.filterParams){
-      console.log(a+": "+this.filterParams[a]);
-    }
-    
     this.filterParams.page = currentPage || 0;
-    this.filterParams.size  || 10;
+    this.filterParams.size = pageSize || 10;
 
     this.validacionService.getValidaciones(this.filterParams).subscribe(data => this.page = data);
   }
