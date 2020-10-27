@@ -28,19 +28,19 @@ export class ReporteSolicitudesComponent implements OnInit {
 
     switch (this.module) {
       case 'recursos-humanos':
-        this.filterParams.status = 'ValidacionRH';
+        this.filterParams.estatus = 'ValidacionRH';
         break;
       case 'tesoreria':
-        this.filterParams.status = 'ValidacionTeso';
+        this.filterParams.estatus = 'ValidacionTeso';
         break;
       case 'contabilidad':
-        this.filterParams.status = 'ValdiacionConta';
+        this.filterParams.estatus = 'ValdiacionConta';
         break;
       case 'gerencia':
-        this.filterParams.status = 'ValidacionGerencia';
+        this.filterParams.estatus = 'ValidacionGerencia';
         break;
       case 'administracion':
-        this.filterParams.status = 'ValidaAdmin';
+        this.filterParams.estatus = 'ValidaAdmin';
         break;
       default:
         break;

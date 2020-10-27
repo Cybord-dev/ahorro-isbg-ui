@@ -33,6 +33,7 @@ export class ValidacionSolicitudComponent implements OnInit {
   public success = '';
   public historico = true;
   public validated = false;
+  public moduleA: string;
 
   constructor(
     private userService: UsuariosService,
@@ -46,6 +47,7 @@ export class ValidacionSolicitudComponent implements OnInit {
   ngOnInit(): void {
 
     this.module = this.router.url.split('/')[2];
+    this.moduleA = this.router.url.split('/')[1];
     if(this.module !== "historico"){
       this.historico = false;
     }
@@ -79,7 +81,7 @@ export class ValidacionSolicitudComponent implements OnInit {
     if(!this.historico){
       this.loading = true;
       this.modalConfirmacion.hide();
-      const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module, this.validador.email, true);
+      const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.moduleA, this.validador.email, true);
       this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
         .toPromise().then((result) => {
           this.success = 'Solicitud validada correctamente.';
@@ -101,7 +103,7 @@ export class ValidacionSolicitudComponent implements OnInit {
           this.success = 'Solicitud rechazada correctamente.';
           this.validated = true;
           this.loading = false;
-          this.router.navigate([`../${this.module}/validaciones`]);
+          this.router.navigate([`../${this.moduleA}/validaciones`]);
         }).catch(error => { this.alerts.push(error); this.loading = false; });
     }
   }
