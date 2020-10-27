@@ -38,34 +38,14 @@ export class AhorroExternosComponent implements OnInit {
     this.datosAhorro = new Array<AhorroExterno>();
   }
 
+ onFileChange(files): void {
 
+    if (files.length === 0){
+      return;
 
- async cargaValida(files): Promise<any>{
+    }
 
-    /*
-    const promise = new Promise((resolve, reject) => {
-      resolve(
-      this.onFileChange(files)
-      );
-    });
-
-    promise.then((res) => {
-      console.log('Resultado: ' + res);
-      this.loading = false;
-      console.log(' Tabla validada ' + this.tablaValida);
-      this.datosAhorro = this.ahorroCarga;
-
-   } );
-
-*/
-
-   await this.onFileChange(files);
-   this.loading = false;
-   console.log(' Tabla validada ' + this.tablaValida);
-  }
-
-
-  async onFileChange(files): Promise<any> {
+    this.tablaValida = true;
     this.loading = true;
     let workBook = null;
     let jsonData = null;
@@ -85,32 +65,39 @@ export class AhorroExternosComponent implements OnInit {
       for (key in jsonData){}
       const jsonArray = jsonData[key];
 
-      const keys = Object.keys(jsonArray[0]);
-
-      for (const jsonActual of  jsonArray) {
-          const aceptar = false;
-          let usuario: Usuario = new Usuario();
-
-          if (jsonActual[keys[0]] !== undefined){
-            const ahorroActual: AhorroExterno =  new AhorroExterno(!aceptar, jsonActual[keys[0]],
-              jsonActual[keys[1]], jsonActual[keys[2]]);
-
-            this.datosAhorro.push(ahorroActual);
-            this.userService.getUsuario(jsonActual[keys[0]]).toPromise()
-            .then(user => {
-              usuario = user;
-              this.validar(user, ahorroActual);
-          })
-          .catch(error => {
-            ahorroActual.observaciones = (' No es valida la clave del ahorrador ' );
-            this.tablaValida = false;
-          });
-          }
-        }
+      this.cargarValidar(jsonArray);
       };
     reader.readAsBinaryString(file);
 
-    return true;
+  }
+
+  async cargarValidar(jsonArray): Promise<void>{
+
+    const keys = Object.keys(jsonArray[0]);
+
+    for (const jsonActual of  jsonArray) {
+      const aceptar = false;
+      let usuario: Usuario = new Usuario();
+
+      if (jsonActual[keys[0]] !== undefined){
+        const ahorroActual: AhorroExterno =  new AhorroExterno(!aceptar, jsonActual[keys[0]],
+          jsonActual[keys[1]], jsonActual[keys[2]]);
+
+        this.datosAhorro.push(ahorroActual);
+        try{
+        usuario = await this.userService.getUsuario(jsonActual[keys[0]]).toPromise();
+        this.validar(usuario, ahorroActual);
+        }
+        catch (error){
+          ahorroActual.observaciones = (' No es valida la clave del ahorrador ' );
+          this.tablaValida = false;
+        }
+      }
+    }
+
+    this.loading = false;
+    console.log('Tabla validad ' + this.tablaValida);
+
   }
 
   clean(): void {
