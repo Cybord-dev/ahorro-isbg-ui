@@ -6,11 +6,75 @@
           <strong>Carga de ahorro externos</strong>
         </div>
         <div class="card-body" >
-         Aqui va lo de la carga externa
+
+          <div class="alert alert-danger" *ngIf="errorMessages.length > 0" role="alert">
+            <p *ngFor="let message of errorMessages">{{message}}</p>
+        </div>
+        
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="file-input">Subir Archivo</label>
+            <div class="col-md-9">
+            <input #fileInput id="file-input" type="file" accept=".xlsx, .xls, .csv  " name="file-input" (change)="onFileChange($event.target.files)" class="file-input">
+            </div>
+            </div>
+
+           
+          <div class="table-responsive slide_1" *ngIf="datosAhorro.length > 0" >
+            <table class="table table-bordered table-sm">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="text-center">Clave</th>
+                  <th scope="col" class="text-center">Nombre</th>
+                  <th scope="col" class="text-center">Importe</th>
+                  <th scope="col" class="text-center">Observaciones</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor = "let fila of datosAhorro"  [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
+                  <td scope="row" class="text-left"> {{fila.clave}} </td>
+                  <td scope="row" class="text-left"> {{fila.nombre}} </td>
+                  <td scope="row" class="text-left"> {{fila.importe}} </td>
+                  <td scope="row" class="text-left"> {{fila.observaciones}} </td>
+                </tr>
+
+              </tbody>
+
+
+            </table> 
+
+            <div class="col-sm-6">  
+              <button class="btn btn-warning" (click)="clean()" [disabled] = "loading">Limpiar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button>  
+              
+              <button class="btn btn-success" (click)="openModal()" [disabled] = "!tablaValida" >Cargar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>  
+            </div>
+
+          </div>
         </div>
         
       </div>
       
     </div>
+    </div>
+  </div>
+
+
+  <div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="decline()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           ¿Resgistrar ahorros externos?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary"  (click)="cargar()" >Si</button>
+            <button type="button" class="btn btn-secondary" (click)="decline()" >No</button>
+        </div>
+      </div>
     </div>
   </div>
