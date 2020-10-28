@@ -26,24 +26,6 @@
                 placeholder="No. Empleado">
             </div>
 
-            <div class="col-md-2">
-              <label for="estatus" class="label">Estatus</label>
-              <div>
-                <select id="estatus"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.estatus">
-                  <option value="*">TODOS</option>
-                  <option value="Finalizada">Finalizada</option>
-                  <option value="Rechazada">Rechazada</option>
-                  <option value="ValidacionRH">Validacion Recursos H.</option>
-                  <option value="ValidacionTeso">Validacion Tesoreria</option>
-                  <option value="ValdiacionConta">Validacion Contabilidad</option>
-                  <option value="ValidacionGerencia">Validacion Gerencia</option>
-                  <option value="ValidaAdmin">Validacion Administracion</option>
-                  
-
-                  
-                </select>
-              </div>
-            </div>
 
             <div class="col-md-2">
               <label for="tipoUsuario" class="label">Tipo Usuario</label>
@@ -56,29 +38,11 @@
                 
               </div>
             </div>
-   
-          </div>
-          <br>
-          <div class ="row slide_1">
-            <div class="col-md-2">
-              <label for="fechacre" class="label">Fecha Creacion: Desde</label>
-                <input type="text" class="form-control" nbInput fullWidth id="fechacre" [(ngModel)]="filterParams.since"
-                placeholder="AAAA-MM-DD">
-              
-            </div>
-
-            <div class="col-md-2">
-              <label for="fechacre" class="label">Fecha Creacion: Hasta</label>
-                <input type="text" class="form-control" nbInput fullWidth id="fechacre" [(ngModel)]="filterParams.to"
-                placeholder="AAAA-MM-DD">
-
-            </div>
-
             <div class="col-md-2">
               <label for="inputTipo" class="label" >Tipo Validacion</label>
               <div>
                 <select id="inputTipo"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoSolicitud">
-                  <option value="*" >Todos</option>
+                  <option value="*" >TODOS</option>
                   <option value="SolicitudAhorro">Solicitud</option>
                   <option value="CancelacionAhorro">Cancelacion</option>
                   <option value="ModificacionAhorro">Modificacion</option>
@@ -86,12 +50,18 @@
                 </select>
               </div>
             </div>
-
             <div class="col-md-2">
-              <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+              <label for="fechacre" class="label">Fecha Creacion</label>
+              <input type="text" placeholder="Fecha de creación" class="form-control" bsDaterangepicker>
+            </div>
+          </div>
+          <br>
+          <div class ="row">
+            <div class="col"></div>
+            <div class="col-md-2">
                 <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
             </div>
-
+            <div class="col"></div>
           </div>
 
         </div>
