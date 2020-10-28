@@ -9,35 +9,39 @@
             <div class="row slide_1">
   
               <div class="col-md-2">
-                <label for="nombreusuario" class="label">Nombre Usuario</label>
-                <input type="text" class="form-control"  nbInput fullWidth id="nombreusu" disabled
-                  placeholder="nombreusuario">
+                <label for="noempleado" class="label">No. Empleado</label>
+                <input type="text" class="form-control"  fullWidth id="noemp" [(ngModel)]="filterParams.noEmpleado"
+                  placeholder="No. Empleado">
               </div>
+
               <div class="col-md-2">
-                <label for="inputtipo" class="label">Tipo Usuario</label>
-                <input type="text" class="form-control"  nbInput fullWidth id="inputtipo" disabled
-                  placeholder="Tipo de usuario">
-              </div>
-              <div class="col-md-2">
-                <label for="FechaSolicitud" class="label">Fecha Solicitud</label>
-                <input type="text" class="form-control"  nbInput fullWidth id="inputCorreo" disabled
-                  placeholder="Fecha Solicitud">
-              </div>
-              <div class="col-md-6">
-                <label for="inputActivo" class="label">Tipo Validacion</label>
-                <div class="row form-inline">
-                  <select id="inputActivo" class="form-control" style="display:block;" fullWidth disabled>
-                    <option value="*">Solicitud</option>
-                    <option value="1">Cancelacion</option>
-                    <option value="0">Cancelacion</option>
+                <label for="inputActivo2" class="label">Tipo Empleado</label>
+                
+                  <select id="inputActivo2" class="form-control" style="display:block;" [(ngModel)]="filterParams.tipoUsuario">
+                    <option value="*">Todo</option>
+                    <option value="INTERNO">Interno</option>
+                    <option value="EXTERNO">Externo</option>
                   </select>
   
-                  <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                  <button class="btn btn-primary" (click)="updateDataTable(0,10)" disabled>BUSCAR</button>
-  
-  
-                </div>
+                
               </div>
+
+              <div class="col-md-2">
+                <label for="inputActivo" class="label">Tipo Ahorro</label>
+                
+                  <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.tipo">
+                    <option value="*">Todo</option>
+                    <option value="ahorro">Ahorro</option>
+                    <option value="deposito">Deposito</option>
+                    <option value="ajuste">Ajuste</option>
+                    <option value="retiro">Retiro</option>
+                  </select>
+              </div>
+
+              <div class="col-md-2">
+                  <button class="btn btn-primary" (click)="updateDataTable(0,10)" style="margin-top: 2em;" >BUSCAR</button>
+              </div>
+
             </div>
   
           </div>

@@ -14,7 +14,7 @@ export class ReporteAhorrosComponent implements OnInit {
   public module = 'usuarios';
   public page: GenericPage<ReporteSaldos> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = { tipoSolicitud : '', idSolicitud: '', estatus: '', nombre: '', noEmpleado: '', tipoUsuario: '', page: '0', size: '10' };
+  public filterParams: any = { tipo:'*',  noEmpleado: '', tipoUsuario: '*', since: '', to: '', page: '0', size: '10' };
   public loading = false;
 
 
@@ -23,17 +23,17 @@ export class ReporteAhorrosComponent implements OnInit {
     private ahorroService: AhorroServicio) { }
 
   ngOnInit(): void {
-    this.updateDataTable(0, 10, this.filterParams);
+    this.updateDataTable(0, 10);
   }
 
 
-  public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any): void {
-    const params: any = this.filterParams;
+  public updateDataTable(currentPage?: number, pageSize?: number): void {
 
-    params.page = currentPage !== undefined ? currentPage.toString() : this.filterParams.page;
-    params.size = pageSize !== undefined ? pageSize.toString() : this.filterParams.size;
 
-    this.ahorroService.getReporteSaldos(params)
+    this.filterParams.page = currentPage || 0;
+    this.filterParams.size = pageSize || 0 ;
+
+    this.ahorroService.getReporteSaldos(this.filterParams)
     .subscribe(data => this.page = data);
   }
 
