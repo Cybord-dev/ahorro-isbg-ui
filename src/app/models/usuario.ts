@@ -15,7 +15,6 @@ export class Usuario {
     public fechaCreacion: Date;
     public fechaActualizacion: Date;
     public menu: INavData[];
-    public ahorrador: boolean;
 
     public roles: string[];
     public datosUsuario: DatosUsuario;

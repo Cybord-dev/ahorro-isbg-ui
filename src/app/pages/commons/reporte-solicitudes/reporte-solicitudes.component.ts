@@ -14,7 +14,7 @@ export class ReporteSolicitudesComponent implements OnInit {
   public module = 'usuarios';
   public page: GenericPage<Solicitud> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = { fechaEjecucion :'' ,tipoSolicitud:'', since:'', to: '',  idSolicitud: '', estatus: '', nombre: '', noEmpleado: '', tipoUsuario: '', page: '0', size: '10' };
+  public filterParams: any = { fechaEjecucion :'' ,tipoSolicitud:'*', since:'', to: '',  idSolicitud: '', estatus: '', nombre: '', noEmpleado: '', tipoUsuario: '*', page: '0', size: '10' };
   public userEmail: string;
   public loading = false;
 
