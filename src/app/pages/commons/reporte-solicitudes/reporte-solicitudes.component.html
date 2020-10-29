@@ -50,16 +50,25 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-2">
-              <label for="fechacre" class="label">Fecha Creacion</label>
-              <input type="text" placeholder="Fecha de creación" class="form-control" bsDaterangepicker>
-            </div>
+            
           </div>
           <br>
           <div class ="row">
-            <div class="col"></div>
             <div class="col-md-2">
-                <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
+
+              <label for="fechacre" class="label">Fecha Creación</label>
+              <div class="form-group">
+                <input type="text"
+                placeholder="Fecha de creación"
+                class="form-control"
+                bsDaterangepicker
+                [(ngModel)]="fechaCreacion">
+              </div>
+
+            </div>
+
+            <div class="col-sm-2">
+                <button class="btn btn-primary" (click)="updateDataTable(0,10)" style="margin-top: 2em;">BUSCAR</button>
             </div>
             <div class="col"></div>
           </div>

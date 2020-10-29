@@ -39,6 +39,18 @@
               </div>
 
               <div class="col-md-2">
+                <label for="fechacre" class="label">Fecha Creación</label>
+                <div class="form-group">
+                  <input type="text"
+                  placeholder="Fecha de creación"
+                  class="form-control"
+                  bsDaterangepicker
+                  [(ngModel)]="fechaCreacion">
+                </div>
+                
+              </div>
+
+              <div class="col-md-2">
                   <button class="btn btn-primary" (click)="updateDataTable(0,10)" style="margin-top: 2em;" >BUSCAR</button>
               </div>
 

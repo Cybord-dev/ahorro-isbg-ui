@@ -22,6 +22,7 @@ export class HistoricoSolicitudesComponent implements OnInit {
   public loading = false;
 
   public arrayfechas: Date[] = [];
+  public fechaCreacion: Date[];
 
   constructor(
     private router: Router,
@@ -35,6 +36,16 @@ export class HistoricoSolicitudesComponent implements OnInit {
 
 
   public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any): void {
+
+    if(this.fechaCreacion === undefined  || this.fechaCreacion === null){
+      this.filterParams.since = '';
+      this.filterParams.to = '';
+    }else{
+      this.fechaCreacion[1].setDate(this.fechaCreacion[1].getDate() + 1);
+      this.filterParams.since = this.format(this.fechaCreacion[0]);
+      this.filterParams.to = this.format(this.fechaCreacion[1]);
+    }
+
     this.filterParams.page = currentPage || 0;
     this.filterParams.size = pageSize || 10;
 
@@ -48,5 +59,20 @@ export class HistoricoSolicitudesComponent implements OnInit {
   public redirectToValidation(id: string): void {
     this.router.navigate([`./${this.module}/historico/${id}`]);
   }
+
+  private format(fecha: Date): string{
+  
+    var d = new Date(fecha),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+    return [year, month, day].join('-');
+  }
+
 
 }

@@ -16,7 +16,7 @@ export class ReporteAhorrosComponent implements OnInit {
   public pageSize = '10';
   public filterParams: any = { tipo:'*',  noEmpleado: '', tipoUsuario: '*', since: '', to: '', page: '0', size: '10' };
   public loading = false;
-
+  public fechaCreacion: Date[];
 
   constructor(
     private router: Router,
@@ -28,7 +28,14 @@ export class ReporteAhorrosComponent implements OnInit {
 
 
   public updateDataTable(currentPage?: number, pageSize?: number): void {
-
+    if(this.fechaCreacion === undefined  || this.fechaCreacion === null){
+      this.filterParams.since = '';
+      this.filterParams.to = '';
+    }else{
+      this.fechaCreacion[1].setDate(this.fechaCreacion[1].getDate() + 1);
+      this.filterParams.since = this.format(this.fechaCreacion[0]);
+      this.filterParams.to = this.format(this.fechaCreacion[1]);
+    }
 
     this.filterParams.page = currentPage || 0;
     this.filterParams.size = pageSize || 0 ;
@@ -45,4 +52,18 @@ export class ReporteAhorrosComponent implements OnInit {
     this.router.navigate([`./${this.module}/validacion/${id}`]);
   }
 
+
+  private format(fecha: Date): string{
+  
+    var d = new Date(fecha),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+    return [year, month, day].join('-');
+  }
 }

@@ -29,17 +29,18 @@
             </div>
 
             <div class="col-md-2">
-              <label for="fechacre" class="label">Fecha Creacion: Desde</label>
-                <input type="text" class="form-control" nbInput fullWidth id="fechacre" [(ngModel)]="filterParams.since"
-                placeholder="AAAA-MM-DD">
+              <label for="fechacre" class="label">Fecha Creación</label>
+              <div class="form-group">
+                <input type="text"
+                placeholder="Fecha de creación"
+                class="form-control"
+                bsDaterangepicker
+                [(ngModel)]="fechaCreacion">
+              </div>
               
             </div>
 
-            <div class="col-md-2">
-              <label for="fechacre" class="label">Fecha Creacion: Hasta</label>
-                <input type="text" class="form-control" nbInput fullWidth id="fechacre" [(ngModel)]="filterParams.to"
-                placeholder="AAAA-MM-DD">
-            </div>
+            
 
           </div>
           <br>
