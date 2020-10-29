@@ -60,16 +60,18 @@ export class ReporteAhorroComponent implements OnInit {
       var currentQ = 0;
 
       for (let ahorro of this.ahorros) {
-        var fecha = new Date(ahorro.fechaCreacion);
-        var mes = this.monthChanger(fecha.getMonth());
-        if (i > 1) {
-          if (fecha.getMonth() <= todaysMonth && fecha.getFullYear() == todaysYear) {
-            if (mes == i) { currentQ += ahorro.monto; }
-          }
-          //Primer y segundo mes
-        } else {
-          if ((mes == 0 || mes == 1) && fecha.getFullYear() == todaysYear - 1) {
-            currentQ += ahorro.monto;
+        if(ahorro.validado === true){
+          var fecha = new Date(ahorro.fechaCreacion);
+          var mes = this.monthChanger(fecha.getMonth());
+          if (i > 1) {
+            if (fecha.getMonth() <= todaysMonth && fecha.getFullYear() == todaysYear) {
+              if (mes == i) { currentQ += ahorro.monto; }
+            }
+            //Primer y segundo mes
+          } else {
+            if ((mes == 0 || mes == 1) && fecha.getFullYear() == todaysYear - 1) {
+              currentQ += ahorro.monto;
+            }
           }
         }
       }
