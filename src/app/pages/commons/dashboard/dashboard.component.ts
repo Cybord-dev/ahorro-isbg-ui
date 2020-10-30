@@ -39,7 +39,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.saldosAhorro.getReporteSaldos().toPromise().
     then(reporte => {
-      //this.reporte = reporte;
+      console.log(reporte);
+     // this.reporte = reporte;
       this.setCharInfo();
       
       this.barChartData = [
