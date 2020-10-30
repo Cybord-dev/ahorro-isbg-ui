@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AhorroServicio } from '../../../services/ahorro.service';
 import { ReporteSaldos } from '../../../models/reportesaldos';
+import { montos } from '../../../mock-data/saldos';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private saldosAhorro: AhorroServicio){
     console.log('stating dashboard');
+    console.log(montos);
   }
   
   ngOnInit(): void {
