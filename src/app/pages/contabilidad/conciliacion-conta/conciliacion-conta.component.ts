@@ -37,8 +37,6 @@ export class ConciliacionContaComponent implements OnInit {
       for (key in jsonData){}
       const jsonArray = jsonData[key];
 
-      console.log(jsonArray);
-
       for (const jsonActual of jsonArray){
         const dato: JSON = JSON.parse(JSON.stringify(jsonActual));
         const keys = Object.keys(dato);
@@ -48,6 +46,7 @@ export class ConciliacionContaComponent implements OnInit {
 
           if (!nombre.includes('Deducc')){
             const renglon: AhorroExterno = new AhorroExterno(true, jsonActual[keys[0]], jsonActual[keys[1]], jsonActual[keys[2]]);
+            console.log('Dato ' + JSON.stringify(renglon) );
             this.datosConciliacion.push(renglon);
           }
         }

@@ -1,7 +1,7 @@
 export class SaldoAhorro {
 
-    public id: string;
-    public idUsuario: string;
+    public id: number;
+    public idUsuario: number;
     public tipo: string;
     public monto: number;
     public validado: boolean;

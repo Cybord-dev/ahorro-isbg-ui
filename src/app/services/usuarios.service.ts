@@ -35,7 +35,11 @@ export class UsuariosService {
 
   public getUsuario(userid: number): Observable<Usuario> {
     return this.http.get<Usuario>(`../api/v1/usuarios/${userid}`);
-  } 
+  }
+
+  public getUsuarioByNumeroUsuario(numeroUsuario: string): Observable<Usuario>{
+    return this.http.get<Usuario>(`../api/v1/usuarios?noEmpleado=${numeroUsuario}`);
+  }
 
   public insertarUsuario(user: Usuario): Observable<Usuario> {
     return this.http.post<Usuario>(`../api/v1/usuarios`, user);
