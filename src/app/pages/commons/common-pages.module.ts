@@ -46,7 +46,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AlertModule.forRoot(),
     ModalModule.forRoot(),
     FormsModule,
-    FormsModule,
     ChartsModule,
     BsDropdownModule,
     ButtonsModule.forRoot(),
