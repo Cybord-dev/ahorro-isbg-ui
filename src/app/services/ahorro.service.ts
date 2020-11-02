@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ReporteSaldos } from '../models/reportesaldos';
 import { SaldoAhorro } from '../models/saldoahorro';
+import { SaldoAhorroCaja } from '../models/saldoahorrocaja';
 import { GenericPage } from '../models/generic-page';
 
 @Injectable({
@@ -45,6 +46,13 @@ export class AhorroServicio {
     return this.http.post<SaldoAhorro[]>(`../api/v1/ahorros/bulk`, saldoBulk);
   }
 
+  public getSaldoCaja(filterParams?: any): Observable<SaldoAhorroCaja[]>{
+    return this.http.get<SaldoAhorroCaja[]>(`../api/v1/saldosAhorro/anual`);
+  }
+
+  public getSaldoCajaAgrupado(filterParams?: any): Observable<SaldoAhorroCaja[]>{
+    return this.http.get<SaldoAhorroCaja[]>(`../api/v1/saldosAhorro/anual/agrupado`);
+  }
 
 }
 

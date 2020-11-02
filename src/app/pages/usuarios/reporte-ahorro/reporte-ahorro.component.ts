@@ -58,7 +58,6 @@ export class ReporteAhorroComponent implements OnInit {
     //todaysMonth = this.monthChanger(todaysMonth);
     for (var i = 0; i < this.datos.length; i++) {
       var currentQ = 0;
-
       for (let ahorro of this.ahorros) {
         if(ahorro.validado === true){
           var fecha = new Date(ahorro.fechaCreacion);
