@@ -12,17 +12,21 @@ export class UsuariosService {
 
   constructor(private http: HttpClient) { }
 
-  public getUsuarios(filterParams?: any): Observable<any> {
-    let pageParams: HttpParams = new HttpParams();
+  private getHttpParams(filterParams: any): HttpParams {
+    let pageParams: HttpParams =  new HttpParams();
     for (const key in filterParams) {
       if (filterParams[key] !== undefined) {
-        const value: string = filterParams[key];
-        if (value.length > 0 && value !== '*') {
+      const value: string = filterParams[key].toString();
+      if ( value !== null && value.length > 0 && value !== '*') {
           pageParams = pageParams.append(key, value);
         }
       }
     }
-    return this.http.get(`../api/v1/usuarios`, { params: pageParams });
+    return pageParams;
+  }
+
+  public getUsuarios(filterParams?: any): Observable<any> {
+    return this.http.get(`../api/v1/usuarios`, { params: this.getHttpParams(filterParams) });
   }
 
   public myInfo(): Observable<Usuario> {

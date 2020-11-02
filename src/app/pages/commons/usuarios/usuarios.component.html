@@ -63,6 +63,8 @@
                 No se encontraron resultados
               </div>
               <div class="clearfix" *ngIf="page.empty === false">
+                <button class="btn-sm btn-outline-primary float-right" (click)="redirectToAdjustment(fila.id)"><i
+                  class="fa fa-file-excel-o fa-sm"></i></button>
                 <select id="inputunidad" style="display:block;width: 95px; margin-right: 15px;"
                   class="float-right form-control form-control-sm" [(ngModel)]="filterParams.size"
                   *ngIf="page.last==false || page.first==true" (change)="onChangePageSize($event.target.value)">
@@ -71,6 +73,7 @@
                   <option *ngIf="page.number<(page.totalElements/50)" value="50">50</option>
                 </select>
                 <strong class="float-right"> Tamaño Pagina &nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                
               </div>
             </div>
           </div>

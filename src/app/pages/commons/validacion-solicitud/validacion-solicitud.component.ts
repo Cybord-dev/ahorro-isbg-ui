@@ -22,6 +22,7 @@ export class ValidacionSolicitudComponent implements OnInit {
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
 
   public module = 'usuarios';
+  public submodule: string;
 
   public validador: Usuario = new Usuario();
   public aprobacion = false;
@@ -31,9 +32,8 @@ export class ValidacionSolicitudComponent implements OnInit {
   public loading = false;
   public alerts: string[] = [];
   public success = '';
-  public historico = true;
   public validated = false;
-  public moduleA: string;
+  public noEmpleado = '';
 
   constructor(
     private userService: UsuariosService,
@@ -46,11 +46,9 @@ export class ValidacionSolicitudComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.module = this.router.url.split('/')[2];
-    this.moduleA = this.router.url.split('/')[1];
-    if(this.module !== "historico"){
-      this.historico = false;
-    }
+    this.module = this.router.url.split('/')[1];
+    this.submodule = this.router.url.split('/')[2];
+
     this.userService.myInfo().toPromise()
       .then(user => this.validador = user)
       .catch(error => this.alerts.push(error));
@@ -78,10 +76,9 @@ export class ValidacionSolicitudComponent implements OnInit {
   }
 
   public aprobarSolicitud(): void {
-    if(!this.historico){
       this.loading = true;
       this.modalConfirmacion.hide();
-      const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.moduleA, this.validador.email, true);
+      const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module, this.validador.email, true);
       this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
         .toPromise().then((result) => {
           this.success = 'Solicitud validada correctamente.';
@@ -89,11 +86,9 @@ export class ValidacionSolicitudComponent implements OnInit {
           this.loading = false;
           this.router.navigate([`../${this.module}/validaciones`]);
         }).catch(error => { this.alerts.push(error); this.loading = false; });
-    }
   }
 
   public rechazarSolicitud(): void {
-    if(!this.historico){
       this.loading = true;
       this.modalConfirmacion.hide();
       const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id,
@@ -103,9 +98,8 @@ export class ValidacionSolicitudComponent implements OnInit {
           this.success = 'Solicitud rechazada correctamente.';
           this.validated = true;
           this.loading = false;
-          this.router.navigate([`../${this.moduleA}/validaciones`]);
+          this.router.navigate([`../${this.module}/validaciones`]);
         }).catch(error => { this.alerts.push(error); this.loading = false; });
-    }
   }
 
 }
