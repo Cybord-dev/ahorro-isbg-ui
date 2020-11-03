@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from '../models/usuario';
+import { Recurso } from '../models/recurso';
 import { RolCat } from '../models/rolcat';
 import { DatoUsuario } from '../models/dato-usuario';
+import { GenericPage } from '../models/generic-page';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +27,12 @@ export class UsuariosService {
     return pageParams;
   }
 
-  public getUsuarios(filterParams?: any): Observable<any> {
-    return this.http.get(`../api/v1/usuarios`, { params: this.getHttpParams(filterParams) });
+  public getUsuarios(filterParams?: any): Observable<GenericPage<Usuario>> {
+    return this.http.get<GenericPage<Usuario>>(`../api/v1/usuarios`, { params: this.getHttpParams(filterParams) });
+  }
+
+  public getUsuariosReport(filterParams?: any): Observable<Recurso> {
+    return this.http.get<Recurso>(`../api/v1/usuarios/report`, { params: this.getHttpParams(filterParams) });
   }
 
   public myInfo(): Observable<Usuario> {

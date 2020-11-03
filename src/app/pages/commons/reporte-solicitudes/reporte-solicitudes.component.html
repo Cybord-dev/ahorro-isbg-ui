@@ -95,9 +95,8 @@
                 No se encontraron resultados
               </div>
               <div class="clearfix" *ngIf="page.empty === false">
-
-
-                
+                <button class="btn-sm btn-success float-right" (click)="downloadXLSFile()"><i
+                  class="fa fa-file-excel-o fa-sm"></i></button>
                 <select id="inputunidad" style="display:block;width: 95px; margin-right: 15px;" class="float-right form-control form-control-sm"
                   [(ngModel)]="filterParams.size" *ngIf="page.last==false || page.first==true"
                   (change)="onChangePageSize($event.target.value)">

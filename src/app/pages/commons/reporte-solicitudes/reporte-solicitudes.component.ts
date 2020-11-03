@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SolicitudesService } from '../../../services/solicitudes.service';
+import { DownloadFileService } from '../../../services/download-file.service';
 import { GenericPage } from '../../../models/generic-page';
 import { Solicitud } from '../../../models/solicitud';
-import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'cybord-reporte-solicitudes',
@@ -21,10 +22,11 @@ export class ReporteSolicitudesComponent implements OnInit {
   public loading = false;
   public fechaCreacion: Date[];
 
- 
 
   constructor(
     private router: Router,
+    public datepipe: DatePipe,
+    private downloadService: DownloadFileService,
     private solicitudesService: SolicitudesService) { }
 
   ngOnInit(): void {
@@ -55,15 +57,14 @@ export class ReporteSolicitudesComponent implements OnInit {
 
   public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any): void {
 
-    if(this.fechaCreacion === undefined  || this.fechaCreacion === null){
+    if (this.fechaCreacion === undefined  || this.fechaCreacion === null){
       this.filterParams.since = '';
       this.filterParams.to = '';
     }else{
       this.fechaCreacion[1].setDate(this.fechaCreacion[1].getDate() + 1);
-      this.filterParams.since = this.format(this.fechaCreacion[0]);
-      this.filterParams.to = this.format(this.fechaCreacion[1]);
+      this.filterParams.since =  this.datepipe.transform(this.fechaCreacion[0], 'yyyy-MM-dd');
+      this.filterParams.to = this.datepipe.transform(this.fechaCreacion[1], 'yyyy-MM-dd');
     }
-    
     this.filterParams.page = currentPage || 0;
     this.filterParams.size = pageSize || 10;
     this.solicitudesService.getSolicitudes(this.filterParams).subscribe(data => this.page = data);
@@ -77,18 +78,21 @@ export class ReporteSolicitudesComponent implements OnInit {
     this.router.navigate([`./${this.module}/validacion/${id}`]);
   }
 
-  private format(fecha: Date): string{
-  
-    var d = new Date(fecha),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-    return [year, month, day].join('-');
+  public downloadXLSFile(): void{
+    if (this.fechaCreacion === undefined  || this.fechaCreacion === null){
+      this.filterParams.since = '';
+      this.filterParams.to = '';
+    }else{
+      this.fechaCreacion[1].setDate(this.fechaCreacion[1].getDate() + 1);
+      this.filterParams.since =  this.datepipe.transform(this.fechaCreacion[0], 'yyyy-MM-dd');
+      this.filterParams.to = this.datepipe.transform(this.fechaCreacion[1], 'yyyy-MM-dd');
+    }
+    this.filterParams.page = '0';
+    this.filterParams.size = '10000';
+    this.solicitudesService.getReporteSolicitudes(this.filterParams)
+      .subscribe((report) => {
+        this.downloadService.downloadFile(report.dato, `ReporteSolicitudes-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
+      });
   }
 
 }

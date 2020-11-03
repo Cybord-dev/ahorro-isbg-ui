@@ -3,6 +3,8 @@ import { GenericPage } from '../../../models/generic-page';
 import { Router } from '@angular/router';
 import { AhorroServicio } from '../../../services/ahorro.service';
 import { ReporteSaldos } from '../../../models/reportesaldos';
+import { DownloadFileService } from '../../../services/download-file.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'cybord-reporte-ahorros',
@@ -14,12 +16,14 @@ export class ReporteAhorrosComponent implements OnInit {
   public module = 'usuarios';
   public page: GenericPage<ReporteSaldos> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = { tipo:'*',  noEmpleado: '', tipoUsuario: '*', since: '', to: '', page: '0', size: '10' };
+  public filterParams: any = { tipo: '*',  noEmpleado: '', tipoUsuario: '*', since: '', to: '', page: '0', size: '10' };
   public loading = false;
   public fechaCreacion: Date[];
 
   constructor(
     private router: Router,
+    public datepipe: DatePipe,
+    private downloadService: DownloadFileService,
     private ahorroService: AhorroServicio) { }
 
   ngOnInit(): void {
@@ -28,19 +32,19 @@ export class ReporteAhorrosComponent implements OnInit {
 
 
   public updateDataTable(currentPage?: number, pageSize?: number): void {
-    if(this.fechaCreacion === undefined  || this.fechaCreacion === null){
+    if (this.fechaCreacion === undefined  || this.fechaCreacion === null){
       this.filterParams.since = '';
       this.filterParams.to = '';
     }else{
       this.fechaCreacion[1].setDate(this.fechaCreacion[1].getDate() + 1);
-      this.filterParams.since = this.format(this.fechaCreacion[0]);
-      this.filterParams.to = this.format(this.fechaCreacion[1]);
+      this.filterParams.since =  this.datepipe.transform(this.fechaCreacion[0], 'yyyy-MM-dd');
+      this.filterParams.to = this.datepipe.transform(this.fechaCreacion[1], 'yyyy-MM-dd');
     }
 
     this.filterParams.page = currentPage || 0;
     this.filterParams.size = pageSize || 0 ;
 
-    this.ahorroService.getReporteSaldos(this.filterParams)
+    this.ahorroService.getSaldos(this.filterParams)
     .subscribe(data => this.page = data);
   }
 
@@ -52,18 +56,22 @@ export class ReporteAhorrosComponent implements OnInit {
     this.router.navigate([`./${this.module}/validacion/${id}`]);
   }
 
+  public downloadXLSFile(): void{
 
-  private format(fecha: Date): string{
-  
-    var d = new Date(fecha),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-    return [year, month, day].join('-');
+    if (this.fechaCreacion === undefined  || this.fechaCreacion === null){
+      this.filterParams.since = '';
+      this.filterParams.to = '';
+    }else{
+      this.fechaCreacion[1].setDate(this.fechaCreacion[1].getDate() + 1);
+      this.filterParams.since =  this.datepipe.transform(this.fechaCreacion[0], 'yyyy-MM-dd');
+      this.filterParams.to = this.datepipe.transform(this.fechaCreacion[1], 'yyyy-MM-dd');
+    }
+    this.filterParams.page = '0';
+    this.filterParams.size = '100000';
+    this.ahorroService.getReporteSaldos(this.filterParams)
+      .subscribe((report) => {
+        this.downloadService.downloadFile(report.dato, `ReporteAhorros-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
+      });
   }
+
 }

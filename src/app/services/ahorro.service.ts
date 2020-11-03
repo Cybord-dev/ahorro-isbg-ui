@@ -5,6 +5,7 @@ import { ReporteSaldos } from '../models/reportesaldos';
 import { SaldoAhorro } from '../models/saldoahorro';
 import { SaldoAhorroCaja } from '../models/saldoahorrocaja';
 import { GenericPage } from '../models/generic-page';
+import { Recurso } from '../models/recurso';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,14 @@ export class AhorroServicio {
     return pageParams;
   }
 
+  public getSaldos(filterParams?: any): Observable<GenericPage<ReporteSaldos>>{
+    return this.http.get<GenericPage<ReporteSaldos>>(`../api/v1/saldosAhorro`, {params: this.getHttpParams(filterParams)});
+  }
+
+  public getReporteSaldos(filterParams?: any): Observable<Recurso>{
+    return this.http.get<Recurso>(`../api/v1/saldosAhorro/report`, {params: this.getHttpParams(filterParams)});
+  }
+
   public getSaldoByUsuario(idUsuario: number): Observable<SaldoAhorro[]>{
     return this.http.get<SaldoAhorro[]>(`../api/v1/usuarios/${idUsuario}/ahorros`);
   }
@@ -36,10 +45,6 @@ export class AhorroServicio {
 
   public getSaldoByUsuarioAndId(idUsuario: number, idAhorro: number): Observable<SaldoAhorro[]>{
     return this.http.get<SaldoAhorro[]>(`../api/v1/usuarios/${idUsuario}/ahorros/${idAhorro}`);
-  }
-
-  public getReporteSaldos(filterParams?: any): Observable<GenericPage<ReporteSaldos>>{
-    return this.http.get<GenericPage<ReporteSaldos>>(`../api/v1/saldosAhorro`, {params: this.getHttpParams(filterParams)});
   }
 
   public postSaldoBulk(saldoBulk: SaldoAhorro[]): Observable<SaldoAhorro[]>{
