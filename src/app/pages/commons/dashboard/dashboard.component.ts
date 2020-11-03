@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AhorroServicio } from '../../../services/ahorro.service';
 import { ReporteSaldos } from '../../../models/reportesaldos';
+import { SaldoAhorroCaja } from '../../../models/saldoahorrocaja';
+
 
 
 @Component({
@@ -16,7 +18,7 @@ export class DashboardComponent implements OnInit {
   };
   public barChartType = 'bar';
   public barChartLegend = true;
-  public barChartData: any[] = [];
+  public barChartData: any = [];
   public barChartLabels: string[] = [];
   
   //
@@ -25,29 +27,58 @@ export class DashboardComponent implements OnInit {
 
   private months: string[] = ['noviembre', 'diciembre','enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio','agosto', 'septiembre', 'octubre']
   
-  private reporte: ReporteSaldos[] = [];
+  private summary: SaldoAhorroCaja[] = [];
+  private summaryAgrupado: SaldoAhorroCaja[] = [];
   private ahorros: number[] = [];
   private depositos: number[] = [];
   private retiros: number[] = [];
   private ajustes: number[] = [];
 
+  public labelsTabla: string[] = ["Ahorros", "Depositos", "Ajustes", "Retiros"];
 
   constructor(private saldosAhorro: AhorroServicio){
-    console.log('stating dashboard');
+    console.log('stating dashboard222');
+    
   }
   
   ngOnInit(): void {
-    this.saldosAhorro.getReporteSaldos().toPromise().
+    this.saldosAhorro.getSaldoCaja().toPromise().
     then(reporte => {
-      this.reporte = reporte;
+      this.summary = reporte;
       this.setCharInfo();
-      
-      this.barChartData = [
-        { data: this.depositos, label: "depositos", backgroundColor: "#0000ff"},
-        { data: this.ahorros, label: "ahorros", backgroundColor: "#00ff00"},
-        { data: this.retiros, label: "retiros", backgroundColor: "#ff0000"},
-        { data: this.ajustes, label: "ajustes", backgroundColor: "#ff0000"}
-      ];
+      var retirosG = {
+        label: 'Retiros',
+        data: this.retiros,
+        backgroundColor: '#a83242',
+        borderColor: '#000000',
+      };
+      var ahorrosG = {
+        label: 'Ahorros',
+        data: this.ahorros,
+        backgroundColor: '#3281a8',
+        borderColor: '#000000',
+      };
+
+      var depositosG = {
+        label: 'Depositos',
+        data: this.depositos,
+        backgroundColor: '#6da832',
+        borderColor: '#000000',
+      };
+
+      var ajustesG = {
+        label: 'Ajustes',
+        data: this.ajustes,
+        backgroundColor: '#324ea8',
+        borderColor: '#000000',
+      };
+
+      this.barChartData = [retirosG, ahorrosG, depositosG, ajustesG];
+    }).catch((error) => this.errorMessages.push(error));
+
+    this.saldosAhorro.getSaldoCajaAgrupado().toPromise().
+    then(reporte => {
+      this.summaryAgrupado = reporte;
     }).catch((error) => this.errorMessages.push(error));
     this.barChartData = [{data:[22, 11], label: ["enero"]}];
     
@@ -56,33 +87,22 @@ export class DashboardComponent implements OnInit {
   private setCharInfo(): void{
     var today = new Date();
     var todaysMonth = this.monthChanger(today.getMonth());
-    var todaysYear = today.getFullYear();
     for(var i = 0; i <= todaysMonth; i++){
       this.barChartLabels.push(this.months[i]);
-      this.depositos.push(0);
-      this.retiros.push(0);
-      this.ajustes.push(0);
     }
+
     for(var i = 0; i<this.barChartLabels.length; i++){
-      var depositos = 0.0;
-      var retiros = 0.0;
-      var ahorros = 0.0;
-      var ajustes = 0.0;
-      for(const a in this.reporte){
-        if( this.monthChanger(this.getMonth(this.reporte[a].fecha))==(i) && this.reporte[a].tipo === "ahorro"){
-          ahorros += this.reporte[a].monto;
-        }else if ( this.monthChanger(this.getMonth(this.reporte[a].fecha))==(i+1) && this.reporte[a].tipo === "deposito"){
-          depositos += this.reporte[a].monto;
-        }else if ( this.monthChanger(this.getMonth(this.reporte[a].fecha))==(i+1) && this.reporte[a].tipo === "retiro"){
-          retiros += this.reporte[a].monto;
-        }else if ( this.monthChanger(this.getMonth(this.reporte[a].fecha))==(i+1) && this.reporte[a].tipo === "ajuste"){
-          ajustes += this.reporte[a].monto;
+      for(const a in this.summary){
+        if( this.monthChanger(Number(this.summary[a].mes)-1)==i && this.summary[a].tipo === "ahorro"){
+          this.ahorros.push(this.summary[a].monto);
+        }else if ( this.monthChanger(Number(this.summary[a].mes)-1)==i && this.summary[a].tipo === "deposito"){
+          this.depositos.push(this.summary[a].monto);
+        }else if ( this.monthChanger(Number(this.summary[a].mes)-1)==i && this.summary[a].tipo === "retiro"){
+          this.retiros.push(this.summary[a].monto);
+        }else if ( this.monthChanger(Number(this.summary[a].mes)-1)==i && this.summary[a].tipo === "ajuste"){
+          this.ajustes.push(this.summary[a].monto);
         }
       }
-      this.retiros.push(retiros);
-      this.depositos.push(depositos);
-      this.ahorros.push(ahorros);
-      this.ajustes.push(ajustes);
     }
   }
 
@@ -94,9 +114,5 @@ export class DashboardComponent implements OnInit {
     return num;
   }
 
-  private getMonth(fecha): number{
-    var a = fecha.split("-");
-    return a[1];
-  }
-
+  
 }

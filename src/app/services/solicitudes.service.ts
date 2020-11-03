@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Solicitud } from '../models/solicitud';
 import { GenericPage } from '../models/generic-page';
+import { Recurso } from '../models/recurso';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class SolicitudesService {
 
   public getSolicitudes(filterParams?: any): Observable<GenericPage<Solicitud>> {
     return this.http.get<GenericPage<Solicitud>>('../api/v1/solicitudes', {params: this.getHttpParams(filterParams)});
+  }
+
+  public getReporteSolicitudes(filterParams?: any): Observable<Recurso> {
+    return this.http.get<Recurso>('../api/v1/solicitudes/report', {params: this.getHttpParams(filterParams)});
   }
 
   public getSolicitudesById(idSolicitud: number): Observable<Solicitud>{

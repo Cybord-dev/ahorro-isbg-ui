@@ -25,10 +25,10 @@ export class ReporteAhorroComponent implements OnInit {
   public successMessage: string;
 
   public barChartData: any[] = [];
-  private months: string[] = ['noviembre', 'diciembre','enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio','agosto', 'septiembre', 'octubre']
+  private months: string[] = ['noviembre', 'diciembre', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre']
   public ahorros: SaldoAhorro[] = [];
   constructor(
-    private userService : UsuariosService,
+    private userService: UsuariosService,
     private saldosAhorro: AhorroServicio) {
 
   }
@@ -41,54 +41,53 @@ export class ReporteAhorroComponent implements OnInit {
           this.total = resultado.map(r => r.monto).reduce((a, b) => a + b);
           this.setCharInfo();
           this.barChartData = [{ data: this.datos, label: "Ahorro acumulado" }];
-          
         });
       }).catch(error => this.errorMessages.push(error));
       this.barChartData = [{data:[0, 0], label: "Ahorro acumulado"}];
   }
 
-  private setCharInfo(): void{
+  private setCharInfo(): void {
     var today = new Date();
     var todaysMonth = today.getMonth();
     todaysMonth = this.monthChanger(todaysMonth);
     var todaysYear = today.getFullYear();
-    for(var i = 0; i <= todaysMonth; i++){
+    for (var i = 0; i <= todaysMonth; i++) {
       this.barChartLabels.push(this.months[i]);
       this.datos.push(0);
     }
     //todaysMonth = this.monthChanger(todaysMonth);
-    for(var i = 0; i < this.datos.length; i++){
+    for (var i = 0; i < this.datos.length; i++) {
       var currentQ = 0;
-      
-        for(let ahorro of this.ahorros){
+      for (let ahorro of this.ahorros) {
+        if(ahorro.validado === true){
           var fecha = new Date(ahorro.fechaCreacion);
           var mes = this.monthChanger(fecha.getMonth());
-          if(i >1){
-            if(fecha.getMonth() <= todaysMonth && fecha.getFullYear() == todaysYear){
-              if(mes == i)
-              {currentQ += ahorro.monto;}
+          if (i > 1) {
+            if (fecha.getMonth() <= todaysMonth && fecha.getFullYear() == todaysYear) {
+              if (mes == i) { currentQ += ahorro.monto; }
             }
             //Primer y segundo mes
-          }else{
-            if((mes == 0 || mes == 1) && fecha.getFullYear() == todaysYear-1){
+          } else {
+            if ((mes == 0 || mes == 1) && fecha.getFullYear() == todaysYear - 1) {
               currentQ += ahorro.monto;
             }
           }
         }
-        if(i != 0){
-          currentQ += this.datos[i-1];
-          this.datos[i] = this.truncate(currentQ);
-        }else{
-          this.datos[i] = this.truncate(currentQ);
-        } 
+      }
+      if (i != 0) {
+        currentQ += this.datos[i - 1];
+        this.datos[i] = this.truncate(currentQ);
+      } else {
+        this.datos[i] = this.truncate(currentQ);
+      }
     }
   }
-  private truncate (num): number {
+  private truncate(num): number {
     return Math.trunc(num * Math.pow(10, 2)) / Math.pow(10, 2);
   }
 
   private monthChanger(num): number {
-    for(let x = 0; x<2; x++){
+    for (let x = 0; x < 2; x++) {
       num++;
       num = (num > 11) ? 0 : num;
     }

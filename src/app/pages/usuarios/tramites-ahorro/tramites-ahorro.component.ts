@@ -23,15 +23,15 @@ export class TramitesAhorroComponent implements OnInit {
   public success = '';
   public tipoSolicitud = 'SolicitudAhorro';
   public alerts: string[] = [];
-
   public enabledDates = [];
 
   public solicitudAhorro: Solicitud = new Solicitud();
   public solicitudModificacion: Solicitud = new Solicitud();
   public solicitudRetiro: Solicitud = new Solicitud();
   public solicitudCancelacion: Solicitud = new Solicitud();
-  public bloqueo: boolean = false;
+
   public bsValue: Date;
+  public solicitudEnProgreso = '';
 
   constructor(
     public datepipe: DatePipe,
@@ -48,11 +48,6 @@ export class TramitesAhorroComponent implements OnInit {
     this.userService.myInfo().toPromise()
       .then(user => {
         this.solicitudService.getSolicitudesByUsuario(user.id).subscribe((solicitudes: Solicitud[]) => {
-          solicitudes.forEach(element => {
-            if(element.tipo === "SolicitudAhorro" && element.status !== "Rechazada"){
-              this.bloqueo = true;
-            }
-          });
           this.solicitudAhorro = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
             .find(s => s.tipo === 'SolicitudAhorro') || new Solicitud('SolicitudAhorro');
           this.solicitudCancelacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
@@ -63,6 +58,20 @@ export class TramitesAhorroComponent implements OnInit {
             .find(s => s.tipo === 'ModificacionAhorro') || new Solicitud('ModificacionAhorro');
           this.solicitudModificacion.atributos.MONTO = this.solicitudAhorro.atributos.MONTO;
           this.solicitudCancelacion.atributos.MONTO = this.solicitudAhorro.atributos.MONTO;
+
+          if (this.solicitudCancelacion.status !== undefined && this.solicitudCancelacion.status !== 'Rechazada'
+          && this.solicitudCancelacion.status !== 'Finalizada') {
+            this.solicitudEnProgreso = 'La solicitud de cancelación se encuentra en progreso';
+          }
+          if (this.solicitudRetiro.status !== undefined && this.solicitudRetiro.status !== 'Rechazada'
+          && this.solicitudRetiro.status !== 'Finalizada') {
+            this.solicitudEnProgreso = 'La solicitud de retiro se encuentra en progreso';
+          }
+
+          if ( this.solicitudModificacion.status !== undefined && this.solicitudModificacion.status !== 'Rechazada'
+          && this.solicitudModificacion.status !== 'Finalizada') {
+            this.solicitudEnProgreso = 'La modificacón de ahorro se encuentra en progreso';
+          }
 
         });
         this.userService.getUsuario(user.id).toPromise().then(u => this.usuario = u);
@@ -80,7 +89,7 @@ export class TramitesAhorroComponent implements OnInit {
     solicitud.fechaEjecucion = new Date(this.bsValue);
     solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
     this.solicitudService.postSolictudUsuario(this.usuario.id, solicitud).toPromise()
-      .then(sol => { this.success = 'Se ha enviado la solicitud correctamente'; this.loading = false; })
+      .then(sol => { this.loading = false; this.solicitudEnProgreso = 'La solicitud se encuentra en progreso'; this.success = 'La solicitud se envio correctamente'; })
       .catch((error) => { this.alerts.push(error); this.loading = false; });
   }
 
@@ -98,11 +107,7 @@ export class TramitesAhorroComponent implements OnInit {
     console.log(`acepting ${this.tipoSolicitud}`);
     switch (this.tipoSolicitud) {
       case 'SolicitudAhorro':
-        if(!this.bloqueo){
-          this.requestSolicitud(this.solicitudAhorro);
-        }else{
-          this.alerts.push("Ya tienes una solicitud en progreso o finalizada");
-        }
+        this.requestSolicitud(this.solicitudAhorro);
         break;
       case 'CancelacionAhorro':
         this.requestSolicitud(this.solicitudCancelacion);
@@ -123,13 +128,12 @@ export class TramitesAhorroComponent implements OnInit {
 
   public calculateEnabledDates(): void {
     const currentDate = new Date();
-    if(currentDate.getDate() < 15){
+    if ( currentDate.getDate() < 15){
       currentDate.setDate(15);
       currentDate.setMonth(currentDate.getMonth());
       this.enabledDates.push(currentDate);
     }
     for (let i = 1; i < 5; i++) {
- 
       const date1 = new Date();
       date1.setDate(1);
       date1.setMonth(date1.getMonth() + i);
@@ -140,6 +144,7 @@ export class TramitesAhorroComponent implements OnInit {
       date2.setMonth(date2.getMonth() + i);
       this.enabledDates.push(date2);
     }
+    this.bsValue = this.enabledDates[0];
   }
 
 }
