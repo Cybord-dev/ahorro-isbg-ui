@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ReporteSaldos } from '../models/reportesaldos';
 import { SaldoAhorro } from '../models/saldoahorro';
+import { Conciliador } from 'src/app/models/conciliador';
 import { SaldoAhorroCaja } from '../models/saldoahorrocaja';
 import { GenericPage } from '../models/generic-page';
 import { Recurso } from '../models/recurso';
@@ -49,6 +50,10 @@ export class AhorroServicio {
 
   public postSaldoBulk(saldoBulk: SaldoAhorro[]): Observable<SaldoAhorro[]>{
     return this.http.post<SaldoAhorro[]>(`../api/v1/ahorros/bulk`, saldoBulk);
+  }
+
+  public postConciliacion(datosValidar: Conciliador[]): Observable<any[]>{
+    return this.http.post<Conciliador[]>(`../api/v1/ahorros/conciliador`, datosValidar);
   }
 
   public getSaldoCaja(filterParams?: any): Observable<SaldoAhorroCaja[]>{

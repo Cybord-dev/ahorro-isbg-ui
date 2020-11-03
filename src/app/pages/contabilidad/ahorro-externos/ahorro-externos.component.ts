@@ -74,7 +74,7 @@ export class AhorroExternosComponent implements OnInit {
 
     for (const jsonActual of  jsonArray) {
       const aceptar = false;
-      let usuario: Usuario = new Usuario();
+      let usuario: any;
 
       if (jsonActual[keys[0]] !== undefined){
         const ahorroActual: AhorroExterno =  new AhorroExterno(!aceptar, jsonActual[keys[0]],
@@ -82,7 +82,7 @@ export class AhorroExternosComponent implements OnInit {
 
         this.datosAhorro.push(ahorroActual);
         try{
-        usuario = await this.userService.getUsuario(jsonActual[keys[0]]).toPromise();
+        usuario = await this.userService.getUsuarioByNumeroUsuario(jsonActual[keys[0]]).toPromise();
         this.validar(usuario, ahorroActual);
         }
         catch (error){
@@ -93,8 +93,6 @@ export class AhorroExternosComponent implements OnInit {
     }
 
     this.loading = false;
-    console.log('Tabla validad ' + this.tablaValida);
-
   }
 
   clean(): void {
@@ -109,8 +107,7 @@ export class AhorroExternosComponent implements OnInit {
 
     this.datosAhorro.forEach(ahorro => {
       const saldoAhorroActual: SaldoAhorro = new SaldoAhorro();
-      // TODO review this mapping
-      saldoAhorroActual.idUsuario = +ahorro.clave;
+      saldoAhorroActual.idUsuario = ahorro.idUsuario;
       saldoAhorroActual.tipo = 'ahorro';
       saldoAhorroActual.monto = ahorro.importe;
       saldoAhorroActual.validado = true;
@@ -125,16 +122,18 @@ export class AhorroExternosComponent implements OnInit {
         this.clean();
         this.modalConfirmacion.hide();
       })
-    .catch(error=>{
+    .catch(error => {
       alert('Se registro un error al cargar los ahorros ' + error);
       this.modalConfirmacion.hide();
     });
    }
 
 
- validar(usuario: Usuario, base: AhorroExterno): void{
+ validar(usuario: any, base: AhorroExterno): void{
+
+    base.idUsuario = usuario.content[0].id;
     let validado = true;
-    let usuarioNombre: string = usuario.nombre.trim();
+    let usuarioNombre: string = usuario.content[0].nombre.trim();
     usuarioNombre = usuarioNombre.toUpperCase();
 
     let usuarioArray: string [] = usuarioNombre.split(' ');
@@ -151,17 +150,17 @@ export class AhorroExternosComponent implements OnInit {
       validado = false;
       }
 
-    if (!usuario.activo){
+    if (!usuario.content[0].activo){
       this.agregarObservacion(base, 'El ahorrador no esta activo');
       validado = false;
     }
 
-    if (usuario.tipoUsuario !== 'EXTERNO' ){
+    if (usuario.content[0].tipoUsuario !== 'EXTERNO' ){
       this.agregarObservacion(base, 'El usuario no es externo');
       validado = false;
     }
 
-    if (!usuario.ahorrador){
+    if (!usuario.content[0].ahorrador){
       this.agregarObservacion(base, 'El usuario no es ahorrador');
       validado = false;
     }
