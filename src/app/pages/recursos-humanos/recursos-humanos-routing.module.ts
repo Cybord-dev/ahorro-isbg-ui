@@ -50,7 +50,13 @@ const routes: Routes = [
       title: 'Usario ISBG'
     }
   },
-
+  {
+    path: 'historico/:idSolicitud',
+    component: ValidacionSolicitudComponent,
+    data: {
+      title: 'Usario ISBG'
+    }
+  }
 ];
 
 @NgModule({

@@ -1,14 +1,11 @@
-import { Component, OnInit, Renderer2, ViewChild, resolveForwardRef, ElementRef } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
 import * as XLSX from 'xlsx';
 import {AhorroExterno} from '../../../models/ahorroExterno' ;
-import { UsuariosService } from 'src/app/services/usuarios.service';
-import { AhorroServicio } from 'src/app/services/ahorro.service';
-import { Usuario } from 'src/app/models/usuario';
-import { SaldoAhorro} from 'src/app/models/saldoahorro';
-import { Validators } from '@angular/forms';
-import { UsuarioComponent } from '../../commons/usuario/usuario.component';
+import { UsuariosService } from '../../../services/usuarios.service';
+import { AhorroServicio } from '../../../services/ahorro.service';
+import { Usuario } from '../../../models/usuario';
+import { SaldoAhorro} from '../../../models/saldoahorro';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 

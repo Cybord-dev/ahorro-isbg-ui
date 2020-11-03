@@ -63,6 +63,8 @@
                 No se encontraron resultados
               </div>
               <div class="clearfix" *ngIf="page.empty === false">
+                <button class="btn-sm btn-success float-right" (click)="downloadXLSFile()"><i
+                  class="fa fa-file-excel-o fa-sm"></i></button>
                 <select id="inputunidad" style="display:block;width: 95px; margin-right: 15px;"
                   class="float-right form-control form-control-sm" [(ngModel)]="filterParams.size"
                   *ngIf="page.last==false || page.first==true" (change)="onChangePageSize($event.target.value)">
@@ -71,6 +73,7 @@
                   <option *ngIf="page.number<(page.totalElements/50)" value="50">50</option>
                 </select>
                 <strong class="float-right"> Tamaño Pagina &nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                
               </div>
             </div>
           </div>
@@ -82,7 +85,7 @@
                   <thead class="thead-dark">
                     <tr>
                       <th>ACCIONES</th>
-                      <th>USUARIO</th>
+                      <th>NO. EMPLEADO</th>
                       <th>NOMBRE</th>
                       <th>CORREO</th>
                       <th>TIPO</th>
@@ -94,8 +97,10 @@
                       <td scope="row">
                         <button class="btn-sm btn-outline-primary" (click)="redirectToUser(fila.id)"><i
                             class="fa fa-search fa-sm"></i></button>
+                        <button class="btn-sm btn-outline-primary" *ngIf="module === 'contabilidad'" (click)="redirectToAdjustment(fila.id)"><i
+                              class="fa fa-money fa-sm"></i></button>
                       </td>
-                      <td scope="row">{{fila.id}}</td>
+                      <td scope="row">{{fila.noEmpleado}}</td>
                       <td scope="row">{{fila.nombre}}</td>
                       <td scope="row">{{fila.email}}</td>
                       <td scope="row">{{fila.tipoUsuario}}</td>
@@ -108,14 +113,15 @@
                 <div class="clearfix" *ngIf="page.empty == false">
                   <ul class="pagination float-right" *ngIf="page.totalElements > 1">
                     <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
-                        (click)="updateDataTable(0,page.size)"><i class="nb-arrow-left"></i></button></li>
+                        (click)="updateDataTable(0,page.size)"><i class="icon-control-rewind icons"></i></button>
+                    </li>
                     <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
                         (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
                     <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
                     <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
                         (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
                     <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
-                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="nb-arrow-right"></i></button>
+                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="icon-control-forward icons"></i></button>
                     </li>
                   </ul>
                 </div>

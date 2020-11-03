@@ -72,14 +72,12 @@
                                     </div>
                                 </div>
 
-                            </form>
-
-                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">No. Empleado</strong>
                                     <div class="col-md-9">
-                                        <input type="number" id="no-emp" name="text-inputa" class="form-control"
-                                            placeholder="No empleado" [(ngModel)]="usuario.datosUsuario.NO_EMPLEADO">
+                                        <input type="text" id="no-emp" name="text-inputa" class="form-control" formControlName="noEmpleado"
+                                            placeholder="No empleado" [(ngModel)]="usuario.noEmpleado">
 
                                     </div>
                                 </div>
@@ -88,7 +86,7 @@
                                     <strong class="col-md-3 col-form-label">Oficina</strong>
                                     <div class="col-md-7">
                                         <select id="office" name="office" class="form-control"
-                                                [(ngModel)]="usuario.datosUsuario.OFICINA">
+                                                [(ngModel)]="usuario.datosUsuario.OFICINA" formControlName="oficina">
                                                 <option value="*">Seleccionar</option>
                                                 <option value="1">Oficina #1</option>
                                                 <option value="2">Oficina #2</option>
@@ -99,9 +97,33 @@
                                 </div>
 
                                 <div class="form-group row">
+                                    <strong class="col-md-3 col-form-label">BANCO</strong>
+                                    <div class="col-md-7">
+                                        <select id="bank" name="bank" class="form-control" formControlName="banco"
+                                                [(ngModel)]="usuario.datosUsuario.BANCO">
+                                                <option value="*">Seleccionar</option>
+                                                <option value="91">HSBC</option>
+                                                <option value="92">BBVA</option>
+                                                <option value="93">CITYBANAMEX</option>
+                                                <option value="94">SCOTIA BANK</option>
+                                            </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <strong class="col-md-3 col-form-label">No. Cuenta</strong>
+                                    <div class="col-md-9">
+                                        <input type="text" id="no-account" name="account" class="form-control" formControlName="cuenta"
+                                            placeholder="0000 0000 0000 0000" [(ngModel)]="usuario.datosUsuario.CUENTA">
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">Sueldo</strong>
                                     <div class="col-md-7">
-                                        <input type="number" id="quantity" name="text-inputafg" class="form-control"
+                                        <input type="number" id="quantity" name="text-inputafg" class="form-control" formControlName="sueldo"
                                                 min=1 placeholder="1.00" [(ngModel)]="usuario.datosUsuario.SUELDO">
                                     </div>
                                 </div>
@@ -109,7 +131,7 @@
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">Fecha Antiguiedad</strong>
                                     <div class="col-md-7">
-                                        <input id="start-date" type="text" class="form-control" #dp="bsDatepicker"
+                                        <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" formControlName="antiguedad"
                                                 bsDatepicker [(bsValue)]="antiguedad">
                                     </div>
                                 </div>
@@ -170,19 +192,18 @@
                     <div class="float-right slide_2">
 
                         <button class="btn btn-primary" *ngIf="usuario.id === undefined"
-                        (click)="registry()"> Registrar</button>
+                        (click)="openModal()" [disabled] = "loading"> Registrar
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
 
                         <button class="btn btn-primary" *ngIf="usuario.id !== undefined"
-                        (click)="update()"> Actualizar</button>
+                        (click)="openModal()" [disabled] = "loading"> Actualizar 
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
 
                     </div>
                 </div>
             </div>
-
-            <!-- <row *ngIf="Params.module === 'administracion'">
-                     
-                </row> -->
-           
         </div>
 
     </div>
@@ -191,3 +212,25 @@
 
 
 </div>
+
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="decline()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            {{mensajeModal}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary"  *ngIf="usuario.id !== undefined" (click)="update()" >Si</button>
+            <button type="button" class="btn btn-primary"  *ngIf="usuario.id === undefined" (click)="register()" >Si</button>
+            <button type="button" class="btn btn-secondary" (click)="decline()" >no</button>
+        </div>
+      </div>
+    </div>
+  </div>

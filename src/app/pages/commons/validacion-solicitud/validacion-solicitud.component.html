@@ -3,7 +3,18 @@
     <div class="col-sm-12 col-md-12">
       <div class="card">
         <div class="card-header">
-          <strong>Aprobaciones ahorro</strong>
+          <div class="clearfix">
+            <strong class="float-left">Aprobaciones ahorro</strong>
+            <span class="badge badge-success float-right" *ngIf="solicitud.tipo === 'SolicitudAhorro'">SOLICITUD
+              AHORRO</span>
+            <span class="badge badge-danger float-right" *ngIf="solicitud.tipo === 'CancelacionAhorro'">CANCELACION
+              AHORRO</span>
+            <span class="badge badge-primary float-right" *ngIf="solicitud.tipo === 'RetiroParcialAhorro'">RETIRO
+              PARCIAL</span>
+            <span class="badge badge-warning float-right" *ngIf="solicitud.tipo === 'ModificacionAhorro'">MODIFICACION
+              AHORRO</span>
+          </div>
+          
         </div>
         <div class="card-body">
 
@@ -15,7 +26,8 @@
 
           <div class="row"> <!-- SOLICITUD AHORRO-->
             <div class="col-xs-12 col-sm-12 col-md-6 form-group">
-              <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+              <p *ngIf="solicitud.id !==undefined" ><strong>Solicitud No. {{solicitud.id}}</strong></p>
+              <form class="form-horizontal">
                 <div class="form-group row">
                   <label class="col-md-3 col-form-label">Nombre</label>
                   <div class="col-md-9">
@@ -23,10 +35,16 @@
                   </div>
                 </div>
                 <div class="form-group row">
+                  <label class="col-md-3 col-form-label">Tipo usuario</label>
+                  <div class="col-md-9">
+                    <p class="form-control-static"><strong>{{usuario.tipoUsuario}}</strong></p>
+                  </div>
+                </div>
+                <div class="form-group row">
                   <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
                   <div class="col-md-9">
                     <input type="number" id="no-emp" name="text-input" class="form-control" disabled
-                      placeholder="No empleado" [(ngModel)]="usuario.datosUsuario.NO_EMPLEADO">
+                      placeholder="No empleado" [(ngModel)]="usuario.noEmpleado">
                   </div>
                 </div>
                 <div class="form-group row">
@@ -44,20 +62,36 @@
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="start-date">Fecha inicio</label>
+                  <label class="col-md-3 col-form-label" for="start-date">Feche de ejecucion solicitud</label>
                   <div class="col-md-9">
                     <input type="text" id="festart-datecha" name="fecha" class="form-control" disabled
                     [(ngModel)]="solicitud.atributos.FECHA">
                   </div>
                 </div>
+                <div class="form-group row"  *ngIf="solicitud.atributos.NO_CUENTA != undefined">
+                  <label class="col-md-3 col-form-label" for="account">Cuenta CLABE deposito</label>
+                  <div class="col-md-9">
+                    <input type="text" id="account" name="account" class="form-control" disabled
+                    placeholder="0000 0000 0000 0000"  [(ngModel)]="solicitud.atributos.NO_CUENTA" >
+                  </div>
+                </div>
+                <div class="form-group row" *ngIf="solicitud.atributos.RAZON_CANCELACION != undefined">
+                  <label class="col-md-3 col-form-label" for="textarea-input">Motivo de cancelacion</label>
+                  <div class="col-md-9">
+                    <textarea id="textarea-input" name="textarea-input" rows="9" class="form-control"  disabled
+                    placeholder="Razón o motivo de cancelación del ahorro" [(ngModel)]="solicitud.atributos.RAZON_CANCELACION">
+                  </textarea>
+                  </div>
+                </div>
+                
               </form>
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-6 form-group">
 
               <span class="help-block">
-                Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.datosUsuario.NO_EMPLEADO}}</strong> adscrito a la Oficina 
-                <strong>{{usuario.datosUsuario.OFICINA}}</strong> autorizo que por este medio se descuente de mi pago de nómina, la cantidad
+                <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina 
+                <strong>{{usuario.datosUsuario.OFICINA}}</strong> autoriza que por este medio se descuente de mi pago de nómina, la cantidad
                 de <strong>{{solicitud.atributos.MONTO}} $ </strong>de manera quincenal a partir de la siguiente fecha <strong>{{solicitud.atributos.FECHA }}</strong>, durante el período
                 correspondiente, autorizo que la cantidad retenida sea depositada en la cuenta del PROGRAMA DE
                 AHORRO VOLUNTARIO.
@@ -66,10 +100,12 @@
               </span>
               <br>
               <br>
-              <button type="button" class="btn btn-sm btn-success" (click)="aprobarSolicitud()" [disabled] = "validated"><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                Aprobar solicitud</button>
-                <button type="button" class="btn btn-sm btn-danger" (click)="rechazarSolicitud()" [disabled] = "validated" ><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                Rechazar solicitud</button>
+              <button type="button" class="btn btn-sm btn-success" (click)="openModal(true)" [hidden] = "submodule === 'historico'" [disabled] = "validated || loading"><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                Aprobar solicitud
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                <button type="button" class="btn btn-sm btn-danger" (click)="openModal(false)" [hidden] = "submodule === 'historico'" [disabled] = "validated || loading" ><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                Rechazar solicitud
+                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
             </div>
 
           </div>
@@ -77,7 +113,92 @@
           <br>
           <p class="alert alert-success" *ngIf="success.length > 0" role="alert">{{success}}</p>
 
+          <br>
+          <div class="row" *ngIf="solicitud !== undefined && solicitud.validaciones.length>0">
+            <div class="col"></div>
+            <div class="col-6">
+              <strong>Autorizaciones</strong>
+              <br/>
+              <br/>
+              <table class="table table-bordered table-striped table-sm">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>FECHA</th>
+                    <th>AREA</th>
+                    <th>VALIDADOR</th>
+                    <th>ESTATUS</th>
+                    <th>OBSERVACIONES</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let fila of solicitud.validaciones">
+                    <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                    <td scope="row">{{fila.area }}</td>
+                    <td scope="row">{{fila.email}}</td>
+                    <td scope="row">
+                      <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
+                      <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
+                    </td>
+                    <td scope="row">{{fila.statusDetalle}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col"></div>
+
+          </div>
+
+          
+
         </div><!-- card body-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade" [ngClass]="{'modal-info': aprobacion , 'modal-danger': !aprobacion}" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelar()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <p> <strong>{{validador.nombre}}</strong> <strong *ngIf="aprobacion">aprobará</strong> <strong *ngIf="!aprobacion">rechazara</strong> la solicitud de ahorro.</p>
+          <p>Al <strong *ngIf="aprobacion">APROBAR</strong> <strong *ngIf="!aprobacion">RECHAZAR</strong> esta solicitud el sistema registra la persona 
+            y el momento en que realiza la transacción.</p>
+
+
+            <form>
+              <div class="form-group row" *ngIf="!aprobacion">
+                <label for="textarea-input" class="col-sm-2 col-form-label">Razón, motivo de rechazo</label>
+                <div class="col-sm-10">
+                  <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control"
+                              placeholder="Razón o motivo de cancelación del ahorro" [(ngModel)]="razonRechazo">
+                  </textarea>
+                  <small id="noEmpHelp" class="form-text text-muted">Especifica la razon o motivo de rechazo.</small>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">No empleado</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="inputPassword" [(ngModel)]="noEmpleado" [ngModelOptions]="{standalone: true}">
+                  <small id="noEmpHelp" class="form-text text-muted">Ingresa tu numero de empleado para desbloquear.</small>
+                </div>
+              </div>
+            </form>
+      </div>
+      <div class="modal-footer">
+          <button type="button" *ngIf="aprobacion" class="btn" 
+          [ngClass]="{'btn-primary': noEmpleado === validador.noEmpleado , 'btn-secondary' : noEmpleado !== validador.noEmpleado }" 
+          [disabled]="noEmpleado !== validador.noEmpleado" (click)="aprobarSolicitud()" >Aprobar</button>
+          <button type="button" *ngIf="!aprobacion" [disabled]="razonRechazo.length < 10 || noEmpleado !== validador.noEmpleado " class="btn" 
+          [ngClass]="{'btn-danger': noEmpleado === validador.noEmpleado && razonRechazo.length >= 10 , 'btn-secondary' : noEmpleado !== validador.noEmpleado || razonRechazo.length < 10 }" 
+          (click)="rechazarSolicitud()" >Rechazar</button>
+          <button type="button" class="btn btn-warning" (click)="cancelar()" >Salir</button>
       </div>
     </div>
   </div>

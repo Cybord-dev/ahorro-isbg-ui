@@ -9,35 +9,68 @@
           <div class="row slide_1">
 
             <div class="col-md-2">
-              <label for="nombreusuario" class="label">Nombre Usuario</label>
-              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="nombreusu"
-                placeholder="nombreusuario">
+              <label for="idsol" class="label">Id Solicitud</label>
+              <input type="text" class="form-control" nbInput fullWidth id="idsol" [(ngModel)]="filterParams.idSolicitud"
+                placeholder="Id Sol.">
             </div>
+
             <div class="col-md-2">
-              <label for="inputtipo" class="label">Tipo Usuario</label>
-              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="inputtipo"
-                placeholder="Tipo de usuario">
+              <label for="nombreusuario" class="label">Nombre</label>
+              <input type="text" class="form-control" nbInput fullWidth id="nombreusuario" [(ngModel)]="filterParams.nombre"
+                placeholder="Nombre">
             </div>
+
             <div class="col-md-2">
-              <label for="FechaSolicitud" class="label">Fecha Solicitud</label>
-              <input type="text" class="form-control" [disabled]="true" nbInput fullWidth id="inputCorreo"
-                placeholder="Fecha Solicitud">
+              <label for="noempleado" class="label">No. Empleado</label>
+              <input type="text" class="form-control" nbInput fullWidth id="noempleado" [(ngModel)]="filterParams.noEmpleado"
+                placeholder="No. Empleado">
             </div>
-            <div class="col-md-6">
-              <label for="inputActivo" class="label">Tipo Validacion</label>
-              <div class="row form-inline">
-                <select id="inputActivo" [disabled]="true" class="form-control" style="display:block;" fullWidth>
-                  <option value="*">Solicitud</option>
-                  <option value="1">Cancelacion</option>
-                  <option value="0">Cancelacion</option>
+
+
+            <div class="col-md-2">
+              <label for="tipoUsuario" class="label">Tipo Usuario</label>
+              <div>
+                <select id="tipoUsuario"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoUsuario">
+                  <option value="*">TODOS</option>
+                  <option value="INTERNO">INTERNO</option>
+                  <option value="EXTERNO">EXTERNO</option>
                 </select>
-
-                <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                <button class="btn btn-primary" [disabled]="true" (click)="updateDataTable(0,10)">BUSCAR</button>
-
-
+                
               </div>
             </div>
+            <div class="col-md-2">
+              <label for="inputTipo" class="label" >Tipo Validacion</label>
+              <div>
+                <select id="inputTipo"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoSolicitud">
+                  <option value="*" >TODOS</option>
+                  <option value="SolicitudAhorro">Solicitud</option>
+                  <option value="CancelacionAhorro">Cancelacion</option>
+                  <option value="ModificacionAhorro">Modificacion</option>
+                  <option value="RetiroParcialAhorro">Retiro Parcial</option>
+                </select>
+              </div>
+            </div>
+            
+          </div>
+          <br>
+          <div class ="row">
+            <div class="col-md-2">
+
+              <label for="fechacre" class="label">Fecha Creación</label>
+              <div class="form-group">
+                <input type="text"
+                placeholder="Fecha de creación"
+                class="form-control"
+                bsDaterangepicker
+                [(ngModel)]="fechaCreacion">
+              </div>
+
+            </div>
+
+            <div class="col-sm-2">
+                <button class="btn btn-primary" (click)="updateDataTable(0,10)" style="margin-top: 2em;">BUSCAR</button>
+            </div>
+            <div class="col"></div>
           </div>
 
         </div>
@@ -62,9 +95,8 @@
                 No se encontraron resultados
               </div>
               <div class="clearfix" *ngIf="page.empty === false">
-
-
-                
+                <button class="btn-sm btn-success float-right" (click)="downloadXLSFile()"><i
+                  class="fa fa-file-excel-o fa-sm"></i></button>
                 <select id="inputunidad" style="display:block;width: 95px; margin-right: 15px;" class="float-right form-control form-control-sm"
                   [(ngModel)]="filterParams.size" *ngIf="page.last==false || page.first==true"
                   (change)="onChangePageSize($event.target.value)">
@@ -84,23 +116,30 @@
                   <thead class="thead-dark">
                     <tr>
                       <th class="text-center">ACCIONES</th>
+                      <th class="text-center">ID SOLICITUD</th>
+                      <th class="text-center">NO EMPLEADO</th>
                       <th class="text-center">SOLICITANTE</th>
                       <th class="text-center">FECHA SOLICITUD</th>
+                      <th class="text-center">FECHA EJECUCION</th>
                       <th class="text-center">TIPO USUARIO</th>
                       <th class="text-center">TIPO VALIDACION</th>
+                      <th class="text-center">ESTATUS</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr *ngFor="let fila of page.content">
                       <td scope="row" class="text-center">
-                        <button class="btn-sm btn-outline-primary" (click)="redirectToValidation(fila.idSolicitud)"><i
+                        <button class="btn-sm btn-outline-primary" (click)="redirectToValidation(fila.id)"><i
                             class="fa fa-search fa-sm"></i></button>
 
                       </td>
+                      <td scope="row">{{fila.id}}</td>
+                      <td scope="row">{{fila.noEmpleado}}</td>
                       <td scope="row">{{fila.nombre}}</td>
-                      <td scope="row">{{arrayfechas[fila.idSolicitud] | date:'yyyy-MM-dd'}}</td>
+                      <td scope="row">{{fila.fechaCreacion}}</td>
+                      <td scope="row">{{fila.fechaEjecucion}}</td>
 
-                      <td scope="row">Interno</td>
+                      <td scope="row">{{fila.tipoUsuario}}</td>
                       <td scope="row" class="text-center">
                         <span class="badge badge-success" *ngIf="fila.tipo === 'SolicitudAhorro'">SOLICITUD
                           AHORRO</span>
@@ -111,20 +150,22 @@
                         <span class="badge badge-warning" *ngIf="fila.tipo === 'ModificacionAhorro'">MODIFICACION
                           AHORRO</span>
                       </td>
+                      <td scope="row">{{fila.status}}</td>
                     </tr>
                   </tbody>
                 </table>
                 <div class="clearfix" *ngIf="page.empty == false">
                   <ul class="pagination float-right" *ngIf="page.totalElements > 1">
                     <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
-                        (click)="updateDataTable(0,page.size)"><i class="nb-arrow-left"></i></button></li>
+                        (click)="updateDataTable(0,page.size)"><i class="icon-control-rewind icons"></i></button>
+                    </li>
                     <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
                         (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
                     <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
                     <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
                         (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
                     <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
-                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="nb-arrow-right"></i></button>
+                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="icon-control-forward icons"></i></button>
                     </li>
                   </ul>
                 </div>

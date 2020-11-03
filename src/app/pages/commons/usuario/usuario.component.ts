@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,8 @@ import { DatoUsuario } from '../../../models/dato-usuario';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Usuario } from '../../../models/usuario';
 import { RolCat } from '../../../models/rolcat';
+import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
+
 
 @Component({
   selector: 'cybord-usuario',
@@ -14,17 +16,20 @@ import { RolCat } from '../../../models/rolcat';
 })
 export class UsuarioComponent implements OnInit {
 
-  registerForm: FormGroup;
+
+  @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
+
+  public registerForm: FormGroup;
   public submitted = false;
-  public loading = true;
+  public loading = false;
   public usuario: Usuario = new Usuario();
   public errorMessages: string[] = [];
-
+  public mensajeModal = '';
   public params: any = { success: '', message: '', id: '*', module: 'usuarios', interno: false };
   public antiguedad: Date;
 
   public roles = { USUARIO: true, RECURSOS_HUMANOS: false, TESORERIA: false, CONTABILIDAD: false, GERENCIA: false, ADMINISTRACION: false };
-
+  private nombreRoles = Object.keys(this.roles);
   constructor(
     public datepipe: DatePipe,
     private route: ActivatedRoute,
@@ -49,10 +54,16 @@ export class UsuarioComponent implements OnInit {
           Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡" \' ]+)$')]],
           activo: ['Si', Validators.required],
           tipo: [this.usuario.tipoUsuario],
+          oficina: [this.usuario.datosUsuario.OFICINA],
+          banco: [this.usuario.datosUsuario.BANCO],
+          noEmpleado: [this.usuario.noEmpleado],
+          cuenta: [this.usuario.datosUsuario.CUENTA],
+          sueldo: [this.usuario.datosUsuario.SUELDO],
+          antiguedad: [this.usuario.datosUsuario.ANTIGUEDAD]
         });
 
       } else {
-        //nuevo usuario
+        this.antiguedad = new Date();
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: false, },
           [Validators.required, Validators.email, Validators.pattern('^[a-z0-9A-Z._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
@@ -60,6 +71,12 @@ export class UsuarioComponent implements OnInit {
           Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡"\' ]+)$')]],
           activo: ['Si', Validators.required],
           tipo: [this.usuario.tipoUsuario],
+          oficina: [this.usuario.datosUsuario.OFICINA],
+          banco: [this.usuario.datosUsuario.BANCO],
+          noEmpleado: [this.usuario.noEmpleado],
+          cuenta: [this.usuario.datosUsuario.CUENTA],
+          sueldo: [this.usuario.datosUsuario.SUELDO],
+          antiguedad: [this.usuario.datosUsuario.ANTIGUEDAD]
         });
         this.loading = false;
       }
@@ -92,20 +109,37 @@ export class UsuarioComponent implements OnInit {
   }
 
 
+  public openModal(): void {
+    if(this.usuario.id !== undefined){
+      this.mensajeModal = '¿Actualizar usuario?';
+    }else{
+      this.mensajeModal = '¿Registrar usuario?';
+    }
+    this.modalConfirmacion.show();
+  }
+
+  public decline(): void {
+    this.modalConfirmacion.hide();
+  }
+
+
+
+
   get f() { return this.registerForm.controls; }
 
   public update(): void {
-
     this.loading = true;
-
-    if (this.registerForm.invalid) { this.loading = false; return; }
+    console.log(this.usuario.noEmpleado);
+    this.modalConfirmacion.hide();
+    //if (this.registerForm.invalid) { this.loading = false; return; }
     this.errorMessages = [];
     this.usuarioServicio.actualizaUser(this.usuario).toPromise()
       .then(async updateduser => {
-        console.log(updateduser);
-        this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
+        if(this.usuario.datosUsuario.ANTIGUEDAD !== undefined){
+          this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
+        }
         for (const key in this.usuario.datosUsuario) {
-          if (key !== undefined && this.usuario.datosUsuario[key] !== undefined) {
+          if (key !== undefined && this.usuario.datosUsuario[key] !== undefined && this.usuario.datosUsuario[key] !== "" && this.usuario.datosUsuario[key] !== null) {
             if (updateduser.datosUsuario[key] !== this.usuario.datosUsuario[key]) {
               const dato = new DatoUsuario(key, this.usuario.datosUsuario[key]);
               await this.usuarioServicio.actualizaDatoUsuario(this.usuario.id, key, dato)
@@ -115,12 +149,14 @@ export class UsuarioComponent implements OnInit {
         }
         if (this.params.module === 'administracion') {
           console.log('Updating user roles');
+          var i = 0;
           for (const role in this.roles) { // QUITA ROLES EXISTENTES
             if (this.roles[role] === false // ROLE EN FALSO
               && this.usuario.roles.find(x => x === role)) { // PERO YA EXISTE EN EL USER
               await this.usuarioServicio.deleteRoles(this.usuario.id,
-                this.roles[role]).toPromise();
+                this.nombreRoles[i]).toPromise();
             }
+            i++;
           }
           for (const role in this.roles) { // AGREGAR NUEVOS ROLES
 
@@ -133,20 +169,22 @@ export class UsuarioComponent implements OnInit {
         this.submitted = true;
         this.params.success = 'El usuario ha sido actualizado satisfactoriamente.';
       })
-      .then(() => this.updateUserInfo(this.usuario.id))
-      .catch(error => this.errorMessages.push(error));
+      .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
+      .catch(error => {this.errorMessages.push(error); this.loading = false;});
   }
 
-  public registry(): void {
+  public register(): void {
     let id = 0;
+    console.log('registering',this.registerForm.invalid);
     this.loading = true;
-    if (this.registerForm.invalid) { this.loading = false; return; }
+    this.modalConfirmacion.hide();
+    //if (this.registerForm.invalid) { this.loading = false; return; }
     this.errorMessages = [];
+    console.log('registering');
     this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
     this.usuarioServicio.insertarUsuario(this.usuario).toPromise()
       .then(async createdUser => {
         id = createdUser.id;
-        this.params.success = 'Usuario creado exitosamente';
         for (const key in this.usuario.datosUsuario) {
           if (key !== undefined && this.usuario.datosUsuario[key] !== undefined) {
             const valor = this.usuario.datosUsuario[key];
@@ -159,13 +197,12 @@ export class UsuarioComponent implements OnInit {
           }
         }
         this.submitted = true;
-        this.params.success = 'El usuario ha sido creado satisfactoriamente.';
       })
-      .then(() => this.updateUserInfo(id))
-      .catch(error => this.errorMessages.push(error));
+      .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
+      .catch(error => {this.errorMessages.push(error); this.loading = false;});
   }
 
-  private async updateRoles() {
+  private async updateRoles(): Promise<void> {
     for (const role in this.roles) { // QUITA ROLES EXISTENTES
       if (this.roles[role] === false // ROLE EN FALSO
         && this.usuario.roles.find(x => x === role)) { // PERO YA EXISTE EN EL USER

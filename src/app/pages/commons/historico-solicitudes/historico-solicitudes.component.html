@@ -1,105 +1,203 @@
 <div class="animated fadeIn">
-    <div class="row">
-      <div class="col-sm-12 col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <strong>Historico Solicitudes</strong>
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Validaciones</strong>
+        </div>
+        <div class="card-body">
+        
+         
+          <div class="row slide_1">
+
+            <div class="col-md-2">
+              <label for="idsol" class="label">Id Solicitud</label>
+              <input type="text" class="form-control" nbInput fullWidth id="idsol" [(ngModel)]="filterParams.idSolicitud"
+                placeholder="Id Sol.">
+            </div>
+
+            <div class="col-md-2">
+              <label for="nombreusuario" class="label">Nombre</label>
+              <input type="text" class="form-control" nbInput fullWidth id="nombreusuario" [(ngModel)]="filterParams.nombre"
+                placeholder="Nombre">
+            </div>
+
+            <div class="col-md-2">
+              <label for="noempleado" class="label">No. Empleado</label>
+              <input type="text" class="form-control" nbInput fullWidth id="noempleado" [(ngModel)]="filterParams.noEmpleado"
+                placeholder="No. Empleado">
+            </div>
+
+            <div class="col-md-2">
+              <label for="fechacre" class="label">Fecha Creación</label>
+              <div class="form-group">
+                <input type="text"
+                placeholder="Fecha de creación"
+                class="form-control"
+                bsDaterangepicker
+                [(ngModel)]="fechaCreacion">
+              </div>
+              
+            </div>
+
+            
+
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-12">
-                Filtros de busqueda
+          <br>
+          <div class="row slide_1">
+
+            <div class="col-md-2">
+              <label for="tipoUsuario" class="label">Tipo de Usuario</label>
+              <div>
+                <select id="inputTipoUsuario"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoUsuario">
+                  <option value="*" >TODOS</option>
+                  <option value="INTERNO">INTERNO</option>
+                  <option value="EXTERNO">EXTERNO</option>
+                </select>
               </div>
             </div>
-  
+
+            <div class="col-md-2">
+              <label for="inputTipo" class="label" >Tipo Validacion</label>
+              <div>
+                <select id="inputTipo"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoSolicitud">
+                  <option value="*" >Todos</option>
+                  <option value="SolicitudAhorro">Solicitud</option>
+                  <option value="CancelacionAhorro">Cancelacion</option>
+                  <option value="ModificacionAhorro">Modificacion</option>
+                  <option value="RetiroParcialAhorro">Retiro Parcial</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <label for="tipoValidacion" class="label">Estatus</label>
+              <div>
+                <select id="tipoValidacion"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.estatus">
+                  <option value="*" >TODOS</option>
+                  <option value="Finalizada">Finalizada</option>
+                  <option value="Rechazada">Rechazada</option>
+                  <option value="ValidacionRH">Validacion Recursos Humanos</option>
+                  <option value="ValidacionTeso">Validacion Tesoreria</option>
+                  <option value="ValdiacionConta">Validacion Contabilidad</option>
+                  <option value="ValidacionGerencia">Validacion Gerencia</option>
+                  <option value="ValidaAdmin">Validacion Administracion</option>
+                </select>
+
+                
+              </div>
+            </div>
+
+            <div class="col-md-2">
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
+            </div>
+            
           </div>
         </div>
       </div>
-      <!--/.col-->
     </div>
-    <!--/.row-->
+    <!--/.col-->
+  </div>
+  <!--/.row-->
 
 
-    <div class="row">
-      <div class="col-sm-12 col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <strong>Resultados</strong>
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Resultados</strong>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+
+              <div *ngIf="page.empty === true" class="alert alert-primary" role="alert">
+                No se encontraron resultados
+              </div>
+              <div class="clearfix" *ngIf="page.empty === false">
+                <button class="btn-sm btn-success float-right" (click)="downloadXLSFile()"><i
+                  class="fa fa-file-excel-o fa-sm"></i></button>
+                <select id="inputunidad" style="display:block;width: 95px; margin-right: 15px;" class="float-right form-control form-control-sm"
+                  [(ngModel)]="filterParams.size" *ngIf="page.last==false || page.first==true"
+                  (change)="onChangePageSize($event.target.value)">
+                  <option value="10">10</option>
+                  <option *ngIf="page.number<(page.totalElements/20)" value="20">20</option>
+                  <option *ngIf="page.number<(page.totalElements/50)" value="50">50</option>
+                </select>
+                <strong class="float-right"> Tamaño Pagina &nbsp;&nbsp;&nbsp;&nbsp;</strong>
+              </div>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-sm-12">
-                <table class="table table-bordered table-striped table-sm">
-                  <thead>
+          <div class="row">
+            <div class="col">
+
+              <div class="table-responsive" *ngIf="page.empty == false">
+                <table class="table table-bordered table-sm">
+                  <thead class="thead-dark">
                     <tr>
-                      <th>Nombre</th>
-                      <th>Fecha solicitud</th>
-                      <th>Tipo Usuario</th>
-                      <th>Tipo Validacion</th>
+                      <th class="text-center">ACCIONES</th>
+                      <th class="text-center">ID SOLICITUD</th>
+                      <th class="text-center">NO EMPLEADO</th>
+                      <th class="text-center">SOLICITANTE</th>
+                      <th class="text-center">FECHA SOLICITUD</th>
+                      <th class="text-center">FECHA EJECUCION</th>
+                      <th class="text-center">TIPO USUARIO</th>
+                      <th class="text-center">TIPO VALIDACION</th>
+                      <th class="text-center">ESTATUS</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Vishnu Serghei</td>
-                      <td>2012/01/01</td>
-                      <td>Interno</td>
-                      <td>
-                        <span class="badge badge-success">Solicitud</span>
+                    <tr *ngFor="let fila of page.content">
+                      <td scope="row" class="text-center">
+                        <button class="btn-sm btn-outline-primary" (click)="redirectToValidation(fila.id)"><i
+                            class="fa fa-search fa-sm"></i></button>
+
                       </td>
-                    </tr>
-                    <tr>
-                      <td>Zonia Phoibos</td>
-                      <td>2012/02/01</td>
-                      <td>Externo</td>
-                      <td>
-                        <span class="badge badge-danger">Cancelacion</span>
+                      <td scope="row">{{fila.id}}</td>
+                      <td scope="row">{{fila.noEmpleado}}</td>
+                      <td scope="row">{{fila.nombre}}</td>
+                      <td scope="row">{{fila.fechaCreacion}}</td>
+                      <td scope="row">{{fila.fechaEjecucion}}</td>
+
+                      <td scope="row">{{fila.tipoUsuario}}</td>
+                      <td scope="row" class="text-center">
+                        <span class="badge badge-success" *ngIf="fila.tipo === 'SolicitudAhorro'">SOLICITUD
+                          AHORRO</span>
+                        <span class="badge badge-danger" *ngIf="fila.tipo === 'CancelacionAhorro'">CANCELACION
+                          AHORRO</span>
+                        <span class="badge badge-primary" *ngIf="fila.tipo === 'RetiroParcialAhorro'">RETIRO
+                          PARCIAL</span>
+                        <span class="badge badge-warning" *ngIf="fila.tipo === 'ModificacionAhorro'">MODIFICACION
+                          AHORRO</span>
                       </td>
-                    </tr>
-                    <tr>
-                      <td>Einar Randall</td>
-                      <td>2012/02/01</td>
-                      <td>Admin</td>
-                      <td>
-                        <span class="badge badge-secondary">Modificacion</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Félix Troels</td>
-                      <td>2012/03/01</td>
-                      <td>Externo</td>
-                      <td>
-                        <span class="badge badge-warning">Retiro Parcial</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Aulus Agmundr</td>
-                      <td>2012/01/21</td>
-                      <td>Interno</td>
-                      <td>
-                        <span class="badge badge-success">Solicitud</span>
-                      </td>
+                      <td scope="row">{{fila.status}}</td>
                     </tr>
                   </tbody>
                 </table>
-                <nav>
-                  <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-                    <li class="page-item active">
-                      <a class="page-link" href="#">1</a>
+                <div class="clearfix" *ngIf="page.empty == false">
+                  <ul class="pagination float-right" *ngIf="page.totalElements > 1">
+                    <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
+                        (click)="updateDataTable(0,page.size)"><i class="nb-arrow-left"></i></button></li>
+                    <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
+                    <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
+                    <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
+                    <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="nb-arrow-right"></i></button>
                     </li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
                   </ul>
-                </nav>
+                </div>
+
               </div>
             </div>
-  
           </div>
+
         </div>
       </div>
-      <!--/.col-->
     </div>
-    <!--/.row-->
+    <!--/.col-->
   </div>
+  <!--/.row-->
+</div>

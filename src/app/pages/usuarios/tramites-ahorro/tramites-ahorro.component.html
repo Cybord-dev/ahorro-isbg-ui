@@ -14,10 +14,350 @@
               </div>
 
               <tabset #staticTabs>
-                <tab *ngIf="solicitudAhorro.id === undefined || solicitudAhorro.status!=='Finalizada'">
-                    
+                <tab *ngIf="solicitudCancelacion.status!=='Finalizada'">
                     <ng-template tabHeading ><i class="icon-docs"></i>&nbsp; Solicitud</ng-template>
-              
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                        <p *ngIf="solicitudAhorro.id !==undefined" ><strong>Solicitud No. {{solicitudAhorro.id}}</strong></p>
+                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Nombre</label>
+                            <div class="col-md-9">
+                              <p class="form-control-static"><strong>{{usuario.nombre}}</strong></p>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
+                            <div class="col-md-9">
+                              <input type="number" id="no-emp" name="text-input" class="form-control" disabled
+                                placeholder="No empleado" [(ngModel)]="usuario.noEmpleado">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="office">Oficina</label>
+                            <div class="col-md-9" >
+                              <input type="text" id="oficina" name="oficina" class="form-control" disabled
+                                placeholder="Oficina empleado" [(ngModel)]="usuario.datosUsuario.OFICINA">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
+                            <div class="col-md-9">
+                              <input type="number" id="quantity" name="quantity" class="form-control" min=100 [disabled] = "solicitudAhorro.id !== undefined && solicitudAhorro.status !=='Rechazada'"
+                                placeholder="100.00"  [(ngModel)]="solicitudAhorro.atributos.MONTO" min="100" max="20000">
+                              <span class="help-block" *ngIf="solicitudAhorro.id === undefined">Descuento quincenal</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="start-date">Fecha inicio</label>
+                            <div class="col-md-9">
+                              <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
+                                [bsConfig]="{ containerClass: 'theme-dark-blue' }" [datesEnabled]="enabledDates"
+                                 [(bsValue)]="bsValue" *ngIf="solicitudAhorro.atributos.FECHA === undefined || solicitudAhorro.status ==='Rechazada'">
+                                 <input type="text" id="start-date" name="start-date" class="form-control" disabled *ngIf="solicitudAhorro.atributos.FECHA !== undefined && solicitudAhorro.status !=='Rechazada'"
+                                 placeholder="fecha inicio descuentos" [(ngModel)]="solicitudAhorro.atributos.FECHA">
+                              <span class="help-block" *ngIf="solicitudAhorro.atributos.FECHA === undefined">fecha inicio descuentos</span>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+  
+                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+  
+                        
+                        <span class="help-block">
+                          Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina 
+                          <strong>{{usuario.datosUsuario.OFICINA}}</strong> autorizo que por este medio se descuente de mi pago de nómina, la cantidad
+                          de <strong> $ {{solicitudAhorro.atributos.MONTO }} </strong>de manera quincenal a partir de la siguiente fecha <strong>{{bsValue | date}}</strong>, durante el período
+                          correspondiente, autorizo que la cantidad retenida sea depositada en la cuenta del PROGRAMA DE
+                          AHORRO VOLUNTARIO.
+                          Estoy de acuerdo que la cantidad ahorrada y los intereses que se hubiesen generado me sean
+                          entregados al término del período.
+                        </span>
+                        <br>
+                        <br>
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('SolicitudAhorro')" 
+                              *ngIf="solicitudAhorro.id === undefined || solicitudAhorro.status ==='Rechazada'" [disabled]="loading || success.length > 0">
+                          <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud</button>
+                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                      </div>
+  
+                    </div>
+
+                    <div class="row" *ngIf="solicitudAhorro.id !== undefined && solicitudAhorro.validaciones.length>0">
+                      <div class="col"></div>
+                      <div class="col-6">
+                        <div class="alert alert-success" role="alert" *ngIf="solicitudAhorro.status === 'Finalizada'" >
+                          La solicitud de ahorro fue exitosamente aprobada.
+                        </div>
+                        <div class="alert alert-danger" role="alert" *ngIf="solicitudAhorro.status === 'Rechazada'">
+                          La solicitud de ahorro fue rechazada, el motivo es : {{solicitudAhorro.statusDetalle}}.
+                        </div>
+                        <div class="alert alert-warning" role="alert" *ngIf="solicitudAhorro.status !== 'Rechazada' && solicitudAhorro.status !== 'Finalizada'">
+                          La solicitud de ahorro se encuentra en tramite.
+                        </div>
+
+                        <strong>Autorizaciones</strong>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered table-striped table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th>FECHA</th>
+                              <th>AREA</th>
+                              <th>ESTATUS</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let fila of solicitudAhorro.validaciones">
+                              <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                              <td scope="row">{{fila.area }}</td>
+                              <td scope="row">
+                                <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
+                                <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col"></div>
+
+                    </div>
+                  </tab>
+                  <tab *ngIf="solicitudAhorro.status==='Finalizada' && solicitudCancelacion.status!=='Finalizada'">
+                    <ng-template tabHeading  ><i class="icon-refresh"></i>&nbsp; Modificación</ng-template>
+                    <br>
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Nombre</label>
+                            <div class="col-md-9">
+                              <p class="form-control-static"><strong>{{usuario.nombre}}</strong></p>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
+                            <div class="col-md-9">
+                              <input type="number" id="no-emp" name="text-input" class="form-control" disabled
+                                placeholder="No empleado" [(ngModel)]="usuario.noEmpleado">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="office">Oficina</label>
+                            <div class="col-md-9" >
+                              <input type="text" id="oficina" name="oficina" class="form-control" disabled
+                                placeholder="Oficina empleado" [(ngModel)]="usuario.datosUsuario.OFICINA">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="quantity1">Descuento quincenal actual</label>
+                            <div class="col-md-9">
+                              <input type="number" id="quantity1" name="quantity1" class="form-control" min=100 [disabled] = "solicitudModificacion.atributos.MONTO !== undefined"
+                                placeholder="100.00"  [(ngModel)]="usuario.datosUsuario.AHORRO" min="100" max="20000">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="quantity">Nuevo descuento</label>
+                            <div class="col-md-9">
+                              <input type="number" id="quantity" name="quantity" class="form-control" min=100 [disabled] = "solicitudEnProgreso.length !== 0"
+                                placeholder="100.00"  [(ngModel)]="solicitudModificacion.atributos.MONTO" min="100" max="20000">
+                              <span class="help-block" *ngIf="solicitudEnProgreso.length === 0">Nueva cantidad</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="start-date">Fecha modificacion</label>
+                            <div class="col-md-9">
+                              <input id="modif-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
+                                [bsConfig]="{ containerClass: 'theme-dark-blue' }" [datesEnabled]="enabledDates"
+                                 [(bsValue)]="bsValue" *ngIf="solicitudEnProgreso.length === 0">
+                                 <input type="text" id="modif-date" name="modif-date" class="form-control" disabled *ngIf="solicitudEnProgreso.length !== 0"
+                                 placeholder="fecha inicio descuentos" [(ngModel)]="solicitudModificacion.atributos.FECHA">
+                              <span class="help-block" *ngIf="solicitudModificacion.atributos.FECHA === undefined">fecha modificacion descuento</span>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+  
+                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+  
+                        <span class="help-block">
+                          Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina 
+                          <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio se modifique el descuento de <strong> $ {{solicitudModificacion.atributos.MONTO }} </strong> 
+                          que se me aplica en mi pago de nómina por la por la cantidad de <strong> $ {{solicitudModificacion.atributos.MONTO_MODIFICACION }} </strong> aplicable a partir de la fecha <strong>{{bsValue | date}}</strong>.
+                        </span>
+                        <br>
+                        <br>
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('ModificacionAhorro')"
+                              [disabled]="loading || success.length > 0 || solicitudEnProgreso.length > 0">
+                          <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud</button>
+                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                      </div>
+  
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col"></div>
+                      <div class="col-6">
+                        <div class="alert alert-warning" role="alert" *ngIf="solicitudEnProgreso.length > 0">
+                          {{solicitudEnProgreso}}
+                        </div>
+                      </div>
+                      <div class="col"></div>
+                    </div>
+                    <div class="row" *ngIf="solicitudModificacion.id !== undefined && solicitudModificacion.validaciones.length>0">
+                      <div class="col"></div>
+                      <div class="col-6">
+
+                        <div class="alert alert-success" role="alert" *ngIf="solicitudModificacion.status === 'Finalizada'" >
+                          La modificación del ahorro fue exitosamente aprobada.
+                        </div>
+                        <div class="alert alert-danger" role="alert" *ngIf="solicitudModificacion.status === 'Rechazada'">
+                          La modificación del ahorro fue rechazada, el motivo es : {{solicitudModificacion.statusDetalle}}.
+                        </div>
+            
+                        <strong>Autorizaciones</strong>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered table-striped table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th>FECHA</th>
+                              <th>AREA</th>
+                              <th>ESTATUS</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let fila of solicitudModificacion.validaciones">
+                              <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                              <td scope="row">{{fila.area }}</td>
+                              <td scope="row">
+                                <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
+                                <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
+                              </td>
+                              
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col"></div>
+                    </div>
+                  </tab>
+                  <tab *ngIf="solicitudAhorro.status==='Finalizada' && solicitudCancelacion.status!=='Finalizada'">
+                    <ng-template tabHeading><i class="icon-reload"></i>&nbsp; Retiro Parcial</ng-template>
+                    <br>
+  
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Nombre</label>
+                            <div class="col-md-9">
+                              <p class="form-control-static"><strong>{{usuario.nombre}}</strong></p>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
+                            <div class="col-md-9">
+                              <input type="number" id="no-emp" name="text-input" class="form-control" disabled
+                                placeholder="No empleado" [(ngModel)]="usuario.noEmpleado">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="office">Oficina</label>
+                            <div class="col-md-9" >
+                              <input type="text" id="oficina" name="oficina" class="form-control" disabled
+                                placeholder="Oficina empleado" [(ngModel)]="usuario.datosUsuario.OFICINA">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="quantity3">Monto de retiro</label>
+                            <div class="col-md-9">
+                              <input type="number" id="quantity3" name="quantity" class="form-control" min=100 [disabled] = "solicitudEnProgreso.length !== 0"
+                                placeholder="100.00"  [(ngModel)]="solicitudRetiro.atributos.MONTO" min="100" max="20000">
+                              <span class="help-block" *ngIf="solicitudRetiro.id === undefined">Monto de retiro</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="account">Cuenta CLABE</label>
+                            <div class="col-md-9">
+                              <input type="text" id="account" name="account" class="form-control" [disabled] = "solicitudEnProgreso.length !== 0"
+                              placeholder="0000 0000 0000 0000"  [(ngModel)]="solicitudRetiro.atributos.NO_CUENTA" >
+                              <span class="help-block" *ngIf="solicitudRetiro.id === undefined">Cuenta interbancaria CLABE</span>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+  
+                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+  
+                        <span class="help-block">
+                          Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina 
+                          <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio la cantidad de $ {{solicitudRetiro.atributos.MONTO}}
+                          por concepto de Retiro Parcial de mi ahorro, que sea depositado a la cuenta {{solicitudRetiro.atributos.NO_CUENTA}}
+                        </span>
+                        <br>
+                        <br>
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('RetiroParcialAhorro')" 
+                              [disabled]="loading || success.length > 0 || solicitudEnProgreso.length > 0">
+                          <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud</button>
+                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                      </div>
+  
+                    </div>
+
+                    <div class="row">
+                      <div class="col"></div>
+                      <div class="col-6">
+                        <div class="alert alert-warning" role="alert" *ngIf="solicitudEnProgreso.length > 0">
+                          {{solicitudEnProgreso}}
+                        </div>
+                      </div>
+                      <div class="col"></div>
+                    </div>
+
+                    <div class="row" *ngIf="solicitudRetiro.id !== undefined && solicitudRetiro.validaciones.length>0">
+                      <div class="col"></div>
+                      <div class="col-6">
+                        <div class="alert alert-success" role="alert" *ngIf="solicitudRetiro.status === 'Finalizada'" >
+                          La solicitud de ahorro fue exitosamente aprobada.
+                        </div>
+                        <div class="alert alert-danger" role="alert" *ngIf="solicitudRetiro.status === 'Rechazada'">
+                          La solicitud de ahorro fue rechazada, el motivo es : {{solicitudAhorro.statusDetalle}}.
+                        </div>
+                        
+
+                        <strong>Autorizaciones</strong>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered table-striped table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th>FECHA</th>
+                              <th>AREA</th>
+                              <th>ESTATUS</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let fila of solicitudRetiro.validaciones">
+                              <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                              <td scope="row">{{fila.area }}</td>
+                              <td scope="row">
+                                <span class="badge badge-success" *ngIf="fila.status">APROBADA</span>
+                                <span class="badge badge-danger" *ngIf="!fila.status">RECHAZADO</span>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="col"></div>
+
+                    </div>
+                  </tab>
+                  <tab *ngIf="solicitudAhorro.status==='Finalizada'">
+                    <ng-template tabHeading><i class="icon-envelope-open"></i>&nbsp; Cancelación</ng-template>
+                    <br>
+  
                     <div class="row">
                       <div class="col-xs-12 col-sm-12 col-md-6 form-group">
                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
@@ -44,20 +384,35 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
                             <div class="col-md-9">
-                              <input type="number" id="quantity" name="quantity" class="form-control" min=100 [disabled] = "solicitudAhorro.id !== undefined"
-                                placeholder="100.00"  [(ngModel)]="solicitudAhorro.atributos.MONTO" min="100" max="20000">
-                              <span class="help-block" *ngIf="solicitudAhorro.id === undefined">Descuento quincenal</span>
+                              <input type="number" id="quantity" name="quantity" class="form-control" min=100 disabled
+                                placeholder="100.00"  [(ngModel)]="usuario.datosUsuario.AHORRO" min="100" max="20000">
                             </div>
                           </div>
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="start-date">Fecha inicio</label>
+                            <label class="col-md-3 col-form-label" for="start-date">Fecha solicitada de deposito</label>
                             <div class="col-md-9">
                               <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
-                                [bsConfig]="{ containerClass: 'theme-dark-blue' }" [datesEnabled]="enabledDates"
-                                 [(bsValue)]="bsValue" *ngIf="solicitudAhorro.atributos.FECHA === undefined">
-                                 <input type="text" id="start-date" name="start-date" class="form-control" disabled
-                                 placeholder="fecha inicio descuentos" [(ngModel)]="solicitudAhorro.atributos.FECHA">
-                              <span class="help-block" *ngIf="solicitudAhorro.atributos.FECHA === undefined">fecha inicio descuentos</span>
+                                [bsConfig]="{ containerClass: 'theme-dark-blue' }"
+                                 [(bsValue)]="bsValue" *ngIf="solicitudEnProgreso.length === 0">
+                                 <input type="text" id="start-date" name="start-date" class="form-control" disabled *ngIf="solicitudEnProgreso.length !== 0"
+                                 placeholder="fecha inicio descuentos" [(ngModel)]="solicitudCancelacion.atributos.FECHA">
+                              <span class="help-block" *ngIf="solicitudCancelacion.atributos.FECHA === undefined">fecha deposito ahorro</span>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="textarea-input">Motivo de cancelacion</label>
+                            <div class="col-md-9">
+                              <textarea id="textarea-input" name="textarea-input" rows="9" class="form-control"  [disabled] = "solicitudEnProgreso.length !== 0"
+                              placeholder="Razón o motivo de cancelación del ahorro" [(ngModel)]="solicitudCancelacion.atributos.RAZON_CANCELACION">
+                            </textarea>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="account">Cuenta CLABE deposito</label>
+                            <div class="col-md-9">
+                              <input type="text" id="account" name="account" class="form-control" [disabled] = "solicitudEnProgreso.length !== 0"
+                              placeholder="0000 0000 0000 0000"  [(ngModel)]="solicitudCancelacion.atributos.NO_CUENTA" >
+                              <span class="help-block" *ngIf="solicitudCancelacion.id === undefined">Cuenta interbancaria CLABE</span>
                             </div>
                           </div>
                         </form>
@@ -66,23 +421,31 @@
                       <div class="col-xs-12 col-sm-12 col-md-6 form-group">
   
                         <span class="help-block">
-                          Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.datosUsuario.NO_EMPLEADO}}</strong> adscrito a la Oficina 
-                          <strong>{{usuario.datosUsuario.OFICINA}}</strong> autorizo que por este medio se descuente de mi pago de nómina, la cantidad
-                          de <strong>{{descuentoQuincenal | currency }} </strong>de manera quincenal a partir de la siguiente fecha <strong>{{bsValue | date}}</strong>, durante el período
-                          correspondiente, autorizo que la cantidad retenida sea depositada en la cuenta del PROGRAMA DE
-                          AHORRO VOLUNTARIO.
-                          Estoy de acuerdo que la cantidad ahorrada y los intereses que se hubiesen generado me sean
-                          entregados al término del período.
+                          Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina
+                          <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio se cancele el
+                          descuento que se aplica en mi pago de nómina la cantidad de de $ {{solicitudCancelacion.atributos.MONTO}} de manera quincenal
+                          a partir de la siguiente fecha yyyy-MM-dd, debido a {{solicitudCancelacion.atributos.RAZON_CANCELACION}} y asimismo se me
+                          reintegre la cantidad ahorrada en la cuenta del PROGRAMA DE AHORRO VOLUNTARIO a mi cuenta {{solicitudRetiro.atributos.NO_CUENTA}}
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="sendSolicitud('SolicitudAhorro')" *ngIf="solicitudAhorro.id === undefined">
-                          <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud</button>
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('CancelacionAhorro')" 
+                        [disabled]="loading || success.length > 0 || solicitudEnProgreso.length > 0"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                          Enviar solicitud
+                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
                       </div>
-  
                     </div>
-
-                    <div class="row" *ngIf="solicitudAhorro.id !== undefined">
+                    <div class="row">
+                      <div class="col"></div>
+                      <div class="col-6">
+                        <div class="alert alert-warning" role="alert" *ngIf="solicitudEnProgreso.length > 0">
+                          {{solicitudEnProgreso}}
+                        </div>
+                      </div>
+                      <div class="col"></div>
+                    </div>
+                    <div class="row" *ngIf="solicitudCancelacion.id !== undefined && solicitudCancelacion.validaciones.length>0">
                       <div class="col"></div>
                       <div class="col-6">
                         <strong>Autorizaciones</strong>
@@ -98,7 +461,7 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let fila of solicitudAhorro.validaciones">
+                            <tr *ngFor="let fila of solicitudCancelacion.validaciones">
                               <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
                               <td scope="row">{{fila.area }}</td>
                               <td scope="row">
@@ -111,242 +474,13 @@
                         </table>
                       </div>
                       <div class="col"></div>
-
-                    </div>
-                  </tab>
-                  <tab *ngIf="solicitudAhorro !== undefined">
-                    <ng-template tabHeading  ><i class="icon-refresh"></i>&nbsp; Modificación</ng-template>
-                    <br>
-  
-                    <div class="row">
-                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
-                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Nombre</label>
-                            <div class="col-md-9">
-                              <p class="form-control-static">{{usuario.nombre}}</p>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
-                            <div class="col-md-9">
-                              <input type="number" id="no-emp" name="text-input" class="form-control"
-                                placeholder="No empleado"  [(ngModel)]="noEmpleado">
-                              <span class="help-block">Introducir no. empleado</span>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="office">Oficina</label>
-                            <div class="col-md-9">
-                              <select id="office" name="office" class="form-control" [(ngModel)]="oficina">
-                                <option value="*">Seleccionar</option>
-                                <option value="1">Oficina #1</option>
-                                <option value="2">Oficina #2</option>
-                                <option value="3">Oficina #3</option>
-                                <option value="4">Oficina #4</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="quantity">Descuento actual</label>
-                            <div class="col-md-9">
-                              <input type="number" id="quantity" name="text-input" class="form-control" min=100
-                                placeholder="100.00">
-                              <span class="help-block">Descuento actual</span>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="quantity">Nuevo descuento</label>
-                            <div class="col-md-9">
-                              <input type="number" id="quantity" name="text-input" class="form-control" min=100
-                                placeholder="100.00">
-                              <span class="help-block">Nueva cantidad</span>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="start-date">Fecha modificacion</label>
-                            <div class="col-md-9">
-                              <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
-                                [bsConfig]="bsConfig" [datesEnabled]="enabledDates" [bsValue]="bsValue">
-                              <span class="help-block">fecha modificacion descuento</span>
-                            </div>
-                          </div>
-  
-  
-                        </form>
-                      </div>
-  
-                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
-  
-                        <span class="help-block">
-                          Yo NOMBRE DEL EMPLEADO con número de trabajador ########, adscrito a la Oficina de OFICINA
-                          XX solicito por este medio se modifique el descuento de $ ##.## que se me aplica en mi pago de
-                          nómina por la
-                          por la cantidad de $##.## aplicable a partir de la fecha yyyy-MM-dd.
-                        </span>
-                        <br>
-                        <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('ModificacionAhorro')"><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                          Enviar solicitud</button>
-                      </div>
-  
-                    </div>
-                  </tab>
-                  <tab *ngIf="solicitudAhorro !== undefined">
-                    <ng-template tabHeading><i class="icon-reload"></i>&nbsp; Retiro Parcial</ng-template>
-                    <br>
-  
-                    <div class="row">
-                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
-                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Nombre</label>
-                            <div class="col-md-9">
-                              <p class="form-control-static">{{usuario.nombre}}</p>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
-                            <div class="col-md-9">
-                              <input type="number" id="no-emp" name="text-input" class="form-control"
-                                placeholder="No empleado" [(ngModel)]="noEmpleado">
-                              <span class="help-block">Introducir no. empleado</span>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="office">Oficina</label>
-                            <div class="col-md-9">
-                              <select id="office" name="office" class="form-control" [(ngModel)]="oficina">
-                                <option value="*">Seleccionar</option>
-                                <option value="1">Oficina #1</option>
-                                <option value="2">Oficina #2</option>
-                                <option value="3">Oficina #3</option>
-                                <option value="4">Oficina #4</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="quantity">Monto de retiro</label>
-                            <div class="col-md-9">
-                              <input type="number" id="quantity" name="text-input" class="form-control" min=100
-                                placeholder="100.00">
-                              <span class="help-block">Monto a retirar</span>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="start-date">Cuenta deposito</label>
-                            <div class="col-md-9">
-                              <input type="text" class="form-control" id="ccnumber" placeholder="0000 0000 0000 0000">
-                              <span class="help-block">cuenta deposito</span>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-  
-                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
-  
-                        <span class="help-block">
-                          Yo NOMBRE DEL EMPLEADO con número de trabajador ########, adscrito a la Oficina de
-                          IDENTIFICADOR_OFICINA solicito por este medio la cantidad de $ ###.##
-                          por concepto de Retiro Parcial de mi ahorro, que sea depositado a la cuenta
-                          0000 0000 0000 0000
-                        </span>
-                        <br>
-                        <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('RetiroParcial')"><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                          Enviar solicitud</button>
-                      </div>
-  
-                    </div>
-                  </tab>
-                  <tab *ngIf="solicitudAhorro !== undefined">
-                    <ng-template tabHeading><i class="icon-envelope-open"></i>&nbsp; Cancelación</ng-template>
-                    <br>
-  
-                    <div class="row">
-                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
-                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label">Nombre</label>
-                            <div class="col-md-9">
-                              <p class="form-control-static">{{usuario.nombre}}</p>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="no-emp">No. empleado</label>
-                            <div class="col-md-9">
-                              <input type="number" id="no-emp" name="text-input" class="form-control"
-                                placeholder="No empleado" [(ngModel)]="noEmpleado">
-                              <span class="help-block">Introducir no. empleado</span>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="office">Oficina</label>
-                            <div class="col-md-9">
-                              <select id="office" name="office" class="form-control" [(ngModel)]="oficina">
-                                <option value="*">Seleccionar</option>
-                                <option value="1">Oficina #1</option>
-                                <option value="2">Oficina #2</option>
-                                <option value="3">Oficina #3</option>
-                                <option value="4">Oficina #4</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
-                            <div class="col-md-9">
-                              <input type="number" id="quantity" name="text-input" class="form-control" min=100
-                                placeholder="100.00" [(ngModel)]="descuentoQuincenal">
-                              <span class="help-block">Descuento quincenal</span>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="start-date">Fecha efectiva reintegro</label>
-                            <div class="col-md-9">
-                              <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
-                                [bsConfig]="bsConfig" [datesEnabled]="enabledDates" [bsValue]="bsValue">
-                              <span class="help-block">Fecha efectiva reintegro</span>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="textarea-input">Motivo de cancelacion</label>
-                            <div class="col-md-9">
-                              <textarea id="textarea-input" name="textarea-input" rows="9" class="form-control" placeholder="Razón o motivo de cancelación del ahorro"></textarea>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="start-date">Cuenta deposito</label>
-                            <div class="col-md-9">
-                              <input type="text" class="form-control" id="ccnumber" placeholder="0000 0000 0000 0000">
-                              <span class="help-block">cuenta deposito</span>
-                            </div>
-                          </div>  
-                        </form>
-                      </div>
-  
-                      <div class="col-xs-12 col-sm-12 col-md-6 form-group">
-  
-                        <span class="help-block">
-                          Yo NOMBRE DEL EMPLEADO con número de trabajador ########, adscrito a la Oficina de
-                          IDENTIFICADOR_OFICINA solicito por este medio se cancele el
-                          descuento que se aplica en mi pago de nómina la cantidad de de $ ###.## de manera quincenal
-                          a partir de la siguiente fecha yyyy-MM-dd, debido a RAZON_MOTIVO_CANCELACIÓN y asimismo se me
-                          reintegre la
-                          cantidad ahorrada en la cuenta del PROGRAMA DE AHORRO VOLUNTARIO a mi cuenta 0000 0000 0000 0000
-                        </span>
-                        <br>
-                        <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="requestSolicitud('CancelacionAhorro')"><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                          Enviar solicitud</button>
-                      </div>
-  
                     </div>
                   </tab>
               </tabset>
 
             </div>
           </div>
-
+          
           <br>
           <p class="alert alert-success" *ngIf="success.length > 0" role="alert">{{success}}</p>
         </div>
@@ -355,4 +489,24 @@
     <!--/.col-->
   </div>
   <!--/.row-->
+</div>
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal modal-info fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelar()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          ¿Estas seguro que quieres enviar la solicitud?
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="aceptar()" >Si</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelar()" >No</button>
+      </div>
+    </div>
+  </div>
 </div>

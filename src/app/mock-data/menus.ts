@@ -4,142 +4,251 @@ export const menu: INavData[] = [
   {
     name: 'Dashboard',
     url: '/dashboard',
-    icon: 'icon-notebook',
+    icon: 'icon-speedometer',
+    badge: {
+      variant: 'info',
+      text: 'NEW'
+    }
   },
   {
     title: true,
-    name: 'MODULOS'
+    name: 'Theme'
   },
   {
-    name: 'Usuario',
-    url: '/usuarios',
-    icon: 'icon-user',
+    name: 'Colors',
+    url: '/theme/colors',
+    icon: 'icon-drop'
+  },
+  {
+    name: 'Typography',
+    url: '/theme/typography',
+    icon: 'icon-pencil'
+  },
+  {
+    title: true,
+    name: 'Components'
+  },
+  {
+    name: 'Base',
+    url: '/base',
+    icon: 'icon-puzzle',
+    class: 'bg-gray-500',
+    variant: 'success',
     children: [
       {
-        name: 'Historico ahorro',
-        url: '/usuarios/reportes',
-        icon: 'icon-chart'
+        name: 'Cards',
+        url: '/base/cards',
+        icon: 'icon-puzzle'
       },
       {
-        name: 'Trámites Ahorro',
-        url: '/usuarios/tramites',
-        icon: 'icon-doc'
+        name: 'Carousels',
+        url: '/base/carousels',
+        icon: 'icon-puzzle'
+      },
+      {
+        name: 'Collapses',
+        url: '/base/collapses',
+        icon: 'icon-puzzle'
+      },
+      {
+        name: 'Forms',
+        url: '/base/forms',
+        icon: 'icon-puzzle'
+      },
+      {
+        name: 'Navbars',
+        url: '/base/navbars',
+        icon: 'icon-puzzle'
+
+      },
+      {
+        name: 'Pagination',
+        url: '/base/paginations',
+        icon: 'icon-puzzle'
+      },
+      {
+        name: 'Popovers',
+        url: '/base/popovers',
+        icon: 'icon-puzzle'
+      },
+      {
+        name: 'Progress',
+        url: '/base/progress',
+        icon: 'icon-puzzle'
+      },
+      {
+        name: 'Switches',
+        url: '/base/switches',
+        icon: 'icon-puzzle'
+      },
+      {
+        name: 'Tables',
+        url: '/base/tables',
+        icon: 'icon-puzzle'
+      },
+      {
+        name: 'Tabs',
+        url: '/base/tabs',
+        icon: 'icon-puzzle'
+      },
+      {
+        name: 'Tooltips',
+        url: '/base/tooltips',
+        icon: 'icon-puzzle'
       }
     ]
   },
   {
-    name: 'Recursos Humanos',
-    url: '/recursos-humanos',
-    icon: 'icon-people',
+    name: 'Buttons',
+    url: '/buttons',
+    icon: 'icon-cursor',
+    class: 'bg-gray-600',
     children: [
       {
-        name: 'Altas y bajas',
-        url: '/recursos-humanos/usuarios',
-        icon: 'icon-user-unfollow'
+        name: 'Buttons',
+        url: '/buttons/buttons',
+        icon: 'icon-cursor'
       },
       {
-        name: 'Aprobación ahorro',
-        url: '/recursos-humanos/validaciones',
-        icon: 'icon-check'
+        name: 'Dropdowns',
+        url: '/buttons/dropdowns',
+        icon: 'icon-cursor'
       },
       {
-        name: 'Historico validaciones',
-        url: '/recursos-humanos/historico',
-        icon: 'icon-list'
-      },
-      {
-        name: 'Conciliación informacion',
-        url: '/recursos-humanos/conciliacion',
-        icon: 'icon-cloud-upload'
+        name: 'Brand Buttons',
+        url: '/buttons/brand-buttons',
+        icon: 'icon-cursor'
       }
     ]
   },
   {
-    name: 'Contabilidad',
-    url: '/contabilidad',
-    icon: 'icon-briefcase',
+    name: 'Charts',
+    url: '/charts',
+    icon: 'icon-pie-chart'
+  },
+  {
+    name: 'Icons',
+    url: '/icons',
+    icon: 'icon-star',
     children: [
       {
-        name: 'Altas y bajas',
-        url: '/contabilidad/usuarios',
-        icon: 'icon-user-unfollow'
+        name: 'CoreUI Icons',
+        url: '/icons/coreui-icons',
+        icon: 'icon-star',
+        badge: {
+          variant: 'success',
+          text: 'NEW'
+        }
       },
       {
-        name: 'Aprobación ahorro',
-        url: '/contabilidad/validaciones',
-        icon: 'icon-check'
+        name: 'Flags',
+        url: '/icons/flags',
+        icon: 'icon-star'
       },
       {
-        name: 'Historico validaciones',
-        url: '/contabilidad/historico',
-        icon: 'icon-list'
+        name: 'Font Awesome',
+        url: '/icons/font-awesome',
+        icon: 'icon-star',
+        badge: {
+          variant: 'secondary',
+          text: '4.7'
+        }
       },
       {
-        name: 'Conciliacion',
-        url: '/contabilidad/conciliacion',
-        icon: 'icon-calculator',
-      },
-      {
-        name: 'Carga ahorro externos',
-        url: '/contabilidad/carga-ahorro',
-        icon: 'icon-globe'
+        name: 'Simple Line Icons',
+        url: '/icons/simple-line-icons',
+        icon: 'icon-star'
       }
     ]
   },
   {
-    name: 'Tesoreria',
-    url: '/tesoreria',
-    icon: 'icon-credit-card',
+    name: 'Notifications',
+    url: '/notifications',
+    icon: 'icon-bell',
     children: [
       {
-        name: 'Aprobación ahorro',
-        url: '/tesoreria/validaciones',
-        icon: 'icon-check'
+        name: 'Alerts',
+        url: '/notifications/alerts',
+        icon: 'icon-bell'
       },
       {
-        name: 'Historico validaciones',
-        url: '/tesoreria/historico',
-        icon: 'icon-list'
-      },
-    ]
-  },
-  {
-    name: 'Gerencia',
-    url: '/gerencia',
-    icon: 'icon-user-follow',
-    children: [
-      {
-        name: 'Aprobación ahorro',
-        url: '/administracion/validaciones',
-        icon: 'icon-check'
+        name: 'Badges',
+        url: '/notifications/badges',
+        icon: 'icon-bell'
       },
       {
-        name: 'Historico validaciones',
-        url: '/administracion/historico',
-        icon: 'icon-list'
+        name: 'Modals',
+        url: '/notifications/modals',
+        icon: 'icon-bell'
       }
     ]
   },
   {
-    name: 'Administracion',
-    url: '/administracion',
-    icon: 'icon-speedometer',
+    name: 'Widgets',
+    url: '/widgets',
+    icon: 'icon-calculator',
+    badge: {
+      variant: 'info',
+      text: 'NEW'
+    }
+  },
+  {
+    divider: true
+  },
+  {
+    title: true,
+    name: 'Extras',
+  },
+  {
+    name: 'Pages',
+    url: '/pages',
+    icon: 'icon-star',
     children: [
       {
-        name: 'Administracion roles',
-        url: '/administracion/usuarios',
-        icon: 'icon-user-unfollow'
+        name: 'Login',
+        url: '/login',
+        icon: 'icon-star'
       },
       {
-        name: 'Aprobación ahorro',
-        url: '/administracion/validaciones',
-        icon: 'icon-check'
+        name: 'Register',
+        url: '/register',
+        icon: 'icon-star'
       },
       {
-        name: 'Historico validaciones',
-        url: '/administracion/historico',
-        icon: 'icon-list'
+        name: 'Error 404',
+        url: '/404',
+        icon: 'icon-star'
+      },
+      {
+        name: 'Error 500',
+        url: '/500',
+        icon: 'icon-star'
       }
     ]
+  },
+  {
+    name: 'Disabled',
+    url: '/dashboard',
+    icon: 'icon-ban',
+    badge: {
+      variant: 'secondary',
+      text: 'NEW'
+    },
+    attributes: { disabled: true },
+  },
+  {
+    name: 'Download CoreUI',
+    url: 'http://coreui.io/angular/',
+    icon: 'icon-cloud-download',
+    class: 'mt-auto',
+    variant: 'success',
+    attributes: { target: '_blank', rel: 'noopener' }
+  },
+  {
+    name: 'Try CoreUI PRO',
+    url: 'http://coreui.io/pro/angular/',
+    icon: 'icon-layers',
+    variant: 'danger',
+    attributes: { target: '_blank', rel: 'noopener' }
   }
 ];

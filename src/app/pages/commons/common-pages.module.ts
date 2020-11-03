@@ -20,6 +20,9 @@ import { HistoricoSolicitudesComponent } from './historico-solicitudes/historico
 import { ValidacionSolicitudComponent } from './validacion-solicitud/validacion-solicitud.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UsuarioComponent } from './usuario/usuario.component';
+import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.component';
+import { AjusteAhorroComponent } from './ajuste-ahorro/ajuste-ahorro.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 
@@ -27,11 +30,14 @@ import { UsuarioComponent } from './usuario/usuario.component';
 @NgModule({
   declarations: [
     ProfileComponent,
+    DashboardComponent,
     ReporteSolicitudesComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
     UsuariosComponent,
-    UsuarioComponent],
+    UsuarioComponent,
+    AjusteAhorroComponent,
+    ReporteAhorrosComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -39,7 +45,6 @@ import { UsuarioComponent } from './usuario/usuario.component';
     BsDatepickerModule.forRoot(),
     AlertModule.forRoot(),
     ModalModule.forRoot(),
-    FormsModule,
     FormsModule,
     ChartsModule,
     BsDropdownModule,
@@ -55,6 +60,7 @@ import { UsuarioComponent } from './usuario/usuario.component';
     ModalModule,
     BsDatepickerModule,
     ProfileComponent,
+    AjusteAhorroComponent,
     ReporteSolicitudesComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,

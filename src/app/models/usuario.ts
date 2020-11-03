@@ -8,12 +8,13 @@ export class Usuario {
     public activo: boolean;
     public nombre: string;
     public email: string;
+    public ahorrador: boolean;
+    public noEmpleado: string;
     public urlImagenPerfil: string;
     public tipoUsuario: string;
     public fechaCreacion: Date;
     public fechaActualizacion: Date;
     public menu: INavData[];
-    public ahorrador: boolean;
 
     public roles: string[];
     public datosUsuario: DatosUsuario;
@@ -24,6 +25,8 @@ export class Usuario {
         this.datosUsuario = new DatosUsuario();
         this.roles = [];
         this.menu = [];
+        this.activo = true;
+        this.ahorrador = false;
         this.tipoUsuario = 'INTERNO';
     }
 }
