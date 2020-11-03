@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
-import { AhorroExterno } from 'src/app/models/ahorroExterno';
+import { Conciliador } from 'src/app/models/conciliador';
+import { AhorroServicio } from 'src/app/services/ahorro.service';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'cybord-conciliacion-conta',
@@ -9,16 +11,23 @@ import { AhorroExterno } from 'src/app/models/ahorroExterno';
 })
 export class ConciliacionContaComponent implements OnInit {
 
-  public datosConciliacion: AhorroExterno[];
-
-  constructor() { }
+  public datosConciliacion: Conciliador[];
+  public conciliacionProcesados: Conciliador[];
+  public conciliacionCorrectos: Conciliador[];
+  public conciliacionErroneos: Conciliador[];
+  public loading = false;
+  constructor(private ahorroService: AhorroServicio) { }
 
   ngOnInit(): void {
-    this.datosConciliacion = new Array<AhorroExterno>();
+    this.datosConciliacion = new Array<Conciliador>();
+    this.conciliacionProcesados = new Array<Conciliador>();
+    this.conciliacionCorrectos = new Array<Conciliador>();
+    this.conciliacionErroneos = new Array<Conciliador>();
   }
 
 
-  async onFileChange(files): Promise<any> {
+  onFileChange(files): void {
+    this.loading = true;
     let workBook = null;
     let jsonData = null;
     const reader = new FileReader();
@@ -42,13 +51,10 @@ export class ConciliacionContaComponent implements OnInit {
         const keys = Object.keys(dato);
 
         if (Object.keys(dato).length === 3){
-          const nombre: string = jsonActual[keys[0]];
-
-          if (!nombre.includes('Deducc')){
-            const renglon: AhorroExterno = new AhorroExterno(true, jsonActual[keys[0]], jsonActual[keys[1]], jsonActual[keys[2]]);
-            console.log('Dato ' + JSON.stringify(renglon) );
-            this.datosConciliacion.push(renglon);
-          }
+          let saldo: string = String(jsonActual[keys[2]]);
+          saldo = saldo.replace(',', '');
+          const renglon: Conciliador = new Conciliador(jsonActual[keys[0]], jsonActual[keys[1]], parseInt(saldo, 10));
+          this.datosConciliacion.push(renglon);
         }
 
       }
@@ -56,7 +62,28 @@ export class ConciliacionContaComponent implements OnInit {
       };
     reader.readAsBinaryString(file);
 
-    return true;
+    this.loading = false;
   }
+
+  async validar(): Promise<any>{
+    this.loading = true;
+    this.conciliacionProcesados = this.datosConciliacion;
+    this.datosConciliacion = [];
+
+    console.log('Request ' + JSON.stringify(this.conciliacionProcesados));
+    const resultado = await this.ahorroService.postConciliacion(this.conciliacionProcesados).toPromise();
+    const jsonRest = JSON.parse(JSON.stringify(resultado));
+    console.log('Resultado ' + JSON.stringify(jsonRest));
+    this.conciliacionCorrectos = jsonRest.correctos;
+    this.conciliacionErroneos = jsonRest.errores;
+    this.loading = false;
+
+
+  }
+
+  clean(): void {
+
+  }
+
 
 }

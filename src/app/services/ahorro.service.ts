@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { SaldoAhorro } from '../models/saldoahorro';
+import { Conciliador } from 'src/app/models/conciliador';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,10 @@ export class AhorroServicio {
 
   public postSaldoBulk(saldoBulk: SaldoAhorro[]): Observable<SaldoAhorro[]>{
     return this.http.post<SaldoAhorro[]>(`../api/v1/ahorros/bulk`, saldoBulk);
+  }
+
+  public postConciliacion(datosValidar: Conciliador[]): Observable<any[]>{
+    return this.http.post<Conciliador[]>(`../api/v1/ahorros/conciliador`, datosValidar);
   }
 
 
