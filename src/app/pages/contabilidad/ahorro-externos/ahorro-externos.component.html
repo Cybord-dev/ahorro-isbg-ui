@@ -32,7 +32,7 @@
 
               <tbody>
                 <tr *ngFor = "let fila of datosAhorro"  [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
-                  <td scope="row" class="text-left"> {{fila.clave}} </td>
+                  <td scope="row" class="text-left"> {{fila.numeroUsuario}} </td>
                   <td scope="row" class="text-left"> {{fila.nombre}} </td>
                   <td scope="row" class="text-left"> {{fila.importe}} </td>
                   <td scope="row" class="text-left"> {{fila.observaciones}} </td>
