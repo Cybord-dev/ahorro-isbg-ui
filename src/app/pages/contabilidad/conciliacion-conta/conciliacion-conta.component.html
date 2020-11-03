@@ -11,7 +11,7 @@
           <div class="form-group row">
             <label class="col-md-2 col-form-label" for="file-input">Subir Archivo</label>
             <div class="col-md-9">
-            <input id="file-input" type="file" accept=".xlsx, .xls, .csv  " name="file-input" (change)="onFileChange($event.target.files)" class="file-input">
+            <input #fileInput id="file-input" type="file" accept=".xlsx, .xls, .csv  " name="file-input" (change)="onFileChange($event.target.files)" class="file-input">
             </div>
             </div>
 
@@ -69,7 +69,7 @@
                       <td scope="row" class="text-left"> Validado </td>
                     </tr>
               </tbody>
-
+            </table>
             <!-- Tabla Erroneos-->
             <h3 *ngIf="conciliacionErroneos.length > 0"> Ahorradores No Validados</h3>
             <table class="table table-bordered table-sm" *ngIf="conciliacionErroneos.length > 0">
