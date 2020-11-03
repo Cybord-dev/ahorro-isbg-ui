@@ -19,6 +19,7 @@ export class TramitesAhorroComponent implements OnInit {
 
   public loading = false;
   public usuario: Usuario = new Usuario();
+  public noEmpleado: '';
   public errorMessages: string[] = [];
   public success = '';
   public tipoSolicitud = 'SolicitudAhorro';
@@ -104,7 +105,6 @@ export class TramitesAhorroComponent implements OnInit {
   }
 
   public aceptar(): void {
-    console.log(`acepting ${this.tipoSolicitud}`);
     switch (this.tipoSolicitud) {
       case 'SolicitudAhorro':
         this.requestSolicitud(this.solicitudAhorro);

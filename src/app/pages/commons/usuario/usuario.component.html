@@ -173,6 +173,12 @@
                                     </label>
                                   </div>
                                   <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox7" [(ngModel)]="roles.DIRECCION" [disabled]="params.module !== 'administracion'">
+                                    <label class="form-check-label" for="checkbox7">
+                                      DIRECCION
+                                    </label>
+                                  </div>
+                                  <div class="form-check checkbox">
                                     <input class="form-check-input" type="checkbox" value="option1" id="checkbox6" [(ngModel)]="roles.ADMINISTRACION" [disabled]="params.module !== 'administracion'">
                                     <label class="form-check-label" for="checkbox6">
                                       ADMINISTRACION

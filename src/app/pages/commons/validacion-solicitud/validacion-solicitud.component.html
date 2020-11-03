@@ -4,7 +4,8 @@
       <div class="card">
         <div class="card-header">
           <div class="clearfix">
-            <strong class="float-left">Aprobaciones ahorro</strong>
+            <strong *ngIf="module !== 'tesoreria'" class="float-left">Aprobaciones ahorro</strong>
+            <strong *ngIf="module === 'tesoreria'" class="float-left">Confirmacion de retiros ahorro</strong>
             <span class="badge badge-success float-right" *ngIf="solicitud.tipo === 'SolicitudAhorro'">SOLICITUD
               AHORRO</span>
             <span class="badge badge-danger float-right" *ngIf="solicitud.tipo === 'CancelacionAhorro'">CANCELACION
@@ -100,12 +101,22 @@
               </span>
               <br>
               <br>
-              <button type="button" class="btn btn-sm btn-success" (click)="openModal(true)" [hidden] = "submodule === 'historico'" [disabled] = "validated || loading"><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                Aprobar solicitud
-                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
-                <button type="button" class="btn btn-sm btn-danger" (click)="openModal(false)" [hidden] = "submodule === 'historico'" [disabled] = "validated || loading" ><i class="fa fa-dot-circle-o" ></i>&nbsp;
-                Rechazar solicitud
-                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+              <button type="button" class="btn btn-sm btn-success" (click)="openModal(true)" *ngIf="module !== 'tesoreria'" 
+                [hidden] = "submodule === 'historico'" [disabled] = "validated || loading"><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                Aprobar solicitud <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-danger" (click)="openModal(false)" *ngIf="module !== 'tesoreria'"
+                [hidden] = "submodule === 'historico'" [disabled] = "validated || loading" ><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                Rechazar solicitud <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-success" (click)="openModal(true)" *ngIf="module === 'tesoreria'" 
+                [hidden] = "submodule === 'historico'" [disabled] = "validated || loading"><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                Confirmar retiro ahorro <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-danger" (click)="openModal(false)" *ngIf="module === 'tesoreria'"
+                [hidden] = "submodule === 'historico'" [disabled] = "validated || loading" ><i class="fa fa-dot-circle-o" ></i>&nbsp;
+                Rechazar retiro <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+              </button>
             </div>
 
           </div>

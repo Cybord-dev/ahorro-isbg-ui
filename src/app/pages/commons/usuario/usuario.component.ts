@@ -28,7 +28,8 @@ export class UsuarioComponent implements OnInit {
   public params: any = { success: '', message: '', id: '*', module: 'usuarios', interno: false };
   public antiguedad: Date;
 
-  public roles = { USUARIO: true, RECURSOS_HUMANOS: false, TESORERIA: false, CONTABILIDAD: false, GERENCIA: false, ADMINISTRACION: false };
+  public roles = { USUARIO: true, RECURSOS_HUMANOS: false, TESORERIA: false,
+    CONTABILIDAD: false, GERENCIA: false, ADMINISTRACION: false, DIRECCION: false };
   private nombreRoles = Object.keys(this.roles);
   constructor(
     public datepipe: DatePipe,

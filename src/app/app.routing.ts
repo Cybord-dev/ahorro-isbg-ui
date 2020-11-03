@@ -75,6 +75,10 @@ export const routes: Routes = [
         loadChildren: () => import('./pages/gerencia/gerencia.module').then(m => m.GerenciaModule)
       },
       {
+        path: 'direccion',
+        loadChildren: () => import('./pages/direccion/direccion.module').then(m => m.DireccionModule)
+      },
+      {
         path: 'administracion',
         loadChildren: () => import('./pages/administracion/administracion.module').then(m => m.AdministracionModule)
       }
