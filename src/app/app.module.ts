@@ -47,6 +47,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { HttpRequestInterceptor } from './http-request.interceptor';
 import { UsuarioInvalidoComponent } from './pages/errores/usuario-invalido/usuario-invalido.component';
+import { Error400Component } from './pages/errores/error400/error400.component';
+import { Error500Component } from './pages/errores/error500/error500.component';
 
 
 @NgModule({
@@ -72,7 +74,9 @@ import { UsuarioInvalidoComponent } from './pages/errores/usuario-invalido/usuar
     P500Component,
     LoginComponent,
     RegisterComponent,
-    UsuarioInvalidoComponent
+    UsuarioInvalidoComponent,
+    Error400Component,
+    Error500Component
   ],
   providers: [{
     provide: LocationStrategy,

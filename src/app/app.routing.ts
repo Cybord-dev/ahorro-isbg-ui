@@ -4,8 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 // Import Containers
 import { DefaultLayoutComponent } from './layout';
 
-import { P404Component } from './views/error/404.component';
-import { P500Component } from './views/error/500.component';
+import { Error400Component } from './pages/errores/error400/error400.component';
+import { Error500Component } from './pages/errores/error500/error500.component';
 import { LoginComponent } from './views/login/login.component';
 import { UsuarioInvalidoComponent } from './pages/errores/usuario-invalido/usuario-invalido.component';
 
@@ -17,14 +17,14 @@ export const routes: Routes = [
   },
   {
     path: '404',
-    component: P404Component,
+    component: Error400Component,
     data: {
       title: 'Page 404'
     }
   },
   {
     path: '500',
-    component: P500Component,
+    component: Error500Component,
     data: {
       title: 'Page 500'
     }
@@ -80,7 +80,7 @@ export const routes: Routes = [
       }
     ]
   },
-  { path: '**', component: P404Component }
+  { path: '**', component: Error400Component }
 ];
 
 @NgModule({
