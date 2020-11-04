@@ -46,6 +46,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { HttpRequestInterceptor } from './http-request.interceptor';
+import { UsuarioInvalidoComponent } from './pages/errores/usuario-invalido/usuario-invalido.component';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { HttpRequestInterceptor } from './http-request.interceptor';
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    UsuarioInvalidoComponent
   ],
   providers: [{
     provide: LocationStrategy,
