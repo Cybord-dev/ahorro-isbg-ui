@@ -49,6 +49,7 @@ import { HttpRequestInterceptor } from './http-request.interceptor';
 import { UsuarioInvalidoComponent } from './pages/errores/usuario-invalido/usuario-invalido.component';
 import { Error400Component } from './pages/errores/error400/error400.component';
 import { Error500Component } from './pages/errores/error500/error500.component';
+import { UsuarioCaducadoComponent } from './pages/errores/usuario-caducado/usuario-caducado.component';
 
 
 @NgModule({
@@ -76,7 +77,8 @@ import { Error500Component } from './pages/errores/error500/error500.component';
     RegisterComponent,
     UsuarioInvalidoComponent,
     Error400Component,
-    Error500Component
+    Error500Component,
+    UsuarioCaducadoComponent
   ],
   providers: [{
     provide: LocationStrategy,

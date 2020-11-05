@@ -6,7 +6,7 @@ import { DefaultLayoutComponent } from './layout';
 
 import { Error400Component } from './pages/errores/error400/error400.component';
 import { Error500Component } from './pages/errores/error500/error500.component';
-import { LoginComponent } from './views/login/login.component';
+import { UsuarioCaducadoComponent } from './pages/errores/usuario-caducado/usuario-caducado.component';
 import { UsuarioInvalidoComponent } from './pages/errores/usuario-invalido/usuario-invalido.component';
 
 export const routes: Routes = [
@@ -31,7 +31,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    component: LoginComponent,
+    component: UsuarioCaducadoComponent,
     data: {
       title: 'Login Page'
     }
