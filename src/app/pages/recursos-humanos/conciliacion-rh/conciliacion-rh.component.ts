@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { Conciliador } from 'src/app/models/conciliador';
 import { AhorroServicio } from 'src/app/services/ahorro.service';
@@ -10,14 +10,14 @@ import { AhorroServicio } from 'src/app/services/ahorro.service';
 })
 export class ConciliacionRhComponent implements OnInit {
 
+  @ViewChild('fileInput') public fileInput: ElementRef;
+
   public datosConciliacion: Conciliador[];
   public conciliacionProcesados: Conciliador[];
   public conciliacionCorrectos: Conciliador[];
   public conciliacionErroneos: Conciliador[];
   public loading = false;
-
   constructor(private ahorroService: AhorroServicio) { }
-
 
   ngOnInit(): void {
     this.datosConciliacion = new Array<Conciliador>();
@@ -25,6 +25,7 @@ export class ConciliacionRhComponent implements OnInit {
     this.conciliacionCorrectos = new Array<Conciliador>();
     this.conciliacionErroneos = new Array<Conciliador>();
   }
+
 
   onFileChange(files): void {
     this.loading = true;
@@ -51,10 +52,14 @@ export class ConciliacionRhComponent implements OnInit {
         const keys = Object.keys(dato);
 
         if (Object.keys(dato).length === 3){
-          let saldo: string = String(jsonActual[keys[2]]);
-          saldo = saldo.replace(',', '');
-          const renglon: Conciliador = new Conciliador(jsonActual[keys[0]], jsonActual[keys[1]], parseInt(saldo, 10));
-          this.datosConciliacion.push(renglon);
+
+          const clave = String(jsonActual[keys[0]]);
+          if (!clave.includes('Dedu')){
+            let saldo: string = String(jsonActual[keys[2]]);
+            saldo = saldo.replace(',', '');
+            const renglon: Conciliador = new Conciliador(jsonActual[keys[0]], jsonActual[keys[1]], parseInt(saldo, 10));
+            this.datosConciliacion.push(renglon);
+          }
         }
 
       }
@@ -64,5 +69,30 @@ export class ConciliacionRhComponent implements OnInit {
 
     this.loading = false;
   }
+
+  async validar(): Promise<any>{
+    this.loading = true;
+    this.conciliacionProcesados = this.datosConciliacion;
+    this.datosConciliacion = [];
+
+    const resultado = await this.ahorroService.postConciliacion(this.conciliacionProcesados).toPromise();
+    const jsonRest = JSON.parse(JSON.stringify(resultado));
+    this.conciliacionCorrectos = jsonRest.correctos;
+    this.conciliacionErroneos = jsonRest.errores;
+    this.loading = false;
+
+
+  }
+
+  clean(): void {
+    this.fileInput.nativeElement.value = null;
+    this.datosConciliacion = [];
+    this.conciliacionProcesados = [];
+    this.conciliacionCorrectos = [];
+    this.conciliacionErroneos = [];
+    this.loading = false;
+  }
+
+  
 
 }
