@@ -42,8 +42,11 @@ export class ReporteSolicitudesComponent implements OnInit {
       case 'contabilidad':
         this.filterParams.estatus = 'ValdiacionConta';
         break;
-      case 'gerencia':
-        this.filterParams.estatus = 'ValidacionGerencia';
+      case 'gerencia-interna':
+        this.filterParams.estatus = 'ValidacionGerenciaInterna';
+        break;
+      case 'gerencia-externa':
+        this.filterParams.estatus = 'ValidacionGerenciaExterna';
         break;
       case 'administracion':
         this.filterParams.estatus = 'ValidaAdmin';
