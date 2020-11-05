@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { Conciliador } from 'src/app/models/conciliador';
 import { AhorroServicio } from 'src/app/services/ahorro.service';
-import { stringify } from '@angular/compiler/src/util';
+
 
 @Component({
   selector: 'cybord-conciliacion-conta',
