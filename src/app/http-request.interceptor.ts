@@ -29,7 +29,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
           }
           if (error.status === 401 || error.url.indexOf('/oauth2/authorization/google') > 1) {
               console.error('Unauthorized request');
-            this.router.navigateByUrl('/register');
+              this.router.navigateByUrl('/register');
           }
 
           if (error.error instanceof ErrorEvent) {
