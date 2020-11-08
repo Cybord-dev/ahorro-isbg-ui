@@ -17,6 +17,8 @@ export class ConciliacionRhComponent implements OnInit {
   public conciliacionCorrectos: Conciliador[];
   public conciliacionErroneos: Conciliador[];
   public loading = false;
+  public pErroneos = 1;
+
   constructor(private ahorroService: AhorroServicio) { }
 
   ngOnInit(): void {

@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -67,6 +68,7 @@ import { UsuarioCaducadoComponent } from './pages/errores/usuario-caducado/usuar
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
+    NgxPaginationModule
   ],
   declarations: [
     AppComponent,

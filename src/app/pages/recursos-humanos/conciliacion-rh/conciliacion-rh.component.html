@@ -84,7 +84,7 @@
               </thead>
 
               <tbody>
-                    <tr *ngFor = "let fila of conciliacionErroneos" [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
+                    <tr *ngFor = "let fila of conciliacionErroneos | paginate: { itemsPerPage: 10, currentPage: pErroneos }" [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
                       <td scope="row" class="text-left"> {{fila.noEmpleado}} </td>
                       <td scope="row" class="text-left"> {{ fila.nombre | uppercase }} </td>
                       <td scope="row" class="text-left"> {{fila.saldo}} </td>
@@ -92,6 +92,8 @@
                     </tr>
               </tbody>
             </table> 
+
+            <pagination-controls (pageChange)="pErroneos = $event"></pagination-controls>
 
 
             <div class="col-sm-6">  
