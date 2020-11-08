@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import * as XLSX from 'xlsx';
 import { Conciliador } from 'src/app/models/conciliador';
 import { AhorroServicio } from 'src/app/services/ahorro.service';
-import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'cybord-conciliacion-conta',
@@ -21,10 +20,6 @@ export class ConciliacionContaComponent implements OnInit {
   constructor(private ahorroService: AhorroServicio) { }
 
   ngOnInit(): void {
-    this.datosConciliacion = new Array<Conciliador>();
-    this.conciliacionProcesados = new Array<Conciliador>();
-    this.conciliacionCorrectos = new Array<Conciliador>();
-    this.conciliacionErroneos = new Array<Conciliador>();
   }
 
 

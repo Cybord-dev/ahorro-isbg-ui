@@ -1,1 +1,108 @@
-<p>conciliacion-rh works!</p>
+<div class="animated fadeIn">
+    <div class="row">
+      <div class = "col">
+      <div class="card">
+        <div class="card-header">
+          <strong>Conciliacion</strong>
+        </div>
+        <div class="card-body" >
+
+        
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="file-input">Subir Archivo</label>
+            <div class="col-md-9">
+            <input #fileInput id="file-input" type="file" accept=".xlsx, .xls, .csv  " name="file-input" (change)="onFileChange($event.target.files)" class="file-input">
+            </div>
+            </div>
+
+          <!-- Tabla carga archivo -->
+          <div class="table-responsive slide_1" *ngIf="datosConciliacion.length > 0" >
+            <table class="table table-bordered table-sm">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="text-center">Clave</th>
+                  <th scope="col" class="text-center">Nombre</th>
+                  <th scope="col" class="text-center">Importe</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                    <tr *ngFor = "let fila of datosConciliacion" >
+                      <td scope="row" class="text-left"> {{fila.noEmpleado}} </td>
+                      <td scope="row" class="text-left"> {{fila.nombre}} </td>
+                      <td scope="row" class="text-left"> {{fila.saldo}} </td>
+                    </tr>
+              </tbody>
+
+
+            </table> 
+
+            <div class="col-sm-6">  
+              <button class="btn btn-warning" (click)="clean()" [disabled] = "loading">Limpiar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button>  
+              
+              <button class="btn btn-success" (click)="validar()" [disabled] = "loading " >Validar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>  
+            </div>
+
+          </div>
+
+          <div class="table-responsive slide_1" *ngIf="conciliacionProcesados.length > 0" >
+            
+            <!-- Tabla correctos-->
+            
+            <h3 *ngIf="conciliacionCorrectos.length > 0"> Ahorradores Validados</h3>
+            <table class="table table-bordered table-sm" *ngIf="conciliacionCorrectos.length > 0">
+              
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="text-center">Clave</th>
+                  <th scope="col" class="text-center">Nombre</th>
+                  <th scope="col" class="text-center">Importe</th>
+                  <th scope="col" class="text-center">Observaciones</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                    <tr *ngFor = "let fila of conciliacionCorrectos" >
+                      <td scope="row" class="text-left"> {{fila.noEmpleado}} </td>
+                      <td scope="row" class="text-left"> {{fila.nombre | uppercase }} </td>
+                      <td scope="row" class="text-left"> {{fila.saldo}} </td>
+                      <td scope="row" class="text-left"> Validado </td>
+                    </tr>
+              </tbody>
+            </table>
+            <!-- Tabla Erroneos-->
+            <h3 *ngIf="conciliacionErroneos.length > 0"> Ahorradores No Validados</h3>
+            <table class="table table-bordered table-sm" *ngIf="conciliacionErroneos.length > 0">
+              
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="text-center">Clave</th>
+                  <th scope="col" class="text-center">Nombre</th>
+                  <th scope="col" class="text-center">Importe</th>
+                  <th scope="col" class="text-center">Observaciones</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                    <tr *ngFor = "let fila of conciliacionErroneos" [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
+                      <td scope="row" class="text-left"> {{fila.noEmpleado}} </td>
+                      <td scope="row" class="text-left"> {{ fila.nombre | uppercase }} </td>
+                      <td scope="row" class="text-left"> {{fila.saldo}} </td>
+                      <td scope="row" class="text-left"> {{fila.observaciones | uppercase }} </td>
+                    </tr>
+              </tbody>
+            </table> 
+
+
+            <div class="col-sm-6">  
+              <button class="btn btn-warning" (click)="clean()" [disabled] = "loading">Limpiar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button> 
+            </div>
+
+          </div>
+        </div>
+        
+      </div>
+      
+    </div>
+    </div>
+  </div>
