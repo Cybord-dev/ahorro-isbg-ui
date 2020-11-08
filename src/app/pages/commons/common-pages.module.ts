@@ -9,6 +9,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 
 
 // Common components
@@ -50,7 +51,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     BsDropdownModule,
     ButtonsModule.forRoot(),
     ReactiveFormsModule,
-    CommonsRoutingModule
+    CommonsRoutingModule,
+    CarouselModule.forRoot()
   ],
   exports: [
     CommonModule,
@@ -64,6 +66,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ReporteSolicitudesComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
+    CarouselModule
   ],
   providers: [
     DatePipe

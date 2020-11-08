@@ -1,61 +1,97 @@
 <div class="animated fadeIn">
-  
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-sm-5">
-          <h4 class="card-title mb-0">Saldos</h4>
-          <div class="small text-muted">2020</div>
-        </div>
-        <div class="col-sm-7 d-none d-md-block">
-          <button type="button" class="btn btn-primary float-right"><i class="icon-cloud-download"></i></button>
+  <carousel >
+    <slide>
+
+      <div class="card">
+        <div class="card-body justify-content-center">
+          <div class="row">
+            <div class="col-sm-5">
+              <h4 class="card-title mb-0">Saldos: Resumen mensual</h4>
+              <div class="small text-muted">2020</div>
+            </div>
+            <div class="col-sm-7 d-none d-md-block">
+              <button type="button" class="btn btn-primary float-right"><i class="icon-cloud-download"></i></button>
+              
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="chart-wrapper col-12" style="background-color: #2f353a;">
+              <canvas baseChart class="chart"
+                [datasets]="barChartData" 
+                [labels]="barChartLabels"
+                [options]="barChartOptions" 
+                [legend]="barChartLegend" 
+                [chartType]="barChartType">
+              </canvas>
+            
+            </div>
+          </div>
+          
           
         </div>
+        <div class="card-footer">
+          <div class="row">
+            <div class="col-xl-6 col-md-6 col-sm-12 col-6">
+              <div class="bg-primary theme-color w-100 rounded mb-20" style="padding-top:5%"></div>
+              <h6># Ahorradores</h6>
+            </div>
+            <div class="col-xl-6 col-md-6 col-sm-12 col-6">
+              <div class="bg-success theme-color w-100 rounded mb-20" style="padding-top:5%"></div>
+              <h6># Deudores</h6>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="row">
 
-        <div class="chart-wrapper col-10">
-        
-          <canvas baseChart class="chart"
-            [datasets]="barChartData" 
-            [labels]="barChartLabels"
-            [options]="barChartOptions" 
-            [legend]="barChartLegend" 
-            [chartType]="barChartType">
-          </canvas>
-         
-        </div>
-      </div>
-      <br>
-      <div class = "row">
-        <p class="h4" style="margin-left: 1em;">Resumen anual</p>
-        <br><br>
-        <div class="chart-wrapper col-10">
-        
-          <div class="chart-wrapper">
-            <canvas baseChart 
-              [data]="doughnutChartData"
-              [labels]="doughnutChartLabels"
-              [chartType]="doughnutChartType">
-            </canvas>
-        </div>
-         
-        </div>
+    </slide>
+    <slide>
 
-      </div>
-    </div>
-    <div class="card-footer">
-      <div class="row">
-        <div class="col-xl-6 col-md-6 col-sm-12 col-6">
-          <div class="bg-primary theme-color w-100 rounded mb-20" style="padding-top:5%"></div>
-          <h6>1 Ahorradores</h6>
+      <div class="card">
+        <div class="card-body justify-content-center">
+          <div class="row">
+            <div class="col-sm-5">
+              <h4 class="card-title mb-0">Saldos: Resumen anual</h4>
+              <div class="small text-muted">2020</div>
+            </div>
+            <div class="col-sm-7 d-none d-md-block">
+              <button type="button" class="btn btn-primary float-right"><i class="icon-cloud-download"></i></button>
+              
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="chart-wrapper col-12" style="background-color: #2f353a;">
+              <canvas baseChart 
+                [data]="doughnutChartData"
+                [labels]="doughnutChartLabels"
+                [chartType]="doughnutChartType"
+                [options]="doughnutOptions"
+                [backgroundColor] = "colores">
+              </canvas>
+            </div>
+          </div>
+          
+          
         </div>
-        <div class="col-xl-6 col-md-6 col-sm-12 col-6">
-          <div class="bg-success theme-color w-100 rounded mb-20" style="padding-top:5%"></div>
-          <h6>1 Deudores</h6>
+        <div class="card-footer">
+          <div class="row">
+            <div class="col-xl-6 col-md-6 col-sm-12 col-6">
+              <div class="bg-primary theme-color w-100 rounded mb-20" style="padding-top:5%"></div>
+              <h6># Ahorradores</h6>
+            </div>
+            <div class="col-xl-6 col-md-6 col-sm-12 col-6">
+              <div class="bg-success theme-color w-100 rounded mb-20" style="padding-top:5%"></div>
+              <h6># Deudores</h6>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+
+    </slide>
+    
+  </carousel>
+
+
   
 </div>

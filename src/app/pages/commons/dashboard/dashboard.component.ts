@@ -1,25 +1,68 @@
 import { Component, OnInit } from '@angular/core';
 import { AhorroServicio } from '../../../services/ahorro.service';
-import { ReporteSaldos } from '../../../models/reportesaldos';
 import { SaldoAhorroCaja } from '../../../models/saldoahorrocaja';
+import { CarouselConfig } from 'ngx-bootstrap/carousel';
 
 
 
 @Component({
   selector: 'cybord-resumen',
-  templateUrl: 'dashboard.component.html'
+  templateUrl: 'dashboard.component.html',
+  styleUrls: ['dashboard.component.scss'],
+  providers: [
+    { provide: CarouselConfig, useValue: { interval: false} }
+  ]
 })
 export class DashboardComponent implements OnInit {
 
   //chart
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
+    legend: {
+      labels: {
+           fontColor: 'white'
+          },
+    },
+    scales: {
+      xAxes: [{ 
+        
+        ticks: {
+          fontColor: "#FFF", // this here
+        },
+      }],
+      yAxes: [{
+
+          ticks: {
+            fontColor: "#FFF", // this here
+          },
+      }],
+    } 
+
+     
+  };
+  public carOptions: any = {
+    interval: false,
+    keyboard: true,
+
+  };
+  public doughnutOptions: any = {
+    legend: {
+      labels: {
+           fontColor: 'white'
+          },
+    },
+    elements: {
+      arc: {
+          borderWidth: 0
+      }
+    }
   };
   public barChartType = 'bar';
   public barChartLegend = true;
   public barChartData: any = [];
   public barChartLabels: string[] = [];
+  public colores: any[] = ['#a83242', '#3281a8', '#6da832','#324ea8'];
   
   //
   public errorMessages: string[] = [];
@@ -28,13 +71,12 @@ export class DashboardComponent implements OnInit {
   private months: string[] = ['noviembre', 'diciembre','enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio','agosto', 'septiembre', 'octubre']
   
   private summary: SaldoAhorroCaja[] = [];
-  private summaryAgrupado: SaldoAhorroCaja[] = [];
   private ahorros: number[] = [];
   private depositos: number[] = [];
   private retiros: number[] = [];
   private ajustes: number[] = [];
 
-  public labelsTabla: string[] = ["Ahorros", "Depositos", "Ajustes", "Retiros"];
+  public labelsTabla: string[] = [ "Retiros","Ahorros", "Depositos", "Ajustes"];
 
   public doughnutChartLabels: string[] = ["Retiros","Ahorros", "Depositos", "Ajustes"];
   public doughnutChartData: any = [];
