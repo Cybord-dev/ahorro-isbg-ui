@@ -16,7 +16,7 @@ export class UsuariosComponent implements OnInit {
   public module = 'recursos-humanos';
   public page: GenericPage<any> = new GenericPage();
   public pageSize = '10';
-
+  public loading = false;
   public filterParams: any = {email: '', estatus: '*', nombre: '',tipoUsuario:'', page: '0', size: '10' };
 
   constructor(
@@ -31,9 +31,10 @@ export class UsuariosComponent implements OnInit {
   }
 
   public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any): void{
+    this.loading = true;
     this.filterParams.page = currentPage || 0;
     this.filterParams.size = pageSize  || 10;
-    this.userService.getUsuarios(this.filterParams).subscribe(data => this.page = data);
+    this.userService.getUsuarios(this.filterParams).subscribe(data => {this.page = data; this.loading = false;});
   }
 
   public onChangePageSize(pageSize: number): void {
@@ -49,11 +50,13 @@ export class UsuariosComponent implements OnInit {
   }
 
   public downloadXLSFile(): void{
+    this.loading = true;
     this.filterParams.page = '0';
     this.filterParams.size = '100000';
     this.userService.getUsuariosReport(this.filterParams)
       .subscribe((report) => {
         this.downloadService.downloadFile(report.dato, `ReporteUsuarios-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
+        this.loading = false;
       });
   }
 

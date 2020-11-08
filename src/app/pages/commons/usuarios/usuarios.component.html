@@ -19,10 +19,14 @@
                 [disabled]="filterParams.email.length > 0" nbInput fullWidth id="nombreusu" placeholder="nombreusuario">
             </div>
             <div class="col-md-2">
-              <label for="inputtipo" class="label">Tipo Usuario</label>
-              <input type="text" class="form-control" [(ngModel)]="filterParams.tipoUsuario"
-                [disabled]="filterParams.email.length > 0" nbInput fullWidth id="inputtipo"
-                placeholder="Tipo de usuario">
+              <label for="tipoUsuario" class="label">Tipo de Usuario</label>
+              <div>
+                <select id="inputTipoUsuario"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoUsuario">
+                  <option value="*" >TODOS</option>
+                  <option value="INTERNO">INTERNO</option>
+                  <option value="EXTERNO">EXTERNO</option>
+                </select>
+              </div>
             </div>
             <div class="col-md-6">
               <label for="inputActivo" class="label">Estado cliente</label>
@@ -34,7 +38,9 @@
                   <option value="0">INACTIVO</option>
                 </select>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
+                <button class="btn btn-primary" [disabled]="loading" (click)="updateDataTable(0,10)">BUSCAR
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
                 <button class="btn btn-primary" (click)="redirectToUser('*')">NUEVO USUARIO</button>
 

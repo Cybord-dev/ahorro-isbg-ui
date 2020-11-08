@@ -32,6 +32,7 @@ export class ReporteAhorrosComponent implements OnInit {
 
 
   public updateDataTable(currentPage?: number, pageSize?: number): void {
+    this.loading = true;
     if (this.fechaCreacion === undefined  || this.fechaCreacion === null){
       this.filterParams.since = '';
       this.filterParams.to = '';
@@ -45,7 +46,7 @@ export class ReporteAhorrosComponent implements OnInit {
     this.filterParams.size = pageSize || 0 ;
 
     this.ahorroService.getSaldos(this.filterParams)
-    .subscribe(data => this.page = data);
+    .subscribe(data => {this.page = data; this.loading = false;});
   }
 
   public onChangePageSize(pageSize: number): void {
@@ -57,7 +58,7 @@ export class ReporteAhorrosComponent implements OnInit {
   }
 
   public downloadXLSFile(): void{
-
+    this.loading = true;
     if (this.fechaCreacion === undefined  || this.fechaCreacion === null){
       this.filterParams.since = '';
       this.filterParams.to = '';
@@ -70,7 +71,9 @@ export class ReporteAhorrosComponent implements OnInit {
     this.filterParams.size = '100000';
     this.ahorroService.getReporteSaldos(this.filterParams)
       .subscribe((report) => {
+        
         this.downloadService.downloadFile(report.dato, `ReporteAhorros-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
+        this.loading = false;
       });
   }
 

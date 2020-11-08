@@ -23,12 +23,9 @@
             </div>
 
             <div class="col-md-3">
-              <label for="noempleado" class="label">No. Empleado</label>
-              <input type="text" class="form-control" nbInput fullWidth id="noempleado" [(ngModel)]="filterParams.noEmpleado"
-                placeholder="No. Empleado">
-            </div>
 
-            <div class="col-md-3">
+              
+
               <label for="fechacre" class="label">Fecha Creación</label>
               <div class="form-group">
                 <input type="text"
@@ -37,6 +34,13 @@
                 bsDaterangepicker
                 [(ngModel)]="fechaCreacion">
               </div>
+            </div>
+
+            <div class="col-md-3">
+              
+              <label for="noempleado" class="label">No. Empleado</label>
+              <input type="text" class="form-control" nbInput fullWidth id="noempleado" [(ngModel)]="filterParams.noEmpleado"
+                placeholder="No. Empleado">
               
             </div>
 
@@ -90,7 +94,9 @@
 
             <div class="col-md-3">
               <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
+                <button class="btn btn-primary" [disabled] = "loading" (click)="updateDataTable(0,10)">BUSCAR
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
             </div>
             
           </div>

@@ -40,6 +40,7 @@ export class HistoricoSolicitudesComponent implements OnInit {
 
 
   public updateDataTable(currentPage?: number, pageSize?: number): void {
+    this.loading = true;
     if (this.fechaCreacion === undefined  || this.fechaCreacion === null){
       this.filterParams.since = '';
       this.filterParams.to = '';
@@ -51,7 +52,7 @@ export class HistoricoSolicitudesComponent implements OnInit {
 
     this.filterParams.page = currentPage.toString() || '0';
     this.filterParams.size = pageSize.toString() || '10';
-    this.validacionService.getValidaciones(this.filterParams).subscribe(data => this.page = data);
+    this.validacionService.getValidaciones(this.filterParams).subscribe(data => {this.page = data; this.loading = false;});
   }
 
   public onChangePageSize(pageSize: number): void {
@@ -63,6 +64,7 @@ export class HistoricoSolicitudesComponent implements OnInit {
   }
 
   public downloadXLSFile(): void{
+    this.loading = true;
     if(this.fechaCreacion === undefined  || this.fechaCreacion === null){
       this.filterParams.since = '';
       this.filterParams.to = '';
@@ -75,7 +77,9 @@ export class HistoricoSolicitudesComponent implements OnInit {
     this.filterParams.size = '100000';
     this.validacionService.getReporteValidaciones(this.filterParams)
       .subscribe((report) => {
+        
         this.downloadService.downloadFile(report.dato, `HistoricoValidaciones-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
+        this.loading = false;
       });
   }
 

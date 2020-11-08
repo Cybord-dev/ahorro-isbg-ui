@@ -87,7 +87,6 @@ export class DashboardComponent implements OnInit {
       var ahorro = 0.0;
       var retiro = 0.0;
       var ajuste = 0.0;
-      this.summaryAgrupado = reporte;
       for(let dato of reporte){
         if(dato.tipo === "ahorro"){
           ahorro = dato.monto;
@@ -101,7 +100,7 @@ export class DashboardComponent implements OnInit {
       }
       this.doughnutChartData = [retiro, ahorro, deposito, ajuste];
     }).catch((error) => this.errorMessages.push(error));
-    this.barChartData = [{data:[22, 11], label: ["enero"]}];
+    this.barChartData = [{data:[0], label: ["enero"]}];
     this.doughnutChartData = [0,0,0,0];
     this.doughnutChartData = [0,0,0,0];
     

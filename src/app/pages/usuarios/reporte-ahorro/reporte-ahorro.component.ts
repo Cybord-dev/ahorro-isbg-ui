@@ -47,6 +47,11 @@ export class ReporteAhorroComponent implements OnInit {
   }
 
   private setCharInfo(): void {
+    for(const a in this.ahorros){
+      if(this.ahorros[a].validado === false){
+        delete this.ahorros[a];
+      }
+    }
     var today = new Date();
     var todaysMonth = today.getMonth();
     todaysMonth = this.monthChanger(todaysMonth);
