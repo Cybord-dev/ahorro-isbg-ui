@@ -36,6 +36,10 @@ export class DashboardComponent implements OnInit {
 
   public labelsTabla: string[] = ["Ahorros", "Depositos", "Ajustes", "Retiros"];
 
+  public doughnutChartLabels: string[] = ["Retiros","Ahorros", "Depositos", "Ajustes"];
+  public doughnutChartData: any = [];
+  public doughnutChartType = 'doughnut';
+
   constructor(private saldosAhorro: AhorroServicio){
     console.log('stating dashboard222');
     
@@ -74,13 +78,32 @@ export class DashboardComponent implements OnInit {
       };
 
       this.barChartData = [retirosG, ahorrosG, depositosG, ajustesG];
+      
     }).catch((error) => this.errorMessages.push(error));
 
     this.saldosAhorro.getSaldoCajaAgrupado().toPromise().
     then(reporte => {
+      var deposito = 0.0;
+      var ahorro = 0.0;
+      var retiro = 0.0;
+      var ajuste = 0.0;
       this.summaryAgrupado = reporte;
+      for(let dato of reporte){
+        if(dato.tipo === "ahorro"){
+          ahorro = dato.monto;
+        }else if(dato.tipo === "retiro"){
+          retiro  = dato.monto;
+        }else if(dato.tipo === "deposito"){
+          deposito  = dato.monto;
+        }else if(dato.tipo === "ajuste"){
+          ajuste  = dato.monto;
+        }
+      }
+      this.doughnutChartData = [retiro, ahorro, deposito, ajuste];
     }).catch((error) => this.errorMessages.push(error));
     this.barChartData = [{data:[22, 11], label: ["enero"]}];
+    this.doughnutChartData = [0,0,0,0];
+    this.doughnutChartData = [0,0,0,0];
     
   }
 
