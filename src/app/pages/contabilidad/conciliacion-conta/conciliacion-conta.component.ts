@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import * as XLSX from 'xlsx';
 import { Conciliador } from 'src/app/models/conciliador';
 import { AhorroServicio } from 'src/app/services/ahorro.service';
@@ -10,6 +10,8 @@ import { stringify } from '@angular/compiler/src/util';
   styleUrls: ['./conciliacion-conta.component.scss']
 })
 export class ConciliacionContaComponent implements OnInit {
+
+  @ViewChild('fileInput') public fileInput: ElementRef;
 
   public datosConciliacion: Conciliador[];
   public conciliacionProcesados: Conciliador[];
@@ -51,10 +53,14 @@ export class ConciliacionContaComponent implements OnInit {
         const keys = Object.keys(dato);
 
         if (Object.keys(dato).length === 3){
-          let saldo: string = String(jsonActual[keys[2]]);
-          saldo = saldo.replace(',', '');
-          const renglon: Conciliador = new Conciliador(jsonActual[keys[0]], jsonActual[keys[1]], parseInt(saldo, 10));
-          this.datosConciliacion.push(renglon);
+
+          const clave = String(jsonActual[keys[0]]);
+          if (!clave.includes('Dedu')){
+            let saldo: string = String(jsonActual[keys[2]]);
+            saldo = saldo.replace(',', '');
+            const renglon: Conciliador = new Conciliador(jsonActual[keys[0]], jsonActual[keys[1]], parseInt(saldo, 10));
+            this.datosConciliacion.push(renglon);
+          }
         }
 
       }
@@ -82,7 +88,12 @@ export class ConciliacionContaComponent implements OnInit {
   }
 
   clean(): void {
-
+    this.fileInput.nativeElement.value = null;
+    this.datosConciliacion = [];
+    this.conciliacionProcesados = [];
+    this.conciliacionCorrectos = [];
+    this.conciliacionErroneos = [];
+    this.loading = false;
   }
 
 
