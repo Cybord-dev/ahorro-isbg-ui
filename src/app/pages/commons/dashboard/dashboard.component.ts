@@ -8,7 +8,6 @@ import { CarouselConfig } from 'ngx-bootstrap/carousel';
 @Component({
   selector: 'cybord-resumen',
   templateUrl: 'dashboard.component.html',
-  styleUrls: ['dashboard.component.scss'],
   providers: [
     { provide: CarouselConfig, useValue: { interval: false} }
   ]

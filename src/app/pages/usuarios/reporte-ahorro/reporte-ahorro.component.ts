@@ -56,11 +56,11 @@ export class ReporteAhorroComponent implements OnInit {
     var todaysMonth = today.getMonth();
     todaysMonth = this.monthChanger(todaysMonth);
     var todaysYear = today.getFullYear();
+    if(todaysMonth === 0 || todaysMonth === 1){todaysYear++;}
     for (var i = 0; i <= todaysMonth; i++) {
       this.barChartLabels.push(this.months[i]);
       this.datos.push(0);
     }
-    //todaysMonth = this.monthChanger(todaysMonth);
     for (var i = 0; i < this.datos.length; i++) {
       var currentQ = 0;
       for (let ahorro of this.ahorros) {
