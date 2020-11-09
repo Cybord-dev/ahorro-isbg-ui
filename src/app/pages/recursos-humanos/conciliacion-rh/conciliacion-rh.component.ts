@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { Conciliador } from 'src/app/models/conciliador';
 import { AhorroServicio } from 'src/app/services/ahorro.service';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   selector: 'cybord-conciliacion-rh',
@@ -17,7 +18,9 @@ export class ConciliacionRhComponent implements OnInit {
   public conciliacionCorrectos: Conciliador[];
   public conciliacionErroneos: Conciliador[];
   public loading = false;
+  public pCarga = 1;
   public pErroneos = 1;
+  public pCorrectos = 1;
 
   constructor(private ahorroService: AhorroServicio) { }
 
