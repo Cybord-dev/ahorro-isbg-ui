@@ -27,6 +27,7 @@ export class UsuarioComponent implements OnInit {
   public mensajeModal = '';
   public params: any = { success: '', message: '', id: '*', module: 'usuarios', interno: false };
   public antiguedad: Date;
+  public maxDate: Date;
 
   public roles = { USUARIO: true, RECURSOS_HUMANOS: false, TESORERIA: false, CONTABILIDAD: false, GERENCIA: false, ADMINISTRACION: false };
   private nombreRoles = Object.keys(this.roles);
@@ -39,6 +40,7 @@ export class UsuarioComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
+    this.maxDate = new Date();
     this.loading = true;
     this.errorMessages = [];
     this.params.module = this.router.url.split('/')[1];
