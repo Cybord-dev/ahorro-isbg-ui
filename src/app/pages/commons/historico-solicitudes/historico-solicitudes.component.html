@@ -29,12 +29,13 @@
             </div>
 
             <div class="col-md-2">
-              <label for="fechacre" class="label">Fecha Creación</label>
+              <label for="fechacre" class="label">Periodo Creación</label>
               <div class="form-group">
                 <input type="text"
-                placeholder="Fecha de creación"
+                placeholder="Periodo de creación"
                 class="form-control"
                 bsDaterangepicker
+                [bsConfig]="{ rangeInputFormat: 'DD/MM/YYYY' }"
                 [(ngModel)]="fechaCreacion">
               </div>
               
