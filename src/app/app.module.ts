@@ -66,7 +66,7 @@ import { UsuarioCaducadoComponent } from './pages/errores/usuario-caducado/usuar
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule,
+    ChartsModule
   ],
   declarations: [
     AppComponent,
