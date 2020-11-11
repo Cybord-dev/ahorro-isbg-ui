@@ -155,17 +155,28 @@ export class DashboardComponent implements OnInit {
     }
 
     for(var i = 0; i<this.barChartLabels.length; i++){
+      var ajustesA = 0.0;
+      var retirosA = 0.0;
+      var depositosA = 0.0;
+      var ahorrosA = 0.0;
       for(const a in this.summary){
-        if( this.monthChanger(Number(this.summary[a].mes)-1)==i && this.summary[a].tipo === "ahorro"){
-          this.ahorros.push(this.summary[a].monto);
-        }else if ( this.monthChanger(Number(this.summary[a].mes)-1)==i && this.summary[a].tipo === "deposito"){
-          this.depositos.push(this.summary[a].monto);
-        }else if ( this.monthChanger(Number(this.summary[a].mes)-1)==i && this.summary[a].tipo === "retiro"){
-          this.retiros.push(this.summary[a].monto);
-        }else if ( this.monthChanger(Number(this.summary[a].mes)-1)==i && this.summary[a].tipo === "ajuste"){
-          this.ajustes.push(this.summary[a].monto);
+        
+        console.log(this.summary[a].tipo);
+        if( this.monthChanger(Number(this.summary[a].mes))-1==i && this.summary[a].tipo === "ahorro"){
+          ahorrosA = ahorrosA + this.summary[a].monto;
+        }else if ( this.monthChanger(Number(this.summary[a].mes))-1==i && this.summary[a].tipo === "deposito"){
+          depositosA = depositosA + this.summary[a].monto;
+        }else if ( this.monthChanger(Number(this.summary[a].mes))-1==i && this.summary[a].tipo === "retiro"){
+          retirosA = retirosA + this.summary[a].monto;
+        }else if ( this.monthChanger(Number(this.summary[a].mes))-1==i && this.summary[a].tipo === "ajuste"){
+          ajustesA = ajustesA + this.summary[a].monto;
         }
+        
       }
+      this.ajustes.push(ajustesA);
+      this.retiros.push(retirosA);
+      this.depositos.push(depositosA);
+      this.ahorros.push(ahorrosA);
     }
   }
 
