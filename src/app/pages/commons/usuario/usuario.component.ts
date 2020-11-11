@@ -55,7 +55,7 @@ export class UsuarioComponent implements OnInit {
           email: [{ value: this.usuario.email, disabled: true }],
           alias: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(2),
           Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡" \' ]+)$')]],
-          activo: ['Si', Validators.required],
+          activo: [this.usuario.activo],
           tipo: [this.usuario.tipoUsuario],
           oficina: [this.usuario.datosUsuario.OFICINA],
           banco: [this.usuario.datosUsuario.BANCO],
@@ -72,7 +72,7 @@ export class UsuarioComponent implements OnInit {
           [Validators.required, Validators.email, Validators.pattern('^[a-z0-9A-Z._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
           alias: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(2),
           Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡"\' ]+)$')]],
-          activo: ['Si', Validators.required],
+          activo: [this.usuario.activo],
           tipo: [this.usuario.tipoUsuario],
           oficina: [this.usuario.datosUsuario.OFICINA],
           banco: [this.usuario.datosUsuario.BANCO],
@@ -131,10 +131,27 @@ export class UsuarioComponent implements OnInit {
   get f() { return this.registerForm.controls; }
 
   public update(): void {
+    this.errorMessages = [];
     this.loading = true;
     console.log(this.usuario.noEmpleado);
     this.modalConfirmacion.hide();
-    //if (this.registerForm.invalid) { this.loading = false; return; }
+    if (this.registerForm.invalid) {
+      this.loading = false; 
+      if(this.registerForm.get('email').invalid){
+        this.errorMessages.push("Email invalido");
+      }
+      if(this.registerForm.get('alias').invalid){
+        this.errorMessages.push("Nombre invalido");
+      }
+      if(this.registerForm.get('activo').invalid){
+        this.errorMessages.push("El usuario debe ser activo");
+      }
+      if(this.usuario.noEmpleado === undefined || this.usuario.noEmpleado === ""){
+        this.errorMessages.push("Llena todo los datos.");
+      }
+      
+      return;
+    }
     this.errorMessages = [];
     this.usuarioServicio.actualizaUser(this.usuario).toPromise()
       .then(async updateduser => {
@@ -172,18 +189,57 @@ export class UsuarioComponent implements OnInit {
         this.submitted = true;
         this.params.success = 'El usuario ha sido actualizado satisfactoriamente.';
       })
-      .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
+      .then(() => this.router.navigate([`../${this.params.module}/usuarios/*`]))
       .catch(error => {this.errorMessages.push(error); this.loading = false;});
   }
 
   public register(): void {
+    this.errorMessages = [];
     let id = 0;
     console.log('registering',this.registerForm.invalid);
     this.loading = true;
     this.modalConfirmacion.hide();
+    
+    if(this.registerForm.get('email').invalid){
+      this.errorMessages.push("Email invalido");
+      this.loading = false; 
+      return;
+    }
+    if(this.registerForm.get('alias').invalid){
+      this.errorMessages.push("Nombre invalido");
+      this.loading = false; 
+      return;
+    }
+    if(this.registerForm.get('activo').invalid){
+      this.errorMessages.push("El usuario debe ser activo");
+      this.loading = false; 
+      return;
+    }
+    if(this.usuario.noEmpleado === undefined || this.usuario.noEmpleado === ""){
+      this.errorMessages.push("Llena el campo de No. de empleado");
+      this.loading = false; 
+      return;
+    }
+    if(this.usuario.datosUsuario.OFICINA === undefined || this.usuario.datosUsuario.OFICINA === "" || this.usuario.datosUsuario.OFICINA === "*"){
+      this.errorMessages.push("Llena el campo de oficina");
+      this.loading = false; 
+      return;
+    }
+    if(this.usuario.datosUsuario.BANCO === undefined || this.usuario.datosUsuario.BANCO === "" || this.usuario.datosUsuario.BANCO === "*"){
+      this.errorMessages.push("Llena el campo de banco");
+      this.loading = false; 
+      return;
+    }
+    if(this.usuario.datosUsuario.SUELDO === undefined || this.usuario.datosUsuario.SUELDO === "" || this.usuario.datosUsuario.SUELDO === "*"){
+      this.errorMessages.push("Llena el campo de sueldo");
+      this.loading = false; 
+      return;
+    }
+      
+    
     //if (this.registerForm.invalid) { this.loading = false; return; }
     this.errorMessages = [];
-    console.log('registering');
+    console.log('registering2');
     this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
     this.usuarioServicio.insertarUsuario(this.usuario).toPromise()
       .then(async createdUser => {

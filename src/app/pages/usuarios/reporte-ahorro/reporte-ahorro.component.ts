@@ -12,7 +12,6 @@ export class ReporteAhorroComponent implements OnInit {
 
 
   public total: number;
-  // barChart
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true
@@ -55,8 +54,6 @@ export class ReporteAhorroComponent implements OnInit {
     var today = new Date();
     var todaysMonth = today.getMonth();
     todaysMonth = this.monthChanger(todaysMonth);
-    var todaysYear = today.getFullYear();
-    if(todaysMonth === 0 || todaysMonth === 1){todaysYear++;}
     for (var i = 0; i <= todaysMonth; i++) {
       this.barChartLabels.push(this.months[i]);
       this.datos.push(0);
@@ -67,15 +64,8 @@ export class ReporteAhorroComponent implements OnInit {
         if(ahorro.validado === true){
           var fecha = new Date(ahorro.fechaCreacion);
           var mes = this.monthChanger(fecha.getMonth());
-          if (i > 1) {
-            if (fecha.getMonth() <= todaysMonth && fecha.getFullYear() == todaysYear) {
-              if (mes == i) { currentQ += ahorro.monto; }
-            }
-            //Primer y segundo mes
-          } else {
-            if ((mes == 0 || mes == 1) && fecha.getFullYear() == todaysYear - 1) {
-              currentQ += ahorro.monto;
-            }
+          if (mes == i) {
+            currentQ += ahorro.monto; 
           }
         }
       }
@@ -98,14 +88,4 @@ export class ReporteAhorroComponent implements OnInit {
     }
     return num;
   }
-
-  // events
-  public chartClicked(e: any): void {
-    //console.log(e);
-  }
-
-  public chartHovered(e: any): void {
-    //console.log(e);
-  }
-
 }
