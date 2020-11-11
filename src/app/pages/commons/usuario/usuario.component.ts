@@ -136,9 +136,6 @@ export class UsuarioComponent implements OnInit {
     this.modalConfirmacion.hide();
     if (this.registerForm.invalid) {
       this.loading = false; 
-      if(this.registerForm.get('email').invalid){
-        this.errorMessages.push("Email invalido");
-      }
       if(this.registerForm.get('alias').invalid){
         this.errorMessages.push("Nombre invalido");
       }
