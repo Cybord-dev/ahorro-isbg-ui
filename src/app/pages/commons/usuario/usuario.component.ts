@@ -53,8 +53,8 @@ export class UsuarioComponent implements OnInit {
         this.updateUserInfo(+id);
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: true }],
-          alias: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(2),
-          Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡" \' ]+)$')]],
+          alias: [this.usuario.nombre, [Validators.maxLength(100), Validators.minLength(2),
+          Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡"\' ]+)$')]],
           activo: [this.usuario.activo],
           tipo: [this.usuario.tipoUsuario],
           oficina: [this.usuario.datosUsuario.OFICINA],
@@ -133,7 +133,6 @@ export class UsuarioComponent implements OnInit {
   public update(): void {
     this.errorMessages = [];
     this.loading = true;
-    console.log(this.usuario.noEmpleado);
     this.modalConfirmacion.hide();
     if (this.registerForm.invalid) {
       this.loading = false; 
@@ -143,13 +142,6 @@ export class UsuarioComponent implements OnInit {
       if(this.registerForm.get('alias').invalid){
         this.errorMessages.push("Nombre invalido");
       }
-      if(this.registerForm.get('activo').invalid){
-        this.errorMessages.push("El usuario debe ser activo");
-      }
-      if(this.usuario.noEmpleado === undefined || this.usuario.noEmpleado === ""){
-        this.errorMessages.push("Llena todo los datos.");
-      }
-      
       return;
     }
     this.errorMessages = [];
@@ -189,8 +181,9 @@ export class UsuarioComponent implements OnInit {
         this.submitted = true;
         this.params.success = 'El usuario ha sido actualizado satisfactoriamente.';
       })
-      .then(() => this.router.navigate([`../${this.params.module}/usuarios/*`]))
+      .then(() => this.router.navigate([`../${this.params.module}/usuarios/`+this.usuario.id]))
       .catch(error => {this.errorMessages.push(error); this.loading = false;});
+      
   }
 
   public register(): void {
@@ -239,7 +232,7 @@ export class UsuarioComponent implements OnInit {
     
     //if (this.registerForm.invalid) { this.loading = false; return; }
     this.errorMessages = [];
-    console.log('registering2');
+    console.log('registering');
     this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
     this.usuarioServicio.insertarUsuario(this.usuario).toPromise()
       .then(async createdUser => {
