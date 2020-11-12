@@ -24,6 +24,7 @@ import { UsuarioComponent } from './usuario/usuario.component';
 import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.component';
 import { AjusteAhorroComponent } from './ajuste-ahorro/ajuste-ahorro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoaderComponent } from './loader/loader.component';
 
 
 
@@ -38,7 +39,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     UsuariosComponent,
     UsuarioComponent,
     AjusteAhorroComponent,
-    ReporteAhorrosComponent],
+    ReporteAhorrosComponent,
+    LoaderComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -64,6 +66,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ProfileComponent,
     AjusteAhorroComponent,
     ReporteSolicitudesComponent,
+    LoaderComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
     CarouselModule

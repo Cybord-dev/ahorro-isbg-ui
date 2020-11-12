@@ -24,8 +24,7 @@ export class DashboardComponent implements OnInit {
           },
     },
     scales: {
-      xAxes: [{ 
-        
+      xAxes: [{
         ticks: {
           fontColor: "#FFF", // this here
         },

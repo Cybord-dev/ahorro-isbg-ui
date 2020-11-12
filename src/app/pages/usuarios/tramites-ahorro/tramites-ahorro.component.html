@@ -13,7 +13,9 @@
                 <alert type="danger" [dismissible]="true">{{ alert }}</alert>
               </div>
 
-              <tabset #staticTabs>
+              <cybord-loader *ngIf="loading"></cybord-loader>
+
+              <tabset #staticTabs *ngIf="!loading">
                 <tab *ngIf="solicitudCancelacion.status!=='Finalizada'">
                     <ng-template tabHeading ><i class="icon-docs"></i>&nbsp; Solicitud</ng-template>
                     <div class="row">

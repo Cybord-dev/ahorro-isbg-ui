@@ -11,6 +11,7 @@ import { SaldoAhorro } from '../../../models/saldoahorro';
 export class ReporteAhorroComponent implements OnInit {
 
 
+  public loading = false;
   public total: number;
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
@@ -33,6 +34,7 @@ export class ReporteAhorroComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.userService.myInfo().toPromise()
       .then((user) => {
         this.saldosAhorro.getSaldoByUsuario(user.id).subscribe(resultado => {
@@ -41,7 +43,9 @@ export class ReporteAhorroComponent implements OnInit {
           this.setCharInfo();
           this.barChartData = [{ data: this.datos, label: "Ahorro acumulado" }];
         });
-      }).catch(error => this.errorMessages.push(error));
+      })
+      .catch(error => this.errorMessages.push(error))
+      .then(() => this.loading = false);
       this.barChartData = [{data:[0, 0], label: "Ahorro acumulado"}];
   }
 

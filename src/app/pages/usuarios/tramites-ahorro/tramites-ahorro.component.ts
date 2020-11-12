@@ -44,8 +44,12 @@ export class TramitesAhorroComponent implements OnInit {
   ngOnInit(): void {
     this.errorMessages = [];
     this.success = '';
-
+    this.loading = true;
     this.calculateEnabledDates();
+    this.loadRequestInfo();
+  }
+
+  public loadRequestInfo(): void{
     this.userService.myInfo().toPromise()
       .then(user => {
         this.solicitudService.getSolicitudesByUsuario(user.id).subscribe((solicitudes: Solicitud[]) => {
@@ -75,7 +79,7 @@ export class TramitesAhorroComponent implements OnInit {
           }
 
         });
-        this.userService.getUsuario(user.id).toPromise().then(u => this.usuario = u);
+        this.userService.getUsuario(user.id).toPromise().then(u => {this.usuario = u; this.loading = false; });
       }).catch((error) => { this.alerts.push(error); this.loading = false; });
   }
 

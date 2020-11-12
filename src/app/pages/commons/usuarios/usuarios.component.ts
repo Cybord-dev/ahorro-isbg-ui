@@ -17,7 +17,7 @@ export class UsuariosComponent implements OnInit {
   public page: GenericPage<any> = new GenericPage();
   public pageSize = '10';
   public loading = false;
-  public filterParams: any = {email: '', estatus: '*', nombre: '',tipoUsuario:'', page: '0', size: '10' };
+  public filterParams: any = {email: '', estatus: '*', nombre: '', tipoUsuario: '*', page: '0', size: '10' };
 
   constructor(
     public datepipe: DatePipe,
@@ -27,6 +27,12 @@ export class UsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.module = this.router.url.split('/')[1];
+    if ( this.module === 'recursos-humanos'){
+      this.filterParams.tipoUsuario = 'INTERNO';
+    }
+    if ( this.module === 'contabilidad'){
+      this.filterParams.tipoUsuario = 'EXTERNO';
+    }
     this.updateDataTable(0, 10);
   }
 
