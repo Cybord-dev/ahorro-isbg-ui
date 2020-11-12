@@ -98,6 +98,4 @@ export class ConciliacionRhComponent implements OnInit {
     this.loading = false;
   }
 
-  
-
 }
