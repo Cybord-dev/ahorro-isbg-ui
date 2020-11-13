@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
       }).catch((error) => this.alerts.push(error));
   }
 
-  public async loadProfileInfo(){
+  public async loadProfileInfo(): Promise<void>{
     try {
       const user = await this.userService.myInfo().toPromise();
       const u = await this.userService.getUsuario(user.id).toPromise();

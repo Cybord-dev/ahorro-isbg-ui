@@ -7,6 +7,8 @@ import { UsuariosService } from '../../../services/usuarios.service';
 import { Usuario } from '../../../models/usuario';
 import { RolCat } from '../../../models/rolcat';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
+import { CatalogosService } from 'src/app/services/catalogos.service';
+import { Catalogo } from 'src/app/models/catalogo';
 
 
 @Component({
@@ -29,12 +31,16 @@ export class UsuarioComponent implements OnInit {
   public antiguedad: Date;
   public maxDate: Date;
 
+  public oficinas: Catalogo[] = [];
+  public bancos: Catalogo[] = [];
+
   public roles = { USUARIO: true, RECURSOS_HUMANOS: false, TESORERIA: false, CONTABILIDAD: false,
      GERENCIA_INTERNA: false, GERENCIA_EXTERNA: false, ADMINISTRACION: false, DIRECCION: false };
   private nombreRoles = Object.keys(this.roles);
   constructor(
     public datepipe: DatePipe,
     private route: ActivatedRoute,
+    private catService: CatalogosService,
     private usuarioServicio: UsuariosService,
     private formBuilder: FormBuilder,
     private router: Router
@@ -46,6 +52,9 @@ export class UsuarioComponent implements OnInit {
     this.errorMessages = [];
     this.params.module = this.router.url.split('/')[1];
     this.antiguedad = new Date();
+
+    this.catService.getCatalogosByTipo('oficinas').subscribe(off => this.oficinas = off);
+    this.catService.getCatalogosByTipo('bancos').subscribe(banks => this.bancos = banks);
 
     this.route.paramMap.subscribe(route => {
       const id = route.get('idUsuario');
@@ -62,7 +71,7 @@ export class UsuarioComponent implements OnInit {
           noEmpleado: [this.usuario.noEmpleado],
           cuenta: [this.usuario.datosUsuario.CUENTA],
           sueldo: [this.usuario.datosUsuario.SUELDO],
-          antiguedad: [this.usuario.datosUsuario.ANTIGUEDAD]
+          antiguedad: [new Date(this.usuario.datosUsuario.ANTIGUEDAD)]
         });
 
       } else {
@@ -79,7 +88,7 @@ export class UsuarioComponent implements OnInit {
           noEmpleado: [this.usuario.noEmpleado],
           cuenta: [this.usuario.datosUsuario.CUENTA],
           sueldo: [this.usuario.datosUsuario.SUELDO],
-          antiguedad: [this.usuario.datosUsuario.ANTIGUEDAD]
+          antiguedad: [new Date(this.usuario.datosUsuario.ANTIGUEDAD)]
         });
         this.loading = false;
       }
@@ -178,9 +187,8 @@ export class UsuarioComponent implements OnInit {
         this.submitted = true;
         this.params.success = 'El usuario ha sido actualizado satisfactoriamente.';
       })
-      .then(() => this.router.navigate([`../${this.params.module}/usuarios/`+this.usuario.id]))
-      .catch(error => {this.errorMessages.push(error); this.loading = false;});
-      
+      .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
+      .catch(error => {this.errorMessages.push(error); this.loading = false; });
   }
 
   public register(): void {
@@ -189,7 +197,6 @@ export class UsuarioComponent implements OnInit {
     console.log('registering',this.registerForm.invalid);
     this.loading = true;
     this.modalConfirmacion.hide();
-    
     if(this.registerForm.get('email').invalid){
       this.errorMessages.push("Email invalido");
       this.loading = false; 
@@ -225,8 +232,7 @@ export class UsuarioComponent implements OnInit {
       this.loading = false; 
       return;
     }
-      
-    
+
     //if (this.registerForm.invalid) { this.loading = false; return; }
     this.errorMessages = [];
     console.log('registering');
