@@ -4,19 +4,36 @@
       <h4 class="card-title mb-0">Resumen anual</h4>
     </div>
     <div class="card-body justify-content-center">
-      <div class="row">
+      <carousel >
+        <slide>
+          <strong> Resumen agrupado de ahorro </strong>
+          <div class="row">
+            <div class="chart-wrapper col-12" style="background-color: #2f353a;">
+              <canvas baseChart 
+                [data]="doughnutChartData"
+                [labels]="doughnutChartLabels"
+                [chartType]="'doughnut'"
+                [options]="doughnutOptions">
+              </canvas>
+            </div>
+          </div>
+        </slide>
+        <slide>
+          <strong> Ahorro mensual </strong>
+          <div class="row">
+            <div class="chart-wrapper col-12" style="background-color: #2f353a;">
+              <canvas baseChart class="chart"
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="true"
+              [chartType]="'bar'"></canvas>
+            
+            </div>
+          </div>
+        </slide>
+      </carousel>
 
-        <div class="chart-wrapper col-12" style="background-color: #2f353a;">
-          <canvas baseChart class="chart"
-            [datasets]="barChartData" 
-            [labels]="barChartLabels"
-            [options]="barChartOptions" 
-            [legend]="barChartLegend" 
-            [chartType]="barChartType">
-          </canvas>
-        
-        </div>
-      </div>
     </div>
     <div class="card-footer">
 

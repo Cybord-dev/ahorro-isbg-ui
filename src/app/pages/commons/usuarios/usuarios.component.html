@@ -100,13 +100,14 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let fila of page.content">
-                      <td scope="row">
-                        <button class="btn-sm btn-outline-primary" (click)="redirectToUser(fila.id)"><i
-                            class="fa fa-search fa-sm"></i></button>
-                        <button class="btn-sm btn-outline-primary" *ngIf="module === 'contabilidad'" (click)="redirectToAdjustment(fila.id)"><i
+                      <td scope="row" class="text-center">
+                        <button class="btn-sm" (click)="redirectToUser(fila.id)" [disabled]="module === 'contabilidad' && fila.tipoUsuario === 'INTERNO'"
+                        [ngClass]="{'btn-outline-secondary':module === 'contabilidad' && fila.tipoUsuario === 'INTERNO', 'btn-outline-success': module !== 'contabilidad' || fila.tipoUsuario !== 'INTERNO' }">
+                          <i class="fa fa-search fa-sm"></i></button>
+                        <button class="btn-sm btn-outline-success" *ngIf="module === 'contabilidad'" (click)="redirectToAdjustment(fila.id)"><i
                               class="fa fa-money fa-sm"></i></button>
                       </td>
-                      <td scope="row">{{fila.noEmpleado}}</td>
+                      <td scope="row" class="text-right">{{fila.noEmpleado}}</td>
                       <td scope="row">{{fila.nombre}}</td>
                       <td scope="row">{{fila.email}}</td>
                       <td scope="row">{{fila.tipoUsuario}}</td>
