@@ -13,19 +13,23 @@
                 [disabled]="filterParams.nombre.length > 0" nbInput fullWidth id="inputCorreo"
                 placeholder="email usuario">
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
               <label for="nombreusuario" class="label">Nombre Usuario</label>
               <input type="text" class="form-control" [(ngModel)]="filterParams.nombre"
-                [disabled]="filterParams.email.length > 0" nbInput fullWidth id="nombreusu" placeholder="nombreusuario">
+                [disabled]="filterParams.email.length > 0" nbInput fullWidth id="nombreusu" placeholder="nombre usuario">
             </div>
-            <div class="col-md-2">
-              <label for="inputtipo" class="label">Tipo Usuario</label>
-              <input type="text" class="form-control" [(ngModel)]="filterParams.tipoUsuario"
-                [disabled]="filterParams.email.length > 0" nbInput fullWidth id="inputtipo"
-                placeholder="Tipo de usuario">
+            <div class="col-md-2" *ngIf="module != 'recursos-humanos'">
+              <label for="tipoUsuario" class="label">Tipo de Usuario</label>
+              <div>
+                <select id="inputTipoUsuario"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoUsuario">
+                  <option value="*" >TODOS</option>
+                  <option value="INTERNO">INTERNO</option>
+                  <option value="EXTERNO">EXTERNO</option>
+                </select>
+              </div>
             </div>
-            <div class="col-md-6">
-              <label for="inputActivo" class="label">Estado cliente</label>
+            <div class="col-md-5">
+              <label for="inputActivo" class="label">Estatus Usuario</label>
               <div class="row form-inline">
                 <select id="inputActivo" class="form-control" [(ngModel)]="filterParams.estatus" style="display:block;"
                   fullWidth>
@@ -34,7 +38,9 @@
                   <option value="0">INACTIVO</option>
                 </select>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
+                <button class="btn btn-primary" [disabled]="loading" (click)="updateDataTable(0,10)">BUSCAR
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
                 <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
                 <button class="btn btn-primary" (click)="redirectToUser('*')">NUEVO USUARIO</button>
 
@@ -94,13 +100,14 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let fila of page.content">
-                      <td scope="row">
-                        <button class="btn-sm btn-outline-primary" (click)="redirectToUser(fila.id)"><i
-                            class="fa fa-search fa-sm"></i></button>
-                        <button class="btn-sm btn-outline-primary" *ngIf="module === 'contabilidad'" (click)="redirectToAdjustment(fila.id)"><i
+                      <td scope="row" class="text-center">
+                        <button class="btn-sm" (click)="redirectToUser(fila.id)" [disabled]="module === 'contabilidad' && fila.tipoUsuario === 'INTERNO'"
+                        [ngClass]="{'btn-outline-secondary':module === 'contabilidad' && fila.tipoUsuario === 'INTERNO', 'btn-outline-success': module !== 'contabilidad' || fila.tipoUsuario !== 'INTERNO' }">
+                          <i class="fa fa-search fa-sm"></i></button>
+                        <button class="btn-sm btn-outline-success" *ngIf="module === 'contabilidad'" (click)="redirectToAdjustment(fila.id)"><i
                               class="fa fa-money fa-sm"></i></button>
                       </td>
-                      <td scope="row">{{fila.noEmpleado}}</td>
+                      <td scope="row" class="text-right">{{fila.noEmpleado}}</td>
                       <td scope="row">{{fila.nombre}}</td>
                       <td scope="row">{{fila.email}}</td>
                       <td scope="row">{{fila.tipoUsuario}}</td>

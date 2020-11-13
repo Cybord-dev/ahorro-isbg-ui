@@ -78,7 +78,7 @@ import { UsuarioCaducadoComponent } from './pages/errores/usuario-caducado/usuar
     UsuarioInvalidoComponent,
     Error400Component,
     Error500Component,
-    UsuarioCaducadoComponent
+    UsuarioCaducadoComponent,
   ],
   providers: [{
     provide: LocationStrategy,

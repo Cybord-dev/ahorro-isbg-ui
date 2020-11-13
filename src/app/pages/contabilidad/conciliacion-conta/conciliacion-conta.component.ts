@@ -12,10 +12,10 @@ export class ConciliacionContaComponent implements OnInit {
 
   @ViewChild('fileInput') public fileInput: ElementRef;
 
-  public datosConciliacion: Conciliador[];
-  public conciliacionProcesados: Conciliador[];
-  public conciliacionCorrectos: Conciliador[];
-  public conciliacionErroneos: Conciliador[];
+  public datosConciliacion: Conciliador[] = [];
+  public conciliacionProcesados: Conciliador[] = [];
+  public conciliacionCorrectos: Conciliador[] = [];
+  public conciliacionErroneos: Conciliador[] = [];
   public loading = false;
   constructor(private ahorroService: AhorroServicio) { }
 

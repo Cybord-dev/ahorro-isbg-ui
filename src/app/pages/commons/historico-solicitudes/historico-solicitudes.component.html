@@ -10,23 +10,21 @@
          
           <div class="row slide_1">
 
-            <div class="col-md-2">
+            <div class="col-md-3">
               <label for="idsol" class="label">Id Solicitud</label>
               <input type="text" class="form-control" nbInput fullWidth id="idsol" [(ngModel)]="filterParams.idSolicitud"
                 placeholder="Id Sol.">
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
               <label for="nombreusuario" class="label">Nombre</label>
               <input type="text" class="form-control" nbInput fullWidth id="nombreusuario" [(ngModel)]="filterParams.nombre"
                 placeholder="Nombre">
             </div>
 
-            <div class="col-md-2">
-              <label for="noempleado" class="label">No. Empleado</label>
-              <input type="text" class="form-control" nbInput fullWidth id="noempleado" [(ngModel)]="filterParams.noEmpleado"
-                placeholder="No. Empleado">
-            </div>
+            
+
+              
 
             <div class="col-md-2">
               <label for="fechacre" class="label">Periodo Creación</label>
@@ -38,6 +36,13 @@
                 [bsConfig]="{ rangeInputFormat: 'DD/MM/YYYY' }"
                 [(ngModel)]="fechaCreacion">
               </div>
+            </div>
+
+            <div class="col-md-3">
+              
+              <label for="noempleado" class="label">No. Empleado</label>
+              <input type="text" class="form-control" nbInput fullWidth id="noempleado" [(ngModel)]="filterParams.noEmpleado"
+                placeholder="No. Empleado">
               
             </div>
 
@@ -47,7 +52,7 @@
           <br>
           <div class="row slide_1">
 
-            <div class="col-md-2">
+            <div class="col-md-3">
               <label for="tipoUsuario" class="label">Tipo de Usuario</label>
               <div>
                 <select id="inputTipoUsuario"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoUsuario">
@@ -58,11 +63,11 @@
               </div>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
               <label for="inputTipo" class="label" >Tipo Validacion</label>
               <div>
                 <select id="inputTipo"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.tipoSolicitud">
-                  <option value="*" >Todos</option>
+                  <option value="*" >TODAS</option>
                   <option value="SolicitudAhorro">Solicitud</option>
                   <option value="CancelacionAhorro">Cancelacion</option>
                   <option value="ModificacionAhorro">Modificacion</option>
@@ -71,7 +76,7 @@
               </div>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
               <label for="tipoValidacion" class="label">Estatus</label>
               <div>
                 <select id="tipoValidacion"  class="form-control" style="display:block;" fullWidth [(ngModel)]="filterParams.estatus">
@@ -89,9 +94,11 @@
               </div>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
               <p>&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                <button class="btn btn-primary" (click)="updateDataTable(0,10)">BUSCAR</button>
+                <button class="btn btn-primary" [disabled] = "loading" (click)="updateDataTable(0,10)">BUSCAR
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                </button>
             </div>
             
           </div>
@@ -179,14 +186,15 @@
                 <div class="clearfix" *ngIf="page.empty == false">
                   <ul class="pagination float-right" *ngIf="page.totalElements > 1">
                     <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
-                        (click)="updateDataTable(0,page.size)"><i class="nb-arrow-left"></i></button></li>
+                        (click)="updateDataTable(0,page.size)"><i class="icon-control-rewind icons"></i></button>
+                    </li>
                     <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
                         (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
                     <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
                     <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
                         (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
                     <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
-                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="nb-arrow-right"></i></button>
+                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="icon-control-forward icons"></i></button>
                     </li>
                   </ul>
                 </div>

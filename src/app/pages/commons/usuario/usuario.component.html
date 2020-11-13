@@ -21,7 +21,6 @@
                                             [ngClass]="{ 'is-invalid': submitted && f.alias.errors }"
                                             [(ngModel)]="usuario.nombre" placeholder="Sobrenombre o alias" />
                                             <div *ngIf="submitted && f.alias.errors" class="invalid-feedback">
-                                                <div *ngIf="f.alias.errors.required">El alias es requerido.</div>
                                                 <div *ngIf="f.alias.errors.minlength">Nececitas un minimo de 2 caracteres.
                                                 </div>
                                                 <div *ngIf="f.alias.errors.maxlength">No mas de 100 caracteres.</div>
@@ -88,10 +87,7 @@
                                         <select id="office" name="office" class="form-control"
                                                 [(ngModel)]="usuario.datosUsuario.OFICINA" formControlName="oficina">
                                                 <option value="*">Seleccionar</option>
-                                                <option value="1">Oficina #1</option>
-                                                <option value="2">Oficina #2</option>
-                                                <option value="3">Oficina #3</option>
-                                                <option value="4">Oficina #4</option>
+                                                <option *ngFor="let oficina of oficinas" [value]="oficina.nombre">{{oficina.valor}}</option>
                                             </select>
                                     </div>
                                 </div>
@@ -102,10 +98,7 @@
                                         <select id="bank" name="bank" class="form-control" formControlName="banco"
                                                 [(ngModel)]="usuario.datosUsuario.BANCO">
                                                 <option value="*">Seleccionar</option>
-                                                <option value="91">HSBC</option>
-                                                <option value="92">BBVA</option>
-                                                <option value="93">CITYBANAMEX</option>
-                                                <option value="94">SCOTIA BANK</option>
+                                                <option *ngFor="let banco of bancos" [value]="banco.nombre">{{banco.valor}}</option>
                                             </select>
                                     </div>
                                 </div>
@@ -132,7 +125,7 @@
                                     <strong class="col-md-3 col-form-label">Fecha Antiguedad</strong>
                                     <div class="col-md-7">
                                         <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" formControlName="antiguedad"
-                                        [(maxDate)]="maxDate" bsDatepicker [(bsValue)]="antiguedad" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" >
+                                         bsDatepicker [(bsValue)]="antiguedad" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" >
                                     </div>
                                 </div>
                             </form>
@@ -167,9 +160,21 @@
                                     </label>
                                   </div>
                                   <div class="form-check checkbox">
-                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox5" [(ngModel)]="roles.GERENCIA" [disabled]="params.module !== 'administracion'">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox5" [(ngModel)]="roles.GERENCIA_INTERNA" [disabled]="params.module !== 'administracion'">
                                     <label class="form-check-label" for="checkbox5">
-                                      GERENCIA
+                                      GERENCIA INTERNA
+                                    </label>
+                                  </div>
+                                  <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox8" [(ngModel)]="roles.GERENCIA_EXTERNA" [disabled]="params.module !== 'administracion'">
+                                    <label class="form-check-label" for="checkbox8">
+                                      GERENCIA EXTERNA
+                                    </label>
+                                  </div>
+                                  <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox7" [(ngModel)]="roles.DIRECCION" [disabled]="params.module !== 'administracion'">
+                                    <label class="form-check-label" for="checkbox7">
+                                      DIRECCION
                                     </label>
                                   </div>
                                   <div class="form-check checkbox">

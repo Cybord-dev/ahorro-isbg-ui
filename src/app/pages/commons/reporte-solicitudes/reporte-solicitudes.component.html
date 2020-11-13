@@ -69,7 +69,8 @@
             </div>
 
             <div class="col-sm-2">
-                <button class="btn btn-primary" (click)="updateDataTable(0,10)" style="margin-top: 2em;">BUSCAR</button>
+                <button class="btn btn-primary" [disabled] = "loading" (click)="updateDataTable(0,10)" style="margin-top: 2em;">BUSCAR
+                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button>
             </div>
             <div class="col"></div>
           </div>

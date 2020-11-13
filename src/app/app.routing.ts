@@ -71,8 +71,16 @@ export const routes: Routes = [
         loadChildren: () => import('./pages/tesoreria/tesoreria.module').then(m => m.TesoreriaModule)
       },
       {
-        path: 'gerencia',
-        loadChildren: () => import('./pages/gerencia/gerencia.module').then(m => m.GerenciaModule)
+        path: 'gerencia-interna',
+        loadChildren: () => import('./pages/gerencia-interna/gerencia-interna.module').then(m => m.GerenciaInternaModule)
+      },
+      {
+        path: 'gerencia-externa',
+        loadChildren: () => import('./pages/gerencia-externa/gerencia-externa.module').then(m => m.GerenciaExternaModule)
+      },
+      {
+        path: 'direccion',
+        loadChildren: () => import('./pages/direccion/direccion.module').then(m => m.DireccionModule)
       },
       {
         path: 'administracion',

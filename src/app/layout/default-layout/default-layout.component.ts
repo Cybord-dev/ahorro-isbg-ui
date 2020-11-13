@@ -22,11 +22,10 @@ export class DefaultLayoutComponent implements OnInit {
   }
 
   public logout(): void {
-    this.userService.logout().subscribe({
-      next(r) { console.log(r) },
-      error(e) { console.error(e) },
-      complete() { this.document.location.href = "https://mail.google.com/mail/u/0/?logout&hl=en"}
-    });
+    this.userService.logout().toPromise()
+    .then(() => console.log('completed logout'))
+    .then(() => {console.log('Calling logout'); window.location.href = "https://mail.google.com/mail/u/0/?logout&hl=en";})
+    .catch((error) => console.log(error));
   }
 
   public toggleMinimize(e): void{

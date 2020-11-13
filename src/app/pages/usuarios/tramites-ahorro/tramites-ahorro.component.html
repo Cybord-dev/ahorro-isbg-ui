@@ -13,7 +13,9 @@
                 <alert type="danger" [dismissible]="true">{{ alert }}</alert>
               </div>
 
-              <tabset #staticTabs>
+              <cybord-loader *ngIf="loading"></cybord-loader>
+
+              <tabset #staticTabs *ngIf="!loading">
                 <tab *ngIf="solicitudCancelacion.status!=='Finalizada'">
                     <ng-template tabHeading ><i class="icon-docs"></i>&nbsp; Solicitud</ng-template>
                     <div class="row">
@@ -153,7 +155,7 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="quantity1">Descuento quincenal actual</label>
                             <div class="col-md-9">
-                              <input type="number" id="quantity1" name="quantity1" class="form-control" min=100 [disabled] = "solicitudModificacion.atributos.MONTO !== undefined"
+                              <input type="number" id="quantity1" name="quantity1" class="form-control" min=100 [disabled] = "usuario.datosUsuario.AHORRO !== undefined"
                                 placeholder="100.00"  [(ngModel)]="usuario.datosUsuario.AHORRO" min="100" max="20000">
                             </div>
                           </div>
@@ -183,8 +185,8 @@
   
                         <span class="help-block">
                           Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina 
-                          <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio se modifique el descuento de <strong> $ {{solicitudModificacion.atributos.MONTO }} </strong> 
-                          que se me aplica en mi pago de nómina por la por la cantidad de <strong> $ {{solicitudModificacion.atributos.MONTO_MODIFICACION }} </strong> aplicable a partir de la fecha <strong>{{bsValue | date}}</strong>.
+                          <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio se modifique el descuento de <strong> $ {{ usuario.datosUsuario.AHORRO }} </strong> 
+                          que se me aplica en mi pago de nómina por la por la cantidad de <strong> $ {{solicitudModificacion.atributos.MONTO }} </strong> aplicable a partir de la fecha <strong>{{bsValue | date}}</strong>.
                         </span>
                         <br>
                         <br>
@@ -501,11 +503,24 @@
         </button>
       </div>
       <div class="modal-body">
-          ¿Estas seguro que quieres enviar la solicitud?
+        <p>¿ <strong>{{usuario.nombre}}</strong>  estas seguro de enviar la solicitud?
+          <p>Al <strong> realizar la solicitud</strong> el sistema registra la persona 
+            y el momento en que realiza la transacción.</p>
+            <form>
+              <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">No empleado</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" id="inputPassword" [(ngModel)]="noEmpleado" [ngModelOptions]="{standalone: true}">
+                  <small id="noEmpHelp" class="form-text text-muted">Ingresa tu numero de empleado para desbloquear.</small>
+                </div>
+              </div>
+            </form>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="aceptar()" >Si</button>
-          <button type="button" class="btn btn-secondary" (click)="cancelar()" >No</button>
+        <button type="button" class="btn" 
+          [ngClass]="{'btn-primary': noEmpleado === usuario.noEmpleado , 'btn-secondary' : noEmpleado !== usuario.noEmpleado }" 
+          [disabled]="noEmpleado !== usuario.noEmpleado" (click)="aceptar()" >Realizar solicitud</button>
+          <button type="button" class="btn btn-warning" (click)="cancelar()" >Salir</button>
       </div>
     </div>
   </div>

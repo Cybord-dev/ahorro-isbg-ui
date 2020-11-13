@@ -42,8 +42,11 @@ export class ReporteSolicitudesComponent implements OnInit {
       case 'contabilidad':
         this.filterParams.estatus = 'ValdiacionConta';
         break;
-      case 'gerencia':
-        this.filterParams.estatus = 'ValidacionGerencia';
+      case 'gerencia-interna':
+        this.filterParams.estatus = 'ValidacionGerenciaInterna';
+        break;
+      case 'gerencia-externa':
+        this.filterParams.estatus = 'ValidacionGerenciaExterna';
         break;
       case 'administracion':
         this.filterParams.estatus = 'ValidaAdmin';
@@ -56,7 +59,7 @@ export class ReporteSolicitudesComponent implements OnInit {
 
 
   public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any): void {
-
+    this.loading = true;
     if (this.fechaCreacion === undefined  || this.fechaCreacion === null){
       this.filterParams.since = '';
       this.filterParams.to = '';
@@ -67,7 +70,7 @@ export class ReporteSolicitudesComponent implements OnInit {
     }
     this.filterParams.page = currentPage || 0;
     this.filterParams.size = pageSize || 10;
-    this.solicitudesService.getSolicitudes(this.filterParams).subscribe(data => this.page = data);
+    this.solicitudesService.getSolicitudes(this.filterParams).subscribe(data => {this.page = data; this.loading = false;});
   }
 
   public onChangePageSize(pageSize: number): void {
@@ -79,6 +82,7 @@ export class ReporteSolicitudesComponent implements OnInit {
   }
 
   public downloadXLSFile(): void{
+    this.loading = true;
     if (this.fechaCreacion === undefined  || this.fechaCreacion === null){
       this.filterParams.since = '';
       this.filterParams.to = '';
@@ -91,7 +95,9 @@ export class ReporteSolicitudesComponent implements OnInit {
     this.filterParams.size = '10000';
     this.solicitudesService.getReporteSolicitudes(this.filterParams)
       .subscribe((report) => {
+        
         this.downloadService.downloadFile(report.dato, `ReporteSolicitudes-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
+        this.loading = false;
       });
   }
 

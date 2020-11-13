@@ -9,6 +9,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 
 
 // Common components
@@ -23,6 +24,7 @@ import { UsuarioComponent } from './usuario/usuario.component';
 import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.component';
 import { AjusteAhorroComponent } from './ajuste-ahorro/ajuste-ahorro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoaderComponent } from './loader/loader.component';
 
 
 
@@ -37,7 +39,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     UsuariosComponent,
     UsuarioComponent,
     AjusteAhorroComponent,
-    ReporteAhorrosComponent],
+    ReporteAhorrosComponent,
+    LoaderComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -50,7 +53,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     BsDropdownModule,
     ButtonsModule.forRoot(),
     ReactiveFormsModule,
-    CommonsRoutingModule
+    CommonsRoutingModule,
+    CarouselModule.forRoot()
   ],
   exports: [
     CommonModule,
@@ -62,8 +66,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ProfileComponent,
     AjusteAhorroComponent,
     ReporteSolicitudesComponent,
+    LoaderComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
+    CarouselModule
   ],
   providers: [
     DatePipe

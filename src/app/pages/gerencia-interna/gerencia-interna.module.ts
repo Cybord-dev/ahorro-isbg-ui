@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { GerenciaRoutingModule } from './gerencia-routing.module';
+import { GerenciaInternaRoutingModule } from './gerencia-interna-routing.module';
 import { CommonsPagesModule } from '../commons/common-pages.module';
 
 
@@ -8,7 +8,7 @@ import { CommonsPagesModule } from '../commons/common-pages.module';
   declarations: [],
   imports: [
     CommonsPagesModule,
-    GerenciaRoutingModule
+    GerenciaInternaRoutingModule
   ]
 })
-export class GerenciaModule { }
+export class GerenciaInternaModule { }
