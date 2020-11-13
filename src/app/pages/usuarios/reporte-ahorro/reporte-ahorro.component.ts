@@ -21,11 +21,10 @@ export class ReporteAhorroComponent implements OnInit {
     responsive: true
   };
   public barChartLabels: string[] = ['NOVIEMBRE', 'DICIEMBRE', 'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE'];
-  public datos: number[] = [];
-  public errorMessages: string[] = [];
-  public successMessage: string;
+  public COLORS = ['#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD'];
+  public alerts: string[] = [];
 
-  public barChartData: any[] = [];
+  public barChartData: any[] = [{data: [] , label : 'Ahorro acumulado'}];
   public ahorros: SaldoAhorro[] = [];
   constructor(
     private userService: UsuariosService,
@@ -40,30 +39,35 @@ export class ReporteAhorroComponent implements OnInit {
       .then((user) => {
         this.setCharInfo(user.id);
       })
-      .catch(error => this.errorMessages.push(error))
+      .catch(error => this.alerts.push(error))
       .then(() => this.loading = false);
-      this.barChartData = [{data:[0, 0], label: "Ahorro acumulado"}];
   }
 
-  private async setCharInfo(userId:number): Promise <void> {
+  private async setCharInfo(userId: number): Promise <void> {
     try {
       const MESES: Meses = new Meses();
-      const saldos: SaldoAhorro[] = await this.saldosAhorro.getSaldoByUsuario(userId)
-      .pipe( map( (s: SaldoAhorro[]) => {
-        for (const s1 of s) {
-          console.log(new Date(s1.fechaCreacion));
+      this.ahorros = await this.saldosAhorro.getSaldoByUsuario(userId)
+      .pipe( map( (saldos: SaldoAhorro[]) => {
+        for (const s of saldos) {
+          s.fechaCreacion = new Date(s.fechaCreacion);
         }
-        return s;})).toPromise();
-
+        return saldos;
+      })).toPromise();
+      const data = [];
+      let acumulado = 0;
       for (const mes of this.barChartLabels) {
-        console.log(mes);
-        console.log(MESES[mes]);
-        console.log(saldos.filter(s=>s.fechaCreacion.getMonth() === MESES[mes]));
+        const montos: number[] = this.ahorros.filter(s => s.fechaCreacion.getMonth() === MESES[mes]).map(s => s.monto);
+        if (montos.length > 0){
+          acumulado = acumulado + montos.reduce((a, b) => a + b);
+          data.push(acumulado);
+        }else{
+          data.push(0);
+        }
       }
-
-
+      this.total = acumulado;
+      this.barChartData = [{data, backgroundColor: this.COLORS, label : 'Ahorro acumulado'}];
     } catch (error) {
-      this.errorMessages.push(error);
+      this.alerts.push(error);
     }
   }
 }

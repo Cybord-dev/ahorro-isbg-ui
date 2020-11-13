@@ -1,16 +1,16 @@
 export class Meses {
-    public ENERO = 1;
-    public FEBRERO = 2;
-    public MARZO = 3;
-    public ABRIL = 4;
-    public MAYO = 5;
-    public JUNIO = 6;
-    public JULIO = 7;
-    public AGOSTO = 8;
-    public SEPTIEMBRE = 9;
-    public OCTUBRE = 10;
-    public NOVIEMBRE = 11;
-    public DICIEMRE = 12;
+    public ENERO = 0;
+    public FEBRERO = 1;
+    public MARZO = 2;
+    public ABRIL = 3;
+    public MAYO = 4;
+    public JUNIO = 5;
+    public JULIO = 6;
+    public AGOSTO = 7;
+    public SEPTIEMBRE = 8;
+    public OCTUBRE = 9;
+    public NOVIEMBRE = 10;
+    public DICIEMBRE = 11;
 
     constructor(){
     }
