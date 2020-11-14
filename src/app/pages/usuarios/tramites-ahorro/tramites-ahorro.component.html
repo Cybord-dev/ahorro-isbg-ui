@@ -15,7 +15,7 @@
 
               <cybord-loader *ngIf="loading"></cybord-loader>
 
-              <tabset #staticTabs *ngIf="!loading">
+              <tabset #staticTabs>
                 <tab *ngIf="solicitudCancelacion.status!=='Finalizada'">
                     <ng-template tabHeading ><i class="icon-docs"></i>&nbsp; Solicitud</ng-template>
                     <div class="row">
@@ -65,8 +65,6 @@
                       </div>
   
                       <div class="col-xs-12 col-sm-12 col-md-6 form-group">
-  
-                        
                         <span class="help-block">
                           Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina 
                           <strong>{{usuario.datosUsuario.OFICINA}}</strong> autorizo que por este medio se descuente de mi pago de nómina, la cantidad
@@ -86,6 +84,15 @@
   
                     </div>
 
+                    <div class="row" *ngIf="solicitudAhorro.id !== undefined && solicitudAhorro.status !== 'Rechazada' && solicitudAhorro.status !== 'Finalizada'">
+                      <div class="col"></div>
+                      <div class="col-6">
+                        <div class="alert alert-warning" role="alert">
+                          La solicitud de ahorro se encuentra en tramite.
+                        </div>
+                      </div>
+                      <div class="col"></div>
+                    </div>
                     <div class="row" *ngIf="solicitudAhorro.id !== undefined && solicitudAhorro.validaciones.length>0">
                       <div class="col"></div>
                       <div class="col-6">
@@ -94,9 +101,6 @@
                         </div>
                         <div class="alert alert-danger" role="alert" *ngIf="solicitudAhorro.status === 'Rechazada'">
                           La solicitud de ahorro fue rechazada, el motivo es : {{solicitudAhorro.statusDetalle}}.
-                        </div>
-                        <div class="alert alert-warning" role="alert" *ngIf="solicitudAhorro.status !== 'Rechazada' && solicitudAhorro.status !== 'Finalizada'">
-                          La solicitud de ahorro se encuentra en tramite.
                         </div>
 
                         <strong>Autorizaciones</strong>
@@ -131,6 +135,8 @@
                     <br>
                     <div class="row">
                       <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                        <p *ngIf="solicitudModificacion.id !==undefined" ><strong>Solicitud No. {{solicitudModificacion.id}}</strong></p>
+
                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label">Nombre</label>
@@ -190,22 +196,14 @@
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('ModificacionAhorro')"
-                              [disabled]="loading || success.length > 0 || solicitudEnProgreso.length > 0">
-                          <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud</button>
-                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('ModificacionAhorro')" *ngIf="solicitudEnProgreso.length === 0"
+                              [disabled]="loading || success.length > 0">
+                          <i class="fa fa-dot-circle-o"></i> &nbsp; <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>Enviar solicitud</button>
+                          
+                          <div class="alert alert-warning" role="alert" *ngIf="solicitudEnProgreso.length > 0">
+                            {{solicitudEnProgreso}}
+                          </div>
                       </div>
-  
-                    </div>
-                    
-                    <div class="row">
-                      <div class="col"></div>
-                      <div class="col-6">
-                        <div class="alert alert-warning" role="alert" *ngIf="solicitudEnProgreso.length > 0">
-                          {{solicitudEnProgreso}}
-                        </div>
-                      </div>
-                      <div class="col"></div>
                     </div>
                     <div class="row" *ngIf="solicitudModificacion.id !== undefined && solicitudModificacion.validaciones.length>0">
                       <div class="col"></div>
@@ -251,6 +249,7 @@
   
                     <div class="row">
                       <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                        <p *ngIf="solicitudRetiro.id !==undefined" ><strong>Solicitud No. {{solicitudRetiro.id}}</strong></p>
                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label">Nombre</label>
@@ -281,11 +280,11 @@
                             </div>
                           </div>
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="account">Cuenta CLABE</label>
+                            <label class="col-md-3 col-form-label" for="account">Cuenta de deposito</label>
                             <div class="col-md-9">
-                              <input type="text" id="account" name="account" class="form-control" [disabled] = "solicitudEnProgreso.length !== 0"
-                              placeholder="0000 0000 0000 0000"  [(ngModel)]="solicitudRetiro.atributos.NO_CUENTA" >
-                              <span class="help-block" *ngIf="solicitudRetiro.id === undefined">Cuenta interbancaria CLABE</span>
+                              <p><strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
+                                {{usuario.datosUsuario.BANCO}}</strong></p>
+                              <span class="help-block text-danger" *ngIf="solicitudRetiro.id === undefined">Si sus datos bancarios no se encuentran regitrados no se podra realizar la solicitud.</span>
                             </div>
                           </div>
                         </form>
@@ -296,26 +295,20 @@
                         <span class="help-block">
                           Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina 
                           <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio la cantidad de $ {{solicitudRetiro.atributos.MONTO}}
-                          por concepto de Retiro Parcial de mi ahorro, que sea depositado a la cuenta {{solicitudRetiro.atributos.NO_CUENTA}}
+                          por concepto de Retiro Parcial de mi ahorro, que sea depositado a la cuenta <strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
+                          del banco {{usuario.datosUsuario.BANCO}}</strong>
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('RetiroParcialAhorro')" 
-                              [disabled]="loading || success.length > 0 || solicitudEnProgreso.length > 0">
-                          <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud</button>
-                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('RetiroParcialAhorro')" *ngIf="solicitudEnProgreso.length === 0"
+                              [disabled]="loading || success.length > 0">
+                          <i class="fa fa-dot-circle-o" ></i>&nbsp;<i class="fa fa-spinner fa-spin" *ngIf="loading"></i>Enviar solicitud</button>
+                          
+                          <div class="alert alert-warning" role="alert" *ngIf="solicitudEnProgreso.length > 0">
+                            {{solicitudEnProgreso}}
+                          </div>
                       </div>
   
-                    </div>
-
-                    <div class="row">
-                      <div class="col"></div>
-                      <div class="col-6">
-                        <div class="alert alert-warning" role="alert" *ngIf="solicitudEnProgreso.length > 0">
-                          {{solicitudEnProgreso}}
-                        </div>
-                      </div>
-                      <div class="col"></div>
                     </div>
 
                     <div class="row" *ngIf="solicitudRetiro.id !== undefined && solicitudRetiro.validaciones.length>0">
@@ -363,6 +356,7 @@
                     <div class="row">
                       <div class="col-xs-12 col-sm-12 col-md-6 form-group">
                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                          <p *ngIf="solicitudCancelacion.id !==undefined" ><strong>Solicitud No. {{solicitudCancelacion.id}}</strong></p>
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label">Nombre</label>
                             <div class="col-md-9">
@@ -410,11 +404,10 @@
                             </div>
                           </div>
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="account">Cuenta CLABE deposito</label>
+                            <label class="col-md-3 col-form-label" for="account">Cuenta deposito</label>
                             <div class="col-md-9">
-                              <input type="text" id="account" name="account" class="form-control" [disabled] = "solicitudEnProgreso.length !== 0"
-                              placeholder="0000 0000 0000 0000"  [(ngModel)]="solicitudCancelacion.atributos.NO_CUENTA" >
-                              <span class="help-block" *ngIf="solicitudCancelacion.id === undefined">Cuenta interbancaria CLABE</span>
+                              <p><strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
+                              {{usuario.datosUsuario.BANCO}}</strong></p>
                             </div>
                           </div>
                         </form>
@@ -425,28 +418,24 @@
                         <span class="help-block">
                           Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina
                           <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio se cancele el
-                          descuento que se aplica en mi pago de nómina la cantidad de de $ {{solicitudCancelacion.atributos.MONTO}} de manera quincenal
+                          descuento que se aplica en mi pago de nómina la cantidad de de <strong>${{solicitudCancelacion.atributos.MONTO}}</strong> de manera quincenal
                           a partir de la siguiente fecha yyyy-MM-dd, debido a {{solicitudCancelacion.atributos.RAZON_CANCELACION}} y asimismo se me
-                          reintegre la cantidad ahorrada en la cuenta del PROGRAMA DE AHORRO VOLUNTARIO a mi cuenta {{solicitudRetiro.atributos.NO_CUENTA}}
+                          reintegre la cantidad de <strong>{{totalAhorro | currency }}</strong> del PROGRAMA DE AHORRO VOLUNTARIO sea depositado a la cuenta <strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
+                            del banco {{usuario.datosUsuario.BANCO}}</strong>
                         </span>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('CancelacionAhorro')" 
+                        <button type="button" class="btn btn-sm btn-success" (click)="openModal('CancelacionAhorro')" *ngIf="solicitudEnProgreso.length === 0"
                         [disabled]="loading || success.length > 0 || solicitudEnProgreso.length > 0"><i class="fa fa-dot-circle-o"></i>&nbsp;
                           Enviar solicitud
                           <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                         </button>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col"></div>
-                      <div class="col-6">
                         <div class="alert alert-warning" role="alert" *ngIf="solicitudEnProgreso.length > 0">
                           {{solicitudEnProgreso}}
                         </div>
                       </div>
-                      <div class="col"></div>
                     </div>
+                    
                     <div class="row" *ngIf="solicitudCancelacion.id !== undefined && solicitudCancelacion.validaciones.length>0">
                       <div class="col"></div>
                       <div class="col-6">
