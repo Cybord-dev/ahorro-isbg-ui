@@ -123,11 +123,14 @@
 
           <br>
           <p class="alert alert-success" *ngIf="success.length > 0" role="alert">{{success}}</p>
-
           <br>
           <div class="row" *ngIf="solicitud !== undefined && solicitud.validaciones.length>0">
             <div class="col"></div>
             <div class="col-6">
+
+              <div class="alert alert-danger" role="alert" *ngIf="solicitud.status === 'Rechazada'">
+                La solicitud de ahorro fue rechazada, el motivo es : {{solicitud.statusDetalle}}.
+              </div>
               <strong>Autorizaciones</strong>
               <br/>
               <br/>

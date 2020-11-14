@@ -23,6 +23,7 @@ export class TramitesAhorroComponent implements OnInit {
   public loading = false;
   public usuario: Usuario = new Usuario();
   public noEmpleado: '';
+  public totalAhorro = 0;
   public errorMessages: string[] = [];
   public success = '';
   public tipoSolicitud = 'SolicitudAhorro';
@@ -58,6 +59,10 @@ export class TramitesAhorroComponent implements OnInit {
       const user = await this.userService.myInfo().toPromise();
       this.usuario = await this.userService.getUsuario(user.id).toPromise();
 
+      const ahorros = await this.ahorroService.getSaldoByUsuario(user.id).toPromise();
+
+      this.totalAhorro = (ahorros.length > 0) ? ahorros.map(a => a.monto).reduce((a, b) => a + b) : 0;
+
       const oficina: Catalogo = await this.catService.getCatalogoByTipoAndNombre('oficinas', this.usuario.datosUsuario.OFICINA)
         .toPromise();
       this.usuario.datosUsuario.OFICINA = oficina.valor;
@@ -72,8 +77,9 @@ export class TramitesAhorroComponent implements OnInit {
         .find(s => s.tipo === 'RetiroParcialAhorro') || new Solicitud('RetiroParcialAhorro');
       this.solicitudModificacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
         .find(s => s.tipo === 'ModificacionAhorro') || new Solicitud('ModificacionAhorro');
-      this.solicitudModificacion.atributos.MONTO = this.solicitudAhorro.atributos.MONTO;
+
       this.solicitudCancelacion.atributos.MONTO = this.solicitudAhorro.atributos.MONTO;
+
       if (this.solicitudCancelacion.status !== undefined && this.solicitudCancelacion.status !== 'Rechazada'
         && this.solicitudCancelacion.status !== 'Finalizada') {
         this.solicitudEnProgreso = 'La solicitud de cancelación se encuentra en progreso';
@@ -104,9 +110,20 @@ export class TramitesAhorroComponent implements OnInit {
     solicitud.statusDetalle = 'Solicitud inicial';
     solicitud.fechaEjecucion = new Date(this.bsValue);
     solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
+
+    if ('RetiroParcialAhorro' === solicitud.tipo && +solicitud.atributos.MONTO > this.totalAhorro){
+      this.alerts.push(`No es posible solicitar un monto superior al total de su ahorro de $${this.totalAhorro}`);
+      this.loading = false;
+      return;
+    }
+
+
     this.solicitudService.postSolictudUsuario(this.usuario.id, solicitud).toPromise()
-      .then(sol => { this.loading = false; this.solicitudEnProgreso = 'La solicitud se encuentra en progreso'; this.success = 'La solicitud se envio correctamente'; })
-      .catch((error) => { this.alerts.push(error); this.loading = false; });
+      .then(sol => {
+        this.loading = false;
+        this.solicitudEnProgreso = 'La solicitud se encuentra en progreso';
+        this.success = 'La solicitud se envio correctamente';
+      }).catch((error) => { this.alerts.push(error); this.loading = false; });
   }
 
   public openModal(tipo: string): void {
