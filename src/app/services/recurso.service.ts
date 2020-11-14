@@ -12,8 +12,8 @@ export class RecursoService {
 
     constructor(private http: HttpClient) { }
 
-    public getSolicitudPDFbyId(idSolicitud: number): Observable<Recurso>{
-        return this.http.get<Recurso>(`../api/v1/recursos/tipoRecurso/Solicitud/tipoArchivo/PDF/referencias/${idSolicitud}`);
+    public getRecurso(idRecurso: number, tipoRecurso:string, tipoArchivo: string): Observable<Recurso>{
+        return this.http.get<Recurso>(`../api/v1/recursos/tipoRecurso/${tipoRecurso}/tipoArchivo/${tipoArchivo}/referencias/${idRecurso}`);
     }
 
 }

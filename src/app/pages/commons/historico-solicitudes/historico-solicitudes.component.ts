@@ -88,7 +88,7 @@ export class HistoricoSolicitudesComponent implements OnInit {
   
   public downloadPDFFile(id:number, tipo:string){
     this.loading = true;
-    this.recursoService.getSolicitudPDFbyId(id)
+    this.recursoService.getRecurso(id, "Solicitud", "PDF")
       .subscribe((file) => {
         this.downloadService.downloadFile(file.dato, `${tipo}_${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.pdf`, 'application/pdf');
         this.loading = false;
