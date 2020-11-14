@@ -57,4 +57,5 @@ export class SolicitudesService {
   public deleteSolictud(idSolicitud: number): Observable<any>{
     return this.http.delete<Solicitud[]>(`../api/v1/solicitudes/${idSolicitud}`);
   }
+  
 }
