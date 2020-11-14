@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { HistoricoValidacion } from '../../../models/historico-validacion';
 import { ɵNoopAnimationDriver } from '@angular/animations/browser';
 import { DownloadFileService } from '../../../services/download-file.service';
+import { RecursoService } from '../../../services/recurso.service';
+import { Recurso } from '../../../models/recurso';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -30,7 +32,8 @@ export class HistoricoSolicitudesComponent implements OnInit {
     private router: Router,
     public datepipe: DatePipe,
     private downloadService: DownloadFileService,
-    private validacionService: ValidacionesService) { }
+    private validacionService: ValidacionesService,
+    private recursoService: RecursoService) { }
 
   ngOnInit(): void {
     this.module = this.router.url.split('/')[1];
@@ -79,6 +82,15 @@ export class HistoricoSolicitudesComponent implements OnInit {
       .subscribe((report) => {
         
         this.downloadService.downloadFile(report.dato, `HistoricoValidaciones-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
+        this.loading = false;
+      });
+  }
+  
+  public downloadPDFFile(id:number, tipo:string){
+    this.loading = true;
+    this.recursoService.getSolicitudPDFbyId(id)
+      .subscribe((file) => {
+        this.downloadService.downloadFile(file.dato, `${tipo}_${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.pdf`, 'application/pdf');
         this.loading = false;
       });
   }
