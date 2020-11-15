@@ -33,6 +33,7 @@ export class UsuarioComponent implements OnInit {
 
   public oficinas: Catalogo[] = [];
   public bancos: Catalogo[] = [];
+  public cuentas: Catalogo[] = [];
 
   public roles = { USUARIO: true, RECURSOS_HUMANOS: false, TESORERIA: false, CONTABILIDAD: false,
      GERENCIA_INTERNA: false, GERENCIA_EXTERNA: false, ADMINISTRACION: false, DIRECCION: false };
@@ -55,6 +56,7 @@ export class UsuarioComponent implements OnInit {
 
     this.catService.getCatalogosByTipo('oficinas').subscribe(off => this.oficinas = off);
     this.catService.getCatalogosByTipo('bancos').subscribe(banks => this.bancos = banks);
+    this.catService.getCatalogosByTipo('tipo-cuenta').subscribe(accounts => this.cuentas = accounts);
 
     this.route.paramMap.subscribe(route => {
       const id = route.get('idUsuario');
@@ -68,6 +70,7 @@ export class UsuarioComponent implements OnInit {
           tipo: [this.usuario.tipoUsuario],
           oficina: [this.usuario.datosUsuario.OFICINA],
           banco: [this.usuario.datosUsuario.BANCO],
+          account: [this.usuario.datosUsuario.TIPO_CUENTA],
           noEmpleado: [this.usuario.noEmpleado],
           cuenta: [this.usuario.datosUsuario.CUENTA],
           sueldo: [this.usuario.datosUsuario.SUELDO],
@@ -85,6 +88,7 @@ export class UsuarioComponent implements OnInit {
           tipo: [this.usuario.tipoUsuario],
           oficina: [this.usuario.datosUsuario.OFICINA],
           banco: [this.usuario.datosUsuario.BANCO],
+          account: [this.usuario.datosUsuario.TIPO_CUENTA],
           noEmpleado: [this.usuario.noEmpleado],
           cuenta: [this.usuario.datosUsuario.CUENTA],
           sueldo: [this.usuario.datosUsuario.SUELDO],
