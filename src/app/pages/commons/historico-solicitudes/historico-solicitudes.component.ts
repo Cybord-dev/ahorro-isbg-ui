@@ -80,15 +80,13 @@ export class HistoricoSolicitudesComponent implements OnInit {
     this.filterParams.size = '100000';
     this.validacionService.getReporteValidaciones(this.filterParams)
       .subscribe((report) => {
-        
         this.downloadService.downloadFile(report.dato, `HistoricoValidaciones-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
         this.loading = false;
       });
   }
-  
-  public downloadPDFFile(id:number, tipo:string){
+  public downloadPDFFile(id: number, tipo: string): void{
     this.loading = true;
-    this.recursoService.getRecurso(id, "Solicitud", "PDF")
+    this.recursoService.getRecurso(id, 'Solicitud', 'PDF')
       .subscribe((file) => {
         this.downloadService.downloadFile(file.dato, `${tipo}_${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.pdf`, 'application/pdf');
         this.loading = false;

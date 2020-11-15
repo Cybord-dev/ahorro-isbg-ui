@@ -65,7 +65,10 @@ export class TramitesAhorroComponent implements OnInit {
 
       const oficina: Catalogo = await this.catService.getCatalogoByTipoAndNombre('oficinas', this.usuario.datosUsuario.OFICINA)
         .toPromise();
+      const banco: Catalogo = await this.catService.getCatalogoByTipoAndNombre('bancos', this.usuario.datosUsuario.BANCO)
+        .toPromise();
       this.usuario.datosUsuario.OFICINA = oficina.valor;
+      this.usuario.datosUsuario.BANCO = banco.valor;
 
       const solicitudes = await this.solicitudService.getSolicitudesByUsuario(user.id).toPromise();
 
@@ -78,7 +81,8 @@ export class TramitesAhorroComponent implements OnInit {
       this.solicitudModificacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
         .find(s => s.tipo === 'ModificacionAhorro') || new Solicitud('ModificacionAhorro');
 
-      this.solicitudCancelacion.atributos.MONTO = this.solicitudAhorro.atributos.MONTO;
+      this.solicitudCancelacion.atributos.MONTO = this.totalAhorro.toString();
+      this.solicitudModificacion.atributos.MONTO = this.usuario.datosUsuario.AHORRO;
 
       if (this.solicitudCancelacion.status !== undefined && this.solicitudCancelacion.status !== 'Rechazada'
         && this.solicitudCancelacion.status !== 'Finalizada') {
@@ -113,6 +117,12 @@ export class TramitesAhorroComponent implements OnInit {
 
     if ('RetiroParcialAhorro' === solicitud.tipo && +solicitud.atributos.MONTO > this.totalAhorro){
       this.alerts.push(`No es posible solicitar un monto superior al total de su ahorro de $${this.totalAhorro}`);
+      this.loading = false;
+      return;
+    }
+
+    if (solicitud.atributos.MONTO === undefined){
+      this.alerts.push('El monto de la solicitud no ha sido asignado');
       this.loading = false;
       return;
     }

@@ -68,8 +68,9 @@
                         <span class="help-block">
                           Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina 
                           <strong>{{usuario.datosUsuario.OFICINA}}</strong> autorizo que por este medio se descuente de mi pago de nómina, la cantidad
-                          de <strong> $ {{solicitudAhorro.atributos.MONTO }} </strong>de manera quincenal a partir de la siguiente fecha <strong>{{bsValue | date}}</strong>, durante el período
-                          correspondiente, autorizo que la cantidad retenida sea depositada en la cuenta del PROGRAMA DE
+                          de <strong> $ {{solicitudAhorro.atributos.MONTO }} </strong>de manera quincenal a partir de la siguiente fecha 
+                          <strong *ngIf="solicitudAhorro.id === undefined">{{bsValue | date}}</strong> <strong *ngIf="solicitudAhorro.id !== undefined">{{solicitudAhorro.atributos.FECHA}}</strong>
+                          , durante el período correspondiente, autorizo que la cantidad retenida sea depositada en la cuenta del PROGRAMA DE
                           AHORRO VOLUNTARIO.
                           Estoy de acuerdo que la cantidad ahorrada y los intereses que se hubiesen generado me sean
                           entregados al término del período.
@@ -77,9 +78,11 @@
                         <br>
                         <br>
                         <button type="button" class="btn btn-sm btn-success" (click)="openModal('SolicitudAhorro')" 
-                              *ngIf="solicitudAhorro.id === undefined || solicitudAhorro.status ==='Rechazada'" [disabled]="loading || success.length > 0">
-                          <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud</button>
-                          <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                              *ngIf="(solicitudAhorro.id === undefined || solicitudAhorro.status ==='Rechazada') && solicitudEnProgreso.length === 0 " [disabled]="loading || success.length > 0">
+                          <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud<i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                          <div class="alert alert-warning" role="alert" *ngIf="solicitudEnProgreso.length > 0">
+                            {{solicitudEnProgreso}}
+                          </div>
                       </div>
   
                     </div>
@@ -192,7 +195,8 @@
                         <span class="help-block">
                           Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina 
                           <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio se modifique el descuento de <strong> $ {{ usuario.datosUsuario.AHORRO }} </strong> 
-                          que se me aplica en mi pago de nómina por la por la cantidad de <strong> $ {{solicitudModificacion.atributos.MONTO }} </strong> aplicable a partir de la fecha <strong>{{bsValue | date}}</strong>.
+                          que se me aplica en mi pago de nómina por la por la cantidad de <strong> $ {{solicitudModificacion.atributos.MONTO }} </strong> aplicable a partir de la fecha 
+                          <strong *ngIf="solicitudModificacion.id === undefined">{{bsValue | date}}</strong> <strong *ngIf="solicitudModificacion.id !== undefined">{{solicitudModificacion.atributos.FECHA}}</strong>.
                         </span>
                         <br>
                         <br>
@@ -282,9 +286,10 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="account">Cuenta de deposito</label>
                             <div class="col-md-9">
-                              <p><strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
+                              <p *ngIf="usuario.datosUsuario.TIPO_CUENTA !== undefined && usuario.datosUsuario.CUENTA !== undefined && usuario.datosUsuario.BANCO !== undefined"><strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
                                 {{usuario.datosUsuario.BANCO}}</strong></p>
-                              <span class="help-block text-danger" *ngIf="solicitudRetiro.id === undefined">Si sus datos bancarios no se encuentran regitrados no se podra realizar la solicitud.</span>
+                              <span class="help-block text-danger" *ngIf="usuario.datosUsuario.TIPO_CUENTA === undefined || usuario.datosUsuario.CUENTA === undefined || usuario.datosUsuario.BANCO === undefined">
+                                Si sus datos bancarios no se encuentran regitrados no se podra realizar la solicitud.</span>
                             </div>
                           </div>
                         </form>
@@ -294,7 +299,7 @@
   
                         <span class="help-block">
                           Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina 
-                          <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio la cantidad de $ {{solicitudRetiro.atributos.MONTO}}
+                          <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio la cantidad de <strong>${{solicitudRetiro.atributos.MONTO}}</strong>
                           por concepto de Retiro Parcial de mi ahorro, que sea depositado a la cuenta <strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
                           del banco {{usuario.datosUsuario.BANCO}}</strong>
                         </span>
@@ -406,8 +411,10 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="account">Cuenta deposito</label>
                             <div class="col-md-9">
-                              <p><strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
-                              {{usuario.datosUsuario.BANCO}}</strong></p>
+                              <p *ngIf="usuario.datosUsuario.TIPO_CUENTA !== undefined && usuario.datosUsuario.CUENTA !== undefined && usuario.datosUsuario.BANCO !== undefined"><strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
+                                {{usuario.datosUsuario.BANCO}}</strong></p>
+                              <span class="help-block text-danger" *ngIf="usuario.datosUsuario.TIPO_CUENTA === undefined || usuario.datosUsuario.CUENTA === undefined || usuario.datosUsuario.BANCO === undefined">
+                                Si sus datos bancarios no se encuentran regitrados no se podra realizar la solicitud.</span>
                             </div>
                           </div>
                         </form>
@@ -418,9 +425,10 @@
                         <span class="help-block">
                           Yo  <strong>{{usuario.nombre}}</strong> con número de trabajador <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina
                           <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio se cancele el
-                          descuento que se aplica en mi pago de nómina la cantidad de de <strong>${{solicitudCancelacion.atributos.MONTO}}</strong> de manera quincenal
-                          a partir de la siguiente fecha yyyy-MM-dd, debido a {{solicitudCancelacion.atributos.RAZON_CANCELACION}} y asimismo se me
-                          reintegre la cantidad de <strong>{{totalAhorro | currency }}</strong> del PROGRAMA DE AHORRO VOLUNTARIO sea depositado a la cuenta <strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
+                          descuento que se aplica en mi pago de nómina la cantidad de de <strong>${{usuario.datosUsuario.AHORRO}}</strong> de manera quincenal
+                          a partir de la siguiente fecha <strong *ngIf="solicitudCancelacion.id === undefined">{{bsValue | date}}</strong> <strong *ngIf="solicitudCancelacion.id !== undefined">{{solicitudCancelacion.atributos.FECHA}}</strong>,
+                          debido a {{solicitudCancelacion.atributos.RAZON_CANCELACION}} y asimismo se me reintegre la cantidad de <strong>{{totalAhorro | currency }}</strong> 
+                          del PROGRAMA DE AHORRO VOLUNTARIO sea depositado a la cuenta <strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
                             del banco {{usuario.datosUsuario.BANCO}}</strong>
                         </span>
                         <br>
@@ -473,7 +481,6 @@
           </div>
           
           <br>
-          <p class="alert alert-success" *ngIf="success.length > 0" role="alert">{{success}}</p>
         </div>
       </div>
     </div>
