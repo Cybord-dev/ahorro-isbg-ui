@@ -13,7 +13,7 @@
             <div class="col-md-3">
               <label for="idsol" class="label">Id Solicitud</label>
               <input type="text" class="form-control" nbInput fullWidth id="idsol" [(ngModel)]="filterParams.idSolicitud"
-                placeholder="Id Sol.">
+                placeholder="Id Solicitud">
             </div>
 
             <div class="col-md-3">
@@ -103,6 +103,7 @@
             
           </div>
         </div>
+        
       </div>
     </div>
     <!--/.col-->
@@ -209,6 +210,7 @@
           </div>
 
         </div>
+        <cybord-loader *ngIf="loading"></cybord-loader>
       </div>
     </div>
     <!--/.col-->
