@@ -75,7 +75,7 @@
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">No. Empleado</strong>
                                     <div class="col-md-9">
-                                        <input type="text" id="no-emp" name="text-inputa" class="form-control" formControlName="noEmpleado"
+                                        <input type="text" id="no-emp" name="text-inputa" class="form-control" maxlength="10" formControlName="noEmpleado"
                                             placeholder="No empleado" [(ngModel)]="usuario.noEmpleado">
 
                                     </div>
@@ -206,6 +206,7 @@
                     <br/>
                     <p class="alert alert-success" *ngIf="params.success.length > 0" role="alert">{{params.success}}</p>
                 </div>
+                <cybord-loader *ngIf="loading"></cybord-loader>
                 <div class="card-footer">
                     <div class="float-right slide_2">
 

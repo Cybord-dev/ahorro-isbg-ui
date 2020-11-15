@@ -42,7 +42,7 @@
 
 
             </table> 
-
+            
             <div class="col-sm-6">  
               <button class="btn btn-warning" (click)="clean()" [disabled] = "loading">Limpiar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button>  
               
@@ -50,6 +50,7 @@
             </div>
 
           </div>
+          <cybord-loader *ngIf="loading"></cybord-loader>
         </div>
         
       </div>

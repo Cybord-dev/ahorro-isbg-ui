@@ -69,6 +69,7 @@ export class UsuarioComponent implements OnInit {
           activo: [this.usuario.activo],
           tipo: [this.usuario.tipoUsuario],
           oficina: [this.usuario.datosUsuario.OFICINA],
+          tipo_cuenta: [this.usuario.datosUsuario.TIPO_CUENTA],
           banco: [this.usuario.datosUsuario.BANCO],
           account: [this.usuario.datosUsuario.TIPO_CUENTA],
           noEmpleado: [this.usuario.noEmpleado],
@@ -92,7 +93,7 @@ export class UsuarioComponent implements OnInit {
           noEmpleado: [this.usuario.noEmpleado],
           cuenta: [this.usuario.datosUsuario.CUENTA],
           sueldo: [this.usuario.datosUsuario.SUELDO],
-          antiguedad: [new Date(this.usuario.datosUsuario.ANTIGUEDAD)]
+          antiguedad: [new Date()]
         });
         this.loading = false;
       }

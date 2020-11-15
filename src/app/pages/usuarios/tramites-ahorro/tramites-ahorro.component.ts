@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Usuario } from '../../../models/usuario';
 import { SolicitudesService } from '../../../services/solicitudes.service';
+import { ValidationService } from '../../../services/validation.service';
 import { AhorroServicio } from '../../../services/ahorro.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Solicitud } from '../../../models/solicitud';
@@ -44,6 +45,7 @@ export class TramitesAhorroComponent implements OnInit {
     private solicitudService: SolicitudesService,
     private catService: CatalogosService,
     private ahorroService: AhorroServicio,
+    private validationService : ValidationService,
   ) { }
 
   ngOnInit(): void {
@@ -115,25 +117,17 @@ export class TramitesAhorroComponent implements OnInit {
     solicitud.fechaEjecucion = new Date(this.bsValue);
     solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
 
-    if ('RetiroParcialAhorro' === solicitud.tipo && +solicitud.atributos.MONTO > this.totalAhorro){
-      this.alerts.push(`No es posible solicitar un monto superior al total de su ahorro de $${this.totalAhorro}`);
-      this.loading = false;
-      return;
-    }
-
-    if (solicitud.atributos.MONTO === undefined){
-      this.alerts.push('El monto de la solicitud no ha sido asignado');
-      this.loading = false;
-      return;
-    }
-
-
-    this.solicitudService.postSolictudUsuario(this.usuario.id, solicitud).toPromise()
+    this.alerts = this.validationService.validateSolicitud(solicitud, this.totalAhorro);
+    if (this.alerts.length === 0){
+      this.solicitudService.postSolictudUsuario(this.usuario.id, solicitud).toPromise()
       .then(sol => {
         this.loading = false;
         this.solicitudEnProgreso = 'La solicitud se encuentra en progreso';
         this.success = 'La solicitud se envio correctamente';
       }).catch((error) => { this.alerts.push(error); this.loading = false; });
+    }else{
+      this.loading = false;
+    }
   }
 
   public openModal(tipo: string): void {
