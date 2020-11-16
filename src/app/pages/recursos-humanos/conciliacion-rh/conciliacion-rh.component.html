@@ -105,6 +105,7 @@
                 <thead class="thead-dark">
                   <tr>
                     <th scope="col" class="text-center">No.</th>
+                    <th scope="col" class="text-center">Validar</th>
                     <th scope="col" class="text-center">Clave</th>
                     <th scope="col" class="text-center">Nombre</th>
                     <th scope="col" class="text-center">Importe</th>
@@ -115,6 +116,7 @@
                 <tbody>
                       <tr *ngFor = "let fila of conciliacionErroneos | paginate: { id: 'erroneos',itemsPerPage: 10, currentPage: pErroneos }; let i = index " [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
                         <td scope="row" class="text-center">   {{ (10 * (pErroneos - 1) + i) +1 }}</td>
+                        <td scope="row" class="text-center">   {{fila.validado}}</td>
                         <td scope="row" class="text-left"> {{fila.noEmpleado}} </td>
                         <td scope="row" class="text-left"> {{ fila.nombre | uppercase }} </td>
                         <td scope="row" class="text-right"> {{fila.saldo | currency }} </td>
@@ -138,6 +140,8 @@
             </div>
 
           </div>
+
+          <cybord-loader *ngIf="loading"></cybord-loader>
         </div>
         
       </div>

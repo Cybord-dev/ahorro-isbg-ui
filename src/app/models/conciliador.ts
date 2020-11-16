@@ -8,10 +8,11 @@ export class Conciliador {
     public observaciones: string;
 
 
-    constructor(noEmpleado?: string, nombre?: string, saldo?: number){
+    constructor(noEmpleado?: string, nombre?: string, saldo?: number, validado?: boolean){
         this.noEmpleado = noEmpleado;
         this.nombre = nombre;
         this.saldo = saldo;
+        this.validado = false;
     }
 
 

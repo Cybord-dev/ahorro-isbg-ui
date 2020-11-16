@@ -79,7 +79,7 @@ export class ConciliacionRhComponent implements OnInit {
     this.loading = true;
     this.conciliacionProcesados = this.datosConciliacion;
     this.datosConciliacion = [];
-
+    console.log('Datos conciliacion', this.conciliacionProcesados);
     const resultado = await this.ahorroService.postConciliacion(this.conciliacionProcesados).toPromise();
     const jsonRest = JSON.parse(JSON.stringify(resultado));
     this.conciliacionCorrectos = jsonRest.correctos;
