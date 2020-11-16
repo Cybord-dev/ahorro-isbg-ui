@@ -18,11 +18,12 @@
             </div>
             </div>
 
-           
+          <!--  Tabla ahorro --> 
           <div class="table-responsive slide_1" *ngIf="datosAhorro.length > 0" >
             <table class="table table-bordered table-sm">
               <thead class="thead-dark">
                 <tr>
+                  <th scope="col" class="text-center">No.</th>
                   <th scope="col" class="text-center">Clave</th>
                   <th scope="col" class="text-center">Nombre</th>
                   <th scope="col" class="text-center">Importe</th>
@@ -31,17 +32,27 @@
               </thead>
 
               <tbody>
-                <tr *ngFor = "let fila of datosAhorro"  [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
+                <tr *ngFor = "let fila of datosAhorro | paginate: { id: 'externos',itemsPerPage: 10, currentPage: pExternos }; let i = index "  [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
+                  <td scope="row" class="text-center">   {{ (10 * (pExternos - 1) + i) +1 }}</td>
                   <td scope="row" class="text-left"> {{fila.numeroUsuario}} </td>
-                  <td scope="row" class="text-left"> {{fila.nombre}} </td>
-                  <td scope="row" class="text-left"> {{fila.importe}} </td>
-                  <td scope="row" class="text-left"> {{fila.observaciones}} </td>
+                  <td scope="row" class="text-left"> {{fila.nombre | uppercase}} </td>
+                  <td scope="row" class="text-right"> {{fila.importe | currency}} </td>
+                  <td scope="row" class="text-left"> {{fila.observaciones | uppercase   }} </td>
                 </tr>
 
               </tbody>
 
 
             </table> 
+          
+          <pagination-controls 
+            id= "externos"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            autoHide="true"
+            (pageChange)="pExternos = $event"
+          >
+        </pagination-controls>
             
             <div class="col-sm-6">  
               <button class="btn btn-warning" (click)="clean()" [disabled] = "loading">Limpiar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button>  
@@ -50,6 +61,48 @@
             </div>
 
           </div>
+
+          <!--  Tabla errores --> 
+          <div class="table-responsive slide_1" *ngIf="erroresAhorro.length > 0" >
+            <h3 > Ahorradores con Errores</h3>
+            <table class="table table-bordered table-sm">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="text-center">No.</th>
+                  <th scope="col" class="text-center">Clave</th>
+                  <th scope="col" class="text-center">Nombre</th>
+                  <th scope="col" class="text-center">Observaciones</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor = "let fila of erroresAhorro | paginate: { id: 'errores',itemsPerPage: 10, currentPage: pErrores }; let i = index "  [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
+                  <td scope="row" class="text-center">   {{ (10 * (pErrores - 1) + i) +1 }}</td>
+                  <td scope="row" class="text-left"> {{fila.noEmpleado}} </td>
+                  <td scope="row" class="text-left"> {{fila.nombre | uppercase}} </td>
+                  <td scope="row" class="text-left"> {{fila.observaciones | uppercase   }} </td>
+                </tr>
+
+              </tbody>
+
+
+            </table> 
+          
+          <pagination-controls 
+            id= "errores"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            
+            (pageChange)="pErrores = $event"
+          >
+        </pagination-controls>
+            
+            <div class="col-sm-6">  
+              <button class="btn btn-warning" (click)="limpiarErrores()" [disabled] = "loading">Limpiar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button>  
+            </div>
+
+          </div>
+
           <cybord-loader *ngIf="loading"></cybord-loader>
         </div>
         
@@ -73,8 +126,8 @@
            ¿Resgistrar ahorros externos?
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary"  (click)="cargar()" >Si</button>
-            <button type="button" class="btn btn-secondary" (click)="decline()" >No</button>
+            <button type="button" class="btn btn-primary"  (click)="cargar()" [disabled] = "loading">Si  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+            <button type="button" class="btn btn-secondary" (click)="decline()" [disabled] = "loading">No  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
         </div>
       </div>
     </div>

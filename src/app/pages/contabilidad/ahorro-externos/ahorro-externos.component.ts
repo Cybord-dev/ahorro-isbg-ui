@@ -1,11 +1,13 @@
 import { Component, OnInit, Renderer2, ViewChild, ElementRef } from '@angular/core';
 import * as XLSX from 'xlsx';
 import {AhorroExterno} from '../../../models/ahorroExterno' ;
+import {AhorroExternoResponse} from '../../../models/ahorroExternoResponse' ;
 import { UsuariosService } from '../../../services/usuarios.service';
 import { AhorroServicio } from '../../../services/ahorro.service';
 import { Usuario } from '../../../models/usuario';
 import { SaldoAhorro} from '../../../models/saldoahorro';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 
@@ -21,9 +23,12 @@ export class AhorroExternosComponent implements OnInit {
   @ViewChild('fileInput') public fileInput: ElementRef;
 
   public datosAhorro: AhorroExterno[];
+  public erroresAhorro: AhorroExternoResponse[];
   public errorMessages: string[] = [];
   public loading = false;
   public tablaValida = true;
+  public pExternos = 1;
+  public pErrores = 1;
 
   constructor(
     private renderer: Renderer2,
@@ -33,6 +38,7 @@ export class AhorroExternosComponent implements OnInit {
 
   ngOnInit(): void {
     this.datosAhorro = new Array<AhorroExterno>();
+    this.erroresAhorro = new Array<AhorroExternoResponse>();
   }
 
  onFileChange(files): void {
@@ -105,6 +111,7 @@ export class AhorroExternosComponent implements OnInit {
 
     const saldoAhorro: SaldoAhorro [] = new Array<SaldoAhorro>();
 
+    this.loading = true;
     this.datosAhorro.forEach(ahorro => {
       const saldoAhorroActual: SaldoAhorro = new SaldoAhorro();
       saldoAhorroActual.idUsuario = ahorro.idUsuario;
@@ -115,22 +122,31 @@ export class AhorroExternosComponent implements OnInit {
 
     });
 
-
     this.ahorroService.postSaldoBulk(saldoAhorro).toPromise()
-    .then(saldo => {
-        alert('Se registraron depositos de ' + saldo.length + ' ahorradores');
+    .then(retorno => {
+        this.erroresAhorro = retorno.errores;
+        alert('Se registraron depositos de ' + retorno.correctos.length + ' ahorradores ' + '\n' + 'Se tienen ' + retorno.errores.length + ' errores');
         this.clean();
         this.modalConfirmacion.hide();
+      }).then(valor => {
+        this.loading = false;
       })
     .catch(error => {
       alert('Se registro un error al cargar los ahorros ' + error);
+      this.clean();
       this.modalConfirmacion.hide();
+      this.loading = false;
     });
+
+
    }
+
+limpiarErrores(): void {
+  this.erroresAhorro = [];
+}
 
 
  validar(usuario: any, base: AhorroExterno): void{
-
     base.idUsuario = usuario.content[0].id;
     let validado = true;
     let usuarioNombre: string = usuario.content[0].nombre.trim();
@@ -155,6 +171,7 @@ export class AhorroExternosComponent implements OnInit {
       validado = false;
     }
 
+
     if (usuario.content[0].tipoUsuario !== 'EXTERNO' ){
       this.agregarObservacion(base, 'El usuario no es externo');
       validado = false;
@@ -166,6 +183,11 @@ export class AhorroExternosComponent implements OnInit {
     }
 
     if (base.importe === undefined || isNaN(base.importe) ){
+      this.agregarObservacion(base, 'El importe no es correcto');
+      validado = false;
+    }
+
+    if (base.importe != usuario.content[0].montoAhorro ){
       this.agregarObservacion(base, 'El importe no es correcto');
       validado = false;
     }

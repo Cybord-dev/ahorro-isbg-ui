@@ -48,8 +48,8 @@ export class AhorroServicio {
     return this.http.get<SaldoAhorro[]>(`../api/v1/usuarios/${idUsuario}/ahorros/${idAhorro}`);
   }
 
-  public postSaldoBulk(saldoBulk: SaldoAhorro[]): Observable<SaldoAhorro[]>{
-    return this.http.post<SaldoAhorro[]>(`../api/v1/ahorros/bulk`, saldoBulk);
+  public postSaldoBulk(saldoBulk: SaldoAhorro[]): Observable<any>{
+    return this.http.post<SaldoAhorro[]>(`../api/v1/ahorros/externos`, saldoBulk);
   }
 
   public postConciliacion(datosValidar: Conciliador[]): Observable<any[]>{
