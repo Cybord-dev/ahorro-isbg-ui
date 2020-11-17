@@ -10,16 +10,18 @@ export class ValidationService {
 
 
 
-  public validateSolicitud(solicitud: Solicitud, totalAhorro: number): string[]{
+  public validateSolicitud(solicitud: Solicitud, totalAhorro: number): string[] {
     const alerts: string[] = [];
-    if ('RetiroParcialAhorro' === solicitud.tipo && +solicitud.atributos.MONTO > totalAhorro){
+    if ('RetiroParcialAhorro' === solicitud.tipo && +solicitud.atributos.MONTO > totalAhorro) {
       alerts.push(`No es posible solicitar un monto superior al total de su ahorro de $${totalAhorro}`);
     }
-    if (solicitud.atributos.MONTO === undefined){
+    if (solicitud.atributos.MONTO === undefined) {
       alerts.push('El monto de la solicitud no ha sido asignado');
     }
-    if ('CancelacionAhorro' === solicitud.tipo && +solicitud.atributos.RAZON_CANCELACION.length < 10){
-      alerts.push(`Razon o motivos de cancelacion de ahorros insuficientes`);
+    if ('CancelacionAhorro' === solicitud.tipo && (
+      solicitud.atributos.RAZON_CANCELACION === undefined ||
+      solicitud.atributos.RAZON_CANCELACION.length < 10)) {
+      alerts.push('La descripción del motivo de cancelación es muy corto');
     }
     return alerts;
   }

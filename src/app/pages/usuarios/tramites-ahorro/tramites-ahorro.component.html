@@ -16,7 +16,7 @@
               <cybord-loader *ngIf="loading"></cybord-loader>
 
               <tabset #staticTabs>
-                <tab *ngIf="solicitudCancelacion.status!=='Finalizada'">
+                <tab>
                     <ng-template tabHeading ><i class="icon-docs"></i>&nbsp; Solicitud</ng-template>
                     <div class="row">
                       <div class="col-xs-12 col-sm-12 col-md-6 form-group">
@@ -45,7 +45,7 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
                             <div class="col-md-9">
-                              <input type="number" id="quantity" name="quantity" class="form-control" min=100 [disabled] = "solicitudAhorro.id !== undefined && solicitudAhorro.status !=='Rechazada'"
+                              <input type="number" id="quantity" name="quantity" class="form-control" min=100 [disabled] = "solicitudAhorro.id !== undefined && solicitudAhorro.status !=='Rechazada' && solicitudCancelacion.status!=='Finalizada'"
                                 placeholder="100.00"  [(ngModel)]="solicitudAhorro.atributos.MONTO" min="100" max="20000">
                               <span class="help-block" *ngIf="solicitudAhorro.id === undefined">Descuento quincenal</span>
                             </div>
@@ -55,8 +55,8 @@
                             <div class="col-md-9">
                               <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" bsDatepicker
                                 [bsConfig]="{ containerClass: 'theme-dark-blue' }" [datesEnabled]="enabledDates"
-                                 [(bsValue)]="bsValue" *ngIf="solicitudAhorro.atributos.FECHA === undefined || solicitudAhorro.status ==='Rechazada'">
-                                 <input type="text" id="start-date" name="start-date" class="form-control" disabled *ngIf="solicitudAhorro.atributos.FECHA !== undefined && solicitudAhorro.status !=='Rechazada'"
+                                 [(bsValue)]="bsValue" *ngIf="solicitudAhorro.atributos.FECHA === undefined || solicitudAhorro.status ==='Rechazada' || solicitudCancelacion.status==='Finalizada'">
+                                 <input type="text" id="start-date" name="start-date" class="form-control" disabled *ngIf="solicitudAhorro.atributos.FECHA !== undefined && solicitudAhorro.status !=='Rechazada' && solicitudCancelacion.status!=='Finalizada'"
                                  placeholder="fecha inicio descuentos" [(ngModel)]="solicitudAhorro.atributos.FECHA">
                               <span class="help-block" *ngIf="solicitudAhorro.atributos.FECHA === undefined">fecha inicio descuentos</span>
                             </div>
@@ -78,7 +78,7 @@
                         <br>
                         <br>
                         <button type="button" class="btn btn-sm btn-success" (click)="openModal('SolicitudAhorro')" 
-                              *ngIf="(solicitudAhorro.id === undefined || solicitudAhorro.status ==='Rechazada') && solicitudEnProgreso.length === 0 " [disabled]="loading || success.length > 0">
+                              *ngIf="(solicitudAhorro.id === undefined || solicitudAhorro.status ==='Rechazada' || solicitudCancelacion.status==='Finalizada') && solicitudEnProgreso.length === 0 " [disabled]="loading || success.length > 0">
                           <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud<i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
                           <div class="alert alert-warning" role="alert" *ngIf="solicitudEnProgreso.length > 0">
                             {{solicitudEnProgreso}}
@@ -86,7 +86,7 @@
                       </div>
   
                     </div>
-
+                    
                     <div class="row" *ngIf="solicitudAhorro.id !== undefined && solicitudAhorro.status !== 'Rechazada' && solicitudAhorro.status !== 'Finalizada'">
                       <div class="col"></div>
                       <div class="col-6">
@@ -96,7 +96,7 @@
                       </div>
                       <div class="col"></div>
                     </div>
-                    <div class="row" *ngIf="solicitudAhorro.id !== undefined && solicitudAhorro.validaciones.length>0">
+                    <div class="row" *ngIf="solicitudAhorro.id !== undefined && solicitudAhorro.validaciones.length>0 && solicitudCancelacion.status!=='Finalizada'">
                       <div class="col"></div>
                       <div class="col-6">
                         <div class="alert alert-success" role="alert" *ngIf="solicitudAhorro.status === 'Finalizada'" >
@@ -320,7 +320,7 @@
                       <div class="col"></div>
                       <div class="col-6">
                         <div class="alert alert-success" role="alert" *ngIf="solicitudRetiro.status === 'Finalizada'" >
-                          La solicitud de ahorro fue exitosamente aprobada.
+                          La solicitud de retiro parcial fue exitosamente aprobada.
                         </div>
                         <div class="alert alert-danger" role="alert" *ngIf="solicitudRetiro.status === 'Rechazada'">
                           La solicitud de ahorro fue rechazada, el motivo es : {{solicitudAhorro.statusDetalle}}.
@@ -427,7 +427,7 @@
                           <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio se cancele el
                           descuento que se aplica en mi pago de nómina la cantidad de de <strong>${{usuario.datosUsuario.AHORRO}}</strong> de manera quincenal
                           a partir de la siguiente fecha <strong *ngIf="solicitudCancelacion.id === undefined">{{bsValue | date}}</strong> <strong *ngIf="solicitudCancelacion.id !== undefined">{{solicitudCancelacion.atributos.FECHA}}</strong>,
-                          debido a {{solicitudCancelacion.atributos.RAZON_CANCELACION}} y asimismo se me reintegre la cantidad de <strong>{{totalAhorro | currency }}</strong> 
+                          debido a <strong>{{solicitudCancelacion.atributos.RAZON_CANCELACION}}</strong> y asimismo se me reintegre la cantidad de <strong>{{totalAhorro | currency }}</strong> 
                           del PROGRAMA DE AHORRO VOLUNTARIO sea depositado a la cuenta <strong>{{usuario.datosUsuario.TIPO_CUENTA}} {{usuario.datosUsuario.CUENTA}}
                             del banco {{usuario.datosUsuario.BANCO}}</strong>
                         </span>
@@ -449,6 +449,12 @@
                       <div class="col-6">
                         <strong>Autorizaciones</strong>
                         <br/>
+                        <div class="alert alert-success" role="alert" *ngIf="solicitudCancelacion.status === 'Finalizada'" >
+                          La solicitud de cancelacion fue exitosamente aprobada.
+                        </div>
+                        <div class="alert alert-danger" role="alert" *ngIf="solicitudCancelacion.status === 'Rechazada'">
+                          La solicitud de cancelacion fue rechazada, el motivo es : {{solicitudCancelacion.statusDetalle}}.
+                        </div>
                         <br/>
                         <table class="table table-bordered table-striped table-sm">
                           <thead class="thead-dark">
