@@ -29,6 +29,7 @@ export class ValidationService {
   public validarUsuario(usuario: Usuario): string[]{
     const alerts: string[] = []
     const regexNombre=  new RegExp('^([0-9a-zA-ZÀ-ú.,&-_ ]+)$');
+    const regexCuenta=  new RegExp('^([0-9]{12})$');
     const regexEmail = new RegExp('^[a-z0-9A-Z._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$');
 
     if( !regexEmail.test(usuario.email) || usuario.email === undefined
@@ -48,8 +49,11 @@ export class ValidationService {
     if (usuario.datosUsuario.BANCO === "*" || usuario.datosUsuario.BANCO === undefined){
       alerts.push('El banco no ha sido asignado');
     }
-    if (usuario.datosUsuario.CUENTA === "*" || usuario.datosUsuario.CUENTA === undefined){
-      alerts.push('El no. de cuenta no esta definido');
+    if (usuario.datosUsuario.TIPO_CUENTA === "*" || usuario.datosUsuario.TIPO_CUENTA === undefined){
+      alerts.push('El tipo de cuenta no esta definido');
+    }
+    if( !regexCuenta.test(usuario.datosUsuario.CUENTA)){
+      alerts.push('El no. de cuenta es invalido');
     }
     if ( Number(usuario.datosUsuario.SUELDO) < 100 ){
       alerts.push('El saldo no es valido (MENOR A 100)');
