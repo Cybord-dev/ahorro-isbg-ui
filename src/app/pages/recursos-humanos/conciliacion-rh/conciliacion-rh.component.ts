@@ -3,6 +3,7 @@ import * as XLSX from 'xlsx';
 import { Conciliador } from 'src/app/models/conciliador';
 import { AhorroServicio } from 'src/app/services/ahorro.service';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 
 @Component({
   selector: 'cybord-conciliacion-rh',
@@ -12,6 +13,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 export class ConciliacionRhComponent implements OnInit {
 
   @ViewChild('fileInput') public fileInput: ElementRef;
+  @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
 
   public datosConciliacion: Conciliador[];
   public conciliacionProcesados: Conciliador[];
@@ -79,14 +81,11 @@ export class ConciliacionRhComponent implements OnInit {
     this.loading = true;
     this.conciliacionProcesados = this.datosConciliacion;
     this.datosConciliacion = [];
-
-    const resultado = await this.ahorroService.postConciliacion(this.conciliacionProcesados).toPromise();
+    const resultado = await this.ahorroService.postValidarInternos(this.conciliacionProcesados).toPromise();
     const jsonRest = JSON.parse(JSON.stringify(resultado));
     this.conciliacionCorrectos = jsonRest.correctos;
     this.conciliacionErroneos = jsonRest.errores;
     this.loading = false;
-
-
   }
 
   clean(): void {
@@ -97,5 +96,53 @@ export class ConciliacionRhComponent implements OnInit {
     this.conciliacionErroneos = [];
     this.loading = false;
   }
+
+  validarTodos(valor?: boolean): void{
+    this.conciliacionErroneos.forEach(conciliacion => {
+      conciliacion.validado = valor;
+    });
+  }
+
+  conciliar(): void{
+    if (this.conciliacionCorrectos.length === 0){
+      alert('No hay Ahorradores validos para coinciliar');
+      return;
+    }
+
+    let datosValidados = true;
+
+    this.conciliacionErroneos.forEach(datos => {
+        if (datos.validado === false){
+          datosValidados = false;
+        }
+    });
+
+    if (!datosValidados){
+      alert('Existen Errores que no han sido aprobados');
+      return;
+    }
+
+    this.openModal();
+  }
+
+  openModal(): void{
+
+    this.modalConfirmacion.show();
+
+  }
+
+  decline(): void{
+    this.modalConfirmacion.hide();
+  }
+
+  async conciliacion(): Promise<any> {
+    this.loading = true;
+    this.conciliacionCorrectos.forEach(valor => {valor.validado = true; });
+
+    const response = await this.ahorroService.postConciliarInternos(this.conciliacionCorrectos).toPromise();
+    this.decline();
+    this.clean();
+  }
+
 
 }
