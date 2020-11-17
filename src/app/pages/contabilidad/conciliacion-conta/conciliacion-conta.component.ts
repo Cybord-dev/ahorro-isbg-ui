@@ -72,11 +72,11 @@ export class ConciliacionContaComponent implements OnInit {
     this.datosConciliacion = [];
 
     console.log('Request ' + JSON.stringify(this.conciliacionProcesados));
-    const resultado = await this.ahorroService.postConciliacion(this.conciliacionProcesados).toPromise();
-    const jsonRest = JSON.parse(JSON.stringify(resultado));
-    console.log('Resultado ' + JSON.stringify(jsonRest));
+    /* const resultado = await this.ahorroService.postConciliacion(this.conciliacionProcesados).toPromise();
+     const jsonRest = JSON.parse(JSON.stringify(resultado));
+     console.log('Resultado ' + JSON.stringify(jsonRest));
     this.conciliacionCorrectos = jsonRest.correctos;
-    this.conciliacionErroneos = jsonRest.errores;
+    this.conciliacionErroneos = jsonRest.errores; */
     this.loading = false;
 
 
