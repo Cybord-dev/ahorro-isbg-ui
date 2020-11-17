@@ -8,6 +8,7 @@ import { Usuario } from '../../../models/usuario';
 import { RolCat } from '../../../models/rolcat';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 import { CatalogosService } from 'src/app/services/catalogos.service';
+import { ValidationService } from 'src/app/services/validation.service';
 import { Catalogo } from 'src/app/models/catalogo';
 
 
@@ -44,7 +45,8 @@ export class UsuarioComponent implements OnInit {
     private catService: CatalogosService,
     private usuarioServicio: UsuariosService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private validationService: ValidationService
   ) { }
 
   public ngOnInit(): void {
@@ -64,8 +66,7 @@ export class UsuarioComponent implements OnInit {
         this.updateUserInfo(+id);
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: true }],
-          alias: [this.usuario.nombre, [Validators.maxLength(100), Validators.minLength(2),
-          Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡"\' ]+)$')]],
+          alias: [this.usuario.nombre, [Validators.minLength(2)]],
           activo: [this.usuario.activo],
           tipo: [this.usuario.tipoUsuario],
           oficina: [this.usuario.datosUsuario.OFICINA],
@@ -82,9 +83,8 @@ export class UsuarioComponent implements OnInit {
         this.antiguedad = new Date();
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: false, },
-          [Validators.required, Validators.email, Validators.pattern('^[a-z0-9A-Z._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-          alias: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(2),
-          Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡"\' ]+)$')]],
+          [Validators.required, Validators.email]],
+          alias: ['', [Validators.required, Validators.minLength(2)]],
           activo: [this.usuario.activo],
           tipo: [this.usuario.tipoUsuario],
           oficina: [this.usuario.datosUsuario.OFICINA],
@@ -93,7 +93,7 @@ export class UsuarioComponent implements OnInit {
           noEmpleado: [this.usuario.noEmpleado],
           cuenta: [this.usuario.datosUsuario.CUENTA],
           sueldo: [this.usuario.datosUsuario.SUELDO],
-          antiguedad: [new Date()]
+          antiguedad: [this.antiguedad]
         });
         this.loading = false;
       }
@@ -148,14 +148,11 @@ export class UsuarioComponent implements OnInit {
     this.errorMessages = [];
     this.loading = true;
     this.modalConfirmacion.hide();
-    if (this.registerForm.invalid) {
-      this.loading = false; 
-      if(this.registerForm.get('alias').invalid){
-        this.errorMessages.push("Nombre invalido");
-      }
+    this.errorMessages = this.validationService.validarUsuario(this.usuario);
+    if(this.errorMessages.length > 0){
+      this.loading = false;
       return;
     }
-    this.errorMessages = [];
     this.usuarioServicio.actualizaUser(this.usuario).toPromise()
       .then(async updateduser => {
         if(this.usuario.datosUsuario.ANTIGUEDAD !== undefined){
@@ -199,47 +196,12 @@ export class UsuarioComponent implements OnInit {
   public register(): void {
     this.errorMessages = [];
     let id = 0;
-    console.log('registering',this.registerForm.invalid);
     this.loading = true;
     this.modalConfirmacion.hide();
-    if(this.registerForm.get('email').invalid){
-      this.errorMessages.push("Email invalido");
-      this.loading = false; 
-      return;
+    this.errorMessages = this.validationService.validarUsuario(this.usuario);
+    if(this.errorMessages.length > 0){
+      this.loading = false;
     }
-    if(this.registerForm.get('alias').invalid){
-      this.errorMessages.push("Nombre invalido");
-      this.loading = false; 
-      return;
-    }
-    if(this.registerForm.get('activo').invalid){
-      this.errorMessages.push("El usuario debe ser activo");
-      this.loading = false; 
-      return;
-    }
-    if(this.usuario.noEmpleado === undefined || this.usuario.noEmpleado === ""){
-      this.errorMessages.push("Llena el campo de No. de empleado");
-      this.loading = false; 
-      return;
-    }
-    if(this.usuario.datosUsuario.OFICINA === undefined || this.usuario.datosUsuario.OFICINA === "" || this.usuario.datosUsuario.OFICINA === "*"){
-      this.errorMessages.push("Llena el campo de oficina");
-      this.loading = false; 
-      return;
-    }
-    if(this.usuario.datosUsuario.BANCO === undefined || this.usuario.datosUsuario.BANCO === "" || this.usuario.datosUsuario.BANCO === "*"){
-      this.errorMessages.push("Llena el campo de banco");
-      this.loading = false; 
-      return;
-    }
-    if(this.usuario.datosUsuario.SUELDO === undefined || this.usuario.datosUsuario.SUELDO === "" || this.usuario.datosUsuario.SUELDO === "*"){
-      this.errorMessages.push("Llena el campo de sueldo");
-      this.loading = false; 
-      return;
-    }
-
-    //if (this.registerForm.invalid) { this.loading = false; return; }
-    this.errorMessages = [];
     console.log('registering');
     this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
     this.usuarioServicio.insertarUsuario(this.usuario).toPromise()
@@ -257,9 +219,10 @@ export class UsuarioComponent implements OnInit {
           }
         }
         this.submitted = true;
-      })
-      .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
-      .catch(error => {this.errorMessages.push(error); this.loading = false;});
+    })
+    .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
+    .catch(error => {this.errorMessages.push(error); this.loading = false;});
+    
   }
 
   private async updateRoles(): Promise<void> {
