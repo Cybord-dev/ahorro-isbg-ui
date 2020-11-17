@@ -1,5 +1,6 @@
 export class Conciliador {
 
+    public id: number;
     public idUsuario: number;
     public noEmpleado: string;
     public nombre: string;

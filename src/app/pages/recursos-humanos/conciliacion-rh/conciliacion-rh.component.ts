@@ -138,6 +138,7 @@ export class ConciliacionRhComponent implements OnInit {
   async conciliacion(): Promise<any> {
     this.loading = true;
     this.conciliacionCorrectos.forEach(valor => {valor.validado = true; });
+
     const response = await this.ahorroService.postConciliarInternos(this.conciliacionCorrectos).toPromise();
     this.decline();
     this.clean();
