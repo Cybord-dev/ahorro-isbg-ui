@@ -7,6 +7,9 @@ import { UsuariosService } from '../../../services/usuarios.service';
 import { Usuario } from '../../../models/usuario';
 import { RolCat } from '../../../models/rolcat';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
+import { CatalogosService } from 'src/app/services/catalogos.service';
+import { ValidationService } from 'src/app/services/validation.service';
+import { Catalogo } from 'src/app/models/catalogo';
 
 
 @Component({
@@ -19,7 +22,7 @@ export class UsuarioComponent implements OnInit {
 
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
 
-  registerForm: FormGroup;
+  public registerForm: FormGroup;
   public submitted = false;
   public loading = false;
   public usuario: Usuario = new Usuario();
@@ -27,22 +30,35 @@ export class UsuarioComponent implements OnInit {
   public mensajeModal = '';
   public params: any = { success: '', message: '', id: '*', module: 'usuarios', interno: false };
   public antiguedad: Date;
+  public maxDate: Date;
 
-  public roles = { USUARIO: true, RECURSOS_HUMANOS: false, TESORERIA: false, CONTABILIDAD: false, GERENCIA: false, ADMINISTRACION: false };
+  public oficinas: Catalogo[] = [];
+  public bancos: Catalogo[] = [];
+  public cuentas: Catalogo[] = [];
+
+  public roles = { USUARIO: true, RECURSOS_HUMANOS: false, TESORERIA: false, CONTABILIDAD: false,
+     GERENCIA_INTERNA: false, GERENCIA_EXTERNA: false, ADMINISTRACION: false, DIRECCION: false };
   private nombreRoles = Object.keys(this.roles);
   constructor(
     public datepipe: DatePipe,
     private route: ActivatedRoute,
+    private catService: CatalogosService,
     private usuarioServicio: UsuariosService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private validationService: ValidationService
   ) { }
 
   public ngOnInit(): void {
+    this.maxDate = new Date();
     this.loading = true;
     this.errorMessages = [];
     this.params.module = this.router.url.split('/')[1];
     this.antiguedad = new Date();
+
+    this.catService.getCatalogosByTipo('oficinas').subscribe(off => this.oficinas = off);
+    this.catService.getCatalogosByTipo('bancos').subscribe(banks => this.bancos = banks);
+    this.catService.getCatalogosByTipo('tipo-cuenta').subscribe(accounts => this.cuentas = accounts);
 
     this.route.paramMap.subscribe(route => {
       const id = route.get('idUsuario');
@@ -50,21 +66,34 @@ export class UsuarioComponent implements OnInit {
         this.updateUserInfo(+id);
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: true }],
-          alias: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(2),
-          Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡" \' ]+)$')]],
-          activo: ['Si', Validators.required],
+          alias: [this.usuario.nombre, [Validators.minLength(2)]],
+          activo: [this.usuario.activo],
           tipo: [this.usuario.tipoUsuario],
+          oficina: [this.usuario.datosUsuario.OFICINA],
+          tipo_cuenta: [this.usuario.datosUsuario.TIPO_CUENTA],
+          banco: [this.usuario.datosUsuario.BANCO],
+          account: [this.usuario.datosUsuario.TIPO_CUENTA],
+          noEmpleado: [this.usuario.noEmpleado],
+          cuenta: [this.usuario.datosUsuario.CUENTA],
+          sueldo: [this.usuario.datosUsuario.SUELDO],
+          antiguedad: [new Date(this.usuario.datosUsuario.ANTIGUEDAD)]
         });
 
       } else {
         this.antiguedad = new Date();
         this.registerForm = this.formBuilder.group({
           email: [{ value: this.usuario.email, disabled: false, },
-          [Validators.required, Validators.email, Validators.pattern('^[a-z0-9A-Z._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-          alias: ['', [Validators.required, Validators.maxLength(100), Validators.minLength(2),
-          Validators.pattern('^([0-9a-zA-ZÀ-ú.,&-_!¡"\' ]+)$')]],
-          activo: ['Si', Validators.required],
+          [Validators.required, Validators.email]],
+          alias: ['', [Validators.required, Validators.minLength(2)]],
+          activo: [this.usuario.activo],
           tipo: [this.usuario.tipoUsuario],
+          oficina: [this.usuario.datosUsuario.OFICINA],
+          banco: [this.usuario.datosUsuario.BANCO],
+          account: [this.usuario.datosUsuario.TIPO_CUENTA],
+          noEmpleado: [this.usuario.noEmpleado],
+          cuenta: [this.usuario.datosUsuario.CUENTA],
+          sueldo: [this.usuario.datosUsuario.SUELDO],
+          antiguedad: [this.antiguedad]
         });
         this.loading = false;
       }
@@ -116,14 +145,16 @@ export class UsuarioComponent implements OnInit {
   get f() { return this.registerForm.controls; }
 
   public update(): void {
-    this.loading = true;
-    console.log(this.usuario.noEmpleado);
-    this.modalConfirmacion.hide();
-    //if (this.registerForm.invalid) { this.loading = false; return; }
     this.errorMessages = [];
+    this.loading = true;
+    this.modalConfirmacion.hide();
+    this.errorMessages = this.validationService.validarUsuario(this.usuario);
+    if(this.errorMessages.length > 0){
+      this.loading = false;
+      return;
+    }
     this.usuarioServicio.actualizaUser(this.usuario).toPromise()
       .then(async updateduser => {
-        console.log(updateduser);
         if(this.usuario.datosUsuario.ANTIGUEDAD !== undefined){
           this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
         }
@@ -159,16 +190,18 @@ export class UsuarioComponent implements OnInit {
         this.params.success = 'El usuario ha sido actualizado satisfactoriamente.';
       })
       .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
-      .catch(error => {this.errorMessages.push(error); this.loading = false;});
+      .catch(error => {this.errorMessages.push(error); this.loading = false; });
   }
 
   public register(): void {
+    this.errorMessages = [];
     let id = 0;
-    console.log('registering',this.registerForm.invalid);
     this.loading = true;
     this.modalConfirmacion.hide();
-    //if (this.registerForm.invalid) { this.loading = false; return; }
-    this.errorMessages = [];
+    this.errorMessages = this.validationService.validarUsuario(this.usuario);
+    if(this.errorMessages.length > 0){
+      this.loading = false;
+    }
     console.log('registering');
     this.usuario.datosUsuario.ANTIGUEDAD = this.datepipe.transform(this.antiguedad, 'yyyy-MM-dd');
     this.usuarioServicio.insertarUsuario(this.usuario).toPromise()
@@ -186,9 +219,10 @@ export class UsuarioComponent implements OnInit {
           }
         }
         this.submitted = true;
-      })
-      .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
-      .catch(error => {this.errorMessages.push(error); this.loading = false;});
+    })
+    .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
+    .catch(error => {this.errorMessages.push(error); this.loading = false;});
+    
   }
 
   private async updateRoles(): Promise<void> {

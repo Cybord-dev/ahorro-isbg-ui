@@ -15,8 +15,8 @@ export class CatalogosService {
     return this.http.get<Catalogo[]>(`../api/v1/catalogos/${tipo}`);
   }
 
-  public getCatalogoByTipoAndNombre(tipo: string, nombre: string): Observable<Catalogo[]>{
-    return this.http.get<Catalogo[]>(`../api/v1/catalogos/${tipo}/${nombre}`);
+  public getCatalogoByTipoAndNombre(tipo: string, nombre: string): Observable<Catalogo>{
+    return this.http.get<Catalogo>(`../api/v1/catalogos/${tipo}/${nombre}`);
   }
 
   public postCatalogo(catalogo: Catalogo): Observable<Catalogo[]>{

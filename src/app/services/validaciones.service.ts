@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Validacion } from '../models/validacion';
 import { GenericPage } from '../models/generic-page';
 import { HistoricoValidacion } from '../models/historico-validacion';
+import { Recurso } from '../models/recurso';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class ValidacionesService {
 
     public getValidaciones(filterParams: any): Observable<GenericPage<HistoricoValidacion>> {
       return this.http.get<GenericPage<HistoricoValidacion>>('../api/v1/validaciones', {params: this.getHttpParams(filterParams)});
+    }
+
+    public getReporteValidaciones(filterParams: any): Observable<Recurso> {
+      return this.http.get<Recurso>('../api/v1/validaciones/report', {params: this.getHttpParams(filterParams)});
     }
 
     public getValidacionesBySolicitud (idUsuario: number, idSolicitud: number): Observable<Validacion[]>{

@@ -9,6 +9,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 
 
 // Common components
@@ -20,6 +21,10 @@ import { HistoricoSolicitudesComponent } from './historico-solicitudes/historico
 import { ValidacionSolicitudComponent } from './validacion-solicitud/validacion-solicitud.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UsuarioComponent } from './usuario/usuario.component';
+import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.component';
+import { AjusteAhorroComponent } from './ajuste-ahorro/ajuste-ahorro.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoaderComponent } from './loader/loader.component';
 
 
 
@@ -27,11 +32,15 @@ import { UsuarioComponent } from './usuario/usuario.component';
 @NgModule({
   declarations: [
     ProfileComponent,
+    DashboardComponent,
     ReporteSolicitudesComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
     UsuariosComponent,
-    UsuarioComponent],
+    UsuarioComponent,
+    AjusteAhorroComponent,
+    ReporteAhorrosComponent,
+    LoaderComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -40,12 +49,12 @@ import { UsuarioComponent } from './usuario/usuario.component';
     AlertModule.forRoot(),
     ModalModule.forRoot(),
     FormsModule,
-    FormsModule,
     ChartsModule,
     BsDropdownModule,
     ButtonsModule.forRoot(),
     ReactiveFormsModule,
-    CommonsRoutingModule
+    CommonsRoutingModule,
+    CarouselModule.forRoot()
   ],
   exports: [
     CommonModule,
@@ -55,9 +64,12 @@ import { UsuarioComponent } from './usuario/usuario.component';
     ModalModule,
     BsDatepickerModule,
     ProfileComponent,
+    AjusteAhorroComponent,
     ReporteSolicitudesComponent,
+    LoaderComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
+    CarouselModule
   ],
   providers: [
     DatePipe

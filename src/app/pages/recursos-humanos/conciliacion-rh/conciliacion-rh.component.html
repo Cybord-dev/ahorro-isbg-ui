@@ -1,1 +1,175 @@
-<p>conciliacion-rh works!</p>
+<div class="animated fadeIn">
+    <div class="row">
+      <div class = "col">
+      <div class="card">
+        <div class="card-header">
+          <strong>Conciliacion</strong>
+        </div>
+        <div class="card-body" >
+
+        
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="file-input">Subir Archivo</label>
+            <div class="col-md-9">
+            <input #fileInput id="file-input" type="file" accept=".xlsx, .xls, .csv  " name="file-input" (change)="onFileChange($event.target.files)" class="file-input">
+            </div>
+            </div>
+
+          <!-- Tabla carga archivo -->
+          <div class="table-responsive slide_1" *ngIf="datosConciliacion.length > 0" >
+            <table class="table table-bordered table-sm">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="text-center colum_small_4">No.</th>
+                  <th scope="col" class="text-center colum_small_4">Clave</th>
+                  <th scope="col" class="text-center colum_nombre_4">Nombre</th>
+                  <th scope="col" class="text-center colum_saldo_4">Importe</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                    <tr *ngFor = "let fila of datosConciliacion | paginate: { id: 'carga',itemsPerPage: 10, currentPage: pCarga }; let i = index "   >
+                      <td scope="row" class="text-center colum_small_4">   {{ (10 * (pCarga - 1) + i) +1 }}</td>
+                      <td scope="row" class="text-left colum_small_4"> {{fila.noEmpleado}} </td>
+                      <td scope="row" class="text-left colum_nombre_4"> {{fila.nombre}} </td>
+                      <td scope="row" class="text-right colum_saldo_4"> {{fila.saldo | currency  }} </td>
+                    </tr>
+              </tbody>
+
+
+            </table> 
+
+            <pagination-controls 
+              
+                id= "carga"
+                previousLabel="Anterior"
+                nextLabel="Siguiente"
+                autoHide="true"
+                (pageChange)="pCarga = $event"
+                *ngIf="datosConciliacion.length > 0"
+               >
+            </pagination-controls>
+
+            <div class="col-sm-6">  
+              <button class="btn btn-warning" (click)="clean()" [disabled] = "loading">Limpiar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button>  
+              
+              <button class="btn btn-success" (click)="validar()" [disabled] = "loading " >Validar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>  
+            </div>
+
+          </div>
+
+          <div class="table-responsive slide_1" *ngIf="conciliacionProcesados.length > 0" >
+            
+            <!-- Tabla correctos-->
+            <div *ngIf="conciliacionCorrectos.length > 0"> 
+              <h3 > Ahorradores Validados</h3>
+              <table class="table table-bordered table-sm" >
+                
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" class="text-center">No.</th>
+                    <th scope="col" class="text-center">Clave</th>
+                    <th scope="col" class="text-center">Nombre</th>
+                    <th scope="col" class="text-center">Importe</th>
+                    <th scope="col" class="text-center">Observaciones</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                      <tr *ngFor = "let fila of conciliacionCorrectos | paginate: { id: 'correctos',itemsPerPage: 10, currentPage: pCorrectos }; let i = index " >
+                        <td scope="row" class="text-center">   {{ (10 * (pCorrectos - 1) + i) +1 }}</td>
+                        <td scope="row" class="text-left"> {{fila.noEmpleado}} </td>
+                        <td scope="row" class="text-left"> {{fila.nombre | uppercase }} </td>
+                        <td scope="row" class="text-left"> {{fila.saldo | currency}} </td>
+                        <td scope="row" class="text-left"> Validado </td>
+                      </tr>
+                </tbody>
+              </table>
+
+
+              <pagination-controls 
+                  id= "correctos"
+                  previousLabel="Anterior"
+                  nextLabel="Siguiente"
+                  autoHide="true"
+                  (pageChange)="pCorrectos = $event"
+                >
+              </pagination-controls>
+
+            </div>
+            <!-- Tabla Erroneos-->
+            <div *ngIf="conciliacionErroneos.length > 0">
+              <h3> Ahorradores No Validados</h3>
+              <table class="table table-bordered table-sm">
+                
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col" class="text-center">No.</th>
+                    <th scope="col" class="text-center">Aprobar</th>
+                    <th scope="col" class="text-center">Clave</th>
+                    <th scope="col" class="text-center">Nombre</th>
+                    <th scope="col" class="text-center">Importe</th>
+                    <th scope="col" class="text-center">Observaciones</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                      <tr *ngFor = "let fila of conciliacionErroneos | paginate: { id: 'erroneos',itemsPerPage: 10, currentPage: pErroneos }; let i = index " [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
+                        <td scope="row" class="text-center">   {{ (10 * (pErroneos - 1) + i) +1 }}</td>
+                        <td scope="row" class="text-center">   <input type="checkbox" [(ngModel)]='fila.validado'></td>
+                        <td scope="row" class="text-left"> {{fila.noEmpleado}} </td>
+                        <td scope="row" class="text-left"> {{ fila.nombre | uppercase }} </td>
+                        <td scope="row" class="text-right"> {{fila.saldo | currency }} </td>
+                        <td scope="row" class="text-left"> {{fila.observaciones | uppercase }} </td>
+                      </tr>
+                </tbody>
+              </table> 
+
+              <pagination-controls 
+                  id= "erroneos"
+                  previousLabel="Anterior"
+                  nextLabel="Siguiente"
+                  autoHide="true"
+                  (pageChange)="pErroneos = $event"
+                >
+              </pagination-controls>
+
+          </div>
+            <div class="col-sm-6">  
+              <button class="btn btn-warning" (click)="clean()" [disabled] = "loading">Limpiar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button> 
+              <button class="btn btn-warning" (click)="validarTodos(true)" [disabled] = "loading">Aprobar Todos  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button> 
+              <button class="btn btn-warning" (click)="validarTodos(false)" [disabled] = "loading">Quitar Aprobacíon <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button> 
+              <button class="btn btn-success" (click)="conciliar()" [disabled] = "loading " >Conciliar <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+            </div>
+
+          </div>
+
+          <cybord-loader *ngIf="loading"></cybord-loader>
+        </div>
+        
+      </div>
+      
+    </div>
+    </div>
+  </div>
+
+
+  <div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="decline()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           ¿Conciliar Ahorros Internos?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary"  (click)="conciliacion()" [disabled] = "loading">Si  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+            <button type="button" class="btn btn-secondary" (click)="decline()" [disabled] = "loading">No  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>

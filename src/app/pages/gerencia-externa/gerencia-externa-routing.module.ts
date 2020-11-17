@@ -25,6 +25,13 @@ const routes: Routes = [
     data: {
       title: 'Historico validaciones'
     }
+  },
+  {
+    path: 'historico/:idSolicitud',
+    component: ValidacionSolicitudComponent,
+    data: {
+      title: 'Usario ISBG'
+    }
   }
 ];
 
@@ -32,4 +39,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class GerenciaRoutingModule { }
+export class GerenciaExternaRoutingModule { }

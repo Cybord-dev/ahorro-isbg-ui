@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { UsuariosService } from '../../../services/usuarios.service';
+import { CatalogosService } from '../../../services/catalogos.service';
 import { Usuario } from '../../../models/usuario';
+import { Catalogo } from 'src/app/models/catalogo';
 
 @Component({
   selector: 'cybord-profile',
@@ -10,32 +11,44 @@ import { Usuario } from '../../../models/usuario';
 })
 export class ProfileComponent implements OnInit {
 
-  public module: string = 'common';
-
-  public disabled: boolean = true;
-
   public profileInfo: Usuario = new Usuario();
-
   public alerts: string[] = [];
 
-  public bsConfig = { containerClass: 'theme-dark-blue' };
+  public oficinas: any[] = [];
 
-  constructor(private userService: UsuariosService,
-    private router: Router) { }
+
+  constructor(
+    private catalogosService: CatalogosService,
+    private userService: UsuariosService) { }
 
   ngOnInit(): void {
-
-    this.module = this.router.url.split('/')[1];
-
-    console.log(this.module);
-
-    this.disabled = false;
-
-    this.userService.myInfo().toPromise()
-    .then(user => {
-      console.log(user);
-      this.userService.getUsuario(user.id).toPromise().then(u => this.profileInfo = u);
-    }).catch((error) => this.alerts.push(error));
+    this.catalogosService.getCatalogosByTipo('oficinas')
+      .toPromise().then((oficinas) => {
+        this.oficinas = oficinas;
+      }).then(() => {
+        this.loadProfileInfo();
+      }).catch((error) => this.alerts.push(error));
   }
+
+  public async loadProfileInfo(): Promise<void>{
+    try {
+      const user = await this.userService.myInfo().toPromise();
+      const u = await this.userService.getUsuario(user.id).toPromise();
+      const banco: Catalogo = await this.catalogosService.getCatalogoByTipoAndNombre('bancos', u.datosUsuario.BANCO)
+        .toPromise();
+      const oficina: Catalogo = await this.catalogosService.getCatalogoByTipoAndNombre('oficinas', u.datosUsuario.OFICINA)
+        .toPromise();
+      const tipoCuenta: Catalogo = await this.catalogosService.getCatalogoByTipoAndNombre('tipo-cuenta', u.datosUsuario.TIPO_CUENTA)
+        .toPromise();
+      this.profileInfo = u;
+      this.profileInfo.datosUsuario.OFICINA = oficina.valor;
+      this.profileInfo.datosUsuario.TIPO_CUENTA = tipoCuenta.valor;
+      this.profileInfo.datosUsuario.BANCO = banco.valor;
+    } catch (error) {
+      this.alerts.push(error);
+    }
+  }
+
+
 
 }

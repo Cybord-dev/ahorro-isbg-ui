@@ -8,6 +8,8 @@ import { ValidacionesService } from '../../../services/validaciones.service';
 import { Validacion } from '../../../models/validacion';
 import { __makeTemplateObject } from 'tslib';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
+import { CatalogosService } from 'src/app/services/catalogos.service';
+import { Catalogo } from 'src/app/models/catalogo';
 
 
 @Component({
@@ -22,6 +24,7 @@ export class ValidacionSolicitudComponent implements OnInit {
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
 
   public module = 'usuarios';
+  public submodule: string;
 
   public validador: Usuario = new Usuario();
   public aprobacion = false;
@@ -31,21 +34,23 @@ export class ValidacionSolicitudComponent implements OnInit {
   public loading = false;
   public alerts: string[] = [];
   public success = '';
-
   public validated = false;
+  public noEmpleado = '';
 
   constructor(
     private userService: UsuariosService,
     private solicitudService: SolicitudesService,
     private validacionService: ValidacionesService,
     private route: ActivatedRoute,
+    private catService: CatalogosService,
     private router: Router,
   ) { }
 
 
   ngOnInit(): void {
-
+    this.loading = true;
     this.module = this.router.url.split('/')[1];
+    this.submodule = this.router.url.split('/')[2];
 
     this.userService.myInfo().toPromise()
       .then(user => this.validador = user)
@@ -54,13 +59,25 @@ export class ValidacionSolicitudComponent implements OnInit {
     this.solicitud = new Solicitud();
     this.route.paramMap.subscribe(route => {
       const id = route.get('idSolicitud');
-      this.solicitudService.getSolicitudesById(+id).toPromise()
-        .then((solicitud: Solicitud) => {
-          this.solicitud = solicitud;
-          this.userService.getUsuario(solicitud.idUsuario).toPromise()
-            .then(user => this.usuario = user);
-        }).catch(error => this.alerts.push(error));
+      this.loadSolicitudInfo(+id);
     });
+  }
+
+  public async loadSolicitudInfo(id: number): Promise<void> {
+    try {
+      this.solicitud = await this.solicitudService.getSolicitudesById(id).toPromise();
+      this.usuario = await this.userService.getUsuario(this.solicitud.idUsuario).toPromise();
+      const oficina: Catalogo = await this.catService.getCatalogoByTipoAndNombre('oficinas', this.usuario.datosUsuario.OFICINA)
+        .toPromise();
+      const banco: Catalogo = await this.catService.getCatalogoByTipoAndNombre('bancos', this.usuario.datosUsuario.BANCO)
+        .toPromise();
+      this.usuario.datosUsuario.OFICINA = oficina.valor;
+      this.usuario.datosUsuario.BANCO = banco.valor;
+      this.loading = false;
+    } catch (error) {
+      this.alerts.push(error);
+      this.loading = false;
+    }
   }
 
   public openModal(aprobacion: boolean): void {
@@ -74,30 +91,30 @@ export class ValidacionSolicitudComponent implements OnInit {
   }
 
   public aprobarSolicitud(): void {
-    this.loading = true;
-    this.modalConfirmacion.hide();
-    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module, this.validador.email, true);
-    this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
-      .toPromise().then((result) => {
-        this.success = 'Solicitud validada correctamente.';
-        this.validated = true;
-        this.loading = false;
-        this.router.navigate([`../${this.module}/validaciones`]);
-      }).catch(error => { this.alerts.push(error); this.loading = false; });
+      this.loading = true;
+      this.modalConfirmacion.hide();
+      const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id, this.module, this.validador.email, true);
+      this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
+        .toPromise().then((result) => {
+          this.success = 'Solicitud validada correctamente.';
+          this.validated = true;
+          this.loading = false;
+          this.router.navigate([`../${this.module}/validaciones`]);
+        }).catch(error => { this.alerts.push(error); this.loading = false; });
   }
 
   public rechazarSolicitud(): void {
-    this.loading = true;
-    this.modalConfirmacion.hide();
-    const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id,
-      this.module, this.validador.email, false, this.razonRechazo);
-    this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
-      .toPromise().then((result) => {
-        this.success = 'Solicitud rechazada correctamente.';
-        this.validated = true;
-        this.loading = false;
-        this.router.navigate([`../${this.module}/validaciones`]);
-      }).catch(error => { this.alerts.push(error); this.loading = false; });
+      this.loading = true;
+      this.modalConfirmacion.hide();
+      const validacion = new Validacion(this.solicitud.idUsuario, this.solicitud.id,
+        this.module, this.validador.email, false, this.razonRechazo);
+      this.validacionService.postValidacion(this.solicitud.idUsuario, this.solicitud.id, validacion)
+        .toPromise().then((result) => {
+          this.success = 'Solicitud rechazada correctamente.';
+          this.validated = true;
+          this.loading = false;
+          this.router.navigate([`../${this.module}/validaciones`]);
+        }).catch(error => { this.alerts.push(error); this.loading = false; });
   }
 
 }

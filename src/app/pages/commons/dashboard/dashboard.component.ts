@@ -1,102 +1,103 @@
 import { Component, OnInit } from '@angular/core';
 import { AhorroServicio } from '../../../services/ahorro.service';
-import { ReporteSaldos } from '../../../models/reportesaldos';
+import { SaldoAhorroCaja } from '../../../models/saldoahorrocaja';
+import { CarouselConfig } from 'ngx-bootstrap/carousel';
+import { Meses } from '../../../models/meses';
+
 
 
 @Component({
   selector: 'cybord-resumen',
-  templateUrl: 'dashboard.component.html'
+  templateUrl: 'dashboard.component.html',
+  providers: [
+    { provide: CarouselConfig, useValue: { interval: false } }
+  ]
 })
 export class DashboardComponent implements OnInit {
 
-  //chart
+  /*** BAR CHART ***/
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
+    legend: { labels: { fontColor: 'white' } },
+    scales: {
+      xAxes: [{ ticks: { fontColor: "#FFF" } }],
+      yAxes: [{ ticks: { fontColor: "#FFF" } }]
+    }
   };
-  public barChartType = 'bar';
-  public barChartLegend = true;
-  public barChartData: any[] = [];
-  public barChartLabels: string[] = [];
-  
-  //
+
+  public barChartLabels: string[] = ['NOVIEMBRE', 'DICIEMBRE', 'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE'];
+
+  public barChartData: any[] = [
+    { data: [], label: 'Serie' }
+  ];
+
+  /*** PIE CHART ***/
+  public doughnutOptions: any = {
+    legend: {labels: {fontColor: 'white'}},
+    elements: { arc: { borderWidth: 0}}
+  };
+
+  public doughnutChartLabels: string[] = ['RETIRO', 'AHORRO', 'DEPOSITO', 'AJUSTE'];
+  public doughnutChartData: any = [0, 0, 0, 0];
+
+  public carOptions: any = {
+    interval: false,
+    keyboard: true,
+  };
+
   public errorMessages: string[] = [];
   public successMessage: string;
 
-  private months: string[] = ['noviembre', 'diciembre','enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio','agosto', 'septiembre', 'octubre']
-  
-  private reporte: ReporteSaldos[] = [];
-  private ahorros: number[] = [];
-  private depositos: number[] = [];
-  private retiros: number[] = [];
-  private ajustes: number[] = [];
+  constructor(private saldosAhorro: AhorroServicio) {
+    this.barChartDataLoad();
 
-
-  constructor(private saldosAhorro: AhorroServicio){
-    console.log('stating dashboard');
   }
-  
+
   ngOnInit(): void {
-    this.saldosAhorro.getReporteSaldos().toPromise().
-    then(reporte => {
-      this.reporte = reporte;
-      this.setCharInfo();
-      
-      this.barChartData = [
-        { data: this.depositos, label: "depositos", backgroundColor: "#0000ff"},
-        { data: this.ahorros, label: "ahorros", backgroundColor: "#00ff00"},
-        { data: this.retiros, label: "retiros", backgroundColor: "#ff0000"},
-        { data: this.ajustes, label: "ajustes", backgroundColor: "#ff0000"}
-      ];
-    }).catch((error) => this.errorMessages.push(error));
-    this.barChartData = [{data:[22, 11], label: ["enero"]}];
-    
+    this.barChartDataLoad();
+    this.doughnutChartDataLoad();
   }
 
-  private setCharInfo(): void{
-    var today = new Date();
-    var todaysMonth = this.monthChanger(today.getMonth());
-    var todaysYear = today.getFullYear();
-    for(var i = 0; i <= todaysMonth; i++){
-      this.barChartLabels.push(this.months[i]);
-      this.depositos.push(0);
-      this.retiros.push(0);
-      this.ajustes.push(0);
-    }
-    for(var i = 0; i<this.barChartLabels.length; i++){
-      var depositos = 0.0;
-      var retiros = 0.0;
-      var ahorros = 0.0;
-      var ajustes = 0.0;
-      for(const a in this.reporte){
-        if( this.monthChanger(this.getMonth(this.reporte[a].fecha))==(i) && this.reporte[a].tipo === "ahorro"){
-          ahorros += this.reporte[a].monto;
-        }else if ( this.monthChanger(this.getMonth(this.reporte[a].fecha))==(i+1) && this.reporte[a].tipo === "deposito"){
-          depositos += this.reporte[a].monto;
-        }else if ( this.monthChanger(this.getMonth(this.reporte[a].fecha))==(i+1) && this.reporte[a].tipo === "retiro"){
-          retiros += this.reporte[a].monto;
-        }else if ( this.monthChanger(this.getMonth(this.reporte[a].fecha))==(i+1) && this.reporte[a].tipo === "ajuste"){
-          ajustes += this.reporte[a].monto;
+  private async doughnutChartDataLoad(): Promise<void> {
+    const doughnutData = [];
+    try {
+      const saldos: SaldoAhorroCaja[] = await this.saldosAhorro.getSaldoCajaAgrupado().toPromise();
+      for (const tipo of this.doughnutChartLabels) {
+        const data = saldos.find(s => tipo === s.tipo.toUpperCase());
+        if (data !== undefined){
+          doughnutData.push(data.monto);
+        }else{
+          doughnutData.push(0);
         }
       }
-      this.retiros.push(retiros);
-      this.depositos.push(depositos);
-      this.ahorros.push(ahorros);
-      this.ajustes.push(ajustes);
+      this.doughnutChartData = doughnutData;
+    } catch (error) {
+      this.errorMessages.push(error);
     }
   }
 
-  private monthChanger(num): number {
-    for(let x = 0; x<2; x++){
-      num++;
-      num = (num > 11) ? 0 : num;
+  private async barChartDataLoad(): Promise<void> {
+    const barData = [];
+    try {
+      const saldoAnual = await this.saldosAhorro.getSaldoMesesCaja().toPromise();
+      for (const tipo in saldoAnual) {
+        if (tipo !== undefined) {
+          const data = [];
+          const saldos: SaldoAhorroCaja[] = saldoAnual[tipo];
+          for (const mes of this.barChartLabels) {
+            if (saldos.find(s => s.mes === mes) !== undefined) {
+              data.push(saldos.find(s => s.mes === mes).monto);
+            } else {
+              data.push(0);
+            }
+          }
+          barData.push({ data, label: tipo.toUpperCase() });
+        }
+      }
+      this.barChartData = barData;
+    } catch (error) {
+      this.errorMessages.push(error);
     }
-    return num;
   }
-
-  private getMonth(fecha): number{
-    var a = fecha.split("-");
-    return a[1];
-  }
-
 }

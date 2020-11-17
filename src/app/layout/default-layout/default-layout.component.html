@@ -1,6 +1,6 @@
-<app-header [navbarBrandRouterLink]="['/dashboard']" [fixed]="true"
-  [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'ISBG Logo'}"
-  [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'ISBG Logo'}"
+<app-header [navbarBrandRouterLink]="['/commons/dashboard']" [fixed]="true"
+  [navbarBrandFull]="{src: 'assets/img/siges.png', width: 130, height: 40, alt: 'ISBG Logo'}"
+  [navbarBrandMinimized]="{src: 'assets/img/green-box.png', width: 40, height: 40, alt: 'ISBG Logo'}"
   [sidebarToggler]="'lg'" [asideMenuToggler]="'lg'">
 
   <ul class="nav navbar-nav ml-auto">
@@ -12,8 +12,8 @@
         <img src="{{usuario.urlImagenPerfil}}" class="img-avatar" alt="Usuario no registrado" />
       </a>
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
-        <a class="dropdown-item" href="#/commons/profile"><i class="fa fa-user"></i> Profile</a>
-        <a class="dropdown-item"  (click)="logout()"><i class="fa fa-lock"></i> Logout</a>
+        <a class="dropdown-item" href="#/commons/profile"><i class="fa fa-user"></i> Mi perfil</a>
+        <a class="dropdown-item"  (click)="logout()"><i class="fa fa-lock"></i>Salir</a>
       </div>
     </li>
   </ul>
@@ -36,7 +36,7 @@
     <tabset>
       <tab>
         <ng-template tabHeading><i class="icon-speech"></i></ng-template>
-        <div class="p-3">
+        <!--div class="p-3">
           <div class="message">
             <div class="text-truncate font-weight-bold">Liberación usuarios</div>
             <small class="text-muted">Liberacion de modulo de solicitud</small>
@@ -54,10 +54,10 @@
             <small class="text-muted">Liberacion de validacion ahorro</small>
           </div>
 
-        </div>
+        </div-->
       </tab>
       <tab>
-        <ng-template tabHeading><div class="text-truncate font-weight-bold">V 0.0.1</div></ng-template>
+        <ng-template tabHeading><div class="text-truncate font-weight-bold">V 1.0.0</div></ng-template>
       </tab>
 
     </tabset>
@@ -65,5 +65,5 @@
 
 </div>
 <app-footer>
-  <span><a href="https://coreui.io">CYBORD DEV</a> &copy; 2020 cybord labs.</span>
+  <span><a href="">CYBORD DEV</a> &copy; 2020 cybord labs.</span>
 </app-footer>

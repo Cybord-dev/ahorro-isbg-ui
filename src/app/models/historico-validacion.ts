@@ -11,7 +11,7 @@ export class HistoricoValidacion {
     public nombre: string;
     public tipoUsuario: string;
     public idSolicitud: number;
-    public tipo: string;
+    public tipoSolicitud: string;
     public fechaEjecucion: string;
-    public status: string;
+    public estatus: string;
 }

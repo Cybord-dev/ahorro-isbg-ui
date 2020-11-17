@@ -7,7 +7,6 @@ import { TramitesAhorroComponent } from './tramites-ahorro/tramites-ahorro.compo
 import { CommonsPagesModule } from '../commons/common-pages.module';
 
 import { ChartsModule } from 'ng2-charts';
-import { FormsModule } from '@angular/forms';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 
 
@@ -17,8 +16,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     CommonsPagesModule,
     UsuariosRoutingModule,
     ChartsModule,
-    TabsModule.forRoot(),
-    FormsModule
+    TabsModule.forRoot()
   ],
   providers: [
     DatePipe

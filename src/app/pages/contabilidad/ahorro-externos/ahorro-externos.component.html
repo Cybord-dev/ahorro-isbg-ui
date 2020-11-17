@@ -6,11 +6,129 @@
           <strong>Carga de ahorro externos</strong>
         </div>
         <div class="card-body" >
-         Aqui va lo de la carga externa
+
+          <div class="alert alert-danger" *ngIf="errorMessages.length > 0" role="alert">
+            <p *ngFor="let message of errorMessages">{{message}}</p>
+        </div>
+        
+          <div class="form-group row">
+            <label class="col-md-2 col-form-label" for="file-input">Subir Archivo</label>
+            <div class="col-md-9">
+            <input #fileInput id="file-input" type="file" accept=".xlsx, .xls, .csv  " name="file-input" (change)="onFileChange($event.target.files)" class="file-input">
+            </div>
+            </div>
+
+          <!--  Tabla ahorro --> 
+          <div class="table-responsive slide_1" *ngIf="datosAhorro.length > 0" >
+            <table class="table table-bordered table-sm">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="text-center">No.</th>
+                  <th scope="col" class="text-center">Clave</th>
+                  <th scope="col" class="text-center">Nombre</th>
+                  <th scope="col" class="text-center">Importe</th>
+                  <th scope="col" class="text-center">Observaciones</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor = "let fila of datosAhorro | paginate: { id: 'externos',itemsPerPage: 10, currentPage: pExternos }; let i = index "  [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
+                  <td scope="row" class="text-center">   {{ (10 * (pExternos - 1) + i) +1 }}</td>
+                  <td scope="row" class="text-left"> {{fila.numeroUsuario}} </td>
+                  <td scope="row" class="text-left"> {{fila.nombre | uppercase}} </td>
+                  <td scope="row" class="text-right"> {{fila.importe | currency}} </td>
+                  <td scope="row" class="text-left"> {{fila.observaciones | uppercase   }} </td>
+                </tr>
+
+              </tbody>
+
+
+            </table> 
+          
+          <pagination-controls 
+            id= "externos"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            autoHide="true"
+            (pageChange)="pExternos = $event"
+          >
+        </pagination-controls>
+            
+            <div class="col-sm-6">  
+              <button class="btn btn-warning" (click)="clean()" [disabled] = "loading">Limpiar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button>  
+              
+              <button class="btn btn-success" (click)="openModal()" [disabled] = "!tablaValida" >Cargar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>  
+            </div>
+
+          </div>
+
+          <!--  Tabla errores --> 
+          <div class="table-responsive slide_1" *ngIf="erroresAhorro.length > 0" >
+            <h3 > Ahorradores con Errores</h3>
+            <table class="table table-bordered table-sm">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col" class="text-center">No.</th>
+                  <th scope="col" class="text-center">Clave</th>
+                  <th scope="col" class="text-center">Nombre</th>
+                  <th scope="col" class="text-center">Observaciones</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor = "let fila of erroresAhorro | paginate: { id: 'errores',itemsPerPage: 10, currentPage: pErrores }; let i = index "  [ngClass]="{'alert-danger': fila.observaciones  != 'Validado'}">
+                  <td scope="row" class="text-center">   {{ (10 * (pErrores - 1) + i) +1 }}</td>
+                  <td scope="row" class="text-left"> {{fila.noEmpleado}} </td>
+                  <td scope="row" class="text-left"> {{fila.nombre | uppercase}} </td>
+                  <td scope="row" class="text-left"> {{fila.observaciones | uppercase   }} </td>
+                </tr>
+
+              </tbody>
+
+
+            </table> 
+          
+          <pagination-controls 
+            id= "errores"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            
+            (pageChange)="pErrores = $event"
+          >
+        </pagination-controls>
+            
+            <div class="col-sm-6">  
+              <button class="btn btn-warning" (click)="limpiarErrores()" [disabled] = "loading">Limpiar  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i> </button>  
+            </div>
+
+          </div>
+
+          <cybord-loader *ngIf="loading"></cybord-loader>
         </div>
         
       </div>
       
     </div>
+    </div>
+  </div>
+
+
+  <div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="decline()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           ¿Resgistrar ahorros externos?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary"  (click)="cargar()" [disabled] = "loading">Si  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+            <button type="button" class="btn btn-secondary" (click)="decline()" [disabled] = "loading">No  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+        </div>
+      </div>
     </div>
   </div>

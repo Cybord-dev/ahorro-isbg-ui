@@ -4,10 +4,10 @@ import { Routes, RouterModule } from '@angular/router';
 // Import Containers
 import { DefaultLayoutComponent } from './layout';
 
-import { P404Component } from './views/error/404.component';
-import { P500Component } from './views/error/500.component';
-import { LoginComponent } from './views/login/login.component';
-import { RegisterComponent } from './views/register/register.component';
+import { Error400Component } from './pages/errores/error400/error400.component';
+import { Error500Component } from './pages/errores/error500/error500.component';
+import { UsuarioCaducadoComponent } from './pages/errores/usuario-caducado/usuario-caducado.component';
+import { UsuarioInvalidoComponent } from './pages/errores/usuario-invalido/usuario-invalido.component';
 
 export const routes: Routes = [
   {
@@ -17,28 +17,28 @@ export const routes: Routes = [
   },
   {
     path: '404',
-    component: P404Component,
+    component: Error400Component,
     data: {
       title: 'Page 404'
     }
   },
   {
     path: '500',
-    component: P500Component,
+    component: Error500Component,
     data: {
       title: 'Page 500'
     }
   },
   {
     path: 'login',
-    component: LoginComponent,
+    component: UsuarioCaducadoComponent,
     data: {
       title: 'Login Page'
     }
   },
   {
     path: 'register',
-    component: RegisterComponent,
+    component: UsuarioInvalidoComponent,
     data: {
       title: 'Register Page'
     }
@@ -71,8 +71,16 @@ export const routes: Routes = [
         loadChildren: () => import('./pages/tesoreria/tesoreria.module').then(m => m.TesoreriaModule)
       },
       {
-        path: 'gerencia',
-        loadChildren: () => import('./pages/gerencia/gerencia.module').then(m => m.GerenciaModule)
+        path: 'gerencia-interna',
+        loadChildren: () => import('./pages/gerencia-interna/gerencia-interna.module').then(m => m.GerenciaInternaModule)
+      },
+      {
+        path: 'gerencia-externa',
+        loadChildren: () => import('./pages/gerencia-externa/gerencia-externa.module').then(m => m.GerenciaExternaModule)
+      },
+      {
+        path: 'direccion',
+        loadChildren: () => import('./pages/direccion/direccion.module').then(m => m.DireccionModule)
       },
       {
         path: 'administracion',
@@ -80,7 +88,7 @@ export const routes: Routes = [
       }
     ]
   },
-  { path: '**', component: P404Component }
+  { path: '**', component: Error400Component }
 ];
 
 @NgModule({

@@ -21,7 +21,6 @@
                                             [ngClass]="{ 'is-invalid': submitted && f.alias.errors }"
                                             [(ngModel)]="usuario.nombre" placeholder="Sobrenombre o alias" />
                                             <div *ngIf="submitted && f.alias.errors" class="invalid-feedback">
-                                                <div *ngIf="f.alias.errors.required">El alias es requerido.</div>
                                                 <div *ngIf="f.alias.errors.minlength">Nececitas un minimo de 2 caracteres.
                                                 </div>
                                                 <div *ngIf="f.alias.errors.maxlength">No mas de 100 caracteres.</div>
@@ -72,13 +71,11 @@
                                     </div>
                                 </div>
 
-                            </form>
-
-                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">No. Empleado</strong>
                                     <div class="col-md-9">
-                                        <input type="number" id="no-emp" name="text-inputa" class="form-control"
+                                        <input type="text" id="no-emp" name="text-inputa" class="form-control" maxlength="10" formControlName="noEmpleado"
                                             placeholder="No empleado" [(ngModel)]="usuario.noEmpleado">
 
                                     </div>
@@ -88,29 +85,60 @@
                                     <strong class="col-md-3 col-form-label">Oficina</strong>
                                     <div class="col-md-7">
                                         <select id="office" name="office" class="form-control"
-                                                [(ngModel)]="usuario.datosUsuario.OFICINA">
+                                                [(ngModel)]="usuario.datosUsuario.OFICINA" formControlName="oficina">
                                                 <option value="*">Seleccionar</option>
-                                                <option value="1">Oficina #1</option>
-                                                <option value="2">Oficina #2</option>
-                                                <option value="3">Oficina #3</option>
-                                                <option value="4">Oficina #4</option>
+                                                <option *ngFor="let oficina of oficinas" [value]="oficina.nombre">{{oficina.valor}}</option>
+                                            </select>
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="form-group row">
+                                    <strong class="col-md-3 col-form-label">BANCO</strong>
+                                    <div class="col-md-7">
+                                        <select id="bank" name="bank" class="form-control" formControlName="banco"
+                                                [(ngModel)]="usuario.datosUsuario.BANCO">
+                                                <option value="*">Seleccionar</option>
+                                                <option *ngFor="let banco of bancos" [value]="banco.nombre">{{banco.valor}}</option>
                                             </select>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
+                                    <strong class="col-md-3 col-form-label">TIPO CUENTA</strong>
+                                    <div class="col-md-7">
+                                        <select id="account" name="account" class="form-control" formControlName="account"
+                                                [(ngModel)]="usuario.datosUsuario.TIPO_CUENTA">
+                                                <option value="*">Seleccionar</option>
+                                                <option *ngFor="let cuenta of cuentas" [value]="cuenta.nombre">{{cuenta.valor}}</option>
+                                            </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <strong class="col-md-3 col-form-label">No. Cuenta</strong>
+                                    <div class="col-md-9">
+                                        <input type="text" id="no-account" name="account" class="form-control" formControlName="cuenta" maxlength="12"
+                                            placeholder="0000 0000 0000 0000" [(ngModel)]="usuario.datosUsuario.CUENTA">
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">Sueldo</strong>
                                     <div class="col-md-7">
-                                        <input type="number" id="quantity" name="text-inputafg" class="form-control"
+                                        <input type="number" id="quantity" name="text-inputafg" class="form-control" formControlName="sueldo"
                                                 min=1 placeholder="1.00" [(ngModel)]="usuario.datosUsuario.SUELDO">
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <strong class="col-md-3 col-form-label">Fecha Antiguiedad</strong>
+                                    <strong class="col-md-3 col-form-label">Fecha Antiguedad</strong>
                                     <div class="col-md-7">
-                                        <input id="start-date" type="text" class="form-control" #dp="bsDatepicker"
-                                                bsDatepicker [(bsValue)]="antiguedad">
+                                        <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" formControlName="antiguedad"
+                                         bsDatepicker [(bsValue)]="antiguedad" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" >
                                     </div>
                                 </div>
                             </form>
@@ -145,9 +173,21 @@
                                     </label>
                                   </div>
                                   <div class="form-check checkbox">
-                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox5" [(ngModel)]="roles.GERENCIA" [disabled]="params.module !== 'administracion'">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox5" [(ngModel)]="roles.GERENCIA_INTERNA" [disabled]="params.module !== 'administracion'">
                                     <label class="form-check-label" for="checkbox5">
-                                      GERENCIA
+                                      GERENCIA INTERNA
+                                    </label>
+                                  </div>
+                                  <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox8" [(ngModel)]="roles.GERENCIA_EXTERNA" [disabled]="params.module !== 'administracion'">
+                                    <label class="form-check-label" for="checkbox8">
+                                      GERENCIA EXTERNA
+                                    </label>
+                                  </div>
+                                  <div class="form-check checkbox">
+                                    <input class="form-check-input" type="checkbox" value="option1" id="checkbox7" [(ngModel)]="roles.DIRECCION" [disabled]="params.module !== 'administracion'">
+                                    <label class="form-check-label" for="checkbox7">
+                                      DIRECCION
                                     </label>
                                   </div>
                                   <div class="form-check checkbox">
@@ -166,6 +206,7 @@
                     <br/>
                     <p class="alert alert-success" *ngIf="params.success.length > 0" role="alert">{{params.success}}</p>
                 </div>
+                <cybord-loader *ngIf="loading"></cybord-loader>
                 <div class="card-footer">
                     <div class="float-right slide_2">
 

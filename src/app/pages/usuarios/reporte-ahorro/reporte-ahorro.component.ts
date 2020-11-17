@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AhorroServicio } from '../../../services/ahorro.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { SaldoAhorro } from '../../../models/saldoahorro';
+import { Meses } from 'src/app/models/meses';
+import { map } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'cybord-reporte-ahorro',
@@ -11,97 +14,60 @@ import { SaldoAhorro } from '../../../models/saldoahorro';
 export class ReporteAhorroComponent implements OnInit {
 
 
+  public loading = false;
   public total: number;
-  // barChart
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public barChartLabels: string[] = [];
-  public barChartType = 'bar';
-  public barChartLegend = true;
-  public datos: number[] = [];
-  public errorMessages: string[] = [];
-  public successMessage: string;
+  public barChartLabels: string[] = ['NOVIEMBRE', 'DICIEMBRE', 'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE'];
+  public COLORS = ['#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD', '#46BFBD'];
+  public alerts: string[] = [];
 
-  public barChartData: any[] = [];
-  private months: string[] = ['noviembre', 'diciembre','enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio','agosto', 'septiembre', 'octubre']
+  public barChartData: any[] = [{data: [] , label : 'Ahorro acumulado'}];
   public ahorros: SaldoAhorro[] = [];
   constructor(
-    private userService : UsuariosService,
+    private userService: UsuariosService,
+    public datepipe: DatePipe,
     private saldosAhorro: AhorroServicio) {
 
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.userService.myInfo().toPromise()
       .then((user) => {
-        this.saldosAhorro.getSaldoByUsuario(user.id).subscribe(resultado => {
-          this.ahorros = resultado;
-          this.total = resultado.map(r => r.monto).reduce((a, b) => a + b);
-          this.setCharInfo();
-          this.barChartData = [{ data: this.datos, label: "Ahorro acumulado" }];
-          
-        });
-      }).catch(error => this.errorMessages.push(error));
-      this.barChartData = [{data:[0, 0], label: "Ahorro acumulado"}];
+        this.setCharInfo(user.id);
+      })
+      .catch(error => this.alerts.push(error))
+      .then(() => this.loading = false);
   }
 
-  private setCharInfo(): void{
-    var today = new Date();
-    var todaysMonth = today.getMonth();
-    todaysMonth = this.monthChanger(todaysMonth);
-    var todaysYear = today.getFullYear();
-    for(var i = 0; i <= todaysMonth; i++){
-      this.barChartLabels.push(this.months[i]);
-      this.datos.push(0);
-    }
-    //todaysMonth = this.monthChanger(todaysMonth);
-    for(var i = 0; i < this.datos.length; i++){
-      var currentQ = 0;
-      
-        for(let ahorro of this.ahorros){
-          var fecha = new Date(ahorro.fechaCreacion);
-          var mes = this.monthChanger(fecha.getMonth());
-          if(i >1){
-            if(fecha.getMonth() <= todaysMonth && fecha.getFullYear() == todaysYear){
-              if(mes == i)
-              {currentQ += ahorro.monto;}
-            }
-            //Primer y segundo mes
-          }else{
-            if((mes == 0 || mes == 1) && fecha.getFullYear() == todaysYear-1){
-              currentQ += ahorro.monto;
-            }
-          }
+  private async setCharInfo(userId: number): Promise <void> {
+    try {
+      const MESES: Meses = new Meses();
+      this.ahorros = await this.saldosAhorro.getSaldoByUsuario(userId)
+      .pipe( map( (saldos: SaldoAhorro[]) => {
+        for (const s of saldos) {
+          s.fechaCreacion = new Date(s.fechaCreacion);
         }
-        if(i != 0){
-          currentQ += this.datos[i-1];
-          this.datos[i] = this.truncate(currentQ);
+        return saldos;
+      })).toPromise();
+      const data = [];
+      let acumulado = 0;
+      for (const mes of this.barChartLabels) {
+        const montos: number[] = this.ahorros.filter(s => s.fechaCreacion.getMonth() === MESES[mes]).map(s => s.monto);
+        if (montos.length > 0){
+          acumulado = acumulado + montos.reduce((a, b) => a + b);
+          data.push(acumulado);
         }else{
-          this.datos[i] = this.truncate(currentQ);
-        } 
+          data.push(0);
+        }
+      }
+      this.total = acumulado;
+      this.barChartData = [{data, backgroundColor: this.COLORS, label : 'Ahorro acumulado'}];
+    } catch (error) {
+      this.alerts.push(error);
     }
   }
-  private truncate (num): number {
-    return Math.trunc(num * Math.pow(10, 2)) / Math.pow(10, 2);
-  }
-
-  private monthChanger(num): number {
-    for(let x = 0; x<2; x++){
-      num++;
-      num = (num > 11) ? 0 : num;
-    }
-    return num;
-  }
-
-  // events
-  public chartClicked(e: any): void {
-    //console.log(e);
-  }
-
-  public chartHovered(e: any): void {
-    //console.log(e);
-  }
-
 }
