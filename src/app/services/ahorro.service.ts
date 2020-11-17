@@ -52,9 +52,15 @@ export class AhorroServicio {
     return this.http.post<SaldoAhorro[]>(`../api/v1/ahorros/externos`, saldoBulk);
   }
 
-  public postConciliacion(datosValidar: Conciliador[]): Observable<any[]>{
-    return this.http.post<Conciliador[]>(`../api/v1/ahorros/conciliador`, datosValidar);
+  public postValidarInternos(datosValidar: Conciliador[]): Observable<any[]>{
+    return this.http.post<Conciliador[]>(`../api/v1/ahorros/conciliacion`, datosValidar);
   }
+
+  public postConciliarInternos(datosConciliar: Conciliador[]): Observable<any[]>{
+    return this.http.post<Conciliador[]>(`../api/v1/ahorros/internos`, datosConciliar);
+  }
+
+
 
   public getSaldoMesesCaja(): Observable<any>{
     return this.http.get(`../api/v1/saldosAhorro/anual`);
