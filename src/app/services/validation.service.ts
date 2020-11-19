@@ -34,8 +34,8 @@ export class ValidationService {
     const regexCuenta=  new RegExp('^([0-9]{12})$');
     const regexEmail = new RegExp('^[a-z0-9A-Z._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$');
 
-    if( !regexEmail.test(usuario.email) || usuario.email === undefined
-      || usuario.email.length < 2 || usuario.email.length > 100){
+    if( (!regexEmail.test(usuario.email) || usuario.email === undefined)
+      && usuario.email.length < 2 && usuario.email.length > 100){
       alerts.push('El email no es valido');
     }
     if ( !regexNombre.test(usuario.nombre) || usuario.nombre === undefined
