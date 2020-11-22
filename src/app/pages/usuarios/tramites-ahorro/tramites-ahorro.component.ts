@@ -76,12 +76,15 @@ export class TramitesAhorroComponent implements OnInit {
 
       this.solicitudAhorro = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
         .find(s => s.tipo === 'SolicitudAhorro') || new Solicitud('SolicitudAhorro');
-      this.solicitudCancelacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
-        .find(s => s.tipo === 'CancelacionAhorro') || new Solicitud('CancelacionAhorro');
+
       this.solicitudRetiro = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
         .find(s => s.tipo === 'RetiroParcialAhorro') || new Solicitud('RetiroParcialAhorro');
       this.solicitudModificacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
         .find(s => s.tipo === 'ModificacionAhorro') || new Solicitud('ModificacionAhorro');
+
+      this.solicitudCancelacion = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
+        .find(s => s.tipo === 'CancelacionAhorro' &&
+        (new Date(s.fechaCreacion).getTime() - new Date(this.solicitudAhorro.fechaCreacion).getTime() > 0)) || new Solicitud('CancelacionAhorro');
 
       this.solicitudCancelacion.atributos.MONTO = this.totalAhorro.toString();
       this.solicitudModificacion.atributos.MONTO = this.usuario.datosUsuario.AHORRO;
