@@ -6,10 +6,9 @@ import { Solicitud } from '../../../models/solicitud';
 import { Usuario } from '../../../models/usuario';
 import { ValidacionesService } from '../../../services/validaciones.service';
 import { Validacion } from '../../../models/validacion';
-import { __makeTemplateObject } from 'tslib';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
-import { CatalogosService } from 'src/app/services/catalogos.service';
-import { Catalogo } from 'src/app/models/catalogo';
+import { CatalogosService } from '../../..//services/catalogos.service';
+import { Catalogo } from '../../../models/catalogo';
 
 
 @Component({

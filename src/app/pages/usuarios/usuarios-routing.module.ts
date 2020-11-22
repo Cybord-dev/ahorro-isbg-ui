@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ReporteAhorroComponent } from './reporte-ahorro/reporte-ahorro.component';
 import { TramitesAhorroComponent } from './tramites-ahorro/tramites-ahorro.component';
+import { PagosPrestamosComponent } from './pagos-prestamos/pagos-prestamos.component';
 
 const routes: Routes = [
   {
     path: 'reportes',
     component: ReporteAhorroComponent,
     data: {
-      title: 'Historico ahorro'
+      title: 'Historico'
     }
   },
   {
@@ -16,6 +17,13 @@ const routes: Routes = [
     component: TramitesAhorroComponent,
     data: {
       title: 'Trámites ahorro'
+    }
+  },
+  {
+    path: 'pagos',
+    component: PagosPrestamosComponent,
+    data: {
+      title: 'Pagos anticipados'
     }
   }
 ];

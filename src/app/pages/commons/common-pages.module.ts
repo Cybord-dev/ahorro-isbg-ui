@@ -25,6 +25,7 @@ import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.compo
 import { AjusteAhorroComponent } from './ajuste-ahorro/ajuste-ahorro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoaderComponent } from './loader/loader.component';
+import { ValidacionPagoComponent } from './validacion-pago/validacion-pago.component';
 
 
 
@@ -40,7 +41,8 @@ import { LoaderComponent } from './loader/loader.component';
     UsuarioComponent,
     AjusteAhorroComponent,
     ReporteAhorrosComponent,
-    LoaderComponent],
+    LoaderComponent,
+    ValidacionPagoComponent],
   imports: [
     CommonModule,
     FormsModule,

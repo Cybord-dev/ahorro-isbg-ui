@@ -8,10 +8,12 @@ import { CommonsPagesModule } from '../commons/common-pages.module';
 
 import { ChartsModule } from 'ng2-charts';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { PagosPrestamosComponent } from './pagos-prestamos/pagos-prestamos.component';
+import { TramitesPrestamoComponent } from './tramites-prestamo/tramites-prestamo.component';
 
 
 @NgModule({
-  declarations: [ReporteAhorroComponent, TramitesAhorroComponent],
+  declarations: [ReporteAhorroComponent, TramitesAhorroComponent, PagosPrestamosComponent, TramitesPrestamoComponent],
   imports: [
     CommonsPagesModule,
     UsuariosRoutingModule,
