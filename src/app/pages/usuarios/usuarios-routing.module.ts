@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ReporteAhorroComponent } from './reporte-ahorro/reporte-ahorro.component';
 import { TramitesAhorroComponent } from './tramites-ahorro/tramites-ahorro.component';
 import { PagosPrestamosComponent } from './pagos-prestamos/pagos-prestamos.component';
+import { TramitesPrestamoComponent } from './tramites-prestamo/tramites-prestamo.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,13 @@ const routes: Routes = [
   {
     path: 'tramites',
     component: TramitesAhorroComponent,
+    data: {
+      title: 'Trámites ahorro'
+    }
+  },
+  {
+    path: 'prestamos',
+    component: TramitesPrestamoComponent,
     data: {
       title: 'Trámites ahorro'
     }
