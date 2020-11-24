@@ -138,7 +138,7 @@
                                     <strong class="col-md-3 col-form-label">Fecha Antiguedad</strong>
                                     <div class="col-md-7">
                                         <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" formControlName="antiguedad"
-                                         bsDatepicker [(bsValue)]="antiguedad" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" >
+                                        [(maxDate)]="maxDate" bsDatepicker [(bsValue)]="antiguedad" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" >
                                     </div>
                                 </div>
                             </form>
