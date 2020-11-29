@@ -1,1 +1,32 @@
-<p>tramites-prestamo works!</p>
+<div class="animated fadeIn">
+    <div class="row">
+      <div class = "col">
+            <div class="card">
+                <div class="card-header">
+                <strong>Tramite de prestamos </strong>
+                </div>
+                <div class="card-body"n >
+        
+                    <cybord-loader *ngIf="loading"></cybord-loader>
+                    <div *ngFor="let alert of alerts">
+                        <alert type="danger" [dismissible]="true">{{ alert }}</alert>
+                    </div>
+                
+                
+
+                    <div class="row">
+                        <div class="col"></div>
+                            <div class=" col-3 alert alert-primary" role="alert">
+                                
+                            </div>
+                        <div class="col"></div>
+                    </div>
+
+                    
+                </div>
+            
+            </div>
+      
+        </div>
+    </div>
+</div>
