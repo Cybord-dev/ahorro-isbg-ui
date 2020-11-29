@@ -10,10 +10,11 @@ import { ChartsModule } from 'ng2-charts';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { PagosPrestamosComponent } from './pagos-prestamos/pagos-prestamos.component';
 import { TramitesPrestamoComponent } from './tramites-prestamo/tramites-prestamo.component';
+import { AprobacionAvalComponent } from './aprobacion-aval/aprobacion-aval.component';
 
 
 @NgModule({
-  declarations: [ReporteAhorroComponent, TramitesAhorroComponent, PagosPrestamosComponent, TramitesPrestamoComponent],
+  declarations: [ReporteAhorroComponent, TramitesAhorroComponent, PagosPrestamosComponent, TramitesPrestamoComponent, AprobacionAvalComponent],
   imports: [
     CommonsPagesModule,
     UsuariosRoutingModule,

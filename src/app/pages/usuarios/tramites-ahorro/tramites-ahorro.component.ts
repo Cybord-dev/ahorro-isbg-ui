@@ -7,8 +7,8 @@ import { AhorroServicio } from '../../../services/ahorro.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Solicitud } from '../../../models/solicitud';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
-import { CatalogosService } from 'src/app/services/catalogos.service';
-import { Catalogo } from 'src/app/models/catalogo';
+import { CatalogosService } from '../../../services/catalogos.service';
+import { Catalogo } from '../../../models/catalogo';
 
 
 @Component({
