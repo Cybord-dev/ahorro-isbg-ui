@@ -13,40 +13,26 @@
                     
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-8">
-                            <form [formGroup]="registerForm">
+                            
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">Nombre</strong>
                                     <div class="col-md-9">
-                                        <input type="text" formControlName="alias" class="form-control"
-                                            [ngClass]="{ 'is-invalid': submitted && f.alias.errors }"
+                                        <input type="text" class="form-control"
                                             [(ngModel)]="usuario.nombre" placeholder="Sobrenombre o alias" />
-                                            <div *ngIf="submitted && f.alias.errors" class="invalid-feedback">
-                                                <div *ngIf="f.alias.errors.minlength">Nececitas un minimo de 2 caracteres.
-                                                </div>
-                                                <div *ngIf="f.alias.errors.maxlength">No mas de 100 caracteres.</div>
-                                                <div *ngIf="f.alias.errors.pattern">Hay caracteres invalidos.</div>
-                                            </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">Email</strong>
                                     <div class="col-md-9">
-                                        <input type="text" formControlName="email" class="form-control"
-                                            [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+                                        <input type="text"  class="form-control"
                                             [(ngModel)]="usuario.email" placeholder="Correo Electronico" />
-                                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                                            <div *ngIf="f.email.errors.required">El correo es requerido.</div>
-                                            <div *ngIf="f.email.errors.email">La direccion introducida no es valida.
-                                            </div>
-                                            <div *ngIf="f.email.errors.pattern">Hay caracteres invalidos.</div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">Usuario activo</strong>
                                     <div class="col-md-7">
                                         <label class="switch switch-label switch-primary">
-                                            <input type="checkbox" formControlName="activo" class="switch-input" [checked]="this.usuario.activo" [(ngModel)]="this.usuario.activo">
+                                            <input type="checkbox" class="switch-input" [checked]="this.usuario.activo" [(ngModel)]="this.usuario.activo">
                                             <span class="switch-slider" data-checked="ON" data-unchecked="OFF"></span>
                                         </label>
                                     </div>
@@ -55,14 +41,14 @@
                                     <strong class="col-md-3 col-form-label">Tipo Usuario</strong>
                                     <div class="col-md-7 col-form-label">
                                         <div class="form-check">
-                                            <input class="form-check-input" formControlName="tipo" type="radio" name="tipo" id="radio3"
+                                            <input class="form-check-input" type="radio" name="tipo" id="radio3"
                                                 value="INTERNO" [checked]="usuario.tipoUsuario === 'INTERNO'" (click)="toggleUserType()">
                                             <label class="form-check-label" for="radio3">
                                                 INTERNO
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" formControlName="tipo" type="radio" name="tipo" id="radio4"
+                                            <input class="form-check-input" type="radio" name="tipo" id="radio4"
                                                 value="EXTERNO" [checked]="usuario.tipoUsuario === 'EXTERNO'" (click)="toggleUserType()">
                                             <label class="form-check-label" for="radio4">
                                                 EXTERNO
@@ -75,7 +61,7 @@
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">No. Empleado</strong>
                                     <div class="col-md-9">
-                                        <input type="text" id="no-emp" name="text-inputa" class="form-control" maxlength="10" formControlName="noEmpleado"
+                                        <input type="text" id="no-emp" name="text-inputa" class="form-control" maxlength="10"
                                             placeholder="No empleado" [(ngModel)]="usuario.noEmpleado">
 
                                     </div>
@@ -85,7 +71,7 @@
                                     <strong class="col-md-3 col-form-label">Oficina</strong>
                                     <div class="col-md-7">
                                         <select id="office" name="office" class="form-control"
-                                                [(ngModel)]="usuario.datosUsuario.OFICINA" formControlName="oficina">
+                                                [(ngModel)]="usuario.datosUsuario.OFICINA">
                                                 <option value="*">Seleccionar</option>
                                                 <option *ngFor="let oficina of oficinas" [value]="oficina.nombre">{{oficina.valor}}</option>
                                             </select>
@@ -97,7 +83,7 @@
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">BANCO</strong>
                                     <div class="col-md-7">
-                                        <select id="bank" name="bank" class="form-control" formControlName="banco"
+                                        <select id="bank" name="bank" class="form-control"
                                                 [(ngModel)]="usuario.datosUsuario.BANCO">
                                                 <option value="*">Seleccionar</option>
                                                 <option *ngFor="let banco of bancos" [value]="banco.nombre">{{banco.valor}}</option>
@@ -108,7 +94,7 @@
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">TIPO CUENTA</strong>
                                     <div class="col-md-7">
-                                        <select id="account" name="account" class="form-control" formControlName="account"
+                                        <select id="account" name="account" class="form-control"
                                                 [(ngModel)]="usuario.datosUsuario.TIPO_CUENTA">
                                                 <option value="*">Seleccionar</option>
                                                 <option *ngFor="let cuenta of cuentas" [value]="cuenta.nombre">{{cuenta.valor}}</option>
@@ -119,7 +105,7 @@
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">No. Cuenta</strong>
                                     <div class="col-md-9">
-                                        <input type="text" id="no-account" name="account" class="form-control" formControlName="cuenta" maxlength="12"
+                                        <input type="text" id="no-account" name="account" class="form-control" maxlength="20" minlength="8"
                                             placeholder="0000 0000 0000 0000" [(ngModel)]="usuario.datosUsuario.CUENTA">
                                     </div>
                                 </div>
@@ -129,7 +115,7 @@
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">Sueldo</strong>
                                     <div class="col-md-7">
-                                        <input type="number" id="quantity" name="text-inputafg" class="form-control" formControlName="sueldo"
+                                        <input type="number" id="quantity" name="text-inputafg" class="form-control"
                                                 min=1 placeholder="1.00" [(ngModel)]="usuario.datosUsuario.SUELDO">
                                     </div>
                                 </div>
@@ -137,11 +123,11 @@
                                 <div class="form-group row">
                                     <strong class="col-md-3 col-form-label">Fecha Antiguedad</strong>
                                     <div class="col-md-7">
-                                        <input id="start-date" type="text" class="form-control" #dp="bsDatepicker" formControlName="antiguedad"
+                                        <input id="start-date" type="text" class="form-control" #dp="bsDatepicker"
                                         [(maxDate)]="maxDate" bsDatepicker [(bsValue)]="antiguedad" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" >
                                     </div>
                                 </div>
-                            </form>
+                            
                             
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-4">
