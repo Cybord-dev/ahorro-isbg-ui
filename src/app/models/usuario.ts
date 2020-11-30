@@ -28,5 +28,9 @@ export class Usuario {
         this.activo = true;
         this.ahorrador = false;
         this.tipoUsuario = 'INTERNO';
+        this.activo = false;
+        this.datosUsuario.BANCO = '*';
+        this.datosUsuario.OFICINA = '*';
+        this.datosUsuario.TIPO_CUENTA = '*';
     }
 }
