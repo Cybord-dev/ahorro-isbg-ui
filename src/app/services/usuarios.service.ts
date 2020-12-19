@@ -40,7 +40,7 @@ export class UsuariosService {
   }
 
   public logout(): Observable<any> {
-    return this.http.get('../logout');
+    return this.http.post('../logout',{});
   }
 
   public getUsuario(userid: number): Observable<Usuario> {
