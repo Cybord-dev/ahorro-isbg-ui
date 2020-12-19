@@ -18,7 +18,8 @@ export class DefaultLayoutComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.userService.myInfo().subscribe((user: Usuario) => this.usuario = user);
+    this.userService.myInfo()
+    .then((user: Usuario) => this.usuario = user);
   }
 
   public logout(): void {

@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
 
   public async loadProfileInfo(): Promise<void>{
     try {
-      const user = await this.userService.myInfo().toPromise();
+      const user = await this.userService.myInfo();
       const u = await this.userService.getUsuario(user.id).toPromise();
       const banco: Catalogo = await this.catalogosService.getCatalogoByTipoAndNombre('bancos', u.datosUsuario.BANCO)
         .toPromise();

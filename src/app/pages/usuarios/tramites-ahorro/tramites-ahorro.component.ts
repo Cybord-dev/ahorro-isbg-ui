@@ -58,7 +58,7 @@ export class TramitesAhorroComponent implements OnInit {
 
   public async loadRequestInfo(): Promise<void> {
     try {
-      const user = await this.userService.myInfo().toPromise();
+      const user = await this.userService.myInfo();
       this.usuario = await this.userService.getUsuario(user.id).toPromise();
 
       const ahorros = await this.ahorroService.getSaldoByUsuario(user.id).toPromise();
