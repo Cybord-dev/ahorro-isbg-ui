@@ -19,17 +19,21 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     console.log(`${request.method} ${request.url}`);
     return next.handle(request)
       .pipe(
-        retry(1),
+        retry(0),
         catchError((error: HttpErrorResponse) => {
           let errorMessage = '';
-
-          if (error.status === 302 || error.status === 0 || error.statusText.indexOf('Unknown') >= 0 ) {
+          console.error(error);
+          if (error.status === 302 || error.status === 0 
+              || error.statusText.indexOf('Unknown') >= 0 || error.url.indexOf('/oauth2/authorization/google') > 1) {
             console.error('Sesion perdida');
             this.router.navigateByUrl('/login');
           }
-          if (error.status === 401 || error.url.indexOf('/oauth2/authorization/google') > 1) {
+          if (error.status === 401 || error.status === 403) {
               console.error('Unauthorized request');
               this.router.navigateByUrl('/register');
+          }
+          if(error.url.indexOf('/exit') > 1){
+            window.location.href = "https://mail.google.com/mail/u/0/?logout&hl=en";
           }
 
           if (error.error instanceof ErrorEvent) {
@@ -39,7 +43,6 @@ export class HttpRequestInterceptor implements HttpInterceptor {
             // server-side error
             errorMessage = (error.error !== undefined) ? error.error.message : error.message;
           }
-          console.error(errorMessage);
           return throwError(errorMessage);
         })
       )

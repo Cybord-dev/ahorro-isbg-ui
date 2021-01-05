@@ -18,10 +18,11 @@ export class AjusteAhorroComponent implements OnInit {
   public usuario: Usuario = new Usuario();
   public ajustador: Usuario = new Usuario();
   public ahorros: SaldoAhorro[] = [];
-  public total: number;
+  public total: number = 0;
   public alerts: string[] = [];
   public loading = false;
 
+  public noEmpleado = '';
   public ajusteAhorro: SaldoAhorro = new SaldoAhorro();
 
   constructor(
@@ -31,7 +32,7 @@ export class AjusteAhorroComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.userService.myInfo().toPromise()
+    this.userService.myInfo()
       .then(user => this.ajustador = user)
       .catch(error => this.alerts.push(error));
 
@@ -43,7 +44,9 @@ export class AjusteAhorroComponent implements OnInit {
           this.ahorroService.getSaldoByUsuario(user.id).toPromise()
           .then(resultado => {
             this.ahorros = resultado;
-            this.total = resultado.map(r => r.monto).reduce((a, b) => a + b);
+            if(resultado != undefined && resultado.length>0){
+              this.total = resultado.map(r => r.monto).reduce((a, b) => a + b);
+            }
           });
         }).catch((error) => this.alerts.push(error));
     });

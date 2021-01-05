@@ -38,7 +38,7 @@ export class ReporteAhorroComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.userService.myInfo().toPromise()
+    this.userService.myInfo()
       .then((user) => {
         this.setInfoAhorros(user.id);
       })
