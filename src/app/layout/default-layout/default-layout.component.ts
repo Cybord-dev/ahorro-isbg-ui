@@ -18,14 +18,19 @@ export class DefaultLayoutComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.userService.myInfo().subscribe((user: Usuario) => this.usuario = user);
+    this.userService.myInfo()
+    .then((user: Usuario) => this.usuario = user);
   }
 
   public logout(): void {
     this.userService.logout().toPromise()
     .then(() => console.log('completed logout'))
-    .then(() => {console.log('Calling logout'); window.location.href = "https://mail.google.com/mail/u/0/?logout&hl=en";})
-    .catch((error) => console.log(error));
+    .then(() => {console.log('Calling logout');})
+    .catch((error) => {
+      console.log("Error request")
+      console.log(error);
+      
+    });
   }
 
   public toggleMinimize(e): void{

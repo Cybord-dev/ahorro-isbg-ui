@@ -12,6 +12,9 @@ import { GenericPage } from '../models/generic-page';
 })
 export class UsuariosService {
 
+
+  private currentUser: Usuario = undefined;
+
   constructor(private http: HttpClient) { }
 
   private getHttpParams(filterParams: any): HttpParams {
@@ -35,12 +38,25 @@ export class UsuariosService {
     return this.http.get<Recurso>(`../api/v1/usuarios/report`, { params: this.getHttpParams(filterParams) });
   }
 
-  public myInfo(): Observable<Usuario> {
-    return this.http.get<Usuario>(`../api/v1/usuarios/myInfo`);
+
+  public async myInfo(): Promise<any> {
+    return new Promise(resolve => {
+      if (this.currentUser !== undefined) {
+        resolve(this.currentUser);
+      } else {
+        this.http.get<Usuario>(`../api/v1/usuarios/myInfo`)
+          .subscribe(user => {
+            this.currentUser = user;
+            resolve(user);
+          });
+      }
+    });
   }
 
+
+
   public logout(): Observable<any> {
-    return this.http.get('../logout');
+    return this.http.post('../logout',{});
   }
 
   public getUsuario(userid: number): Observable<Usuario> {

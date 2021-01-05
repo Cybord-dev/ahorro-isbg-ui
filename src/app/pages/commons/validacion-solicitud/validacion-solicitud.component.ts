@@ -51,7 +51,7 @@ export class ValidacionSolicitudComponent implements OnInit {
     this.module = this.router.url.split('/')[1];
     this.submodule = this.router.url.split('/')[2];
 
-    this.userService.myInfo().toPromise()
+    this.userService.myInfo()
       .then(user => this.validador = user)
       .catch(error => this.alerts.push(error));
 
