@@ -44,7 +44,7 @@ export class TramitesPrestamoComponent implements OnInit {
 
   public async loadRequestInfo(): Promise<void> {
     try {
-      const user = await this.userService.myInfo().toPromise();
+      const user = await this.userService.myInfo();
       this.usuario = await this.userService.getUsuario(user.id).toPromise();
       const oficina: Catalogo = await this.catService.getCatalogoByTipoAndNombre('oficinas', this.usuario.datosUsuario.OFICINA)
         .toPromise();

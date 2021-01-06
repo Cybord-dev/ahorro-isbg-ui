@@ -17,7 +17,7 @@
                 <br>
                 <br>
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                    <div class="col-xs-12 col-sm-12 col-md-4 form-group">
                         <p *ngIf="solicitud.id !==undefined" ><strong>Solicitud No. {{solicitud.id}}</strong></p>
                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                           <div class="form-group row">
@@ -41,11 +41,42 @@
                             </div>
                           </div>
                           <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="quantity">Descuento quincenal</label>
+                            <label class="col-md-3 col-form-label" for="quincenasNumber">No quincenas para liquidar</label>
                             <div class="col-md-9">
-                              <input type="number" id="quantity" name="quantity" class="form-control" min=100 [disabled] = "solicitud.id !== undefined"
-                                placeholder="100.00"  [(ngModel)]="solicitud.atributos.MONTO" min="100" max="20000">
-                              <span class="help-block" *ngIf="solicitud.id === undefined">Descuento quincenal</span>
+                              <select id="quincenasNumber" name="quincenasNumber" class="form-control" [(ngModel)]="solicitud.atributos.NO_QUINCENAS">
+                                                <option value="*">Seleccionar</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6">6</option>
+                                                <option value="7">7</option>
+                                                <option value="8">8</option>
+                                                <option value="9">9</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                <option value="13">13</option>
+                                                <option value="14">14</option>
+                                                <option value="15">15</option>
+                                                <option value="16">16</option>
+                                                <option value="17">17</option>
+                                                <option value="18">18</option>
+                                                <option value="19">19</option>
+                                                <option value="20">20</option>
+                                                <option value="21">21</option>
+                                                <option value="22">22</option>
+                                                <option value="23">23</option>
+                                                <option value="24">24</option>
+                                            </select>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-md-3 col-form-label" for="quantity">Cantidad solicitada</label>
+                            <div class="col-md-9" >
+                              <input type="number" id="quantity" name="quantity" class="form-control" [(ngModel)]="solicitud.atributos.MONTO"
+                                placeholder="Cantidad solicitada" >
                             </div>
                           </div>
                           <div class="form-group row">
@@ -67,7 +98,7 @@
   
               </div>
             </div>
-            
+            {{ solicitud | json }}
             <br>
           </div>
         </div>
