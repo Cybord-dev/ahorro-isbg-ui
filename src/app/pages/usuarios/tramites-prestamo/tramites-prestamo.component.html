@@ -18,6 +18,8 @@
                 <br>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                        <p *ngIf="solicitud.id ===undefined" ><strong>Paso 1  Revise y coloque la infromación general del prestamo</strong></p>
+
                         <p *ngIf="solicitud.id !==undefined" ><strong>Solicitud No. {{solicitud.id}}</strong></p>
                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                           <div class="form-group row">
@@ -91,6 +93,32 @@
                             </div>
                           </div>
                         </form>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                      <p *ngIf="solicitud.id ===undefined" ><strong>Paso 2  Registre a los avales requeridos</strong></p>
+                      <br/>
+                      <p>Lista de Avales</p>
+                      <div class="ng-autocomplete">
+                        <ng-autocomplete
+                          [data]="avales"
+                          [searchKeyword]="'nombre'"
+                          placeholder="Enter the Country Name"
+                          (selected)='selectEvent($event)'
+                          (inputChanged)='onChangeSearch($event)'
+                          (inputFocused)='onFocused($event)'
+                          
+                          [itemTemplate]="itemTemplate"
+                          [notFoundTemplate]="notFoundTemplate">
+                        </ng-autocomplete>
+                      
+                        <ng-template #itemTemplate let-item>
+                          <a [innerHTML]="item.noEmpleado+' - '+item.nombre"></a>
+                        </ng-template>
+                      
+                        <ng-template #notFoundTemplate let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
                     </div>
                 </div>
   

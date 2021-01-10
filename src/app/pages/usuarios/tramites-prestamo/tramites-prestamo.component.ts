@@ -7,6 +7,8 @@ import { DatePipe } from '@angular/common';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { Solicitud } from '../../../models/solicitud';
+import { map } from 'rxjs/operators';
+import { GenericPage } from 'src/app/models/generic-page';
 
 @Component({
   selector: 'cybord-tramites-prestamo',
@@ -31,6 +33,7 @@ export class TramitesPrestamoComponent implements OnInit {
   public enabledDates = [];
 
   public solicitud: Solicitud = new Solicitud();
+  public avales:Usuario[] = [];
 
   constructor( public datepipe: DatePipe,
     private userService: UsuariosService,
@@ -40,6 +43,7 @@ export class TramitesPrestamoComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.loadRequestInfo();
+    this.solicitud.atributos.NO_QUINCENAS = '24';
   }
 
   public async loadRequestInfo(): Promise<void> {
@@ -52,11 +56,28 @@ export class TramitesPrestamoComponent implements OnInit {
         .toPromise();
       this.usuario.datosUsuario.OFICINA = oficina.valor;
       this.usuario.datosUsuario.BANCO = banco.valor;
+
+      this.userService.getUsuarios({'tipoUsuario':this.usuario.tipoUsuario})
+        .pipe(
+          map((page:GenericPage<Usuario>) => page.content)
+        ).subscribe(avales => this.avales = avales);
+
+
       this.loading = false;
     }catch (error) {
       this.alerts.push(error);
       this.loading = false;
     }
+  }
+
+
+  public onChangeSearch(search: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+  }
+
+  public onFocused(e) {
+    // do something
   }
 
 }

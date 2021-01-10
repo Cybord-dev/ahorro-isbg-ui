@@ -10,6 +10,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 
 // Common components
@@ -56,7 +57,8 @@ import { ValidacionPagoComponent } from './validacion-pago/validacion-pago.compo
     ButtonsModule.forRoot(),
     ReactiveFormsModule,
     CommonsRoutingModule,
-    CarouselModule.forRoot()
+    CarouselModule.forRoot(),
+    AutocompleteLibModule
   ],
   exports: [
     CommonModule,
@@ -71,7 +73,8 @@ import { ValidacionPagoComponent } from './validacion-pago/validacion-pago.compo
     LoaderComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
-    CarouselModule
+    CarouselModule,
+    AutocompleteLibModule
   ],
   providers: [
     DatePipe
