@@ -14,6 +14,8 @@ export class Atributos {
     public AVAL2: string;
     public AVAL3: string;
     public NO_QUINCENAS: string;
+    public TOTAL_A_PAGAR: string;
+    public DESCUENTO_QUINCENAL: string;
     
 
 }

@@ -5,5 +5,6 @@ export class Aval {
     public noEmpleadoDeudor: string;
     public monto: number;
     public idPrestamo: number;
+    public status: string;
 
 }

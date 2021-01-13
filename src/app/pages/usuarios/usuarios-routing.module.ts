@@ -4,6 +4,7 @@ import { ReporteAhorroComponent } from './reporte-ahorro/reporte-ahorro.componen
 import { TramitesAhorroComponent } from './tramites-ahorro/tramites-ahorro.component';
 import { PagosPrestamosComponent } from './pagos-prestamos/pagos-prestamos.component';
 import { TramitesPrestamoComponent } from './tramites-prestamo/tramites-prestamo.component';
+import { AprobacionAvalComponent } from './aprobacion-aval/aprobacion-aval.component';
 
 const routes: Routes = [
   {
@@ -33,7 +34,14 @@ const routes: Routes = [
     data: {
       title: 'Pagos anticipados'
     }
-  }
+  },
+  {
+    path: 'avales',
+    component: AprobacionAvalComponent,
+    data: {
+      title: 'Aprobaciones de aval'
+    }
+  },
 ];
 
 @NgModule({
