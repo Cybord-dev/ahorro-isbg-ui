@@ -29,10 +29,10 @@ export class TramitesPrestamoComponent implements OnInit {
   public totalAhorro = 0;
   public errorMessages: string[] = [];
   public success = '';
-  public tipoSolicitud = 'SolicitudAhorro';
   public alerts: string[] = [];
   public enabledDates = [];
   public autocomplete: any;
+  public bsValue: Date;
 
   public solicitud: Solicitud = new Solicitud();
   public avalesList:Usuario[] = [];
@@ -50,6 +50,7 @@ export class TramitesPrestamoComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
+    this.calculateEnabledDates();
     this.loadRequestInfo();
     this.solicitud.atributos.NO_QUINCENAS = '24';
     this.solicitud.atributos.MONTO = '500';
@@ -122,16 +123,63 @@ export class TramitesPrestamoComponent implements OnInit {
   }
 
 
-  public debtRequest(){
-    
+  public sendRequest(){
+    this.loading = true;
+
+    this.solicitud.tipo = 'SolicitudPrestamo';
+    this.solicitud.idUsuario = this.usuario.id;
+    this.solicitud.noEmpleado = this.usuario.noEmpleado;
+    this.solicitud.nombre = this.usuario.nombre;
+    this.solicitud.tipoUsuario = this.usuario.tipoUsuario;
+
+    if(this.noAvales>=1){
+      this.solicitud.atributos.AVAL1 = this.avales[0].noEmpleado;
+    }
+    if(this.noAvales>=2){
+      this.solicitud.atributos.AVAL2 = this.avales[1].noEmpleado;
+    }
+    if(this.noAvales===3){
+      this.solicitud.atributos.AVAL3 = this.avales[2].noEmpleado;
+    }
+
     this.solicitudService.postSolictudUsuario(this.usuario.id,this.solicitud)
     .toPromise()
-    .then(sucess=>{
-
+    .then(success=>{
+      console.log(success);
+      this.loading = false;
     }).catch(error=>{
       this.alerts.push(error);
       this.loading = false;
     });
+  }
+
+  public openModal(): void {
+    this.modalConfirmacion.show();
+  }
+
+  public cancelar(): void {
+    this.modalConfirmacion.hide();
+  }
+
+  public calculateEnabledDates(): void {
+    const currentDate = new Date();
+    if (currentDate.getDate() < 15) {
+      currentDate.setDate(15);
+      currentDate.setMonth(currentDate.getMonth());
+      this.enabledDates.push(currentDate);
+    }
+    for (let i = 1; i < 5; i++) {
+      const date1 = new Date();
+      date1.setDate(1);
+      date1.setMonth(date1.getMonth() + i);
+      this.enabledDates.push(date1);
+
+      const date2 = new Date();
+      date2.setDate(15);
+      date2.setMonth(date2.getMonth() + i);
+      this.enabledDates.push(date2);
+    }
+    this.bsValue = this.enabledDates[0];
   }
 
 }

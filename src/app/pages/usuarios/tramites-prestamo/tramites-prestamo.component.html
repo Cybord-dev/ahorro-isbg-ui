@@ -133,6 +133,12 @@
                         <p><strong>TOTAL A PAGAR  : </strong>{{totalPagar | currency}}</p>
                         <p><strong>PAGO QUINCENAL : </strong>{{pagoQuincenal | currency}}</p>
                       </div>
+
+                      <br/>
+                      
+                      <button type="button" class="btn btn-sm btn-success" (click)="openModal()" 
+                              *ngIf="solicitud.id === undefined && avales.length > 0 &&  avales.length === noAvales">
+                          <i class="fa fa-dot-circle-o" ></i>&nbsp;Enviar solicitud<i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
                     </div>
                 </div>
   
@@ -177,7 +183,7 @@
         <div class="modal-footer">
           <button type="button" class="btn" 
             [ngClass]="{'btn-primary': noEmpleado === usuario.noEmpleado , 'btn-secondary' : noEmpleado !== usuario.noEmpleado }" 
-            [disabled]="noEmpleado !== usuario.noEmpleado" (click)="aceptar()" >Realizar solicitud</button>
+            [disabled]="noEmpleado !== usuario.noEmpleado" (click)="sendRequest()" >Realizar solicitud</button>
             <button type="button" class="btn btn-warning" (click)="cancelar()" >Salir</button>
         </div>
       </div>
