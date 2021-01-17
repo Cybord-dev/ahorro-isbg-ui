@@ -8,6 +8,7 @@ export class DatosUsuario {
     public BANCO: string;
     public TIPO_CUENTA: string;
     public CUENTA: string;
+    public NO_AVALES: string;
 
     public constructor(){}
 }

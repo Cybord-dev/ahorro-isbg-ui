@@ -18,8 +18,9 @@ import { GenericPage } from 'src/app/models/generic-page';
 export class TramitesPrestamoComponent implements OnInit {
 
 
-  @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective
-  ;
+  @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
+
+  @ViewChild('avalSelector') public avalSelector;
 
   public oficinas: Catalogo[] = [];
   public loading = false;
@@ -31,9 +32,16 @@ export class TramitesPrestamoComponent implements OnInit {
   public tipoSolicitud = 'SolicitudAhorro';
   public alerts: string[] = [];
   public enabledDates = [];
+  public autocomplete: any;
 
   public solicitud: Solicitud = new Solicitud();
+  public avalesList:Usuario[] = [];
   public avales:Usuario[] = [];
+
+  public totalPagar:number = 0;
+  public pagoQuincenal:number = 0;
+  public noAvales:number = 0;
+  
 
   constructor( public datepipe: DatePipe,
     private userService: UsuariosService,
@@ -44,12 +52,14 @@ export class TramitesPrestamoComponent implements OnInit {
     this.loading = true;
     this.loadRequestInfo();
     this.solicitud.atributos.NO_QUINCENAS = '24';
+    this.solicitud.atributos.MONTO = '500';
   }
 
   public async loadRequestInfo(): Promise<void> {
     try {
       const user = await this.userService.myInfo();
       this.usuario = await this.userService.getUsuario(user.id).toPromise();
+      console.log(this.usuario);
       const oficina: Catalogo = await this.catService.getCatalogoByTipoAndNombre('oficinas', this.usuario.datosUsuario.OFICINA)
         .toPromise();
       const banco: Catalogo = await this.catService.getCatalogoByTipoAndNombre('bancos', this.usuario.datosUsuario.BANCO)
@@ -60,7 +70,9 @@ export class TramitesPrestamoComponent implements OnInit {
       this.userService.getUsuarios({'tipoUsuario':this.usuario.tipoUsuario})
         .pipe(
           map((page:GenericPage<Usuario>) => page.content)
-        ).subscribe(avales => this.avales = avales);
+        ).subscribe(avales => {
+          avales.splice(avales.findIndex(a=> a.noEmpleado === this.usuario.noEmpleado),1);
+          this.avalesList = avales});
 
 
       this.loading = false;
@@ -71,13 +83,55 @@ export class TramitesPrestamoComponent implements OnInit {
   }
 
 
-  public onChangeSearch(search: string) {
-    // fetch remote data from here
-    // And reassign the 'data' which is binded to 'data' property.
+  public onChangeNoQuincenas(value) {
+    this.solicitud.atributos.NO_QUINCENAS = value;
+    this.calculateValues();
   }
 
-  public onFocused(e) {
-    // do something
+  public onChangeAmount(value){
+    this.calculateValues();
+    this.solicitud.atributos.MONTO = value;
+  }
+
+  public calculateValues() {
+    let noAvales = 3;
+    let monto:number = +this.solicitud.atributos.MONTO;
+    if(monto<1000){
+      noAvales = 1;
+    }else if(monto>1000 && monto <2000){
+      noAvales = 2;
+    }else{
+      noAvales = 3;
+    }
+    if(+this.usuario.datosUsuario.NO_AVALES < noAvales){
+      noAvales = +this.usuario.datosUsuario.NO_AVALES;
+    }
+    this.noAvales = noAvales;
+
+    this.totalPagar = monto + monto * 0.01 * (+this.solicitud.atributos.NO_QUINCENAS);
+    this.pagoQuincenal = monto/(+this.solicitud.atributos.NO_QUINCENAS) + monto * 0.01;
+
+    this.solicitud.atributos.DESCUENTO_QUINCENAL = `${this.pagoQuincenal}`;
+    this.solicitud.atributos.TOTAL_A_PAGAR = `${this.totalPagar}`;
+  }
+
+  public avalSelected(aval:Usuario){
+    this.avales.push(aval);
+    this.avalesList.splice(this.avalesList.indexOf(aval),1);
+    this.avalSelector.clear();
+  }
+
+
+  public debtRequest(){
+    
+    this.solicitudService.postSolictudUsuario(this.usuario.id,this.solicitud)
+    .toPromise()
+    .then(sucess=>{
+
+    }).catch(error=>{
+      this.alerts.push(error);
+      this.loading = false;
+    });
   }
 
 }

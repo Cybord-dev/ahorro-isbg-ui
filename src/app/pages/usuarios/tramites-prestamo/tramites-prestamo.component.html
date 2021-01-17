@@ -17,7 +17,7 @@
                 <br>
                 <br>
                 <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
                         <p *ngIf="solicitud.id ===undefined" ><strong>Paso 1  Revise y coloque la infromación general del prestamo</strong></p>
 
                         <p *ngIf="solicitud.id !==undefined" ><strong>Solicitud No. {{solicitud.id}}</strong></p>
@@ -45,8 +45,7 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="quincenasNumber">No quincenas para liquidar</label>
                             <div class="col-md-9">
-                              <select id="quincenasNumber" name="quincenasNumber" class="form-control" [(ngModel)]="solicitud.atributos.NO_QUINCENAS">
-                                                <option value="*">Seleccionar</option>
+                              <select id="quincenasNumber" name="quincenasNumber" class="form-control" [(ngModel)]="solicitud.atributos.NO_QUINCENAS" (input)="onChangeNoQuincenas($event.target.value)">
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -77,7 +76,7 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="quantity">Cantidad solicitada</label>
                             <div class="col-md-9" >
-                              <input type="number" id="quantity" name="quantity" class="form-control" [(ngModel)]="solicitud.atributos.MONTO"
+                              <input type="number" id="quantity" name="quantity" class="form-control" [(ngModel)]="solicitud.atributos.MONTO" (input)="onChangeAmount($event.target.value)"
                                 placeholder="Cantidad solicitada" >
                             </div>
                           </div>
@@ -94,30 +93,45 @@
                           </div>
                         </form>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 form-group">
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
                       <p *ngIf="solicitud.id ===undefined" ><strong>Paso 2  Registre a los avales requeridos</strong></p>
                       <br/>
-                      <p>Lista de Avales</p>
-                      <div class="ng-autocomplete">
-                        <ng-autocomplete
-                          [data]="avales"
-                          [searchKeyword]="'nombre'"
-                          placeholder="Enter the Country Name"
-                          (selected)='selectEvent($event)'
-                          (inputChanged)='onChangeSearch($event)'
-                          (inputFocused)='onFocused($event)'
+                      
+                      <div class="form-group row" *ngIf="avales.length == 0 || avales.length < noAvales">
+                        <label class="col-md-3 col-form-label" for="autocomplete">Selección de avales</label>
+                        <div class="col-md-9" >
+                          <div class="ng-autocomplete">
+                            <ng-autocomplete #avalSelector
+                              [data]="avalesList"
+                              [searchKeyword]="'nombre'"
+                              placeholder="Ingrese el nombre del aval"
+                              (selected)='avalSelected($event)'
+                              [(ngModel)] = "autocomplete"
+                              [itemTemplate]="itemTemplate"
+                              [notFoundTemplate]="notFoundTemplate">
+                            </ng-autocomplete>
                           
-                          [itemTemplate]="itemTemplate"
-                          [notFoundTemplate]="notFoundTemplate">
-                        </ng-autocomplete>
+                            <ng-template #itemTemplate let-item>
+                              <a [innerHTML]="item.noEmpleado+' - '+item.nombre"></a>
+                            </ng-template>
+                          
+                            <ng-template #notFoundTemplate let-notFound>
+                              <div [innerHTML]="'NO ENCONTRADO'"></div>
+                            </ng-template>
+                          </div>
+                        </div>
+                      </div>
+
                       
-                        <ng-template #itemTemplate let-item>
-                          <a [innerHTML]="item.noEmpleado+' - '+item.nombre"></a>
-                        </ng-template>
-                      
-                        <ng-template #notFoundTemplate let-notFound>
-                          <div [innerHTML]="notFound"></div>
-                        </ng-template>
+                      <p *ngIf="avales.length > 0"><strong>Lista de Avales</strong></p>
+                      <br/>
+                      <ul>
+                        <li *ngFor="let aval of avales">{{aval.noEmpleado}} - {{aval.nombre}} </li>
+                      </ul>
+                      <br/>
+                      <div *ngIf="avales.length > 0 &&  avales.length === noAvales">
+                        <p><strong>TOTAL A PAGAR  : </strong>{{totalPagar | currency}}</p>
+                        <p><strong>PAGO QUINCENAL : </strong>{{pagoQuincenal | currency}}</p>
                       </div>
                     </div>
                 </div>
@@ -128,6 +142,7 @@
             </div>
             {{ solicitud | json }}
             <br>
+            
           </div>
         </div>
       </div>
