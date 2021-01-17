@@ -132,6 +132,8 @@ export class TramitesPrestamoComponent implements OnInit {
     this.solicitud.nombre = this.usuario.nombre;
     this.solicitud.tipoUsuario = this.usuario.tipoUsuario;
 
+    this.solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
+
     if(this.noAvales>=1){
       this.solicitud.atributos.AVAL1 = this.avales[0].noEmpleado;
     }
