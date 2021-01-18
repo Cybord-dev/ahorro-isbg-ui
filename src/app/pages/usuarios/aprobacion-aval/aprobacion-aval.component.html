@@ -1,1 +1,164 @@
-<p>aprobacion-aval works!</p>
+<div class="animated fadeIn">
+    <div class = "row">
+
+    <div class="col">
+        <div class="col-sm-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Avalaes</strong>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+            
+                          <div *ngIf="page.empty === true" class="alert alert-primary" role="alert">
+                            No se encontraron resultados
+                          </div>
+                          <div class="clearfix" *ngIf="page.empty === false">
+
+                            <select id="inputunidad" style="display:block;width: 95px; margin-right: 15px;"
+                              class="float-right form-control form-control-sm" [(ngModel)]="filterParams.size"
+                              *ngIf="page.last==false || page.first==true" (change)="onChangePageSize($event.target.value)">
+                              <option value="10">10</option>
+                              <option *ngIf="page.number<(page.totalElements/20)" value="20">20</option>
+                              <option *ngIf="page.number<(page.totalElements/50)" value="50">50</option>
+                            </select>
+                            <strong class="float-right"> Tamaño Pagina &nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                            
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col">
+
+                          <div class="table-responsive" *ngIf="page.empty == false">
+                            <table class="table table-bordered table-sm">
+                              <thead class="thead-dark">
+                                <tr>
+                                  <th>Acciones</th>
+                                  <th>Nombre del deudor</th>
+                                  <th>Monto</th>
+                                  <th>Status</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let fila of page.content">
+
+                                    <button class="btn-sm btn-success"  (click)="mostrarInformacion(fila)"><i
+                                    class="fa fa-money fa-sm"></i></button>
+                                    <td scope="row" class="text-right">{{fila.nombreDeudor}}</td>
+                                    <td scope="row" class="text-right">{{fila.monto}}</td>
+                                    <td scope="row" class="text-right">{{fila.status}}</td>
+
+                                </tr>
+                              </tbody>
+                            </table>
+                            <div class="clearfix" *ngIf="page.empty == false">
+                              <ul class="pagination float-right" *ngIf="page.totalElements > 1">
+                                <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
+                                    (click)="updateDataTable(0,page.size)"><i class="icon-control-rewind icons"></i></button>
+                                </li>
+                                <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
+                                    (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
+                                <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
+                                <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
+                                    (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
+                                <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
+                                    (click)="updateDataTable(page.totalPages-1,page.size)"><i class="icon-control-forward icons"></i></button>
+                                </li>
+                              </ul>
+                            </div>
+            
+                          </div>
+                        </div>
+                      </div>
+                    
+                    <p class="alert alert-success" *ngIf="params.success.length > 0" role="alert">{{params.success}}</p>
+                </div>
+                <cybord-loader *ngIf="loading"></cybord-loader>
+                <div class="card-footer">
+                    <div class="float-right slide_2">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col">
+        <div class="col-sm-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Información</strong>
+                </div>
+                <div class="card-body">
+
+                    <div class="col">
+                        <div class ="row">
+                            Nombre: {{informacion.nombreDeudor}}
+                        </div>
+                        <div class ="row">
+                            No. Empelado: {{informacion.noEmpleado}}
+                        </div>
+                        <div class ="row">
+                            Monto: {{informacion.monto}}
+                        </div>
+                        <div class ="row">
+                            Fecha de inicio: {{informacion.atrib.FECHA}}
+                        </div>
+                        <div class ="row">
+                            No. Quincenas: {{informacion.atrib.NO_QUINCENAS}}
+                        </div>
+                        <div class ="row">
+                            Descuento Quincenal: {{informacion.atrib.DESCUENTO_QUINCENAL}}
+                        </div>
+                    </div>
+                    
+                    <p class="alert alert-success" *ngIf="params.success.length > 0" role="alert">{{params.success}}</p>
+                </div>
+                <cybord-loader *ngIf="loading"></cybord-loader>
+                <div class="card-footer">
+
+                    <div class="float-right slide_2">
+
+                        <button class="btn btn-success" [hidden]="!monstrando"
+                                (click)="openModal(1)" [disabled] = "loading"> Aceptar
+                                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                                </button>
+                        <button class="btn btn-danger" [hidden]="!mostrando"
+                            (click)="openModal(0)" [disabled] = "loading"> Rechazar
+                            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                            </button>
+
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</div>
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="decline()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            {{mensajeModal}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary"  *ngIf="usuario.id !== undefined" (click)="update()" >Si</button>
+            <button type="button" class="btn btn-primary"  *ngIf="usuario.id === undefined" (click)="register()" >Si</button>
+            <button type="button" class="btn btn-secondary" (click)="decline()" >no</button>
+        </div>
+      </div>
+    </div>
+  </div>
