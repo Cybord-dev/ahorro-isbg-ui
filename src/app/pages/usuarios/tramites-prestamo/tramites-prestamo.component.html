@@ -45,7 +45,8 @@
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="quincenasNumber">No quincenas para liquidar</label>
                             <div class="col-md-9">
-                              <select id="quincenasNumber" name="quincenasNumber" class="form-control" [(ngModel)]="solicitud.atributos.NO_QUINCENAS" (input)="onChangeNoQuincenas($event.target.value)">
+                              <select id="quincenasNumber" name="quincenasNumber" class="form-control" [(ngModel)]="solicitud.atributos.NO_QUINCENAS" [disabled]="solicitud.id !=undefined"
+                              (input)="onChangeNoQuincenas($event.target.value)">
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -77,9 +78,10 @@
                             <label class="col-md-3 col-form-label" for="quantity">Cantidad solicitada</label>
                             <div class="col-md-9" >
                               <input type="number" id="quantity" name="quantity" class="form-control" [(ngModel)]="solicitud.atributos.MONTO" (input)="onChangeAmount($event.target.value)"
-                                placeholder="Cantidad solicitada" >
+                                placeholder="Cantidad solicitada" [disabled]="solicitud.id !=undefined">
                             </div>
                           </div>
+                          
                           <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="start-date">Fecha inicio</label>
                             <div class="col-md-9">
@@ -93,7 +95,34 @@
                           </div>
                         </form>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-6 form-group">
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group" *ngIf="solicitud.id !== undefined">
+                      
+                        <strong>Estatus de aceptación avales</strong>
+                        <br/>
+                        <br/>
+                        
+                        <table class="table table-bordered table-striped table-sm">
+                          <thead class="thead-dark">
+                            <tr>
+                              <th>DATOS AVAL</th>
+                              <th>STATUS</th>
+                              <th>COMENTARIOS</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let aceptacion of aceptacionAvales">
+                              <td scope="row">{{aceptacion.noEmpleadoAval}}</td>
+                              <td scope="row">{{aceptacion.estatus }}</td>
+                              <td scope="row" class="text-right">{{aceptacion.comentarios}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <br>
+                        <br>
+                        <button type="button" class="btn btn-sm btn-danger" (click)="cancelRequest()" *ngIf="solicitud.id !== undefined">
+                          <i class="fa fa-dot-circle-o" ></i>&nbsp;Cancelar solicitud<i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 form-group" *ngIf="solicitud.id === undefined">
                       <p *ngIf="solicitud.id ===undefined" ><strong>Paso 2  Registre a los avales requeridos</strong></p>
                       <br/>
                       

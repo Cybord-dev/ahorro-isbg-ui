@@ -6,9 +6,11 @@ import { Usuario } from '../../../models/usuario';
 import { DatePipe } from '@angular/common';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
+import { AvalService } from '../../../services/aval.service';
 import { Solicitud } from '../../../models/solicitud';
 import { map } from 'rxjs/operators';
 import { GenericPage } from 'src/app/models/generic-page';
+import { AceptacionAval } from 'src/app/models/aceptacion-aval';
 
 @Component({
   selector: 'cybord-tramites-prestamo',
@@ -37,6 +39,7 @@ export class TramitesPrestamoComponent implements OnInit {
   public solicitud: Solicitud = new Solicitud();
   public avalesList:Usuario[] = [];
   public avales:Usuario[] = [];
+  public aceptacionAvales: AceptacionAval[] = [];
 
   public totalPagar:number = 0;
   public pagoQuincenal:number = 0;
@@ -46,15 +49,16 @@ export class TramitesPrestamoComponent implements OnInit {
   constructor( public datepipe: DatePipe,
     private userService: UsuariosService,
     private solicitudService: SolicitudesService,
-    private catService: CatalogosService) { }
+    private catService: CatalogosService,
+    private avalService: AvalService) { }
 
   ngOnInit(): void {
     this.loading = true;
     this.calculateEnabledDates();
     this.loadRequestInfo();
-    this.solicitud.atributos.NO_QUINCENAS = '24';
-    this.solicitud.atributos.MONTO = '500';
+    
   }
+
 
   public async loadRequestInfo(): Promise<void> {
     try {
@@ -75,7 +79,20 @@ export class TramitesPrestamoComponent implements OnInit {
           avales.splice(avales.findIndex(a=> a.noEmpleado === this.usuario.noEmpleado),1);
           this.avalesList = avales});
 
-
+      const solicitudes : Solicitud[] = await this.solicitudService.getSolicitudesByUsuario(user.id).toPromise();
+      let prestamo;
+      if(solicitudes.length > 0 ){
+        prestamo = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
+        .find(s => s.tipo === 'SolicitudPrestamo' && s.status !== 'Finalizada');
+      }
+      if(prestamo!= undefined){
+        this.solicitud = prestamo;
+        this.aceptacionAvales = await this.avalService.getAceptacionesPorSolicitud(prestamo.id).toPromise();
+      }else{
+        this.solicitud = new Solicitud('SolicitudPrestamo');
+        this.solicitud.atributos.NO_QUINCENAS = '24';
+        this.solicitud.atributos.MONTO = '500'; 
+      }
       this.loading = false;
     }catch (error) {
       this.alerts.push(error);
@@ -125,8 +142,6 @@ export class TramitesPrestamoComponent implements OnInit {
 
   public sendRequest(){
     this.loading = true;
-
-    this.solicitud.tipo = 'SolicitudPrestamo';
     this.solicitud.idUsuario = this.usuario.id;
     this.solicitud.noEmpleado = this.usuario.noEmpleado;
     this.solicitud.nombre = this.usuario.nombre;
