@@ -3,8 +3,9 @@ import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 import { GenericPage } from '../../../models/generic-page';
 import { AvalService } from '../../../services/aval.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
-import { Aval } from '../../../models/aval';
+import { AceptacionAval } from '../../../models/aceptacion-aval';
 import { Atributos } from '../../../models/atributos';
+import { Usuario } from 'src/app/models/usuario';
 
 @Component({
   selector: 'cybord-aprobacion-aval',
@@ -24,6 +25,8 @@ export class AprobacionAvalComponent implements OnInit {
   public informacion: any = {
     noEmpleado: "", atrib: Atributos, monto: "", nombreDeudor: "", status: ""
   }
+
+  public usuario : Usuario = new Usuario();
   
   constructor(
     private avalService: AvalService,
