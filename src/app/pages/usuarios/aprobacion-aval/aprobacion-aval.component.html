@@ -14,18 +14,6 @@
                           <div *ngIf="page.empty === true" class="alert alert-primary" role="alert">
                             No se encontraron resultados
                           </div>
-                          <div class="clearfix" *ngIf="page.empty === false">
-
-                            <select id="inputunidad" style="display:block;width: 95px; margin-right: 15px;"
-                              class="float-right form-control form-control-sm" [(ngModel)]="filterParams.size"
-                              *ngIf="page.last==false || page.first==true" (change)="onChangePageSize($event.target.value)">
-                              <option value="10">10</option>
-                              <option *ngIf="page.number<(page.totalElements/20)" value="20">20</option>
-                              <option *ngIf="page.number<(page.totalElements/50)" value="50">50</option>
-                            </select>
-                            <strong class="float-right"> Tamaño Pagina &nbsp;&nbsp;&nbsp;&nbsp;</strong>
-                            
-                          </div>
                         </div>
                       </div>
                       <div class="row">
@@ -42,32 +30,18 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr *ngFor="let fila of page.content">
+                                <tr *ngFor="let aval of avales">
 
                                     <button class="btn-sm btn-success"  (click)="mostrarInformacion(fila)"><i
                                     class="fa fa-money fa-sm"></i></button>
-                                    <td scope="row" class="text-right">{{fila.nombreDeudor}}</td>
-                                    <td scope="row" class="text-right">{{fila.monto}}</td>
-                                    <td scope="row" class="text-right">{{fila.estatus}}</td>
+                                    <td scope="row" class="text-right">{{aval.nombreDeudor}}</td>
+                                    <td scope="row" class="text-right">{{aval.monto}}</td>
+                                    <td scope="row" class="text-right">{{aval.estatus}}</td>
 
                                 </tr>
                               </tbody>
                             </table>
-                            <div class="clearfix" *ngIf="page.empty == false">
-                              <ul class="pagination float-right" *ngIf="page.totalElements > 1">
-                                <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
-                                    (click)="updateDataTable(0,page.size)"><i class="icon-control-rewind icons"></i></button>
-                                </li>
-                                <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
-                                    (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
-                                <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
-                                <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
-                                    (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
-                                <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
-                                    (click)="updateDataTable(page.totalPages-1,page.size)"><i class="icon-control-forward icons"></i></button>
-                                </li>
-                              </ul>
-                            </div>
+                            
             
                           </div>
                         </div>
