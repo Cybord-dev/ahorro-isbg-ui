@@ -20,14 +20,13 @@ export class AprobacionAvalComponent implements OnInit {
   public errorMessages: string[] = [];
   public mensajeModal = '';
   public params: any = { success: '', message: '', id: '*', module: 'usuarios' };
-  public page: GenericPage<any> = new GenericPage();
+  public avales: AceptacionAval[] = [];
   public loading = false;
   public mostrando = false;
   public informacion: any = {
     noEmpleado: "", atrib: Atributos, monto: "", nombreDeudor: "", status: ""
   }
-  private idusuario: number;
-  private noEmpleado: string;
+  private noEmpleado: string = "33334444";
 
   public usuario : Usuario = new Usuario();
   
@@ -40,28 +39,32 @@ export class AprobacionAvalComponent implements OnInit {
   ngOnInit(): void {
     this.userService.myInfo()
       .then(user => {
-        this.idusuario = user.id
         this.noEmpleado = user.noEmpleado
+        console.log("===>"+this.noEmpleado);
+        this.avalService.getAceptacionesPendientesPorNoEmpleado(this.noEmpleado).toPromise()
+        .then(data => {
+          this.avales = data; this.loading = false;
+        })
+        .catch(error => this.errorMessages.push(error));
       })
       .catch(error => this.errorMessages.push(error));
-    
+
+      
   }
 
-  public mostrarInformacion(fila: any): void {
-    
+
+  public mostrarInformacion(aval: AceptacionAval): void {
+    console.log(aval);
   }
 
-  public onChangePageSize(pageSize: number): void {
-    
+  public fecha(dato: string): string{
+    var temp  = new Date(dato);
+    var tokens = temp.toString().split(" ");
+    return tokens[2] + "/" + (temp.getMonth()+1) + "/" + temp.getFullYear();
   }
 
   public openModal(status:Boolean): void {
     this.modalConfirmacion.show();
-  }
-
-  public updateDataTable(currentPage?: number, pageSize?: number, filterParams?: any): void{
-    this.loading = true;
-    
   }
 
 }

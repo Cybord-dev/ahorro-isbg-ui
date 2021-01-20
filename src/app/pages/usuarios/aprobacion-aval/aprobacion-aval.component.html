@@ -1,118 +1,72 @@
 <div class="animated fadeIn">
     <div class = "row">
 
-    <div class="col">
-        <div class="col-sm-12 col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <strong>Avales</strong>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-            
-                          <div *ngIf="page.empty === true" class="alert alert-primary" role="alert">
-                            No se encontraron resultados
-                          </div>
-                        </div>
-                      </div>
+      <div class="col">
+          <div class="col-sm-12 col-md-12">
+              <div class="card">
+                  <div class="card-header">
+                      <strong>Avales</strong>
+                  </div>
+                  <div class="card-body">
                       <div class="row">
-                        <div class="col">
-
-                          <div class="table-responsive" *ngIf="page.empty == false">
-                            <table class="table table-bordered table-sm">
-                              <thead class="thead-dark">
-                                <tr>
-                                  <th>Acciones</th>
-                                  <th>Nombre del deudor</th>
-                                  <th>Monto</th>
-                                  <th>Status</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr *ngFor="let aval of avales">
-
-                                    <button class="btn-sm btn-success"  (click)="mostrarInformacion(fila)"><i
-                                    class="fa fa-money fa-sm"></i></button>
-                                    <td scope="row" class="text-right">{{aval.nombreDeudor}}</td>
-                                    <td scope="row" class="text-right">{{aval.monto}}</td>
-                                    <td scope="row" class="text-right">{{aval.estatus}}</td>
-
-                                </tr>
-                              </tbody>
-                            </table>
-                            
-            
+                          <div class="col">
+              
+                            <div *ngIf="avales.length === 0" class="alert alert-primary" role="alert">
+                              No se encontraron resultados
+                            </div>
                           </div>
                         </div>
+                        <div class="row">
+                          <div class="col">
+
+                            <div class="table-responsive" *ngIf="avales.length >0 ">
+                              <table class="table table-bordered table-sm">
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th>Acciones</th>
+                                    <th>Nombre del deudor</th>
+                                    <th>Monto</th>
+                                    <th>Fecha</th>
+                                    <th>Status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let aval of avales">
+
+                                    <td scope="row" class="text-center">
+                                        <button class="btn-sm btn-primary"  (click)="mostrarInformacion(aval)"><i
+                                          class="fa fa-search fa-sm"></i></button>
+                                      </td>
+                                      <td scope="row" class="text-left">{{aval.nombreDeudor}}</td>
+                                      <td scope="row" class="text-left">$ {{aval.montoPrestamo}}</td>
+                                      <td scope="row" class="text-left">{{fecha(aval.fechaCreacion)}}</td>
+                                      <td scope="row" *ngIf="aval.estatus === 'SOLICITUD'"><span class="badge badge-info">PENDIENTE</span></td>
+                                      <td scope="row" *ngIf="aval.estatus === 'APROBADO'"><span class="badge badge-success">ACEPTADO</span>
+                                      <td scope="row" *ngIf="aval.estatus === 'RECHAZADO'"><span class="badge badge-danger">RECHAZADO</span>
+
+                                  </tr>
+                                </tbody>
+                              </table>
+                              
+              
+                            </div>
+                          </div>
+                        </div>
+                      
+                      <p class="alert alert-success" *ngIf="params.success.length > 0" role="alert">{{params.success}}</p>
+                  </div>
+                  <cybord-loader *ngIf="loading"></cybord-loader>
+                  <div class="card-footer">
+                      <div class="float-right slide_2">
+
                       </div>
-                    
-                    <p class="alert alert-success" *ngIf="params.success.length > 0" role="alert">{{params.success}}</p>
-                </div>
-                <cybord-loader *ngIf="loading"></cybord-loader>
-                <div class="card-footer">
-                    <div class="float-right slide_2">
-
-                    </div>
-                </div>
-            </div>
-        </div>
+                  </div>
+              </div>
+          </div>
 
     </div>
 
-    <div class="col">
-        <div class="col-sm-12 col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <strong>Información</strong>
-                </div>
-                <div class="card-body">
-
-                    <div class="col">
-                        <div class ="row">
-                            Nombre: {{informacion.nombreDeudor}}
-                        </div>
-                        <div class ="row">
-                            No. Empelado: {{informacion.noEmpleado}}
-                        </div>
-                        <div class ="row">
-                            Monto: {{informacion.monto}}
-                        </div>
-                        <div class ="row">
-                            Fecha de inicio: {{informacion.atrib.FECHA}}
-                        </div>
-                        <div class ="row">
-                            No. Quincenas: {{informacion.atrib.NO_QUINCENAS}}
-                        </div>
-                        <div class ="row">
-                            Descuento Quincenal: {{informacion.atrib.DESCUENTO_QUINCENAL}}
-                        </div>
-                    </div>
-                    
-                    <p class="alert alert-success" *ngIf="params.success.length > 0" role="alert">{{params.success}}</p>
-                </div>
-                <cybord-loader *ngIf="loading"></cybord-loader>
-                <div class="card-footer">
-
-                    <div class="float-right slide_2">
-
-                        <button class="btn btn-success" [hidden]="!monstrando"
-                                (click)="openModal(1)" [disabled] = "loading"> Aceptar
-                                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
-                                </button>
-                        <button class="btn btn-danger" [hidden]="!mostrando"
-                            (click)="openModal(0)" [disabled] = "loading"> Rechazar
-                            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
-                            </button>
-
-                    </div>
-                    
-                    
-                </div>
-            </div>
-        </div>
-
-    </div>
+  
     </div>
 </div>
 

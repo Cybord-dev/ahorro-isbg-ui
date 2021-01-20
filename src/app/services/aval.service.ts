@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AceptacionAval } from '../models/aceptacion-aval';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class AvalService {
 
   public getAceptacionesPorSolicitud(idSolicitud:number){
     return this.http.get<AceptacionAval[]>(`../api/v1/solicitudes/${idSolicitud}/avales`);
+  }
+
+  public getAceptacionesPendientesPorNoEmpleado(noEmpleado:string): Observable<AceptacionAval[]>{
+    return this.http.get<AceptacionAval[]>(`../api/v1/usuarios/${noEmpleado}/avales`);
   }
 
   
