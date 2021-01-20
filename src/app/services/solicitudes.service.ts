@@ -50,8 +50,8 @@ export class SolicitudesService {
     return this.http.post<Solicitud>(`../api/v1/usuarios/${idUsuario}/solicitudes`, solicitud);
   }
 
-  public putSolictud(idSolicitud: number, solicitud: Solicitud): Observable<Solicitud[]>{
-    return this.http.post<Solicitud[]>(`../api/v1/solicitudes/${idSolicitud}`, solicitud);
+  public putSolictud(idSolicitud: number, solicitud: Solicitud): Observable<Solicitud>{
+    return this.http.put<Solicitud>(`../api/v1/solicitudes/${idSolicitud}`, solicitud);
   }
 
   public deleteSolictud(idSolicitud: number): Observable<any>{

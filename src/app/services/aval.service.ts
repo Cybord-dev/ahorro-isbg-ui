@@ -21,7 +21,7 @@ export class AvalService {
   }
 
   public getAceptacionesPorSolicitud(idSolicitud:number){
-    return this.http.get<AceptacionAval[]>(`../api/v1/solicitudes/${idSolicitud}/aceptaciones`);
+    return this.http.get<AceptacionAval[]>(`../api/v1/solicitudes/${idSolicitud}/avales`);
   }
 
   

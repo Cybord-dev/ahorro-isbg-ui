@@ -83,7 +83,7 @@ export class TramitesPrestamoComponent implements OnInit {
       let prestamo;
       if (solicitudes.length > 0) {
         prestamo = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
-          .find(s => s.tipo === 'SolicitudPrestamo' && s.status !== 'Finalizada');
+          .find(s => s.tipo === 'SolicitudPrestamo' && s.status !== 'Finalizada' && s.status !== 'Cancelada');
       }
       if (prestamo != undefined) {
         this.solicitud = prestamo;
@@ -150,7 +150,6 @@ export class TramitesPrestamoComponent implements OnInit {
       this.solicitud.tipoUsuario = this.usuario.tipoUsuario;
 
       this.solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
-
       if (this.noAvales >= 1) {
         this.solicitud.atributos.AVAL1 = this.avales[0].noEmpleado;
       }
@@ -166,6 +165,20 @@ export class TramitesPrestamoComponent implements OnInit {
       this.modalConfirmacion.hide();
 
       this.aceptacionAvales = await this.avalService.getAceptacionesPorSolicitud(this.solicitud.id).toPromise();
+
+      this.success = 'La solicitud de prestamo se ha enviado correctamente.';
+    } catch (error) {
+      this.alerts.push(error);
+    }
+    this.loading = false;
+  }
+
+  public async cancelRequest(){
+    try{
+      this.loading = true;
+      this.solicitud.status = 'Cancelada';
+      this.solicitud = await this.solicitudService.putSolictud(this.solicitud.id,this.solicitud).toPromise();
+      this.success = 'La solicitud de prestamo se ha cancelado correctamente.';
     } catch (error) {
       this.alerts.push(error);
     }
