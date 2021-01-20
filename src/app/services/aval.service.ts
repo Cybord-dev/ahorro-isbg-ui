@@ -29,5 +29,8 @@ export class AvalService {
     return this.http.get<AceptacionAval[]>(`../api/v1/usuarios/${noEmpleado}/avales`);
   }
 
+  public putAval(idAval: number, aval: AceptacionAval): Observable<AceptacionAval>{
+    return this.http.put<AceptacionAval>(`../api/v1/avales/${idAval}`, aval);
+  }
   
 }
