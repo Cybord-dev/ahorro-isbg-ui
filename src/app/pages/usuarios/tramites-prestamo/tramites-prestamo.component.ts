@@ -37,16 +37,16 @@ export class TramitesPrestamoComponent implements OnInit {
   public bsValue: Date;
 
   public solicitud: Solicitud = new Solicitud();
-  public avalesList:Usuario[] = [];
-  public avales:Usuario[] = [];
+  public avalesList: Usuario[] = [];
+  public avales: Usuario[] = [];
   public aceptacionAvales: AceptacionAval[] = [];
 
-  public totalPagar:number = 0;
-  public pagoQuincenal:number = 0;
-  public noAvales:number = 0;
-  
+  public totalPagar: number = 0;
+  public pagoQuincenal: number = 0;
+  public noAvales: number = 1;
 
-  constructor( public datepipe: DatePipe,
+
+  constructor(public datepipe: DatePipe,
     private userService: UsuariosService,
     private solicitudService: SolicitudesService,
     private catService: CatalogosService,
@@ -56,7 +56,6 @@ export class TramitesPrestamoComponent implements OnInit {
     this.loading = true;
     this.calculateEnabledDates();
     this.loadRequestInfo();
-    
   }
 
 
@@ -72,29 +71,30 @@ export class TramitesPrestamoComponent implements OnInit {
       this.usuario.datosUsuario.OFICINA = oficina.valor;
       this.usuario.datosUsuario.BANCO = banco.valor;
 
-      this.userService.getUsuarios({'tipoUsuario':this.usuario.tipoUsuario})
+      this.userService.getUsuarios({ 'tipoUsuario': this.usuario.tipoUsuario })
         .pipe(
-          map((page:GenericPage<Usuario>) => page.content)
+          map((page: GenericPage<Usuario>) => page.content)
         ).subscribe(avales => {
-          avales.splice(avales.findIndex(a=> a.noEmpleado === this.usuario.noEmpleado),1);
-          this.avalesList = avales});
+          avales.splice(avales.findIndex(a => a.noEmpleado === this.usuario.noEmpleado), 1);
+          this.avalesList = avales
+        });
 
-      const solicitudes : Solicitud[] = await this.solicitudService.getSolicitudesByUsuario(user.id).toPromise();
+      const solicitudes: Solicitud[] = await this.solicitudService.getSolicitudesByUsuario(user.id).toPromise();
       let prestamo;
-      if(solicitudes.length > 0 ){
+      if (solicitudes.length > 0) {
         prestamo = solicitudes.sort((a, b) => new Date(b.fechaCreacion).getTime() - new Date(a.fechaCreacion).getTime())
-        .find(s => s.tipo === 'SolicitudPrestamo' && s.status !== 'Finalizada');
+          .find(s => s.tipo === 'SolicitudPrestamo' && s.status !== 'Finalizada');
       }
-      if(prestamo!= undefined){
+      if (prestamo != undefined) {
         this.solicitud = prestamo;
         this.aceptacionAvales = await this.avalService.getAceptacionesPorSolicitud(prestamo.id).toPromise();
-      }else{
+      } else {
         this.solicitud = new Solicitud('SolicitudPrestamo');
         this.solicitud.atributos.NO_QUINCENAS = '24';
-        this.solicitud.atributos.MONTO = '500'; 
+        this.solicitud.atributos.MONTO = '500';
       }
       this.loading = false;
-    }catch (error) {
+    } catch (error) {
       this.alerts.push(error);
       this.loading = false;
     }
@@ -106,68 +106,70 @@ export class TramitesPrestamoComponent implements OnInit {
     this.calculateValues();
   }
 
-  public onChangeAmount(value){
+  public onChangeAmount(value) {
     this.calculateValues();
     this.solicitud.atributos.MONTO = value;
   }
 
   public calculateValues() {
     let noAvales = 3;
-    let monto:number = +this.solicitud.atributos.MONTO;
-    if(monto<1000){
+    let monto: number = +this.solicitud.atributos.MONTO;
+    if (monto < 1000) {
       noAvales = 1;
-    }else if(monto>1000 && monto <2000){
+    } else if (monto > 1000 && monto < 2000) {
       noAvales = 2;
-    }else{
+    } else {
       noAvales = 3;
     }
-    if(+this.usuario.datosUsuario.NO_AVALES < noAvales){
+    if (+this.usuario.datosUsuario.NO_AVALES < noAvales) {
       noAvales = +this.usuario.datosUsuario.NO_AVALES;
     }
     this.noAvales = noAvales;
 
     this.totalPagar = monto + monto * 0.01 * (+this.solicitud.atributos.NO_QUINCENAS);
-    this.pagoQuincenal = monto/(+this.solicitud.atributos.NO_QUINCENAS) + monto * 0.01;
+    this.pagoQuincenal = monto / (+this.solicitud.atributos.NO_QUINCENAS) + monto * 0.01;
 
     this.solicitud.atributos.DESCUENTO_QUINCENAL = `${this.pagoQuincenal}`;
     this.solicitud.atributos.TOTAL_A_PAGAR = `${this.totalPagar}`;
   }
 
-  public avalSelected(aval:Usuario){
+  public avalSelected(aval: Usuario) {
     this.avales.push(aval);
-    this.avalesList.splice(this.avalesList.indexOf(aval),1);
+    this.avalesList.splice(this.avalesList.indexOf(aval), 1);
     this.avalSelector.clear();
   }
 
 
-  public sendRequest(){
-    this.loading = true;
-    this.solicitud.idUsuario = this.usuario.id;
-    this.solicitud.noEmpleado = this.usuario.noEmpleado;
-    this.solicitud.nombre = this.usuario.nombre;
-    this.solicitud.tipoUsuario = this.usuario.tipoUsuario;
+  public async sendRequest() {
 
-    this.solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
+    try {
+      this.loading = true;
+      this.solicitud.idUsuario = this.usuario.id;
+      this.solicitud.noEmpleado = this.usuario.noEmpleado;
+      this.solicitud.nombre = this.usuario.nombre;
+      this.solicitud.tipoUsuario = this.usuario.tipoUsuario;
 
-    if(this.noAvales>=1){
-      this.solicitud.atributos.AVAL1 = this.avales[0].noEmpleado;
-    }
-    if(this.noAvales>=2){
-      this.solicitud.atributos.AVAL2 = this.avales[1].noEmpleado;
-    }
-    if(this.noAvales===3){
-      this.solicitud.atributos.AVAL3 = this.avales[2].noEmpleado;
-    }
+      this.solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
 
-    this.solicitudService.postSolictudUsuario(this.usuario.id,this.solicitud)
-    .toPromise()
-    .then(success=>{
-      console.log(success);
-      this.loading = false;
-    }).catch(error=>{
+      if (this.noAvales >= 1) {
+        this.solicitud.atributos.AVAL1 = this.avales[0].noEmpleado;
+      }
+      if (this.noAvales >= 2) {
+        this.solicitud.atributos.AVAL2 = this.avales[1].noEmpleado;
+      }
+      if (this.noAvales === 3) {
+        this.solicitud.atributos.AVAL3 = this.avales[2].noEmpleado;
+      }
+      this.solicitud = await this.solicitudService.postSolictudUsuario(this.usuario.id, this.solicitud)
+        .toPromise();
+      
+      this.modalConfirmacion.hide();
+
+      this.aceptacionAvales = await this.avalService.getAceptacionesPorSolicitud(this.solicitud.id).toPromise();
+    } catch (error) {
       this.alerts.push(error);
-      this.loading = false;
-    });
+    }
+    this.loading = false;
   }
 
   public openModal(): void {

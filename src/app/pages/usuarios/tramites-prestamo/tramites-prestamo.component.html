@@ -150,10 +150,9 @@
                           </div>
                         </div>
                       </div>
-
+                      <small id="avales" class="form-text text-danger" *ngIf="avales.length == 0 || avales.length < noAvales">{{noAvales - avales.length}} avales son requeridos</small>
                       
                       <p *ngIf="avales.length > 0"><strong>Lista de Avales</strong></p>
-                      <br/>
                       <ul>
                         <li *ngFor="let aval of avales">{{aval.noEmpleado}} - {{aval.nombre}} </li>
                       </ul>

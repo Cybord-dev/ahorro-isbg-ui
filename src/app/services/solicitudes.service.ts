@@ -46,8 +46,8 @@ export class SolicitudesService {
     return this.http.get<Solicitud[]>(`../api/v1/usuarios/${idUsuario}/solicitudes`);
   }
 
-  public postSolictudUsuario(idUsuario: number, solicitud: Solicitud): Observable<Solicitud[]>{
-    return this.http.post<Solicitud[]>(`../api/v1/usuarios/${idUsuario}/solicitudes`, solicitud);
+  public postSolictudUsuario(idUsuario: number, solicitud: Solicitud): Observable<Solicitud>{
+    return this.http.post<Solicitud>(`../api/v1/usuarios/${idUsuario}/solicitudes`, solicitud);
   }
 
   public putSolictud(idSolicitud: number, solicitud: Solicitud): Observable<Solicitud[]>{
