@@ -25,13 +25,13 @@ export class AprobacionAvalComponent implements OnInit {
   public avales: AceptacionAval[] = [];
   public loading = false;
   public mostrando = false;
-  private prestamo: Solicitud;
+  public prestamo: Solicitud;
   public confirmacion: string = "";
   public seleccion: AceptacionAval = null;
   public informacion: any = {
     noEmpleado: "", monto: "", nombreDeudor: "", status: "", inicio: "", noQuincenas: "", descuento: ""
   }
-  private noEmpleado: string = "";
+  public noEmpleado: string = "";
 
   public usuario : Usuario = new Usuario();
   
