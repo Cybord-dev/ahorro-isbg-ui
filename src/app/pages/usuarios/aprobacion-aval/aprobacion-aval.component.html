@@ -114,11 +114,14 @@
                       </tr>
                     </tbody>
                   </table>
-                  <p>
-                    Yo aval manifiesto que acepto pagar a mi entera satisfacción el saldo deudor que tenga el solicitante, 
-                    de acuerdo a la parte proporcional del adeudo contraído al momento de que el solicitante no se le 
-                    pueda retener de su pago de nómina por la causa que sea.   
-                  </p>
+                  <div class="p-3 mb-2 bg-info text-white">
+                    <p class="text-dark">
+                      Yo aval manifiesto que acepto pagar a mi entera satisfacción el saldo deudor que tenga el solicitante, 
+                      de acuerdo a la parte proporcional del adeudo contraído al momento de que el solicitante no se le 
+                      pueda retener de su pago de nómina por la causa que sea.   
+                    </p>
+                  </div>
+                  
                   
                   <form>
                     <div class="form-group row">
@@ -140,13 +143,13 @@
         <div class="modal-footer">
             <!-- <button type="button" class="btn btn-success" [disabled]="confirmacion === ''" (click)="aceptar()" >Aceptar</button> -->
             <button type="button" class="btn"
-            [ngClass]="{'btn-primary': confirmacion === noEmpleado , 'btn-secondary' : confirmacion !== noEmpleado }"
+            [ngClass]="{'btn-success': confirmacion === noEmpleado , 'btn-secondary' : confirmacion !== noEmpleado }"
             [disabled]="confirmacion !== noEmpleado" (click)="aceptar()">Aceptar</button>
             <button type="button" class="btn"
-            [ngClass]="{'btn-primary': confirmacion === noEmpleado , 'btn-secondary' : confirmacion !== noEmpleado }"
+            [ngClass]="{'btn-danger': confirmacion === noEmpleado , 'btn-secondary' : confirmacion !== noEmpleado }"
             [disabled]="confirmacion !== noEmpleado" (click)="rechazar()">Rechazar</button>
 
-            <button type="button" class="btn btn-primary" (click)="cerrar()" >Cerrar</button>
+            <button type="button" class="btn btn-warning" (click)="cerrar()" >Cerrar</button>
         </div>
       </div>
     </div>
