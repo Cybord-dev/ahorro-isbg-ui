@@ -55,6 +55,10 @@ export class UsuariosComponent implements OnInit {
     this.router.navigate([`../contabilidad/ajustes/${id}`]);
   }
 
+  public redirectToSaldos(id:string):void{
+    this.router.navigate([`../${this.module}/saldo-usuarios/${id}`]);
+  }
+
   public downloadXLSFile(): void{
     this.loading = true;
     this.filterParams.page = '0';

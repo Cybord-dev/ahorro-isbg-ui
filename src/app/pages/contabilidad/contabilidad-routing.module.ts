@@ -9,6 +9,7 @@ import { UsuarioComponent } from '../commons/usuario/usuario.component';
 import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
 import { ReporteAhorrosComponent } from '../commons/reporte-ahorros/reporte-ahorros.component';
 import { AjusteAhorroComponent } from '../commons/ajuste-ahorro/ajuste-ahorro.component';
+import { SaldosUsuarioComponent } from '../commons/saldos-usuario/saldos-usuario.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,13 @@ const routes: Routes = [
     component: UsuarioComponent,
     data: {
       title: 'Usario ISBG'
+    }
+  },
+  {
+    path: 'saldo-usuarios/:idUsuario',
+    component: SaldosUsuarioComponent,
+    data: {
+      title: 'Saldos usuario'
     }
   },
   {

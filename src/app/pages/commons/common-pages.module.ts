@@ -27,6 +27,7 @@ import { AjusteAhorroComponent } from './ajuste-ahorro/ajuste-ahorro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoaderComponent } from './loader/loader.component';
 import { ValidacionPagoComponent } from './validacion-pago/validacion-pago.component';
+import { SaldosUsuarioComponent } from './saldos-usuario/saldos-usuario.component';
 
 
 
@@ -43,7 +44,8 @@ import { ValidacionPagoComponent } from './validacion-pago/validacion-pago.compo
     AjusteAhorroComponent,
     ReporteAhorrosComponent,
     LoaderComponent,
-    ValidacionPagoComponent],
+    ValidacionPagoComponent,
+    SaldosUsuarioComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -71,6 +73,7 @@ import { ValidacionPagoComponent } from './validacion-pago/validacion-pago.compo
     AjusteAhorroComponent,
     ReporteSolicitudesComponent,
     LoaderComponent,
+    SaldosUsuarioComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
     CarouselModule,

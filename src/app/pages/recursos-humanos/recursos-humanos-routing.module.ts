@@ -6,6 +6,7 @@ import { UsuarioComponent } from '../commons/usuario/usuario.component';
 import { HistoricoSolicitudesComponent } from '../commons/historico-solicitudes/historico-solicitudes.component';
 import { ConciliacionRhComponent } from './conciliacion-rh/conciliacion-rh.component';
 import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
+import { SaldosUsuarioComponent } from '../commons/saldos-usuario/saldos-usuario.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,13 @@ const routes: Routes = [
     component: HistoricoSolicitudesComponent,
     data: {
       title: 'Historico validaciones'
+    }
+  },
+  {
+    path: 'saldo-usuarios/:idUsuario',
+    component: SaldosUsuarioComponent,
+    data: {
+      title: 'Saldos usuario'
     }
   },
   {

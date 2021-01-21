@@ -68,7 +68,6 @@ export class UsuarioComponent implements OnInit {
         this.antiguedad = new Date();
         this.loading = false;
       }
-
     });
   }
 
