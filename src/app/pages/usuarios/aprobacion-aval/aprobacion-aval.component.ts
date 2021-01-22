@@ -33,13 +33,13 @@ export class AprobacionAvalComponent implements OnInit {
   }
   public noEmpleado: string = "";
 
-  public usuario : Usuario = new Usuario();
-  
+  public usuario: Usuario = new Usuario();
+
   constructor(
     private avalService: AvalService,
     private solicitudService: SolicitudesService,
     private userService: UsuariosService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.loading = true;
@@ -47,19 +47,19 @@ export class AprobacionAvalComponent implements OnInit {
       .then(user => {
         this.noEmpleado = user.noEmpleado
         this.avalService.getAceptacionesPendientesPorNoEmpleado(this.noEmpleado).toPromise()
-        .then(data => {
-          this.avales = data; this.loading = false;
-        })
-        .catch(error => {this.errorMessages.push(error); this.loading = false;});
+          .then(data => {
+            this.avales = data; this.loading = false;
+          })
+          .catch(error => { this.errorMessages.push(error); this.loading = false; });
       })
-      .catch(error => {this.errorMessages.push(error); this.loading = false;});  
+      .catch(error => { this.errorMessages.push(error); this.loading = false; });
   }
 
 
   public async mostrarInformacion(aval: AceptacionAval): Promise<void> {
     this.loading = true;
     //noEmpleado: "", monto: "", nombreDeudor: "", status: "", inicio: "", noQuincenas: "", descuento: ""
-    try{
+    try {
       this.prestamo = await this.solicitudService.getSolicitudesById(aval.idSolicitud).toPromise();
       this.informacion.noEmpleado = aval.noEmpleadoDeudor;
       this.informacion.monto = aval.montoPrestamo;
@@ -68,7 +68,7 @@ export class AprobacionAvalComponent implements OnInit {
       this.informacion.noQuincenas = this.prestamo.atributos.NO_QUINCENAS;
       this.informacion.descuento = this.prestamo.atributos.DESCUENTO_QUINCENAL;
       this.seleccion = aval;
-    }catch(error){
+    } catch (error) {
       this.errorMessages.push(error);
       this.loading = false;
     }
@@ -76,10 +76,10 @@ export class AprobacionAvalComponent implements OnInit {
     this.openModal();
   }
 
-  public fecha(dato: string): string{
-    var temp  = new Date(dato);
+  public fecha(dato: string): string {
+    var temp = new Date(dato);
     var tokens = temp.toString().split(" ");
-    return tokens[2] + "/" + (temp.getMonth()+1) + "/" + temp.getFullYear();
+    return tokens[2] + "/" + (temp.getMonth() + 1) + "/" + temp.getFullYear();
   }
 
   public openModal(): void {
@@ -92,28 +92,32 @@ export class AprobacionAvalComponent implements OnInit {
     this.modalConfirmacion.hide();
   }
   //RECHAZO,APROBADO;
-  public aceptar(): void{
+  public aceptar(): void {
     this.loading = true;
     this.seleccion.estatus = "APROBADO"
     this.avalService.putAval(this.seleccion.id, this.seleccion).toPromise()
-        .then(data => {
-          this.loading = false;
-        })
-        .catch(error => {this.errorMessages.push(error); this.loading = false;});
-        this.cerrar();
-        window.location.reload();
+      .then(data => {
+        this.avalService.getAceptacionesPendientesPorNoEmpleado(this.noEmpleado).toPromise()
+          .then(data => {
+            this.avales = data; this.loading = false;
+          })
+      })
+      .catch(error => { this.errorMessages.push(error); this.loading = false; });
+    this.cerrar();
   }
 
-  public rechazar(): void{
+  public rechazar(): void {
     this.loading = true;
     this.seleccion.estatus = "RECHAZO"
     this.avalService.putAval(this.seleccion.id, this.seleccion).toPromise()
-        .then(data => {
-          this.loading = false;
-        })
-        .catch(error => {this.errorMessages.push(error); this.loading = false;});
-        this.cerrar();
-        window.location.reload();
+      .then(data => {
+        this.avalService.getAceptacionesPendientesPorNoEmpleado(this.noEmpleado).toPromise()
+          .then(data => {
+            this.avales = data; this.loading = false;
+          })
+      })
+      .catch(error => { this.errorMessages.push(error); this.loading = false; });
+    this.cerrar();
   }
 
 }

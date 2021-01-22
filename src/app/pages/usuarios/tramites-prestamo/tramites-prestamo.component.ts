@@ -71,7 +71,7 @@ export class TramitesPrestamoComponent implements OnInit {
       this.usuario.datosUsuario.OFICINA = oficina.valor;
       this.usuario.datosUsuario.BANCO = banco.valor;
 
-      this.userService.getUsuarios({ 'tipoUsuario': this.usuario.tipoUsuario })
+      this.userService.getUsuarios({ 'tipoUsuario': this.usuario.tipoUsuario, 'size': 1000 })
         .pipe(
           map((page: GenericPage<Usuario>) => page.content)
         ).subscribe(avales => {
