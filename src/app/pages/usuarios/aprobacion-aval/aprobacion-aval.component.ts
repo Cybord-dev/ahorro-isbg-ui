@@ -56,7 +56,7 @@ export class AprobacionAvalComponent implements OnInit {
   }
 
 
-  public async mostrarInformacion(aval: AceptacionAval): Promise<void> {
+  public async mostrarInformacion(aval: Aval): Promise<void> {
     this.loading = true;
     //noEmpleado: "", monto: "", nombreDeudor: "", status: "", inicio: "", noQuincenas: "", descuento: ""
     try {
