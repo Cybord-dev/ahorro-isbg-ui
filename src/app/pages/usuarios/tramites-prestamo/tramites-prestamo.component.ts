@@ -10,7 +10,7 @@ import { AvalService } from '../../../services/aval.service';
 import { Solicitud } from '../../../models/solicitud';
 import { map } from 'rxjs/operators';
 import { GenericPage } from 'src/app/models/generic-page';
-import { AceptacionAval } from 'src/app/models/aceptacion-aval';
+import { Aval } from 'src/app/models/aval';
 
 @Component({
   selector: 'cybord-tramites-prestamo',
@@ -39,7 +39,7 @@ export class TramitesPrestamoComponent implements OnInit {
   public solicitud: Solicitud = new Solicitud();
   public avalesList: Usuario[] = [];
   public avales: Usuario[] = [];
-  public aceptacionAvales: AceptacionAval[] = [];
+  public aceptacionAvales: Aval[] = [];
 
   public totalPagar: number = 0;
   public pagoQuincenal: number = 0;

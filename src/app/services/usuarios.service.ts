@@ -6,6 +6,7 @@ import { Recurso } from '../models/recurso';
 import { RolCat } from '../models/rolcat';
 import { DatoUsuario } from '../models/dato-usuario';
 import { GenericPage } from '../models/generic-page';
+import { CapacidadPago } from '../models/capacidad-pago';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,9 @@ export class UsuariosService {
     return this.http.get<Recurso>(`../api/v1/usuarios/report`, { params: this.getHttpParams(filterParams) });
   }
 
+  public capacidadPagoUsuario(noEmpelado: string) : Observable<CapacidadPago>{
+    return this.http.get<CapacidadPago>(`../api/v1/usuarios/${noEmpelado}/capacidad-pago`)
+  }
 
   public async myInfo(): Promise<any> {
     return new Promise(resolve => {

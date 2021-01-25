@@ -4,7 +4,7 @@ import { GenericPage } from '../../../models/generic-page';
 import { AvalService } from '../../../services/aval.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { UsuariosService } from '../../../services/usuarios.service';
-import { AceptacionAval } from '../../../models/aceptacion-aval';
+import { Aval } from '../../../models/aval';
 import { Atributos } from '../../../models/atributos';
 import { Usuario } from 'src/app/models/usuario';
 import { Solicitud } from 'src/app/models/solicitud';
@@ -22,12 +22,12 @@ export class AprobacionAvalComponent implements OnInit {
   public alerts: string[] = [];
   public mensajeModal = '';
   public params: any = { success: '', message: '', id: '*', module: 'usuarios' };
-  public avales: AceptacionAval[] = [];
+  public avales: Aval[] = [];
   public loading = false;
   public mostrando = false;
   public prestamo: Solicitud;
   public confirmacion: string = "";
-  public seleccion: AceptacionAval = null;
+  public seleccion: Aval = null;
   public informacion: any = {
     noEmpleado: "", monto: "", nombreDeudor: "", status: "", inicio: "", noQuincenas: "", descuento: ""
   }

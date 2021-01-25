@@ -9,6 +9,9 @@ import { Validacion } from '../../../models/validacion';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 import { CatalogosService } from '../../..//services/catalogos.service';
 import { Catalogo } from '../../../models/catalogo';
+import { AvalService } from 'src/app/services/aval.service';
+import { Aval } from 'src/app/models/aval';
+import { CapacidadPago } from 'src/app/models/capacidad-pago';
 
 
 @Component({
@@ -30,6 +33,7 @@ export class ValidacionSolicitudComponent implements OnInit {
   public razonRechazo = '';
   public solicitud: Solicitud = new Solicitud();
   public usuario: Usuario = new Usuario();
+  public aceptacionAvales: Aval[] = [];
   public loading = false;
   public alerts: string[] = [];
   public success = '';
@@ -40,6 +44,7 @@ export class ValidacionSolicitudComponent implements OnInit {
     private userService: UsuariosService,
     private solicitudService: SolicitudesService,
     private validacionService: ValidacionesService,
+    private avalService: AvalService,
     private route: ActivatedRoute,
     private catService: CatalogosService,
     private router: Router,
@@ -72,6 +77,15 @@ export class ValidacionSolicitudComponent implements OnInit {
         .toPromise();
       this.usuario.datosUsuario.OFICINA = oficina.valor;
       this.usuario.datosUsuario.BANCO = banco.valor;
+      if(this.solicitud.tipo === 'SolicitudPrestamo'){
+        this.aceptacionAvales = await this.avalService.getAceptacionesPorSolicitud(this.solicitud.id).toPromise();
+        for(let aval of this.aceptacionAvales){
+          let pay: CapacidadPago = await this.userService.capacidadPagoUsuario(aval.noEmpleadoAval).toPromise();
+          aval.capacidadPago = pay.capacidadPago;
+        }
+      }
+
+
       this.loading = false;
     } catch (error) {
       this.alerts.push(error);
