@@ -9,10 +9,6 @@ export class SaldoPrestamo {
     public validado: boolean;
     public fechaCreacion: Date;
     public fechaActualizacion: Date;
-
-    public saldos: SaldoAhorro[];
-
     constructor(){
-        this.saldos = [];
     }
 }
