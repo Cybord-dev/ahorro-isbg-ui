@@ -15,7 +15,7 @@
 
                     <div class="row">
 
-                        <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
                             <strong>Prestamos Activos</strong>
                             <br />
                             <br />
@@ -31,24 +31,33 @@
                             <table *ngIf="prestamos.length >0" class="table table-bordered table-striped table-sm">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>ESTATUS</th>
-                                        <th>QUINCENAS</th>
-                                        <th>FECHA ALTA</th>
-                                        <th>MONTO</th>
+                                        <th class="text-center">ACCIONES</th>
+                                        <th class="text-center">ESTATUS</th>
+                                        <th class="text-center">QUINCENAS</th>
+                                        <th class="text-center">ALTA PRESTAMO</th>
+                                        <th class="text-center">MONTO PRESTAMO</th>
+                                        <th class="text-center">SALDO PENDIENTE</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let fila of prestamos">
-                                        <td scope="row">{{fila.estatus}}</td>
-                                        <td scope="row">{{fila.noQuincenas}}</td>
-                                        <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
-                                        <td scope="row">{{fila.monto | currency }}</td>
+                                    <tr *ngFor="let prestamo of prestamos">
+                                        <td>
+                                          <button class="btn-sm btn-primary" (click)="openModal(prestamo)">
+                                            ADELANTO PAGO &nbsp; &nbsp;<i class="fa fa-money"></i></button>
+                                        </td>
+                                        <td scope="row">{{prestamo.estatus}}</td>
+                                        <td scope="row">{{prestamo.noQuincenas}}</td>
+                                        <td scope="row">&nbsp;&nbsp;&nbsp;&nbsp;{{prestamo.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                                        <td class="text-right" scope="row">{{prestamo.monto | currency }}</td>
+                                        <td class="text-right" scope="row">{{prestamo.saldoPendiente | currency }}</td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td></td>
-                                        <td><strong>TOTAL</strong></td>
-                                        <td><strong>{{total | currency}}</strong></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-right"><strong>TOTAL</strong></td>
+                                        <td class="text-right"><strong>{{total | currency}}</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -72,48 +81,79 @@
     </div>
 </div>
 
-<div bsModal #modalConfirmacion="bs-modal" class="modal fade modal-warning" id="modalConfirmacion" tabindex="-1"
-  role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog"
+  aria-labelledby="modalConfirmacion" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-primary text-white">
         <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelar()">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cerrar()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+        <h5>INFORMACIÓN DEL PRESTAMO</h5>
+        <div class="row">
+          <div class="col">
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm">
 
-        <p> <strong>{{usuario.nombre}}</strong>  esta por realizar un ajuste manual por la cantidad de <strong> 99.35</strong>
-        en el ahorro de <strong >{{usuario.nombre}}</strong>.</p> 
-        <p>Este moviento será registrado por el sistema con motivos de auditoria.</p>
+                <tbody>
+                  <tr>
+                    <th>Estado prestamo</th>
+                    <td scope="row" class="text-left">{{prestamo.estatus}}</td>
+                  </tr>
+                  <tr>
+                    <th>Monto prestamo</th>
+                    <td scope="row" class="text-left">{{prestamo.monto}}</td>
+                  </tr>
+                  <tr>
+                    <th>Fecha alta prestamo</th>
+                    <td scope="row" class="text-left">{{prestamo.fechaCreacion | date}}</td>
+                  </tr>
+                  <tr>
+                    <th>No quincenas</th>
+                    <td scope="row" class="text-left">{{prestamo.noQuincenas}}</td>
+                  </tr>
+                  <tr>
+                    <th>Saldo pendiente prestamo</th>
+                    <td scope="row" class="text-left">{{prestamo.saldoPendiente}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="p-3 mb-2">
+                <p class="text-danger"><strong>
+                    Yo aval manifiesto que acepto pagar a mi entera satisfacción el saldo deudor que tenga el
+                    solicitante,
+                    de acuerdo a la parte proporcional del adeudo contraído al momento de que el solicitante no se le
+                    pueda retener de su pago de nómina por la causa que sea.
+                  </strong>
+                </p>
+              </div>
 
 
-        <form>
-          <div class="form-group row">
-            <label for="textarea-input" class="col-sm-2 col-form-label">Razón, motivo del ajuste</label>
-            <div class="col-sm-10">
-              <!--textarea id="textarea-input" name="textarea-input" rows="5" class="form-control" maxlength="200"
-                placeholder="Razón o motivo de cancelación del ahorro" [(ngModel)]="pago.observaciones">
-                  </textarea-->
-              <small id="reasonHelp" class="form-text text-muted">Especifica la razon o motivo del ajuste.</small>
+              <form>
+                <div class="form-group row">
+                  <label for="inputPassword" class="col-sm-2 col-form-label">No. empleado</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="inputPassword" [(ngModel)]="noEmpleado"
+                      [ngModelOptions]="{standalone: true}">
+                    <small id="noEmpHelp" class="form-text text-muted">Ingresa tu numero de empleado para realizar el pago.</small>
+                  </div>
+                </div>
+              </form>
+
             </div>
           </div>
-          <div class="form-group row">
-            <label for="inputPassword" class="col-sm-2 col-form-label">No empleado</label>
-            <div class="col-sm-10">
-              <input type="password" class="form-control" id="inputPassword" [(ngModel)]="noEmpleado"
-                [ngModelOptions]="{standalone: true}">
-              <small id="noEmpHelp" class="form-text text-muted">Ingresa tu numero de empleado para desbloquear.</small>
-            </div>
-          </div>
-        </form>
+        </div>
+
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn"
-          [ngClass]="{'btn-primary': noEmpleado === usuario.noEmpleado , 'btn-secondary' : noEmpleado !== usuario.noEmpleado }"
-          [disabled]="noEmpleado !== usuario.noEmpleado" (click)="createAdjustemnt()">Ajustar</button>
-        <button type="button" class="btn btn-warning" (click)="cancelar()">Salir</button>
+          [ngClass]="{'btn-success': noEmpleado === usuario.noEmpleado , 'btn-secondary' : noEmpleado !== usuario.noEmpleado }"
+          [disabled]="noEmpleado !== usuario.noEmpleado" (click)="aceptar()">Pagar</button>
+        <button type="button" class="btn btn-warning" (click)="closeModal()">Cerrar</button>
       </div>
     </div>
   </div>

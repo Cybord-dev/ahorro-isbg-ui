@@ -23,18 +23,39 @@ export class PagosPrestamosComponent implements OnInit {
   public loading = false;
 
   public noEmpleado = '';
+  public prestamo: Prestamo = new Prestamo();
 
   public pago:SaldoPrestamo = new SaldoPrestamo();
+
+
+
 
   constructor(
     private userService : UsuariosService,
     private prestamoService: PrestamosService) { }
 
   ngOnInit(): void {
-    this.userService.myInfo()
-      .then(user => this.usuario = user)
-      .then(()=> this.prestamoService.getPrestamosByUsuario(this.usuario.id).subscribe(p=>this.prestamos = p))
-      .catch(error => this.alerts.push(error));
+    this.loadInfo();
+  }
+
+
+  public async loadInfo(){
+    this.usuario = await this.userService.myInfo();
+    let allDebts:Prestamo[] = await this.prestamoService.getPrestamosByUsuario(this.usuario.id).toPromise();
+    this.prestamos = allDebts.filter(p => p.estatus.indexOf('TERMINADO')<0);
+    if(this.prestamos!== undefined && this.prestamos.length > 0){
+      this.total = this.prestamos.map(p=>p.saldoPendiente).reduce((a,b)=>a+b);
+    }
+  }
+
+  public openModal(prestamo:Prestamo): void {
+    this.prestamo = prestamo;
+    this.modalConfirmacion.show();
+  }
+
+  public closeModal(): void {
+    this.prestamo = new Prestamo();
+    this.modalConfirmacion.hide();
   }
 
 }
