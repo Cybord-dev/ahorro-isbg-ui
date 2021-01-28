@@ -7,6 +7,7 @@ import { UsuariosService } from '../../../services/usuarios.service';
 import { PrestamosService } from '../../../services/prestamos.service';
 import { Recurso } from 'src/app/models/recurso';
 import { RecursoService } from 'src/app/services/recurso.service';
+import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
   selector: 'cybord-pagos-prestamos',
@@ -38,6 +39,7 @@ export class PagosPrestamosComponent implements OnInit {
   constructor(
     private userService: UsuariosService,
     private prestamoService: PrestamosService,
+    private validationService: ValidationService,
     private fileService: RecursoService) { }
 
   ngOnInit(): void {
@@ -87,13 +89,16 @@ export class PagosPrestamosComponent implements OnInit {
     this.pago.validado = false;
     this.pago.origen = this.usuario.email;
     try {
-      this.pago = await this.prestamoService.insertSaldoPrestamo(this.prestamo.id, this.pago).toPromise();
-      this.imgPago.referencia = this.pago.id.toString();
-      let img = await this.fileService.insertResourceFile(this.imgPago).toPromise();
-      console.log(`${this.fileName} has been laoded`, img);
-      this.modalConfirmacion.hide();
-      this.noEmpleado = undefined;
-      this.loadInfo();
+      this.alerts = this.validationService.validateSaldoPrestamo(this.pago, this.prestamo);
+      if (this.alerts.length == 0) {
+        this.pago = await this.prestamoService.insertSaldoPrestamo(this.prestamo.id, this.pago).toPromise();
+        this.imgPago.referencia = this.pago.id.toString();
+        let img = await this.fileService.insertResourceFile(this.imgPago).toPromise();
+        console.log(`${this.fileName} has been laoded`, img);
+        this.modalConfirmacion.hide();
+        this.noEmpleado = undefined;
+        this.loadInfo();
+      }
     } catch (error) {
       this.pago = new SaldoPrestamo();
       this.imgPago = new Recurso('IMAGEN', 'PRESTAMO');
@@ -101,6 +106,7 @@ export class PagosPrestamosComponent implements OnInit {
       this.noEmpleado = undefined;
       this.alerts.push(error);
     }
+    this.loading = false;
   }
 
   public openModal(prestamo: Prestamo): void {

@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Prestamo } from '../models/prestamo';
+import { SaldoPrestamo } from '../models/saldoprestamo';
 import { Solicitud } from '../models/solicitud';
 import { Usuario } from '../models/usuario';
 
@@ -10,6 +12,22 @@ export class ValidationService {
   constructor() { }
 
 
+  public validateSaldoPrestamo(saldo: SaldoPrestamo, prestamo : Prestamo): string[]{
+    const alerts: string[] = [];
+    if(saldo.monto === undefined || saldo.monto <= 10){
+      alerts.push('El monto del pago debe ser mayor a $10.00');
+    }
+    if(saldo.idPrestamo== undefined || saldo.idPrestamo === null){
+      alerts.push('La referencia del prestamo no ests ligada');
+    }
+    if(saldo.origen== undefined || saldo.origen === null){
+      alerts.push('El origen del pago no ha sido especificado');
+    }
+    if(saldo.tipo== undefined || saldo.tipo === null){
+      alerts.push('El tipo del pago no ha sido especificado');
+    }
+    return alerts;
+  }
 
   public validateSolicitud(solicitud: Solicitud, totalAhorro: number): string[] {
     const alerts: string[] = [];
