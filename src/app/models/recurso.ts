@@ -5,4 +5,10 @@ export class Recurso {
     public tipoRecurso: string;
     public dato: string;
     public fechaCreacion: Date;
+
+
+    constructor(tipoArchivo?: string, tipoRecurso?: string){
+        this.tipoArchivo = tipoArchivo;
+        this.tipoRecurso = tipoRecurso;
+    }
 }

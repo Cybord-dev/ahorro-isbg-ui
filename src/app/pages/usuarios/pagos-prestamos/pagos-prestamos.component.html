@@ -1,84 +1,84 @@
 <div class="animated fadeIn">
-    <div class="row">
-        <div class="col-sm-12 col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <strong>Pagos adelantados prestamo</strong>
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Pagos adelantados prestamo</strong>
+        </div>
+        <div class="card-body">
+
+          <div *ngFor="let alert of alerts">
+            <alert type="danger" [dismissible]="true">{{ alert }}</alert>
+          </div>
+
+          <h5>{{usuario.nombre}}</h5>
+          <cybord-loader *ngIf="loading"></cybord-loader>
+          <div class="row">
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+              <strong>Prestamos Activos</strong>
+              <br />
+              <br />
+              <div class="row" *ngIf="prestamos.length === 0 && !loading">
+                <div class="col"></div>
+                <div class=" col-8 alert alert-primary" role="alert">
+                  No hay registros de ahorro
                 </div>
-                <div class="card-body">
-
-                    <div *ngFor="let alert of alerts">
-                        <alert type="danger" [dismissible]="true">{{ alert }}</alert>
-                    </div>
-
-                    <h5>{{usuario.nombre}}</h5>
-
-                    <div class="row">
-
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <strong>Prestamos Activos</strong>
-                            <br />
-                            <br />
-                            <div class="row" *ngIf="prestamos.length === 0 && !loading">
-                                <div class="col"></div>
-                                <div class=" col-8 alert alert-primary" role="alert">
-                                  No hay registros de ahorro
-                                </div>
-                                <div class="col"></div>
-                            </div>
+                <div class="col"></div>
+              </div>
 
 
-                            <table *ngIf="prestamos.length >0" class="table table-bordered table-striped table-sm">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th class="text-center">ACCIONES</th>
-                                        <th class="text-center">ESTATUS</th>
-                                        <th class="text-center">QUINCENAS</th>
-                                        <th class="text-center">ALTA PRESTAMO</th>
-                                        <th class="text-center">MONTO PRESTAMO</th>
-                                        <th class="text-center">SALDO PENDIENTE</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let prestamo of prestamos">
-                                        <td>
-                                          <button class="btn-sm btn-primary" (click)="openModal(prestamo)">
-                                            ADELANTO PAGO &nbsp; &nbsp;<i class="fa fa-money"></i></button>
-                                        </td>
-                                        <td scope="row">{{prestamo.estatus}}</td>
-                                        <td scope="row">{{prestamo.noQuincenas}}</td>
-                                        <td scope="row">&nbsp;&nbsp;&nbsp;&nbsp;{{prestamo.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
-                                        <td class="text-right" scope="row">{{prestamo.monto | currency }}</td>
-                                        <td class="text-right" scope="row">{{prestamo.saldoPendiente | currency }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td class="text-right"><strong>TOTAL</strong></td>
-                                        <td class="text-right"><strong>{{total | currency}}</strong></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+              <table *ngIf="prestamos.length >0" class="table table-bordered table-striped table-sm">
+                <thead class="thead-dark">
+                  <tr>
+                    <th class="text-center">ACCIONES</th>
+                    <th class="text-center">ESTATUS</th>
+                    <th class="text-center">QUINCENAS</th>
+                    <th class="text-center">ALTA PRESTAMO</th>
+                    <th class="text-center">MONTO PRESTAMO</th>
+                    <th class="text-center">SALDO PENDIENTE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let prestamo of prestamos">
+                    <td>
+                      <button class="btn-sm btn-primary" (click)="openModal(prestamo)">
+                        ADELANTO PAGO &nbsp; &nbsp;<i class="fa fa-money"></i></button>
+                    </td>
+                    <td scope="row">{{prestamo.estatus}}</td>
+                    <td scope="row">{{prestamo.noQuincenas}}</td>
+                    <td scope="row">&nbsp;&nbsp;&nbsp;&nbsp;{{prestamo.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                    <td class="text-right" scope="row">{{prestamo.monto | currency }}</td>
+                    <td class="text-right" scope="row">{{prestamo.saldoPendiente | currency }}</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-right"><strong>TOTAL</strong></td>
+                    <td class="text-right"><strong>{{total | currency}}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
 
-                        </div>
-
-                    </div>
-                    <cybord-loader *ngIf="loading"></cybord-loader>
-                </div>
-                <div class="card-footer">
-                    <div class="float-right slide_2">
-
-
-
-                    </div>
-                </div>
             </div>
 
+          </div>
+          <cybord-loader *ngIf="loading"></cybord-loader>
         </div>
+        <div class="card-footer">
+          <div class="float-right slide_2">
+
+
+
+          </div>
+        </div>
+      </div>
 
     </div>
+
+  </div>
 </div>
 
 <div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog"
@@ -87,12 +87,17 @@
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cerrar()">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <h5>INFORMACIÓN DEL PRESTAMO</h5>
+
+        <div *ngFor="let alert of alerts">
+          <alert type="danger" [dismissible]="true">{{ alert }}</alert>
+        </div>
+
         <div class="row">
           <div class="col">
             <div class="table-responsive">
@@ -121,27 +126,45 @@
                   </tr>
                 </tbody>
               </table>
-              <div class="p-3 mb-2">
-                <p class="text-danger"><strong>
-                    Yo aval manifiesto que acepto pagar a mi entera satisfacción el saldo deudor que tenga el
-                    solicitante,
-                    de acuerdo a la parte proporcional del adeudo contraído al momento de que el solicitante no se le
-                    pueda retener de su pago de nómina por la causa que sea.
-                  </strong>
-                </p>
-              </div>
-
-
-              <form>
-                <div class="form-group row">
-                  <label for="inputPassword" class="col-sm-2 col-form-label">No. empleado</label>
-                  <div class="col-sm-10">
-                    <input type="password" class="form-control" id="inputPassword" [(ngModel)]="noEmpleado"
-                      [ngModelOptions]="{standalone: true}">
-                    <small id="noEmpHelp" class="form-text text-muted">Ingresa tu numero de empleado para realizar el pago.</small>
+              <div class="row">
+                <div class="col">
+                  <label for="monto" class="label"> <strong>1.- Ingersa el monto del pago</strong></label>
+                  <div class="input-group">
+                    <input type="number" id="quantity" name="quantity" class="form-control" [(ngModel)]="pago.monto"
+                                placeholder="Monto a capital">
                   </div>
                 </div>
-              </form>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <label for="payFile" class="label"> <strong>2.- Adjuntar comprobante de pago</strong></label>
+                  <div class="input-group">
+                    <div class="custom-file" id="payFile">
+                      <input #fileInput type="file" class="custom-file-input" id="inputGroupFile01" accept="image/*"
+                        (change)="fileUploadListener($event)" style="display:block;" [disabled]= "pago.monto === undefined"
+                        aria-describedby="inputGroupFileAddon01">
+                      <label class="custom-file-label" for="inputGroupFile01">{{fileName}}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+                <br/>
+                <br/>
+
+              <div class="row">
+                <div class="col">
+                  <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">No. empleado</label>
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" id="inputPassword" [(ngModel)]="noEmpleado" placeholder="digita tu no empleado"
+                        [ngModelOptions]="{standalone: true}">
+                      <small id="noEmpHelp" class="form-text text-muted">Ingresa tu numero de empleado para realizar el
+                        pago.</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
             </div>
           </div>
@@ -152,7 +175,7 @@
       <div class="modal-footer">
         <button type="button" class="btn"
           [ngClass]="{'btn-success': noEmpleado === usuario.noEmpleado , 'btn-secondary' : noEmpleado !== usuario.noEmpleado }"
-          [disabled]="noEmpleado !== usuario.noEmpleado" (click)="aceptar()">Pagar</button>
+          [disabled]="noEmpleado !== usuario.noEmpleado" (click)="sendPayment()">Pagar</button>
         <button type="button" class="btn btn-warning" (click)="closeModal()">Cerrar</button>
       </div>
     </div>

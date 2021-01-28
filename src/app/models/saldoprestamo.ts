@@ -5,6 +5,7 @@ export class SaldoPrestamo {
     public id: number;
     public idPrestamo: number;
     public tipo: string;
+    public origen: string;
     public monto: number;
     public validado: boolean;
     public fechaCreacion: Date;
