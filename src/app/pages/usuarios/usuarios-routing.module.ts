@@ -5,6 +5,7 @@ import { TramitesAhorroComponent } from './tramites-ahorro/tramites-ahorro.compo
 import { PagosPrestamosComponent } from './pagos-prestamos/pagos-prestamos.component';
 import { TramitesPrestamoComponent } from './tramites-prestamo/tramites-prestamo.component';
 import { AprobacionAvalComponent } from './aprobacion-aval/aprobacion-aval.component';
+import { PrestamosUsuarioComponent } from './prestamos-usuario/prestamos-usuario.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,13 @@ const routes: Routes = [
     component: PagosPrestamosComponent,
     data: {
       title: 'Pagos anticipados'
+    }
+  },
+  {
+    path: 'prestamos-activos',
+    component: PrestamosUsuarioComponent,
+    data: {
+      title: 'Mis prestamos'
     }
   },
   {

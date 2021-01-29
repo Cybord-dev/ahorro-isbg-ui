@@ -10,10 +10,11 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { PagosPrestamosComponent } from './pagos-prestamos/pagos-prestamos.component';
 import { TramitesPrestamoComponent } from './tramites-prestamo/tramites-prestamo.component';
 import { AprobacionAvalComponent } from './aprobacion-aval/aprobacion-aval.component';
+import { PrestamosUsuarioComponent } from './prestamos-usuario/prestamos-usuario.component';
 
 
 @NgModule({
-  declarations: [TramitesAhorroComponent, PagosPrestamosComponent, TramitesPrestamoComponent, AprobacionAvalComponent],
+  declarations: [TramitesAhorroComponent, PagosPrestamosComponent, TramitesPrestamoComponent, AprobacionAvalComponent, PrestamosUsuarioComponent],
   imports: [
     CommonsPagesModule,
     UsuariosRoutingModule,
