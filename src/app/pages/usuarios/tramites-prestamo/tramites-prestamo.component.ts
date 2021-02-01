@@ -151,13 +151,13 @@ export class TramitesPrestamoComponent implements OnInit {
 
       this.solicitud.atributos.FECHA = this.datepipe.transform(this.bsValue, 'yyyy-MM-dd');
       if (this.noAvales >= 1) {
-        this.solicitud.atributos.AVAL1 = this.avales[0].noEmpleado;
+        this.solicitud.atributos.AVAL1 = this.avales[0].id.toString();
       }
       if (this.noAvales >= 2) {
-        this.solicitud.atributos.AVAL2 = this.avales[1].noEmpleado;
+        this.solicitud.atributos.AVAL2 = this.avales[1].id.toString();
       }
       if (this.noAvales === 3) {
-        this.solicitud.atributos.AVAL3 = this.avales[2].noEmpleado;
+        this.solicitud.atributos.AVAL3 = this.avales[2].id.toString();
       }
       this.solicitud = await this.solicitudService.postSolictudUsuario(this.usuario.id, this.solicitud)
         .toPromise();

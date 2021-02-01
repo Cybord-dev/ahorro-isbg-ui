@@ -10,6 +10,8 @@ import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/va
 import { ReporteAhorrosComponent } from '../commons/reporte-ahorros/reporte-ahorros.component';
 import { AjusteAhorroComponent } from '../commons/ajuste-ahorro/ajuste-ahorro.component';
 import { SaldosUsuarioComponent } from '../commons/saldos-usuario/saldos-usuario.component';
+import { ValidacionPagoComponent } from '../commons/validacion-pago/validacion-pago.component';
+import { ReportePrestamosComponent } from '../commons/reporte-prestamos/reporte-prestamos.component';
 
 const routes: Routes = [
   {
@@ -83,10 +85,24 @@ const routes: Routes = [
     }
   },
   {
+    path: 'reportes-prestamo',
+    component: ReportePrestamosComponent,
+    data: {
+      title: 'Reporte de prestamos caja',
+    }
+  },
+  {
     path: 'ajustes/:idUsuario',
     component: AjusteAhorroComponent,
     data: {
       title: 'Ajustes de ahorro'
+    }
+  },
+  {
+    path: 'pagos-capital',
+    component: ValidacionPagoComponent,
+    data: {
+      title: 'ValidacionPagos'
     }
   },
 ];

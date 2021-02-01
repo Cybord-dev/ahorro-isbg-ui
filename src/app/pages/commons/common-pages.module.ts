@@ -28,6 +28,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoaderComponent } from './loader/loader.component';
 import { ValidacionPagoComponent } from './validacion-pago/validacion-pago.component';
 import { SaldosUsuarioComponent } from './saldos-usuario/saldos-usuario.component';
+import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos.component';
 
 
 
@@ -45,7 +46,8 @@ import { SaldosUsuarioComponent } from './saldos-usuario/saldos-usuario.componen
     ReporteAhorrosComponent,
     LoaderComponent,
     ValidacionPagoComponent,
-    SaldosUsuarioComponent],
+    SaldosUsuarioComponent,
+    ReportePrestamosComponent],
   imports: [
     CommonModule,
     FormsModule,

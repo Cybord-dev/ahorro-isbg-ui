@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { ReporteSolicitudesComponent } from '../commons/reporte-solicitudes/reporte-solicitudes.component';
 import { HistoricoSolicitudesComponent } from '../commons/historico-solicitudes/historico-solicitudes.component';
 import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
+import { ReporteAhorrosComponent } from '../commons/reporte-ahorros/reporte-ahorros.component';
+import { ReportePrestamosComponent } from '../commons/reporte-prestamos/reporte-prestamos.component';
 
 const routes: Routes = [
   {
@@ -32,7 +34,21 @@ const routes: Routes = [
     data: {
       title: 'Usario ISBG'
     }
-  }
+  },
+  {
+    path: 'reportes-ahorro',
+    component: ReporteAhorrosComponent,
+    data: {
+      title: 'Reporte de ahorro caja',
+    }
+  },
+  {
+    path: 'reportes-prestamo',
+    component: ReportePrestamosComponent,
+    data: {
+      title: 'Reporte de prestamos caja',
+    }
+  },
 ];
 
 @NgModule({

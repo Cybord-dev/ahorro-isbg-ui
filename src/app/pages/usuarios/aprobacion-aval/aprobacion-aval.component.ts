@@ -28,9 +28,7 @@ export class AprobacionAvalComponent implements OnInit {
   public prestamo: Solicitud;
   public confirmacion: string = "";
   public seleccion: Aval = null;
-  public informacion: any = {
-    noEmpleado: "", monto: "", nombreDeudor: "", status: "", inicio: "", noQuincenas: "", descuento: ""
-  }
+  public informacion: any = { monto: "", nombreDeudor: "", status: "", inicio: "", noQuincenas: "", descuento: "" }
   public noEmpleado: string = "";
 
   public usuario: Usuario = new Usuario();
@@ -58,10 +56,8 @@ export class AprobacionAvalComponent implements OnInit {
 
   public async mostrarInformacion(aval: Aval): Promise<void> {
     this.loading = true;
-    //noEmpleado: "", monto: "", nombreDeudor: "", status: "", inicio: "", noQuincenas: "", descuento: ""
     try {
       this.prestamo = await this.solicitudService.getSolicitudesById(aval.idSolicitud).toPromise();
-      this.informacion.noEmpleado = aval.noEmpleadoDeudor;
       this.informacion.monto = aval.montoPrestamo;
       this.informacion.nombreDeudor = aval.nombreDeudor;
       this.informacion.inicio = this.prestamo.atributos.FECHA;

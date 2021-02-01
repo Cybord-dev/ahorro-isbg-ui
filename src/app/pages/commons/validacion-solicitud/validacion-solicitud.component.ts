@@ -80,7 +80,7 @@ export class ValidacionSolicitudComponent implements OnInit {
       if(this.solicitud.tipo === 'SolicitudPrestamo'){
         this.aceptacionAvales = await this.avalService.getAceptacionesPorSolicitud(this.solicitud.id).toPromise();
         for(let aval of this.aceptacionAvales){
-          let pay: CapacidadPago = await this.userService.capacidadPagoUsuario(aval.noEmpleadoAval).toPromise();
+          let pay: CapacidadPago = await this.userService.capacidadPagoUsuario(aval.idUsuarioAval).toPromise();
           aval.capacidadPago = pay.capacidadPago;
         }
       }
