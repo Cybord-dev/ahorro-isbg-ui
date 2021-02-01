@@ -25,8 +25,8 @@ export class AvalService {
     return this.http.get<Aval[]>(`../api/v1/solicitudes/${idSolicitud}/avales`);
   }
 
-  public getAceptacionesPendientesPorNoEmpleado(noEmpleado:string): Observable<Aval[]>{
-    return this.http.get<Aval[]>(`../api/v1/usuarios/${noEmpleado}/avales`);
+  public getAceptacionesPendientesPorIdUsuario(idUsuario:number): Observable<Aval[]>{
+    return this.http.get<Aval[]>(`../api/v1/usuarios/${idUsuario}/avales`);
   }
 
   public putAval(idAval: number, aval: Aval): Observable<Aval>{

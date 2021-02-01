@@ -44,7 +44,7 @@ export class AprobacionAvalComponent implements OnInit {
     this.userService.myInfo()
       .then(user => {
         this.noEmpleado = user.noEmpleado
-        this.avalService.getAceptacionesPendientesPorNoEmpleado(this.noEmpleado).toPromise()
+        this.avalService.getAceptacionesPendientesPorIdUsuario(user.id).toPromise()
           .then(data => {
             this.avales = data; this.loading = false;
           })
