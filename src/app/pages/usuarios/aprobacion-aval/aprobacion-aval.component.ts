@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
-import { GenericPage } from '../../../models/generic-page';
 import { AvalService } from '../../../services/aval.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Aval } from '../../../models/aval';
-import { Atributos } from '../../../models/atributos';
 import { Usuario } from 'src/app/models/usuario';
 import { Solicitud } from 'src/app/models/solicitud';
 
@@ -42,8 +40,9 @@ export class AprobacionAvalComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.userService.myInfo()
-      .then(user => {
-        this.noEmpleado = user.noEmpleado
+      .then((user: Usuario) => {
+        this.usuario = user;
+        this.noEmpleado = user.noEmpleado;
         this.avalService.getAceptacionesPendientesPorIdUsuario(user.id).toPromise()
           .then(data => {
             this.avales = data; this.loading = false;
@@ -93,7 +92,7 @@ export class AprobacionAvalComponent implements OnInit {
     this.seleccion.estatus = "APROBADO"
     this.avalService.putAval(this.seleccion.id, this.seleccion).toPromise()
       .then(data => {
-        this.avalService.getAceptacionesPendientesPorNoEmpleado(this.noEmpleado).toPromise()
+        this.avalService.getAceptacionesPendientesPorIdUsuario(this.usuario.id).toPromise()
           .then(data => {
             this.avales = data; this.loading = false;
           })
@@ -107,7 +106,7 @@ export class AprobacionAvalComponent implements OnInit {
     this.seleccion.estatus = "RECHAZO"
     this.avalService.putAval(this.seleccion.id, this.seleccion).toPromise()
       .then(data => {
-        this.avalService.getAceptacionesPendientesPorNoEmpleado(this.noEmpleado).toPromise()
+        this.avalService.getAceptacionesPendientesPorIdUsuario(this.usuario.id).toPromise()
           .then(data => {
             this.avales = data; this.loading = false;
           })
