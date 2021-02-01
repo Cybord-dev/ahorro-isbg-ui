@@ -22,5 +22,9 @@ export class PrestamosService {
   public insertSaldoPrestamo (idPrestamo: number, prestamo: SaldoPrestamo): Observable<SaldoPrestamo>{
     return this.http.post<SaldoPrestamo>(`../api/v1/prestamos/${idPrestamo}/saldos`, prestamo);
   }
+  
+  public getPrestamosPendientesByUsuario (idUsuario: number): Observable<Prestamo[]>{
+    return this.http.get<Prestamo[]>(`../api/v1/usuarios/${idUsuario}/prestamos/pendientes`);
+  }
 
 }
