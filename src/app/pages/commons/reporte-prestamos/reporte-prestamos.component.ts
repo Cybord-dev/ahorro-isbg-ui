@@ -45,8 +45,8 @@ export class ReportePrestamosComponent implements OnInit {
     this.filterParams.page = currentPage || 0;
     this.filterParams.size = pageSize || 0 ;
 
-    /*this.ahorroService.getSaldos(this.filterParams)
-    .subscribe(data => {this.page = data; this.loading = false;});*/
+    this.prestamoService.getSaldos(this.filterParams)
+    .subscribe(data => {this.page = data; this.loading = false;});
   }
 
   public onChangePageSize(pageSize: number): void {
