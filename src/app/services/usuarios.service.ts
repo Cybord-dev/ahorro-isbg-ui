@@ -39,8 +39,8 @@ export class UsuariosService {
     return this.http.get<Recurso>(`../api/v1/usuarios/report`, { params: this.getHttpParams(filterParams) });
   }
 
-  public capacidadPagoUsuario(noEmpelado: string) : Observable<CapacidadPago>{
-    return this.http.get<CapacidadPago>(`../api/v1/usuarios/${noEmpelado}/capacidad-pago`)
+  public capacidadPagoUsuario(idUsuario: number) : Observable<CapacidadPago>{
+    return this.http.get<CapacidadPago>(`../api/v1/usuarios/${idUsuario}/capacidad-pago`)
   }
 
   public async myInfo(): Promise<any> {

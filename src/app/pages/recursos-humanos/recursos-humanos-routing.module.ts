@@ -7,6 +7,9 @@ import { HistoricoSolicitudesComponent } from '../commons/historico-solicitudes/
 import { ConciliacionRhComponent } from './conciliacion-rh/conciliacion-rh.component';
 import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
 import { SaldosUsuarioComponent } from '../commons/saldos-usuario/saldos-usuario.component';
+import { ValidacionPagoComponent } from '../commons/validacion-pago/validacion-pago.component';
+import { ReporteAhorrosComponent } from '../commons/reporte-ahorros/reporte-ahorros.component';
+import { ReportePrestamosComponent } from '../commons/reporte-prestamos/reporte-prestamos.component';
 
 const routes: Routes = [
   {
@@ -21,6 +24,13 @@ const routes: Routes = [
     component: HistoricoSolicitudesComponent,
     data: {
       title: 'Historico validaciones'
+    }
+  },
+  {
+    path: 'pagos-capital',
+    component: ValidacionPagoComponent,
+    data: {
+      title: 'ValidacionPagos'
     }
   },
   {
@@ -64,7 +74,21 @@ const routes: Routes = [
     data: {
       title: 'Usario ISBG'
     }
-  }
+  },
+  {
+    path: 'reportes-ahorro',
+    component: ReporteAhorrosComponent,
+    data: {
+      title: 'Reporte de ahorro caja',
+    }
+  },
+  {
+    path: 'reportes-prestamo',
+    component: ReportePrestamosComponent,
+    data: {
+      title: 'Reporte de prestamos caja',
+    }
+  },
 ];
 
 @NgModule({

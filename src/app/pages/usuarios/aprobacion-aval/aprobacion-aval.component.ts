@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
-import { GenericPage } from '../../../models/generic-page';
 import { AvalService } from '../../../services/aval.service';
 import { SolicitudesService } from '../../../services/solicitudes.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Aval } from '../../../models/aval';
-import { Atributos } from '../../../models/atributos';
 import { Usuario } from 'src/app/models/usuario';
 import { Solicitud } from 'src/app/models/solicitud';
 
@@ -28,9 +26,7 @@ export class AprobacionAvalComponent implements OnInit {
   public prestamo: Solicitud;
   public confirmacion: string = "";
   public seleccion: Aval = null;
-  public informacion: any = {
-    noEmpleado: "", monto: "", nombreDeudor: "", status: "", inicio: "", noQuincenas: "", descuento: ""
-  }
+  public informacion: any = { monto: "", nombreDeudor: "", status: "", inicio: "", noQuincenas: "", descuento: "" }
   public noEmpleado: string = "";
 
   public usuario: Usuario = new Usuario();
@@ -44,9 +40,10 @@ export class AprobacionAvalComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.userService.myInfo()
-      .then(user => {
-        this.noEmpleado = user.noEmpleado
-        this.avalService.getAceptacionesPendientesPorNoEmpleado(this.noEmpleado).toPromise()
+      .then((user: Usuario) => {
+        this.usuario = user;
+        this.noEmpleado = user.noEmpleado;
+        this.avalService.getAceptacionesPendientesPorIdUsuario(user.id).toPromise()
           .then(data => {
             this.avales = data; this.loading = false;
           })
@@ -58,10 +55,8 @@ export class AprobacionAvalComponent implements OnInit {
 
   public async mostrarInformacion(aval: Aval): Promise<void> {
     this.loading = true;
-    //noEmpleado: "", monto: "", nombreDeudor: "", status: "", inicio: "", noQuincenas: "", descuento: ""
     try {
       this.prestamo = await this.solicitudService.getSolicitudesById(aval.idSolicitud).toPromise();
-      this.informacion.noEmpleado = aval.noEmpleadoDeudor;
       this.informacion.monto = aval.montoPrestamo;
       this.informacion.nombreDeudor = aval.nombreDeudor;
       this.informacion.inicio = this.prestamo.atributos.FECHA;
@@ -97,7 +92,7 @@ export class AprobacionAvalComponent implements OnInit {
     this.seleccion.estatus = "APROBADO"
     this.avalService.putAval(this.seleccion.id, this.seleccion).toPromise()
       .then(data => {
-        this.avalService.getAceptacionesPendientesPorNoEmpleado(this.noEmpleado).toPromise()
+        this.avalService.getAceptacionesPendientesPorIdUsuario(this.usuario.id).toPromise()
           .then(data => {
             this.avales = data; this.loading = false;
           })
@@ -111,7 +106,7 @@ export class AprobacionAvalComponent implements OnInit {
     this.seleccion.estatus = "RECHAZO"
     this.avalService.putAval(this.seleccion.id, this.seleccion).toPromise()
       .then(data => {
-        this.avalService.getAceptacionesPendientesPorNoEmpleado(this.noEmpleado).toPromise()
+        this.avalService.getAceptacionesPendientesPorIdUsuario(this.usuario.id).toPromise()
           .then(data => {
             this.avales = data; this.loading = false;
           })
