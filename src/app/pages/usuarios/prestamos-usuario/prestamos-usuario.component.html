@@ -58,7 +58,7 @@
                         </div>
                         <div class="col">
                             <!-- <div class="chart-wrapper col-6">
-                                    <canvas baseChart class="chart" [datasets]="barChartDataPrestamos" [labels]="barChartLabels"
+                                    <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
                                       [options]="barChartOptions" [legend]="true" [chartType]="'bar'"></canvas>
                                   </div>
                                 </div> -->
@@ -109,7 +109,7 @@
             
                                     <tr *ngFor="let fila of informacion">
                                         <td scope="row" class="text-left">{{fila.tipo}}</td>
-                                        <td scope="row" class="text-left">{{fila.fechaCreacion}}</td>
+                                        <td scope="row" class="text-left">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
                                         <td scope="row" class="text-left">{{fila.monto | currency}}</td>
                                     </tr>
 
