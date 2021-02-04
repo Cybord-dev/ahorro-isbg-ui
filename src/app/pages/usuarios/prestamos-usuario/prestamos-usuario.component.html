@@ -1,1 +1,139 @@
-<p>prestamos-usuario works!</p>
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col">
+            <div class="col-sm-12 col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Prestamos</strong>
+                    </div>
+                    <div class="card-body">
+                        <div *ngFor="let alert of errorMessages">
+                        <alert type="danger" [dismissible]="true">{{ alert }}</alert>
+                    </div>
+                    <cybord-loader *ngIf="loading"></cybord-loader>
+                    <div class="row">
+                        <div class="col">
+                            <div *ngIf="prestamos.length === 0" class="alert alert-primary" role="alert">
+                                No se encontraron resultados
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="row" *ngIf="prestamos.length > 0 && !loading">
+                                <div class="col">
+                                    <table class="table table-bordered table-striped table-md">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>ACCIONES</th>
+                                                <th>FECHA</th>
+                                                <th class="text-right">MONTO</th>
+                                                <th class="text-right">SALDO PENDIENTE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let fila of prestamos">
+
+                                                <td scope="row" class="text-center">
+                                                    <button class="btn-sm btn-primary"
+                                                        (click)="mostrarInformacion(fila)"><i
+                                                            class="fa fa-search fa-sm"></i></button>
+                                                </td>
+                                                <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                                                <td scope="row" class="text-right">{{fila.monto | currency }}</td>
+                                                <td scope="row" class="text-right">{{fila.saldoPendiente | currency
+                                                    }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td><strong>TOTAL</strong></td>
+                                                <td class="text-right"><strong>{{total | currency}}</strong></td>
+                                                <td class="text-right"><strong>{{totalPendiente |
+                                                        currency}}</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="chart-wrapper" *ngIf="prestamos.length > 0">
+                                    <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
+                                      [options]="barChartOptions" [legend]="true" [chartType]="'bar'"></canvas>
+                                  </div>
+                                </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog"
+    aria-labelledby="modalConfirmacion" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="modalConfirmacionLabel">Informacion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cerrar()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Detalles de prestamo</h5>
+                
+                <div class ="row">
+                    <div class="col">
+                        <div *ngIf="this.informacion.length === 0" class="alert alert-primary" role="alert">
+                            No se encontraron pagos
+                        </div>
+                    </div>
+                </div>
+                <div class ="row">
+                    <div class="col" *ngIf="informacion.length > 0">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-sm">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th style="width: 15%">TIPO</th>
+                                        <th style="width: 30%">FECHA</th>
+                                        <th class="text-left" style="width: 30%">MONTO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+            
+                                    <tr *ngFor="let fila of informacion">
+                                        <td scope="row" class="text-left">{{fila.tipo}}</td>
+                                        <td scope="row" class="text-left">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                                        <td scope="row" class="text-left">{{fila.monto | currency}}</td>
+                                    </tr>
+
+                                    <br>
+                                    <tr>
+                                        <td></td>
+                                        <td>TOTAL PAGADO</td>
+                                        <td class="text-left">{{infoTotal | currency}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>SALDO PENDIENTE</td>
+                                        <td class="text-left">{{infoPendiente | currency}}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="cerrar()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>

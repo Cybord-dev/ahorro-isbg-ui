@@ -75,7 +75,7 @@ export class SaldosUsuarioComponent implements OnInit {
           acumulado = acumulado + montos.reduce((a, b) => a + b);
           data.push(acumulado);
         } else {
-          data.push(0);
+          data.push(acumulado);
         }
       }
       this.total = acumulado;
@@ -103,7 +103,7 @@ export class SaldosUsuarioComponent implements OnInit {
           acumulado = acumulado + montos.reduce((a, b) => a + b);
           data.push(acumulado);
         } else {
-          data.push(0);
+          data.push(acumulado);
         }
       }
       this.total = acumulado;
