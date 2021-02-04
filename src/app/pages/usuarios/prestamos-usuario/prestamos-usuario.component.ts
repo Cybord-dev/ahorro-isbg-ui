@@ -80,9 +80,11 @@ export class PrestamosUsuarioComponent implements OnInit {
   }
 
   public mostrarInformacion(p: Prestamo): void {
-    this.informacion = p.saldosPrestamo.filter(e => e.tipo.includes('PAGO'));
+    this.informacion = p.saldosPrestamo;
     this.informacion.forEach(e => {
-      this.infoTotal += e.monto;
+      if(e.tipo != "INTERES"){
+        this.infoTotal += e.monto;
+      }
     });
     this.infoPendiente = p.monto - this.infoTotal;
     this.modalConfirmacion.show();
@@ -97,35 +99,18 @@ export class PrestamosUsuarioComponent implements OnInit {
     return temp.getFullYear() + "-" + (temp.getMonth() + 1);
   }
 
-  private equals(fecha1: Date, fecha2: Date): Boolean {
-    if (fecha1.getMonth() == fecha2.getMonth() && fecha1.getFullYear() == fecha2.getFullYear()) {
-      return true;
-    }
-    return false;
-  }
-
-  private createLabels() {
-    let temp = this.x0;
-    while (!this.equals(temp, this.x1)) {
-      this.barChartLabels.push(this.getYearAndMonth(temp));
-      temp.setMonth(temp.getMonth() + 1);
-    }
-    if (this.equals(temp, this.x1)) {
-      this.barChartLabels.push(this.getYearAndMonth(temp));
-    }
-  }
-
   private setMontoCharData(key: string, monto: number) {
 
     let data: number[] = this.chartData.get(key);
+    
     if (data === undefined || data === null) {
       data = [];
       data.push(monto);
       this.chartData.set(key, data);
     } else {
       data.push(monto);
+      this.chartData.set(key, data);
     }
-
   }
 
 
@@ -150,16 +135,18 @@ export class PrestamosUsuarioComponent implements OnInit {
       // ordena de menos a mayor
       labels.sort();
 
-      console.log(labels);
+      this.barChartLabels = labels;
 
       // hacer un for de labels, y recuperar con el año mes el monto del prestamo
 
       let data = [];
       let acumulado = 0;
       labels.forEach(mes =>{
-        acumulado = this.chartData.get(mes).reduce((a,b)=>a+b);
+        acumulado += this.chartData.get(mes).reduce((a,b)=>a+b);
         data.push(acumulado);
       });
+      console.log(data);
+      this.barChartData = [{ data: data, backgroundColor: "#46BFBD", label: 'Deuda prestamos' }];
     });
 
 

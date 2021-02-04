@@ -100,8 +100,8 @@
                             <table class="table table-bordered table-striped table-sm">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th style="width: 25%">TIPO</th>
-                                        <th style="width: 20%">FECHA</th>
+                                        <th style="width: 15%">TIPO</th>
+                                        <th style="width: 30%">FECHA</th>
                                         <th class="text-left" style="width: 30%">MONTO</th>
                                     </tr>
                                 </thead>
@@ -115,12 +115,14 @@
 
                                     <br>
                                     <tr>
+                                        <td></td>
                                         <td>TOTAL PAGADO</td>
-                                        <td class="text-right">{{infoTotal | currency}}</td>
+                                        <td class="text-left">{{infoTotal | currency}}</td>
                                     </tr>
                                     <tr>
+                                        <td></td>
                                         <td>SALDO PENDIENTE</td>
-                                        <td class="text-right">{{infoPendiente | currency}}</td>
+                                        <td class="text-left">{{infoPendiente | currency}}</td>
                                     </tr>
 
                                 </tbody>
