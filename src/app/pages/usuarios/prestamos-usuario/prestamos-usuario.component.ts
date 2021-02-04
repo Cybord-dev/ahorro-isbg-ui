@@ -23,10 +23,17 @@ export class PrestamosUsuarioComponent implements OnInit {
 
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
+    scales: {
+      yAxes: [{
+          ticks: {
+              beginAtZero: true
+          }
+      }]
+  }
   };
   public barChartLabels: string[] = [];
-  public barChartData: any[] = [{ data: [], label: 'Deuda prestamos' }];
+  public barChartData: any[] = [{ data: [0], label: 'Deuda prestamos' }];
   public errorMessages: string[] = [];  
   public loading = false;
   public prestamos: Prestamo[] = [];
@@ -134,7 +141,7 @@ export class PrestamosUsuarioComponent implements OnInit {
     }
     console.log("labels: "+this.barChartLabels);
     console.log("datos: "+datos);
-    this.barChartData = [{ data: datos, backgroundColor: "#46BFBD", label: 'Deuda prestamos' }];
+    this.barChartData = [{ data: [100,200,300], backgroundColor: "#46BFBD", label: 'Deuda prestamos' }];
 
   }
 }
