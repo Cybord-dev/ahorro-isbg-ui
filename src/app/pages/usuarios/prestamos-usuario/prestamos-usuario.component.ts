@@ -78,9 +78,15 @@ export class PrestamosUsuarioComponent implements OnInit {
   }
 
   public mostrarInformacion(p: Prestamo): void {
-    this.informacion = p.saldosPrestamo;
+    this.informacion = [];
+    let temp = new SaldoPrestamo();
+    temp.tipo="PRESTAMO";
+    temp.fechaCreacion=p.fechaCreacion;
+    temp.monto=p.monto;
+    this.informacion.push(temp);
+    p.saldosPrestamo.forEach(e=> this.informacion.push(e));
     this.informacion.forEach(e => {
-      if(e.tipo != "INTERES"){
+      if(e.tipo != "INTERES" && e.tipo != "PRESTAMO"){
         this.infoTotal += e.monto;
       }
     });
