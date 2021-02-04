@@ -26,8 +26,7 @@ export class PrestamosUsuarioComponent implements OnInit {
     responsive: true
   };
   public barChartLabels: string[] = [];
-  public barChartData: any[] = [{ data: [], label: 'Deuda' }];
-
+  public barChartData: any[] = [{ data: [], label: 'Deuda prestamos' }];
   public errorMessages: string[] = [];  
   public loading = false;
   public prestamos: Prestamo[] = [];
@@ -40,27 +39,30 @@ export class PrestamosUsuarioComponent implements OnInit {
   public x0: Date;
   public x1: Date;
   public montos: any[] = [];
+  
 
   ngOnInit(): void {
-    this.loading = true;
+    this.loading = false;
     this.loadInfo();
   }
 
   public async loadInfo(){
     try{
-      let fechas: Date[] = [];
+      let fechas: string[] = [];
       this.usuario = await this.userService.myInfo();
       this.prestamos = await this.prestamoService.getPrestamosPendientesByUsuario(this.usuario.id).toPromise();
       this.prestamos.forEach(e => {
+        this.montos.push({monto:e.monto, fecha:this.getYearAndMonth(this.dateConverter(e.fechaCreacion.toString()))});
         this.total += e.monto;
         this.totalPendiente += e.saldoPendiente;
-        fechas.push(e.fechaCreacion);
-        e.saldosPrestamo.forEach(b => 
-          fechas.push(b.fechaCreacion)
-        );
-        
+        fechas.push(e.fechaCreacion.toString());
+        e.saldosPrestamo.forEach(b =>{
+          fechas.push(b.fechaCreacion.toString());
+          this.montos.push({monto:(-1.0*b.monto), fecha:this.getYearAndMonth(this.dateConverter(b.fechaCreacion.toString()))});
+        }
+        );     
       });
-      var fechasMap = fechas.map(function(x) { return new Date(x); })
+      var fechasMap = fechas.map(this.dateConverter);
       this.x1 = new Date(Math.max.apply(null,fechasMap));
       this.x0 = new Date(Math.min.apply(null,fechasMap));
       this.createLabels();
@@ -72,7 +74,10 @@ export class PrestamosUsuarioComponent implements OnInit {
     }
     
   }
-
+  private dateConverter(fecha:string):Date{
+    let a = fecha.split("-");
+    return new Date(Number(a[0]), Number(a[1])-1, Number(a[2]));
+  }
   public cerrar(): void {
     this.modalConfirmacion.hide();
     this.infoPendiente = 0.0;
@@ -93,27 +98,45 @@ export class PrestamosUsuarioComponent implements OnInit {
   }
 
   private getYearAndMonth(fecha:Date):string{
-    return fecha.getFullYear()+"-"+(fecha.getMonth()+1);
+    let temp = new Date(fecha);
+    return temp.getFullYear()+"-"+(temp.getMonth()+1);
   }
 
-  private setToZero(fecha:Date):Date{
-    let a = new Date(fecha);
-    a.setHours(0);
-    a.setMinutes(0);
-    a.setMilliseconds(0);
-    a.setDate(1);
-    return a;
+  private equals(fecha1:Date, fecha2:Date):Boolean{
+    if( fecha1.getMonth() == fecha2.getMonth() && fecha1.getFullYear()==fecha2.getFullYear() ){
+      return true;
+    }
+    return false;
   }
 
   private createLabels(){
-    this.x0 = this.setToZero(this.x0);
-    this.x1 = this.setToZero(this.x1);
-    while( !(this.x0.getTime()===this.x1.getTime()) ){
-      this.barChartLabels.push(this.getYearAndMonth(this.x0));
-      this.x0.setMonth(this.x0.getMonth()+1);
+    let temp = this.x0;
+    while( !this.equals(temp,this.x1) ){
+      this.barChartLabels.push(this.getYearAndMonth(temp));
+      temp.setMonth(temp.getMonth()+1);
+    }
+    if(this.equals(temp,this.x1)){
+      this.barChartLabels.push(this.getYearAndMonth(temp));
     }
   }
   private setCharData(){
+    this.montos.forEach(m => console.log("fecha: "+m.fecha+ "- monto: "+m.monto));
+    let datos: any[] = [];
+    let acumulado = 0;
+    for(let i = 0; i<this.barChartLabels.length; i++){
+      const saldos: number[] = this.montos.filter(a => a.fecha === this.barChartLabels[i]).map(a => a.monto);
+      if(saldos.length > 0){
+        acumulado = acumulado + saldos.reduce((a, b) => a + b);
+        datos.push(acumulado);
+      }else{
+        datos.push(acumulado);
+      }
+    }
+
     
+    console.log("labels: "+this.barChartLabels);
+    console.log("datos: "+datos);
+    this.barChartData = [{ data: datos, label: 'Deuda prestamos' }];
+
   }
 }
