@@ -58,22 +58,25 @@ export class PrestamosUsuarioComponent implements OnInit {
       let fechas: string[] = [];
       this.usuario = await this.userService.myInfo();
       this.prestamos = await this.prestamoService.getPrestamosPendientesByUsuario(this.usuario.id).toPromise();
-      this.prestamos.forEach(e => {
-        this.montos.push({monto:e.monto, fecha:this.getYearAndMonth(this.dateConverter(e.fechaCreacion.toString()))});
-        this.total += e.monto;
-        this.totalPendiente += e.saldoPendiente;
-        fechas.push(e.fechaCreacion.toString());
-        e.saldosPrestamo.forEach(b =>{
-          fechas.push(b.fechaCreacion.toString());
-          this.montos.push({monto:(-1.0*b.monto), fecha:this.getYearAndMonth(this.dateConverter(b.fechaCreacion.toString()))});
-        }
-        );     
-      });
-      var fechasMap = fechas.map(this.dateConverter);
-      this.x1 = new Date(Math.max.apply(null,fechasMap));
-      this.x0 = new Date(Math.min.apply(null,fechasMap));
-      this.createLabels();
-      this.setCharData();
+      if(this.prestamos.length >0){
+          this.prestamos.forEach(e => {
+          this.montos.push({monto:e.monto, fecha:this.getYearAndMonth(this.dateConverter(e.fechaCreacion.toString()))});
+          this.total += e.monto;
+          this.totalPendiente += e.saldoPendiente;
+          fechas.push(e.fechaCreacion.toString());
+          e.saldosPrestamo.forEach(b =>{
+            fechas.push(b.fechaCreacion.toString());
+            this.montos.push({monto:(-1.0*b.monto), fecha:this.getYearAndMonth(this.dateConverter(b.fechaCreacion.toString()))});
+          }
+          );     
+        });
+        var fechasMap = fechas.map(this.dateConverter);
+        this.x1 = new Date(Math.max.apply(null,fechasMap));
+        this.x0 = new Date(Math.min.apply(null,fechasMap));
+        this.createLabels();
+        this.setCharData();
+      }
+      
       this.loading = false;
     }catch(error){
       this.errorMessages.push(error);
