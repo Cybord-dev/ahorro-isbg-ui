@@ -57,7 +57,7 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="chart-wrapper">
+                            <div class="chart-wrapper" *ngIf="prestamos.length > 0">
                                     <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
                                       [options]="barChartOptions" [legend]="true" [chartType]="'bar'"></canvas>
                                   </div>
