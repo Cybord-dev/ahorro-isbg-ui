@@ -120,7 +120,7 @@ export class PrestamosUsuarioComponent implements OnInit {
     }
   }
   private setCharData(){
-    this.montos.forEach(m => console.log("fecha: "+m.fecha+ "- monto: "+m.monto));
+    //this.montos.forEach(m => console.log("fecha: "+m.fecha+ "- monto: "+m.monto));
     let datos: any[] = [];
     let acumulado = 0;
     for(let i = 0; i<this.barChartLabels.length; i++){
