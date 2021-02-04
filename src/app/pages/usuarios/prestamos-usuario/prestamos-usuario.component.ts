@@ -117,7 +117,6 @@ export class PrestamosUsuarioComponent implements OnInit {
   private setCharData(prestamos: Prestamo[]) {
 
     prestamos.forEach(e => {
-
       let anioMes: string = this.getYearAndMonth(this.dateConverter(e.fechaCreacion.toString()));
       this.setMontoCharData(anioMes, e.monto);
 
@@ -131,56 +130,18 @@ export class PrestamosUsuarioComponent implements OnInit {
       for (const key of this.chartData.keys()) {
         labels.push(key);
       }
-
       // ordena de menos a mayor
       labels.sort();
-
       this.barChartLabels = labels;
-
       // hacer un for de labels, y recuperar con el año mes el monto del prestamo
-
       let data = [];
       let acumulado = 0;
       labels.forEach(mes =>{
         acumulado += this.chartData.get(mes).reduce((a,b)=>a+b);
         data.push(acumulado);
       });
-      console.log(data);
       this.barChartData = [{ data: data, backgroundColor: "#46BFBD", label: 'Deuda prestamos' }];
     });
-
-
-    //   this.montos.push({monto:e.monto, fecha:this.getYearAndMonth(this.dateConverter(e.fechaCreacion.toString()))});
-    //   this.total += e.monto;
-    //   this.totalPendiente += e.saldoPendiente;
-    //   fechas.push(e.fechaCreacion.toString());
-
-    //   );     
-    // });
-
-    // console.log('Montos :',this.montos);
-
-    // var fechasMap = fechas.map(this.dateConverter);
-    // this.x1 = new Date(Math.max.apply(null,fechasMap));
-    // this.x0 = new Date(Math.min.apply(null,fechasMap));
-
-    // console.log('fechas',fechasMap);
-
-
-    // let datos: any[] = [];
-    // let acumulado = 0;
-    // for(let i = 0; i<this.barChartLabels.length; i++){
-    //   const saldos: number[] = this.montos.filter(a => a.fecha === this.barChartLabels[i]).map(a => a.monto);
-    //   if(saldos.length > 0){
-    //     acumulado = acumulado + saldos.reduce((a, b) => a + b);
-    //     datos.push(acumulado);
-    //   }else{
-    //     datos.push(acumulado);
-    //   }
-    // }
-    // console.log("labels: "+this.barChartLabels);
-    // console.log("datos: "+datos);
-    // this.barChartData = [{ data: datos, backgroundColor: "#46BFBD", label: 'Deuda prestamos' }];
 
   }
 }
