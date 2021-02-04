@@ -171,8 +171,8 @@
 </div>
 
 
-<div bsModal #modalConfirmacion="bs-modal" class="modal fade"
-  [ngClass]="{'modal-info': !aprobacion , 'modal-danger': aprobacion}" id="modalConfirmacion" tabindex="-1"
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade modal-info"
+  id="modalConfirmacion" tabindex="-1"
   role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -224,8 +224,7 @@
         
         
 
-        <p> <strong>{{usuario.nombre}}</strong> <strong *ngIf="!aprobacion">aprobará</strong> 
-        el pago al prestamo.</p>
+        <p> <strong>{{usuario.nombre}} aprobará</strong> el pago al prestamo.</p>
         <p>Al <strong>APROBAR</strong> el pago, el sistema registra la persona y el momento en que realiza la transacción.</p>
 
 
