@@ -59,8 +59,6 @@ export class PrestamosUsuarioComponent implements OnInit {
 
       this.usuario = await this.userService.myInfo();
       this.prestamos = await this.prestamoService.getPrestamosPendientesByUsuario(this.usuario.id).toPromise();
-
-      // this.createLabels();
       this.setCharData(this.prestamos);
       this.loading = false;
     } catch (error) {
@@ -119,7 +117,8 @@ export class PrestamosUsuarioComponent implements OnInit {
     prestamos.forEach(e => {
       let anioMes: string = this.getYearAndMonth(this.dateConverter(e.fechaCreacion.toString()));
       this.setMontoCharData(anioMes, e.monto);
-
+      this.total += e.monto;
+      this.totalPendiente += e.saldoPendiente;
       e.saldosPrestamo
         .filter(m => m.tipo !== 'INTERES')
         .forEach(m => {
