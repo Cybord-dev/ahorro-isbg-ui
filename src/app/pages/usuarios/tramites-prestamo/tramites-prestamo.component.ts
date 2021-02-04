@@ -63,7 +63,6 @@ export class TramitesPrestamoComponent implements OnInit {
     try {
       const user = await this.userService.myInfo();
       this.usuario = await this.userService.getUsuario(user.id).toPromise();
-      console.log(this.usuario);
       const oficina: Catalogo = await this.catService.getCatalogoByTipoAndNombre('oficinas', this.usuario.datosUsuario.OFICINA)
         .toPromise();
       const banco: Catalogo = await this.catService.getCatalogoByTipoAndNombre('bancos', this.usuario.datosUsuario.BANCO)
@@ -114,18 +113,19 @@ export class TramitesPrestamoComponent implements OnInit {
   public calculateValues() {
     let noAvales = 3;
     let monto: number = +this.solicitud.atributos.MONTO;
-    if (monto < 1000) {
+    if (monto <= 1000) {
       noAvales = 1;
-    } else if (monto > 1000 && monto < 2000) {
+    } else if (monto > 1000 && monto <= 2000) {
       noAvales = 2;
     } else {
       noAvales = 3;
     }
-    if (+this.usuario.datosUsuario.NO_AVALES < noAvales) {
-      noAvales = +this.usuario.datosUsuario.NO_AVALES;
-    }
-    this.noAvales = noAvales;
 
+    if (+this.usuario.datosUsuario.NO_AVALES <= noAvales) {
+      this.noAvales = +this.usuario.datosUsuario.NO_AVALES;
+    }else{
+      this.noAvales = noAvales;
+    }
     this.totalPagar = monto + monto * 0.01 * (+this.solicitud.atributos.NO_QUINCENAS);
     this.pagoQuincenal = monto / (+this.solicitud.atributos.NO_QUINCENAS) + monto * 0.01;
 
@@ -137,6 +137,11 @@ export class TramitesPrestamoComponent implements OnInit {
     this.avales.push(aval);
     this.avalesList.splice(this.avalesList.indexOf(aval), 1);
     this.avalSelector.clear();
+  }
+
+  public removeAval(aval: Usuario){
+    this.avalesList.push(aval);
+    this.avales.splice(this.avales.indexOf(aval),1);
   }
 
 
