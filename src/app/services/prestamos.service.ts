@@ -45,4 +45,8 @@ export class PrestamosService {
     return this.http.get<Prestamo[]>(`../api/v1/usuarios/${idUsuario}/prestamos/pendientes`);
   }
 
+  public updateSaldoPrestamo(idSaldo: number, prestamo: SaldoPrestamo): Observable<SaldoPrestamo>{
+    return this.http.put<SaldoPrestamo>(`../api/v1/saldo-prestamos/${idSaldo}`, prestamo);
+  }
+
 }

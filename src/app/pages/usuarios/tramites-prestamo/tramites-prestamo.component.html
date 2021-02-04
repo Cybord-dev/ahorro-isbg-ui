@@ -119,7 +119,7 @@
                           </thead>
                           <tbody>
                             <tr *ngFor="let aceptacion of aceptacionAvales">
-                              <td scope="row">{{aceptacion.noEmpleadoAval}} -- {{aceptacion.nombreAval}}</td>
+                              <td scope="row">{{aceptacion.nombreAval}}</td>
                               <td scope="row">{{aceptacion.estatus }}</td>
                               <td scope="row" class="text-right">{{aceptacion.comentarios}}</td>
                             </tr>
@@ -162,7 +162,10 @@
                       
                       <p *ngIf="avales.length > 0"><strong>Lista de Avales</strong></p>
                       <ul>
-                        <li *ngFor="let aval of avales">{{aval.noEmpleado}} - {{aval.nombre}} </li>
+                        <li *ngFor="let aval of avales"><div>
+                          <button class="btn btn-sm btn-outline-danger" (click)="removeAval(aval)">
+                          <i class="fa fa fa-times"></i></button>&nbsp;&nbsp;<strong>{{aval.nombre}}</strong></div>
+                        </li>
                       </ul>
                       <br/>
                       <div *ngIf="avales.length > 0 &&  avales.length === noAvales">
@@ -203,7 +206,22 @@
           </button>
         </div>
         <div class="modal-body">
+
+          <span class="help-block text-justify text-danger">
+            Yo <strong>{{usuario.nombre}}</strong> con número de trabajador
+            <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina
+            <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio un prestamo por la
+            cantidad de <strong> $ {{ solicitud.atributos.MONTO }} </strong>,
+            mismo que será pagado en <strong> {{solicitud.atributos.NO_QUINCENAS }}</strong> quincenas, con
+            descuentos a nómina quincenalmente la por la cantidad de <strong> $
+              {{solicitud.atributos.DESCUENTO_QUINCENAL }}</strong> aplicable a partir de
+            <strong>{{bsValue | date}}</strong>.
+          </span>
+
+          <br>
+          <br>
           <p>¿ <strong>{{usuario.nombre}}</strong>  estas seguro de enviar la solicitud?
+            <br>
             <p>Al <strong> realizar la solicitud</strong> el sistema registra la persona 
               y el momento en que realiza la transacción.</p>
               <form>
