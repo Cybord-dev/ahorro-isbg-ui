@@ -136,7 +136,7 @@ export class PrestamosUsuarioComponent implements OnInit {
     
     console.log("labels: "+this.barChartLabels);
     console.log("datos: "+datos);
-    this.barChartData = [{ data: datos, label: 'Deuda prestamos' }];
+    this.barChartData = [{ data: datos, backgroundColor: "#46BFBD", label: 'Deuda prestamos' }];
 
   }
 }
