@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AhorroUsuarioComponent } from '../commons/ahorro-usuario/ahorro-usuario.component';
 import { TramitesAhorroComponent } from './tramites-ahorro/tramites-ahorro.component';
-import { PagosPrestamosComponent } from './pagos-prestamos/pagos-prestamos.component';
 import { TramitesPrestamoComponent } from './tramites-prestamo/tramites-prestamo.component';
 import { AprobacionAvalComponent } from './aprobacion-aval/aprobacion-aval.component';
 import { PrestamoUsuarioComponent } from '../commons/prestamo-usuario/prestamo-usuario.component';
@@ -27,13 +26,6 @@ const routes: Routes = [
     component: TramitesPrestamoComponent,
     data: {
       title: 'Trámites ahorro'
-    }
-  },
-  {
-    path: 'pagos',
-    component: PagosPrestamosComponent,
-    data: {
-      title: 'Pagos anticipados'
     }
   },
   {

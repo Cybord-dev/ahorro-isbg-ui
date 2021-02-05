@@ -7,7 +7,7 @@
                         <strong>Prestamos</strong>
                     </div>
                     <div class="card-body">
-                        <div *ngFor="let alert of errorMessages">
+                        <div *ngFor="let alert of alerts">
                             <alert type="danger" [dismissible]="true">{{ alert }}</alert>
                         </div>
                         <cybord-loader *ngIf="loading"></cybord-loader>
