@@ -2,18 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { AhorroServicio } from '../../../services/ahorro.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { SaldoAhorro } from '../../../models/saldoahorro';
-import { SaldoPrestamo } from '../../../models/saldoprestamo';
 import { Meses } from 'src/app/models/meses';
 import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'cybord-saldos-usuario',
-  templateUrl: './saldos-usuario.component.html',
-  styleUrls: ['./saldos-usuario.component.scss']
+  selector: 'cybord-ahorro-usuario',
+  templateUrl: './ahorro-usuario.component.html',
+  styleUrls: ['./ahorro-usuario.component.scss']
 })
-export class SaldosUsuarioComponent implements OnInit {
+export class AhorroUsuarioComponent implements OnInit {
 
 
   public loading = false;
@@ -75,7 +74,7 @@ export class SaldosUsuarioComponent implements OnInit {
           acumulado = acumulado + montos.reduce((a, b) => a + b);
           data.push(acumulado);
         } else {
-          data.push(acumulado);
+          data.push(0);
         }
       }
       this.total = acumulado;
@@ -85,31 +84,4 @@ export class SaldosUsuarioComponent implements OnInit {
     }
   }
 
-  private async setInfoPrestamoms(userId: number): Promise<void> {
-    try {
-      const MESES: Meses = new Meses();
-      this.prestamos = await this.saldosAhorro.getSaldoByUsuario(userId)
-        .pipe(map((prestamos: SaldoAhorro[]) => {
-          for (const s of prestamos) {
-            s.fechaCreacion = new Date(s.fechaCreacion);
-          }
-          return prestamos;
-        })).toPromise();
-      const data = [];
-      let acumulado = 0;
-      for (const mes of this.barChartLabels) {
-        const montos: number[] = this.ahorros.filter(s => s.fechaCreacion.getMonth() === MESES[mes]).map(s => s.monto);
-        if (montos.length > 0) {
-          acumulado = acumulado + montos.reduce((a, b) => a + b);
-          data.push(acumulado);
-        } else {
-          data.push(acumulado);
-        }
-      }
-      this.total = acumulado;
-      this.barChartDataPrestamos = [{ data, backgroundColor: this.COLORS, label: 'Prestamom acumulado' }];
-    } catch (error) {
-      this.alerts.push(error);
-    }
-  }
 }

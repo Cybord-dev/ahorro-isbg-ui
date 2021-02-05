@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SaldosUsuarioComponent } from '../commons/saldos-usuario/saldos-usuario.component';
+import { AhorroUsuarioComponent } from '../commons/ahorro-usuario/ahorro-usuario.component';
 import { TramitesAhorroComponent } from './tramites-ahorro/tramites-ahorro.component';
 import { PagosPrestamosComponent } from './pagos-prestamos/pagos-prestamos.component';
 import { TramitesPrestamoComponent } from './tramites-prestamo/tramites-prestamo.component';
 import { AprobacionAvalComponent } from './aprobacion-aval/aprobacion-aval.component';
-import { PrestamosUsuarioComponent } from './prestamos-usuario/prestamos-usuario.component';
+import { PrestamoUsuarioComponent } from '../commons/prestamo-usuario/prestamo-usuario.component';
 
 const routes: Routes = [
   {
     path: 'reportes',
-    component: SaldosUsuarioComponent,
+    component: AhorroUsuarioComponent,
     data: {
-      title: 'Historico'
+      title: 'Mi ahorro'
     }
   },
   {
@@ -38,7 +38,7 @@ const routes: Routes = [
   },
   {
     path: 'prestamos-activos',
-    component: PrestamosUsuarioComponent,
+    component: PrestamoUsuarioComponent,
     data: {
       title: 'Mis prestamos'
     }

@@ -6,7 +6,7 @@ import { UsuarioComponent } from '../commons/usuario/usuario.component';
 import { HistoricoSolicitudesComponent } from '../commons/historico-solicitudes/historico-solicitudes.component';
 import { ConciliacionRhComponent } from './conciliacion-rh/conciliacion-rh.component';
 import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
-import { SaldosUsuarioComponent } from '../commons/saldos-usuario/saldos-usuario.component';
+import { AhorroUsuarioComponent } from '../commons/ahorro-usuario/ahorro-usuario.component';
 import { ValidacionPagoComponent } from '../commons/validacion-pago/validacion-pago.component';
 import { ReporteAhorrosComponent } from '../commons/reporte-ahorros/reporte-ahorros.component';
 import { ReportePrestamosComponent } from '../commons/reporte-prestamos/reporte-prestamos.component';
@@ -35,7 +35,7 @@ const routes: Routes = [
   },
   {
     path: 'saldo-usuarios/:idUsuario',
-    component: SaldosUsuarioComponent,
+    component: AhorroUsuarioComponent,
     data: {
       title: 'Saldos usuario'
     }

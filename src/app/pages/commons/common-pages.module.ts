@@ -27,7 +27,8 @@ import { AjusteAhorroComponent } from './ajuste-ahorro/ajuste-ahorro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoaderComponent } from './loader/loader.component';
 import { ValidacionPagoComponent } from './validacion-pago/validacion-pago.component';
-import { SaldosUsuarioComponent } from './saldos-usuario/saldos-usuario.component';
+import { AhorroUsuarioComponent } from './ahorro-usuario/ahorro-usuario.component';
+import { PrestamoUsuarioComponent } from './prestamo-usuario/prestamo-usuario.component';
 import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos.component';
 
 
@@ -46,7 +47,8 @@ import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos
     ReporteAhorrosComponent,
     LoaderComponent,
     ValidacionPagoComponent,
-    SaldosUsuarioComponent,
+    AhorroUsuarioComponent,
+    PrestamoUsuarioComponent,
     ReportePrestamosComponent],
   imports: [
     CommonModule,
@@ -75,7 +77,8 @@ import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos
     AjusteAhorroComponent,
     ReporteSolicitudesComponent,
     LoaderComponent,
-    SaldosUsuarioComponent,
+    AhorroUsuarioComponent,
+    PrestamoUsuarioComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
     CarouselModule,
