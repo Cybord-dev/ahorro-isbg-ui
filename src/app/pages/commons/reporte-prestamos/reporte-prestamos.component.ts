@@ -156,10 +156,10 @@ export class ReportePrestamosComponent implements OnInit {
     }
     this.filterParams.page = '0';
     this.filterParams.size = '100000';
-    /* this.ahorroService.getReporteSaldos(this.filterParams)
+    this.prestamoService.getReporteSaldos(this.filterParams)
       .subscribe((report) => {
-        this.downloadService.downloadFile(report.dato, `ReporteAhorros-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
+        this.downloadService.downloadFile(report.dato, `ReporteSaldoPrestamos-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
         this.loading = false;
-      });*/
+      });
   }
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Prestamo } from '../models/prestamo';
 import { SaldoPrestamo } from '../models/saldoprestamo';
 import { GenericPage } from '../models/generic-page';
+import { Recurso } from '../models/recurso';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,10 @@ export class PrestamosService {
 
   public getSaldos(filterParams?: any): Observable<GenericPage<SaldoPrestamo>>{
     return this.http.get<GenericPage<SaldoPrestamo>>(`../api/v1/saldo-prestamos`, {params: this.getHttpParams(filterParams)});
+  }
+
+  public getReporteSaldos(filterParams?: any): Observable<Recurso>{
+    return this.http.get<Recurso>(`../api/v1/saldo-prestamos/report`, {params: this.getHttpParams(filterParams)});
   }
 
   public getPrestamosByUsuairoAndPrestamoAndSaldo (idUsuario: number, idPrestamo: number, idSaldo: number): Observable<SaldoPrestamo[]>{
