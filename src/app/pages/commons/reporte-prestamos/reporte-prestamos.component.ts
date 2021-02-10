@@ -4,7 +4,6 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { GenericPage } from 'src/app/models/generic-page';
-import { Recurso } from 'src/app/models/recurso';
 import { SaldoPrestamo } from 'src/app/models/saldoprestamo';
 import { Usuario } from 'src/app/models/usuario';
 import { DownloadFileService } from 'src/app/services/download-file.service';
@@ -23,9 +22,10 @@ export class ReportePrestamosComponent implements OnInit {
   public module = 'usuarios';
   public page: GenericPage<SaldoPrestamo> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = { tipo: '*', noEmpleado: '', tipoUsuario: '*', since: '', to: '', page: '0', size: '10' };
+  public filterParams: any = { no_Quincenas: '', estatus: "*", noEmpleado: '', since: '', to: '', page: '0', size: '10' , toUpdate: '', sinceUpdate: ''};
   public loading = false;
   public fechaCreacion: Date[];
+  public fechaActualizacion: Date[];
 
   public usuario: Usuario = new Usuario();
   public noEmpleado: string;

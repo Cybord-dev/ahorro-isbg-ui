@@ -14,36 +14,48 @@
                 placeholder="No. Empleado">
             </div>
 
-            <div class="col-md-2">
-              <label for="inputActivo2" class="label">Tipo Empleado</label>
 
+            <!-- <div class="col-md-2">
+              <label for="inputActivo2" class="label">Tipo</label>
               <select id="inputActivo2" class="form-control" style="display:block;"
-                [(ngModel)]="filterParams.tipoUsuario">
+                [(ngModel)]="filterParams.tipo">
                 <option value="*">Todo</option>
-                <option value="INTERNO">Interno</option>
-                <option value="EXTERNO">Externo</option>
+                <option value="PAGO">Pago</option>
+                <option value="INTERES">Interes</option>
+                <option value="AJUSTE">Ajuste</option>
               </select>
+            </div> -->
 
+            <div class="col-md-2">
+              <label for="inputActivo" class="label">Estatus</label>
 
+              <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.estatus">
+                <option value="*">Todo</option>
+                <option value="SOLICITADO">Solicitado</option>
+                <option value="PROCESO_DE_APROBACION">Proceso de aprobacion</option>
+                <option value="ACTIVO">Activo</option>
+                <option value="SUSPENDIDO">Suspendido</option>
+                <option value="TERMINADO">Terminado</option>
+                <option value="A_PAGAR_POR_AVAL">A pagar por aval</option>
+                <option value="TRASPASADO">Traspasado</option>
+                <option value="TRASPASADO_TERMINADOO">Traspasadoo terminado</option>
+              </select>
             </div>
 
             <div class="col-md-2">
-              <label for="inputActivo" class="label">Tipo Ahorro</label>
-
-              <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.tipo">
-                <option value="*">Todo</option>
-                <option value="ahorro">Ahorro</option>
-                <option value="deposito">Deposito</option>
-                <option value="ajuste">Ajuste</option>
-                <option value="retiro">Retiro</option>
-              </select>
-            </div>
-
-            <div class="col-md-2">
-              <label for="fechacre" class="label">Fecha Creación</label>
+              <label for="fechacre" class="label">Periodo de Creación</label>
               <div class="form-group">
                 <input type="text" placeholder="Fecha de creación" class="form-control" bsDaterangepicker
                   [(ngModel)]="fechaCreacion">
+              </div>
+
+            </div>
+
+            <div class="col-md-2">
+              <label for="fechaAct" class="label">Periodo de Actualizacion</label>
+              <div class="form-group">
+                <input type="text" placeholder="Fecha de creación" class="form-control" bsDaterangepicker
+                  [(ngModel)]="fechaActualizacion">
               </div>
 
             </div>
@@ -136,8 +148,10 @@
                       <td scope="row">{{fila.tipo}}</td>
                       <td scope="row">{{fila.estatus}}</td>
                       <td scope="row">{{fila.origen}}</td>
-                      <td scope="row">{{fila.fechaCreacion}}</td>
-                      <td scope="row">{{fila.fechaActualizacion}}</td>
+                      <td scope="row">{{fila.fechaCreacion | date:
+                        'dd/MM/yyyy HH:mm' }}</td>
+                      <td scope="row">{{fila.fechaActualizacion| date:
+                        'dd/MM/yyyy HH:mm'}}</td>
                     </tr>
                   </tbody>
                 </table>
