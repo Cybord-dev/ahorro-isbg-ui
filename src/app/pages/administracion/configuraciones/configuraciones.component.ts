@@ -59,15 +59,12 @@ export class ConfiguracionesComponent implements OnInit {
     try{
       if(this.interes.valor !== this.catConfig.filter(c => c.nombre == "TASA-INTERES")[0].valor){
         this.catService.updateCatalogo(this.interes).toPromise();
-        console.log("updating 1");
       }
       if(this.retencion.valor !== this.catConfig.filter(c => c.nombre == "TASA-INTERES-RETENCION")[0].valor){
          this.catService.updateCatalogo(this.interes).toPromise();
-        console.log("updating 2");
       }
       if(this.inicio.valor !== this.catConfig.filter(c => c.nombre == "INICIO-CAJA")[0].valor){
         this.catService.updateCatalogo(this.interes).toPromise();
-        console.log("updating 3");
       }
       this.loading=false;
       this.closeModal();
