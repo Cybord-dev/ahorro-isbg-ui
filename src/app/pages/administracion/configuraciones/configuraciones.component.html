@@ -1,1 +1,117 @@
-<p>configuraciones works!</p>
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Configuracion de caja</strong>
+                </div>
+                <div class="card-body">
+
+                    <div class="alert alert-warning" *ngIf="alerts.length > 0" role="alert">
+                        <p *ngFor="let alert of alerts">{{alert}}</p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-8">      
+
+                            <div class="form-group row">
+                                <strong class="col-md-3 col-form-label">Tasa de interes</strong>
+                                <div class="col-md-9">
+                                    <input type="text" id="tasa" name="account" class="form-control" maxlength="20" minlength="8"
+                                        placeholder="00" [(ngModel)]="interes.valor">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <strong class="col-md-3 col-form-label">Tasa de interes de retención</strong>
+                                <div class="col-md-9">
+                                    <input type="text" id="retencion" name="account" class="form-control" maxlength="20" minlength="8"
+                                        placeholder="00" [(ngModel)]="retencion.valor">
+                                </div>
+                            </div>
+
+                                <div class="form-group row">
+                                    <strong class="col-md-3 col-form-label">Fin de caja</strong>
+                                    <div class="col-md-7">
+                                        <select id="noAvles" name="noAvles" class="form-control"
+                                                [(ngModel)]="inicio.valor">
+                                                <option value="NOVEMBER">Noviembre</option>
+                                                <option value="DECEMBER">Diciembre</option>
+                                                <option value="JANUARY">Enero</option>
+                                                <option value="FEBRUARY">Febrero</option>
+                                                <option value="MARCH">Marzo</option>
+                                                <option value="APRIL">Abril</option>
+                                                <option value="MAY">Mayo</option>
+                                                <option value="JUNE">Junio</option>
+                                                <option value="JULY">Julio</option>
+                                                <option value="AUGUST">Agosto</option>
+                                                <option value="SEPTEMBER">Septiembre</option>
+                                                <option value="OCTOBER">Octubre</option>
+                                                
+                                            </select>
+                                    </div>
+                                </div>
+                                
+                            
+                        </div>
+
+                    </div>
+                
+                   
+                   
+                </div>
+                <cybord-loader *ngIf="loading"></cybord-loader>
+                <div class="card-footer">
+                    <div class="float-right slide_2">
+
+                        <button class="btn btn-success"
+                        (click)="openModal()" [disabled] = "loading"> Guardar
+                        <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog"
+    aria-labelledby="modalConfirmacion" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="modalConfirmacionLabel">Confirmación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+
+                <div class="row">
+                    <div class="col">
+                        <label for="monto" class="label"> <strong>Ingresas la contraseña de administrador</strong></label>
+                        <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-2 col-form-label">Contraseña</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="inputPassword"
+                                    [(ngModel)]="contra"
+                                    [ngModelOptions]="{standalone: true}">
+                                <small id="noEmpHelp" class="form-text text-muted">Digita la contraseña</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" *ngIf="contra"
+                    [ngClass]="{'btn-success': contra === contraCat.valor , 'btn-secondary' : contra !== contraCat.valor }"
+                    [disabled]="contra !== contraCat.valor" (click)="guardarDatos()">Actualizar</button>
+                <button type="button" class="btn btn-warning" (click)="closeModal()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

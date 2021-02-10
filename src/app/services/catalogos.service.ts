@@ -27,4 +27,8 @@ export class CatalogosService {
     return this.http.delete<Catalogo[]>(`../api/v1/catalogos/${id}`);
   }
 
+  public updateCatalogo(catalogo:Catalogo): Observable<Catalogo>{
+    return this.http.put<Catalogo>(`../api/v1/catalogos/${catalogo.tipo}/${catalogo.nombre}`, catalogo);
+  }
+
 }
