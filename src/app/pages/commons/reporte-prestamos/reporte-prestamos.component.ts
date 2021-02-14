@@ -94,12 +94,17 @@ export class ReportePrestamosComponent implements OnInit {
 
   public async aprobarPago(): Promise<void> {
     try {
+      this.loading = true;
       let s = { ...this.saldo };
       s.validado = true;
       s.origen = this.usuario.email;
       this.saldo = await this.prestamoService.updateSaldoPrestamo(this.saldo.id, s).toPromise();
       this.message = 'Pago aprobado correctamente';
+      this.saldo = new SaldoPrestamo();
+      this.modalConfirmacion.hide();
+      this.updateDataTable(this.page.number, this.page.size);
     } catch (error) {
+      this.loading = false;
       this.message = error;
     }
   }
@@ -122,7 +127,7 @@ export class ReportePrestamosComponent implements OnInit {
     }
   }
 
-  convertBase64ToBlobData(base64Data: string, contentType: string = 'image/png', sliceSize = 512) {
+  public convertBase64ToBlobData(base64Data: string, contentType: string = 'image/png', sliceSize = 512) {
     const byteCharacters = atob(base64Data);
     const byteArrays = [];
 

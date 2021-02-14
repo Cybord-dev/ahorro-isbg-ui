@@ -31,7 +31,6 @@ export class AhorroUsuarioComponent implements OnInit {
   public prestamos: SaldoAhorro[] = [];
   constructor(
     private userService: UsuariosService,
-    private datepipe: DatePipe,
     private route: ActivatedRoute,
     private saldosAhorro: AhorroServicio) {
 

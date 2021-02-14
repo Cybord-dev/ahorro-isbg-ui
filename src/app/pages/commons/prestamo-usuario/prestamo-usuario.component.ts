@@ -8,6 +8,7 @@ import { Usuario } from 'src/app/models/usuario';
 import { ValidationService } from 'src/app/services/validation.service';
 import { RecursoService } from 'src/app/services/recurso.service';
 import { Recurso } from 'src/app/models/recurso';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'cybord-prestamos-usuario',
@@ -27,6 +28,7 @@ export class PrestamoUsuarioComponent implements OnInit {
   public alerts: string[] = [];
 
   public noEmpleado: string = '';
+  public idUsuarioPrestamo: number = 0;
   public prestamo: Prestamo = new Prestamo();
   public fileName: string = '';
   public fileInput: any;
@@ -41,34 +43,52 @@ export class PrestamoUsuarioComponent implements OnInit {
     responsive: true,
     scales: {
       yAxes: [{
-          ticks: {
-              beginAtZero: true
-          }
+        ticks: {
+          beginAtZero: true
+        }
       }]
-  }};
+    }
+  };
 
-  
+
 
   constructor(
     private prestamoService: PrestamosService,
     private userService: UsuariosService,
     private validationService: ValidationService,
-    private fileService: RecursoService
+    private fileService: RecursoService,
+    private route: ActivatedRoute,
   ) { }
 
-  
+
   ngOnInit(): void {
-    this.loading = false;
-    this.loadInfo();
+    this.loading = true;
+
+    this.userService.myInfo()
+      .then((user) => {
+        this.usuario = user;
+      })
+      .catch(error => this.alerts.push(error))
+      .then(() => {
+        this.route.paramMap.subscribe(route => {
+          const id = route.get('idUsuario');
+          console.log('Loading saldos usuario from user,', id);
+          if (id == null || id == undefined) {
+            this.idUsuarioPrestamo = this.usuario.id; 
+            this.loadPrestamosInfo(this.idUsuarioPrestamo);
+          } else {
+            this.idUsuarioPrestamo = +id;
+            this.loadPrestamosInfo(this.idUsuarioPrestamo);
+          }
+        });
+      });
   }
 
 
-  public async loadInfo() {
+  public async loadPrestamosInfo(idUser: number) {
     this.alerts = [];
     try {
-      this.loading = true;
-      this.usuario = await this.userService.myInfo();
-      let allDebts: Prestamo[] = await this.prestamoService.getPrestamosByUsuario(this.usuario.id).toPromise();
+      let allDebts: Prestamo[] = await this.prestamoService.getPrestamosByUsuario(idUser).toPromise();
       this.prestamos = allDebts.filter(p => p.estatus.indexOf('TERMINADO') < 0);
       if (this.prestamos !== undefined && this.prestamos.length > 0) {
         this.total = this.prestamos.map(p => p.saldoPendiente).reduce((a, b) => a + b);
@@ -98,7 +118,7 @@ export class PrestamoUsuarioComponent implements OnInit {
   private setMontoCharData(key: string, monto: number) {
 
     let data: number[] = this.chartData.get(key);
-    
+
     if (data === undefined || data === null) {
       data = [];
       data.push(monto);
@@ -131,8 +151,8 @@ export class PrestamoUsuarioComponent implements OnInit {
       // hacer un for de labels, y recuperar con el año mes el monto del prestamo
       let data = [];
       let acumulado = 0;
-      labels.forEach(mes =>{
-        acumulado += this.chartData.get(mes).reduce((a,b)=>a+b);
+      labels.forEach(mes => {
+        acumulado += this.chartData.get(mes).reduce((a, b) => a + b);
         data.push(acumulado);
       });
       this.barChartData = [{ data: data, backgroundColor: "#46BFBD", label: 'Deuda prestamos' }];
@@ -172,7 +192,7 @@ export class PrestamoUsuarioComponent implements OnInit {
         console.log(`${this.fileName} has been laoded`, img);
         this.modalConfirmacion.hide();
         this.noEmpleado = '';
-        this.loadInfo();
+        this.loadPrestamosInfo(this.idUsuarioPrestamo);
       }
     } catch (error) {
       this.pago = new SaldoPrestamo();
@@ -190,10 +210,15 @@ export class PrestamoUsuarioComponent implements OnInit {
     this.fileName = '';
     this.noEmpleado = '';
     this.pago = new SaldoPrestamo();
-    
+
     this.imgPago.dato = undefined;
     this.prestamo = prestamo;
-    this.totalPagado = prestamo.saldosPrestamo.filter(p=>p.tipo!=='INTERES').map(p=>p.monto).reduce((a,b)=>a+b);
+    if(prestamo.saldosPrestamo.filter(p => p.tipo !== 'INTERES') !== undefined && prestamo.saldosPrestamo.filter(p => p.tipo !== 'INTERES').length > 0){
+      this.totalPagado = prestamo.saldosPrestamo.filter(p => p.tipo !== 'INTERES').map(p => p.monto).reduce((a, b) => a + b);
+    } else {
+      this.totalPagado = 0;
+    }
+    
     this.pago.monto = prestamo.monto - this.totalPagado;
     this.modalConfirmacion.show();
   }

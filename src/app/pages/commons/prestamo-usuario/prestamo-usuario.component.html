@@ -11,21 +11,21 @@
                             <alert type="danger" [dismissible]="true">{{ alert }}</alert>
                         </div>
                         <cybord-loader *ngIf="loading"></cybord-loader>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-4">
+
+                        <div class="row" *ngIf="prestamos.length === 0 && !loading">
+                            <div class="col"></div>
+                            <div class=" col-8 alert alert-primary" role="alert">
+                                El usuario no tiene prestamos activos
+                            </div>
+                            <div class="col"></div>
+                        </div>
+
+                        <div class="row" *ngIf="prestamos.length >0">
+                            <div class="col-xs-12 col-sm-12 col-md-6">
                                 <strong>Prestamos Activos</strong>
                                 <br />
-                                <br />
-                                <div class="row" *ngIf="prestamos.length === 0 && !loading">
-                                    <div class="col"></div>
-                                    <div class=" col-8 alert alert-primary" role="alert">
-                                        No hay registros de ahorro
-                                    </div>
-                                    <div class="col"></div>
-                                </div>
 
-
-                                <table *ngIf="prestamos.length >0" class="table table-bordered table-striped table-sm">
+                                <table class="table table-bordered table-striped table-sm">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th class="text-center">ACCIONES</th>
@@ -58,7 +58,7 @@
                                 </table>
 
                             </div>
-                            <div class="col-xs-12 col-sm-12 col-md-8">
+                            <div class="col-xs-12 col-sm-12 col-md-6">
                                 <div class="chart-wrapper" *ngIf="prestamos.length > 0">
                                     <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
                                         [options]="barChartOptions" [legend]="true" [chartType]="'bar'"></canvas>

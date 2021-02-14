@@ -107,8 +107,10 @@
                           <i class="fa fa-search fa-sm"></i></button>
                         <button class="btn-sm btn-success" *ngIf="module === 'contabilidad'" (click)="redirectToAdjustment(fila.id)"><i
                               class="fa fa-money fa-sm"></i></button>
-                        <button class="btn-sm btn-success" (click)="redirectToSaldos(fila.id)"><i
-                                class="fa fa-bar-chart fa-sm"></i></button>
+                        <button class="btn-sm btn-success" (click)="redirectToAhorro(fila.id)"><i
+                                class="fa fa-bank fa-sm"></i></button>
+                        <button class="btn-sm btn-success" (click)="redirectToPrestamo(fila.id)"><i
+                                  class="fa fa-credit-card fa-sm"></i></button>
                       </td>
                       <td scope="row" class="text-right">{{fila.noEmpleado}}</td>
                       <td scope="row">{{fila.nombre}}</td>

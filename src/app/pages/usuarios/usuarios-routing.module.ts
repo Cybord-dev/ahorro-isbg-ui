@@ -8,7 +8,7 @@ import { PrestamoUsuarioComponent } from '../commons/prestamo-usuario/prestamo-u
 
 const routes: Routes = [
   {
-    path: 'reportes',
+    path: 'saldo-ahorro',
     component: AhorroUsuarioComponent,
     data: {
       title: 'Mi ahorro'

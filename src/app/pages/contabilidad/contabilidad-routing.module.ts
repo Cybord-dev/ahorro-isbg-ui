@@ -12,6 +12,7 @@ import { AjusteAhorroComponent } from '../commons/ajuste-ahorro/ajuste-ahorro.co
 import { AhorroUsuarioComponent } from '../commons/ahorro-usuario/ahorro-usuario.component';
 import { ValidacionPagoComponent } from '../commons/validacion-pago/validacion-pago.component';
 import { ReportePrestamosComponent } from '../commons/reporte-prestamos/reporte-prestamos.component';
+import { PrestamoUsuarioComponent } from '../commons/prestamo-usuario/prestamo-usuario.component';
 
 const routes: Routes = [
   {
@@ -29,10 +30,17 @@ const routes: Routes = [
     }
   },
   {
-    path: 'saldo-usuarios/:idUsuario',
+    path: 'saldo-ahorro/:idUsuario',
     component: AhorroUsuarioComponent,
     data: {
-      title: 'Saldos usuario'
+      title: 'Ahorro usuario'
+    }
+  },
+  {
+    path: 'prestamos-activos/:idUsuario',
+    component: PrestamoUsuarioComponent,
+    data: {
+      title: 'Prestamos usuario'
     }
   },
   {
