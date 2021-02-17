@@ -24,6 +24,7 @@ import { CapacidadPago } from 'src/app/models/capacidad-pago';
 export class ValidacionSolicitudComponent implements OnInit {
 
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
+  @ViewChild('modalInformacion') public modalInformacion: ModalDirective;
 
   public module = 'usuarios';
   public submodule: string;
@@ -39,6 +40,7 @@ export class ValidacionSolicitudComponent implements OnInit {
   public success = '';
   public validated = false;
   public noEmpleado = '';
+  public capacidad: CapacidadPago = new CapacidadPago();
 
   constructor(
     private userService: UsuariosService,
@@ -128,6 +130,20 @@ export class ValidacionSolicitudComponent implements OnInit {
           this.loading = false;
           this.router.navigate([`../${this.module}/validaciones`]);
         }).catch(error => { this.alerts.push(error); this.loading = false; });
+  }
+  
+  public mostrarInfo(idAval:number): void{
+
+    this.userService.capacidadPagoUsuario(idAval).toPromise().then((result) =>{
+      this.capacidad = result;
+      this.modalInformacion.show();
+    }).catch(error => { this.alerts.push(error); this.loading = false; });
+    
+    
+  }
+
+  public cerrarInfo():void{
+    this.modalInformacion.hide();
   }
 
 }
