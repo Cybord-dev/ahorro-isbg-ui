@@ -8,10 +8,10 @@ import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 
 @Component({
   selector: 'cybord-ajuste-ahorro',
-  templateUrl: './ajuste-ahorro.component.html',
-  styleUrls: ['./ajuste-ahorro.component.scss']
+  templateUrl: './ajustes.component.html',
+  styleUrls: ['./ajustes.component.scss']
 })
-export class AjusteAhorroComponent implements OnInit {
+export class AjustesComponent implements OnInit {
 
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
 

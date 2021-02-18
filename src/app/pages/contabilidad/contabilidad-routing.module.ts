@@ -8,7 +8,7 @@ import { UsuariosComponent } from '../commons/usuarios/usuarios.component';
 import { UsuarioComponent } from '../commons/usuario/usuario.component';
 import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
 import { ReporteAhorrosComponent } from '../commons/reporte-ahorros/reporte-ahorros.component';
-import { AjusteAhorroComponent } from '../commons/ajuste-ahorro/ajuste-ahorro.component';
+import { AjustesComponent } from '../commons/ajustes/ajustes.component';
 import { AhorroUsuarioComponent } from '../commons/ahorro-usuario/ahorro-usuario.component';
 import { ValidacionPagoComponent } from '../commons/validacion-pago/validacion-pago.component';
 import { ReportePrestamosComponent } from '../commons/reporte-prestamos/reporte-prestamos.component';
@@ -101,7 +101,7 @@ const routes: Routes = [
   },
   {
     path: 'ajustes/:idUsuario',
-    component: AjusteAhorroComponent,
+    component: AjustesComponent,
     data: {
       title: 'Ajustes de ahorro'
     }

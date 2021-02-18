@@ -1,0 +1,273 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Ajustes de usuario</strong>
+                </div>
+                <div class="card-body">
+
+                    <div *ngFor="let alert of alerts">
+                        <alert type="danger" [dismissible]="true">{{ alert }}</alert>
+                    </div>
+
+                    <h5>{{usuario.nombre}}</h5>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+
+                            <div class="form-group row">
+                                <strong class="col-md-3 col-form-label">Email</strong>
+                                <div class="col-md-9">
+                                    <p class="form-control-static">{{usuario.email}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <strong class="col-md-3 col-form-label">Usuario activo</strong>
+                                <div class="col-md-9">
+                                    <label class="switch switch-label switch-primary">
+                                        <input type="checkbox" class="switch-input" [checked]="usuario.activo" disabled>
+                                        <span class="switch-slider" data-checked="ON" data-unchecked="OFF"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <strong class="col-md-3 col-form-label">Tipo Usuario</strong>
+                                <div class="col-md-9 col-form-label">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="radios" id="radio3"
+                                            value="option3" [checked]="usuario.tipoUsuario === 'INTERNO'" disabled>
+                                        <label class="form-check-label" for="radio3">
+                                            INTERNO
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="radios" id="radio4"
+                                            value="option4" [checked]="usuario.tipoUsuario === 'EXTERNO'" disabled>
+                                        <label class="form-check-label" for="radio4">
+                                            EXTERNO
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+
+                            <div class="form-group row">
+                                <strong class="col-md-3 col-form-label" for="no-emp">No empleado</strong>
+                                <div class="col-md-9">
+                                    <input type="text" id="no-emp" name="no-emp" class="form-control"
+                                        [(ngModel)]="usuario.noEmpleado" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" *ngIf="usuario.datosUsuario.ANTIGUEDAD!==undefined">
+                                <strong class="col-md-3 col-form-label" for="antiguedad">Antiguedad
+                                    empleado</strong>
+                                <div class="col-md-9">
+                                    <input type="text" id="antiguedad" name="ANTIGUEDAD" class="form-control"
+                                        placeholder="ANTIGUEDAD" [(ngModel)]="usuario.datosUsuario.ANTIGUEDAD" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" *ngIf="usuario.datosUsuario.SUELDO!==undefined">
+                                <strong class="col-md-3 col-form-label" for="sueldo">Sueldo actual</strong>
+                                <div class="col-md-9">
+                                    <input type="text" id="sueldo" name="sueldo" class="form-control"
+                                        placeholder="Sueldo" [(ngModel)]="usuario.datosUsuario.SUELDO" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group row" *ngIf="usuario.datosUsuario.MONTO_AHORRO!==undefined">
+                                <strong class="col-md-3 col-form-label" for="ahorro">Monto ahorro quincenal</strong>
+                                <div class="col-md-9">
+                                    <input type="number" id="ahorro" name="ahorro" class="form-control"
+                                        placeholder="Ahorro quincenal" [(ngModel)]="usuario.datosUsuario.MONTO_AHORRO"
+                                        disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <strong>Ajuste de ahorro</strong>
+                            <br />
+                            <br />
+                            <div class="form-group row">
+                                <strong class="col-md-3 col-form-label" for="ajuste">Monto ajuste</strong>
+                                <div class="col-md-9">
+                                    <input type="number" id="ajuste" name="ajuste" class="form-control"
+                                        placeholder="Monto de ajuste" [(ngModel)]="ajusteAhorro.monto">
+                                </div>
+                            </div>
+
+
+
+                            <br>
+                            <button type="button" class="btn btn-sm btn-success" (click)="openModal()"
+                                [disabled]="loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                                Ingresar ajuste
+                                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                            </button>
+                            <br>
+                            <br>
+                            <div class="row" *ngIf="ahorros.length === 0 && !loading">
+                                <div class="col"></div>
+                                <div class=" col-8 alert alert-primary" role="alert">
+                                    No hay registros de ahorro
+                                </div>
+                                <div class="col"></div>
+                            </div>
+
+
+                            <table *ngIf="ahorros.length >0" class="table table-bordered table-striped table-sm">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>FECHA</th>
+                                        <th>TIPO</th>
+                                        <th>OBSERVACIONES</th>
+                                        <th>MONTO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let fila of ahorros">
+                                        <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                                        <td scope="row">{{fila.tipo}}</td>
+                                        <td scope="row">{{fila.observaciones}}</td>
+                                        <td class="text-right" scope="row">{{fila.monto | currency }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td><strong>TOTAL</strong></td>
+                                        <td class="text-right"><strong>{{total | currency}}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <strong>Ajuste de prestamo</strong>
+                            <br />
+                            <br />
+                            <div class="form-group row">
+                                <strong class="col-md-3 col-form-label" for="ajuste">Monto ajuste</strong>
+                                <div class="col-md-9">
+                                    <input type="number" id="ajuste" name="ajuste" class="form-control"
+                                        placeholder="Monto de ajuste" [(ngModel)]="ajusteAhorro.monto">
+                                </div>
+                            </div>
+
+
+
+                            <br>
+                            <button type="button" class="btn btn-sm btn-success" (click)="openModal()"
+                                [disabled]="loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
+                                Ingresar ajuste
+                                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                            </button>
+                            <br>
+                            <br>
+                            <div class="row" *ngIf="ahorros.length === 0 && !loading">
+                                <div class="col"></div>
+                                <div class=" col-8 alert alert-primary" role="alert">
+                                    No hay registros de prestamo
+                                </div>
+                                <div class="col"></div>
+                            </div>
+
+
+                            <table *ngIf="ahorros.length >0" class="table table-bordered table-striped table-sm">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>FECHA</th>
+                                        <th>TIPO</th>
+                                        <th>OBSERVACIONES</th>
+                                        <th>MONTO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let fila of ahorros">
+                                        <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                                        <td scope="row">{{fila.tipo}}</td>
+                                        <td scope="row">{{fila.observaciones}}</td>
+                                        <td class="text-right" scope="row">{{fila.monto | currency }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td><strong>TOTAL</strong></td>
+                                        <td class="text-right"><strong>{{total | currency}}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <cybord-loader *ngIf="loading"></cybord-loader>
+                </div>
+                <div class="card-footer">
+                    <div class="float-right slide_2">
+
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade modal-warning" id="modalConfirmacion" tabindex="-1"
+    role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cancelar()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <p> <strong>{{ajustador.nombre}}</strong> esta por realizar un ajuste manual por la cantidad de <strong>
+                        {{ajusteAhorro.monto | currency}}</strong>
+                    en el ahorro de <strong>{{usuario.nombre}}</strong>.</p>
+                <p>Este moviento será registrado por el sistema con motivos de auditoria.</p>
+
+
+                <form>
+                    <div class="form-group row">
+                        <label for="textarea-input" class="col-sm-2 col-form-label">Razón, motivo del ajuste</label>
+                        <div class="col-sm-10">
+                            <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control"
+                                maxlength="200" placeholder="Razón o motivo de cancelación del ahorro"
+                                [(ngModel)]="ajusteAhorro.observaciones">
+                  </textarea>
+                            <small id="reasonHelp" class="form-text text-muted">Especifica la razon o motivo del
+                                ajuste.</small>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">No empleado</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="inputPassword" [(ngModel)]="noEmpleado"
+                                [ngModelOptions]="{standalone: true}">
+                            <small id="noEmpHelp" class="form-text text-muted">Ingresa tu numero de empleado para
+                                desbloquear.</small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn"
+                    [ngClass]="{'btn-primary': noEmpleado === ajustador.noEmpleado , 'btn-secondary' : noEmpleado !== ajustador.noEmpleado }"
+                    [disabled]="noEmpleado !== ajustador.noEmpleado" (click)="createAdjustemnt()">Ajustar</button>
+                <button type="button" class="btn btn-warning" (click)="cancelar()">Salir</button>
+            </div>
+        </div>
+    </div>
+</div>

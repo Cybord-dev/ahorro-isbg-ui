@@ -23,7 +23,7 @@ import { ValidacionSolicitudComponent } from './validacion-solicitud/validacion-
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.component';
-import { AjusteAhorroComponent } from './ajuste-ahorro/ajuste-ahorro.component';
+import { AjustesComponent } from './ajustes/ajustes.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoaderComponent } from './loader/loader.component';
 import { ValidacionPagoComponent } from './validacion-pago/validacion-pago.component';
@@ -43,7 +43,7 @@ import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos
     ValidacionSolicitudComponent,
     UsuariosComponent,
     UsuarioComponent,
-    AjusteAhorroComponent,
+    AjustesComponent,
     ReporteAhorrosComponent,
     LoaderComponent,
     ValidacionPagoComponent,
@@ -74,7 +74,7 @@ import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos
     ModalModule,
     BsDatepickerModule,
     ProfileComponent,
-    AjusteAhorroComponent,
+    AjustesComponent,
     ReporteSolicitudesComponent,
     LoaderComponent,
     AhorroUsuarioComponent,
