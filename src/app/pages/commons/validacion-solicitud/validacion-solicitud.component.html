@@ -397,22 +397,22 @@
         <div class="col">
           <div class ="row">
             <table class="table table-borderless table-sm">
-              <tbody>
+              
                 <tr>
                   <td>Capacidad de Pago</td>
-                  <td class="text-left">{{capacidad.capacidadPago}}</td>
+                  <td class="text-left">{{capacidad.capacidadPago | currency}}</td>
                 </tr>
                 <tr>
                   <td>Sueldo</td>
-                  <td class="text-left">{{capacidad.sueldo}}</td>
+                  <td class="text-left">{{capacidad.sueldo | currency}}</td>
                 </tr>
                 <tr>
                   <td>Sueldo utilizable</td>
-                  <td class="text-left">{{capacidad.sueldoUtilizable}}</td>
+                  <td class="text-left">{{capacidad.sueldoUtilizable | currency}}</td>
                 </tr>
                 <tr *ngIf="capacidad.ahorro != null">
                   <td>Capacidad de Pago</td>
-                  <td class="text-left">{{capacidad.ahorro}}</td>
+                  <td class="text-left">{{capacidad.ahorro | currency}}</td>
                 </tr>
             </table>
           </div>
@@ -428,15 +428,19 @@
             
             
             <table *ngIf="capacidad.avalados.length > 0" class="table table-bordered table-sm">
+              
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Monto del prestamo</th>
+                  </tr>
+                </thead>
               <tbody>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Monto del prestamo</th>
-                </tr>
                 <tr *ngFor="let fila of capacidad.avalados">
                   <td>{{fila.nombreDeudor}}</td>
-                  <td>{{fila.montoPrestamo}}</td>
+                  <td class="text-right">{{fila.montoPrestamo | currency}}</td>
                 </tr>
+              </tbody>
             </table>
           </div>
           <div class ="row">
@@ -449,17 +453,20 @@
               </div>
             </div>
             <table *ngIf="capacidad.prestamosActivos.length > 0" class="table table-bordered table-sm">
-              <tbody>
+              <thead class="thead-dark">
                 <tr>
                   <th>Monto prestamo</th>
                   <th>Deuda</th>
                   <th>Fecha terminacion</th>
                 </tr>
+              </thead>
+              <tbody>
                 <tr *ngFor="let fila of capacidad.prestamosActivos">
-                  <td>{{fila.monto}}</td>
-                  <td>{{fila.saldoPendiente}}</td>
-                  <td>{{fila.fechaTerminacion}}</td>
+                  <td class="text-right">{{fila.monto | currency}}</td>
+                  <td class="text-right">{{fila.saldoPendiente | currency}}</td>
+                  <td class="text-right">{{fila.fechaTerminacion}}</td>
                 </tr>
+              </tbody>
             </table>
           </div>
         </div>
