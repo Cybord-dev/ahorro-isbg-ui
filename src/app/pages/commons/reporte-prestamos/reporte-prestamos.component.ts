@@ -22,7 +22,7 @@ export class ReportePrestamosComponent implements OnInit {
   public module = 'usuarios';
   public page: GenericPage<SaldoPrestamo> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = { no_Quincenas: '', estatus: "*", noEmpleado: '', since: '', to: '', page: '0', size: '10' , toUpdate: '', sinceUpdate: ''};
+  public filterParams: any = { no_quincenas: '', estatus: "*", noEmpleado: '', since: '', to: '', page: '0', size: '10' , toUpdate: '', sinceUpdate: ''};
   public loading = false;
   public fechaCreacion: Date[];
   public fechaActualizacion: Date[];
