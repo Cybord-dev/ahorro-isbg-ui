@@ -72,7 +72,7 @@ export class AjustesComponent implements OnInit {
 
       if(this.prestamos != undefined && this.prestamos.length>0 && this.saldoPrestamos.length > 0){
         this.saldoPrestamo = this.prestamos.map(r => r.monto).reduce((a, b) => a + b);
-        let saldoPago = this.saldoPrestamos.filter(p => p.tipo !== 'INTERES').map(p => -1* p.monto).reduce((a, b) => a + b);
+        let saldoPago = this.saldoPrestamos.filter(p => p.tipo !== 'INTERES' && p.validado).map(p => -1* p.monto).reduce((a, b) => a + b);
         this.saldoPrestamo += saldoPago;
       }
 
@@ -99,7 +99,7 @@ export class AjustesComponent implements OnInit {
       this.ahorroService.getSaldoByUsuario(this.usuario.id).toPromise()
       .then(resultado => {
         this.ahorros = resultado;
-        this.total = resultado.map(r => r.monto).reduce((a, b) => a + b);
+        //this.total = resultado.map(r => r.monto).reduce((a, b) => a + b);
         this.loading = false;
       });
     }).catch((error) => { this.alerts.push(error); this.loading = false;});
