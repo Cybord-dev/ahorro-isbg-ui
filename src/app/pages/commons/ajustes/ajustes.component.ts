@@ -5,6 +5,10 @@ import { ActivatedRoute } from '@angular/router';
 import { AhorroServicio } from '../../../services/ahorro.service';
 import { SaldoAhorro } from '../../../models/saldoahorro';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
+import { PrestamosService } from 'src/app/services/prestamos.service';
+import { filter, map } from 'rxjs/operators';
+import { Prestamo } from 'src/app/models/prestamo';
+import { SaldoPrestamo } from 'src/app/models/saldoprestamo';
 
 @Component({
   selector: 'cybord-ajuste-ahorro',
@@ -18,7 +22,13 @@ export class AjustesComponent implements OnInit {
   public usuario: Usuario = new Usuario();
   public ajustador: Usuario = new Usuario();
   public ahorros: SaldoAhorro[] = [];
-  public total: number = 0;
+  public totalAhorro: number = 0;
+
+  public prestamos: Prestamo[] = [];
+  public saldoPrestamos: SaldoPrestamo[] = [];
+  public saldoPrestamo: number = 0;
+
+  
   public alerts: string[] = [];
   public loading = false;
 
@@ -28,6 +38,7 @@ export class AjustesComponent implements OnInit {
   constructor(
     private userService: UsuariosService,
     private ahorroService: AhorroServicio,
+    private prestamoService: PrestamosService,
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -38,19 +49,44 @@ export class AjustesComponent implements OnInit {
 
     this.route.paramMap.subscribe(route => {
       const id = route.get('idUsuario');
+      this.loadSaldosInfo(+id);
       this.userService.getUsuario(+id).toPromise()
         .then(user => {
           this.usuario = user;
-          this.ahorroService.getSaldoByUsuario(user.id).toPromise()
-          .then(resultado => {
-            this.ahorros = resultado;
-            if(resultado != undefined && resultado.length>0){
-              this.total = resultado.map(r => r.monto).reduce((a, b) => a + b);
-            }
-          });
         }).catch((error) => this.alerts.push(error));
     });
   }
+
+  public async loadSaldosInfo(userId: number){
+    try{
+
+      this.ahorros = await this.ahorroService.getSaldoByUsuario(userId).toPromise();
+      if(this.ahorros != undefined && this.ahorros.length>0){
+        this.totalAhorro = this.ahorros.map(r => r.monto).reduce((a, b) => a + b);
+      }
+
+      let allDebts: Prestamo[] = await this.prestamoService.getPrestamosByUsuario(userId).toPromise();
+      this.prestamos = allDebts.filter(p => p.estatus.indexOf('TERMINADO') < 0);
+      this.saldoPrestamos = [];
+      allDebts.forEach(p=> this.saldoPrestamos.push(...p.saldosPrestamo));
+
+      if(this.prestamos != undefined && this.prestamos.length>0 && this.saldoPrestamos.length > 0){
+        this.saldoPrestamo = this.prestamos.map(r => r.monto).reduce((a, b) => a + b);
+        let saldoPago = this.saldoPrestamos.filter(p => p.tipo !== 'INTERES').map(p => -1* p.monto).reduce((a, b) => a + b);
+        this.saldoPrestamo += saldoPago;
+      }
+
+
+
+      this.loading = false;
+    }catch(error){
+      this.loading = false;
+      this.alerts.push(error);
+    }
+
+    
+  }
+
 
   public createAdjustemnt(): void{
     this.loading = true;

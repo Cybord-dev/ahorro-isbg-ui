@@ -91,7 +91,7 @@
 
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6">
-                            <strong>Ajuste de ahorro</strong>
+                            <strong>AJUSTE DE AHORRO</strong>
                             <br />
                             <br />
                             <div class="form-group row">
@@ -147,7 +147,7 @@
                             </table>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-6">
-                            <strong>Ajuste de prestamo</strong>
+                            <strong>AJUSTE DE PRESTAMO</strong>
                             <br />
                             <br />
                             <div class="form-group row">
@@ -168,7 +168,7 @@
                             </button>
                             <br>
                             <br>
-                            <div class="row" *ngIf="ahorros.length === 0 && !loading">
+                            <div class="row" *ngIf="prestamos.length === 0 && !loading">
                                 <div class="col"></div>
                                 <div class=" col-8 alert alert-primary" role="alert">
                                     No hay registros de prestamo
@@ -177,7 +177,7 @@
                             </div>
 
 
-                            <table *ngIf="ahorros.length >0" class="table table-bordered table-striped table-sm">
+                            <table *ngIf="prestamos.length >0" class="table table-bordered table-striped table-sm">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>FECHA</th>
@@ -187,7 +187,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let fila of ahorros">
+                                    <tr *ngFor="let p of prestamos">
+                                        <td scope="row">{{p.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                                        <td scope="row">PRESTAMO</td>
+                                        <td scope="row">{{p.estatus}}</td>
+                                        <td class="text-right" scope="row">{{p.monto | currency }}</td>
+                                    </tr>
+                                    <tr *ngFor="let fila of saldoPrestamos">
                                         <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
                                         <td scope="row">{{fila.tipo}}</td>
                                         <td scope="row">{{fila.observaciones}}</td>
@@ -196,8 +202,8 @@
                                     <tr>
                                         <td></td>
                                         <td></td>
-                                        <td><strong>TOTAL</strong></td>
-                                        <td class="text-right"><strong>{{total | currency}}</strong></td>
+                                        <td><strong>SALDO PENDIENTE</strong></td>
+                                        <td class="text-right"><strong>{{saldoPrestamo | currency}}</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
