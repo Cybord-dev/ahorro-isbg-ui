@@ -26,7 +26,6 @@ import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.compo
 import { AjustesComponent } from './ajustes/ajustes.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoaderComponent } from './loader/loader.component';
-import { ValidacionPagoComponent } from './validacion-pago/validacion-pago.component';
 import { AhorroUsuarioComponent } from './ahorro-usuario/ahorro-usuario.component';
 import { PrestamoUsuarioComponent } from './prestamo-usuario/prestamo-usuario.component';
 import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos.component';
@@ -46,7 +45,6 @@ import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos
     AjustesComponent,
     ReporteAhorrosComponent,
     LoaderComponent,
-    ValidacionPagoComponent,
     AhorroUsuarioComponent,
     PrestamoUsuarioComponent,
     ReportePrestamosComponent],
