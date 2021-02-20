@@ -211,10 +211,10 @@
             Yo <strong>{{usuario.nombre}}</strong> con número de trabajador
             <strong>{{usuario.noEmpleado}}</strong> adscrito a la Oficina
             <strong>{{usuario.datosUsuario.OFICINA}}</strong> solicito por este medio un prestamo por la
-            cantidad de <strong> $ {{ solicitud.atributos.MONTO }} </strong>,
+            cantidad de <strong> $ {{ solicitud.atributos.MONTO | currency}} </strong>,
             mismo que será pagado en <strong> {{solicitud.atributos.NO_QUINCENAS }}</strong> quincenas, con
             descuentos a nómina quincenalmente la por la cantidad de <strong> $
-              {{solicitud.atributos.DESCUENTO_QUINCENAL }}</strong> aplicable a partir de
+              {{solicitud.atributos.DESCUENTO_QUINCENAL | currency }}</strong> aplicable a partir de
             <strong>{{bsValue | date}}</strong>.
           </span>
 

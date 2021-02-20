@@ -96,23 +96,23 @@
                 <tbody>
                   <tr>
                     <th>Nombre</th>
-                    <td scope="row" class="text-left">{{informacion.nombreDeudor}}</td>
+                    <td scope="row" class="text-right">{{informacion.nombreDeudor}}</td>
                   </tr>
                   <tr>
                     <th>Monto</th>
-                    <td scope="row" class="text-left">{{informacion.monto}}</td>
+                    <td scope="row" class="text-right">{{informacion.monto | currency}}</td>
                   </tr>
                   <tr>
                     <th>Fecha Inicio</th>
-                    <td scope="row" class="text-left">{{informacion.inicio}}</td>
+                    <td scope="row" class="text-right">{{informacion.inicio}}</td>
                   </tr>
                   <tr>
                     <th>No. Quincenas</th>
-                    <td scope="row" class="text-left">{{informacion.noQuincenas}}</td>
+                    <td scope="row" class="text-right">{{informacion.noQuincenas}}</td>
                   </tr>
                   <tr>
                     <th>Descuento Quincenal</th>
-                    <td scope="row" class="text-left">{{informacion.descuento}}</td>
+                    <td scope="row" class="text-right">{{informacion.descuento | currency}}</td>
                   </tr>
                 </tbody>
               </table>

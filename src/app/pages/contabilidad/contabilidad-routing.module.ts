@@ -10,7 +10,6 @@ import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/va
 import { ReporteAhorrosComponent } from '../commons/reporte-ahorros/reporte-ahorros.component';
 import { AjustesComponent } from '../commons/ajustes/ajustes.component';
 import { AhorroUsuarioComponent } from '../commons/ahorro-usuario/ahorro-usuario.component';
-import { ValidacionPagoComponent } from '../commons/validacion-pago/validacion-pago.component';
 import { ReportePrestamosComponent } from '../commons/reporte-prestamos/reporte-prestamos.component';
 import { PrestamoUsuarioComponent } from '../commons/prestamo-usuario/prestamo-usuario.component';
 
@@ -103,14 +102,7 @@ const routes: Routes = [
     path: 'ajustes/:idUsuario',
     component: AjustesComponent,
     data: {
-      title: 'Ajustes de ahorro'
-    }
-  },
-  {
-    path: 'pagos-capital',
-    component: ValidacionPagoComponent,
-    data: {
-      title: 'ValidacionPagos'
+      title: 'Ajustes de usuario'
     }
   },
 ];
