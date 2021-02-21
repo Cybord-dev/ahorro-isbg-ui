@@ -257,11 +257,15 @@
               </tr>
               <tr>
                 <th>Monto Pago</th>
-                <td scope="row" class="text-left">{{saldo.monto | currency}}</td>
+                <td scope="row" class="text-left">{{saldo.monto | currency}} de {{saldo.montoPrestamo}}</td>
               </tr>
               <tr>
                 <th>Tasa de interes</th>
                 <td scope="row" class="text-left">{{saldo.tasaInteres / 100 | percent}}</td>
+              </tr>
+              <tr>
+                <th>Observaciones</th>
+                <td scope="row" class="text-left">{{saldo.observaciones}}</td>
               </tr>
               <tr>
                 <th>Ultima modificacion</th>

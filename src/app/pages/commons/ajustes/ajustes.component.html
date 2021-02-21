@@ -234,7 +234,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row" *ngIf="tipoAjuste === 'prestamos'">
                         <strong for="debtAdjustId" class="col-sm-3 col-form-label">Prestamo a ajustar</strong>
                         <div class="col-sm-9">
                             <select id="debtAdjustId" class="form-control" style="display:block;" [(ngModel)]="idPrestamo" [ngModelOptions]="{standalone: true}">
@@ -249,7 +249,7 @@
                         <strong for="textarea-input" class="col-sm-3 col-form-label">Razón, motivo del ajuste</strong>
                         <div class="col-sm-9">
                             <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control"
-                                maxlength="200" placeholder="Razón o motivo de cancelación del ahorro"
+                                maxlength="200" placeholder="Razón o motivo del ajuste manual"
                                 [(ngModel)]="observaciones">
                             </textarea>
                             <small id="reasonHelp" class="form-text text-muted">Especifica la razon o motivo del
@@ -274,8 +274,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn"
-                    [ngClass]="{'btn-primary': noEmpleado === ajustador.noEmpleado && montoAjuste != 0 && idPrestamo !== '*' , 'btn-secondary' : noEmpleado !== ajustador.noEmpleado || montoAjuste == 0 || idPrestamo === '*' }"
-                    [disabled]="noEmpleado !== ajustador.noEmpleado || montoAjuste == 0 || idPrestamo === '*'" (click)="createAdjustemnt()">Ajustar</button>
+                    [ngClass]="{'btn-primary': noEmpleado === ajustador.noEmpleado && montoAjuste != 0, 'btn-secondary' : noEmpleado !== ajustador.noEmpleado || montoAjuste == 0 }"
+                    [disabled]="noEmpleado !== ajustador.noEmpleado || montoAjuste == 0" (click)="createAdjustemnt()">Ajustar</button>
                 <button type="button" class="btn btn-warning" (click)="cancelar()">Salir</button>
             </div>
         </div>
