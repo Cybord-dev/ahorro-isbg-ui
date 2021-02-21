@@ -29,11 +29,11 @@ export class AhorroServicio {
   }
 
   public getSaldos(filterParams?: any): Observable<GenericPage<ReporteSaldos>>{
-    return this.http.get<GenericPage<ReporteSaldos>>(`../api/v1/saldosAhorro`, {params: this.getHttpParams(filterParams)});
+    return this.http.get<GenericPage<ReporteSaldos>>(`../api/v1/saldo-ahorros`, {params: this.getHttpParams(filterParams)});
   }
 
   public getReporteSaldos(filterParams?: any): Observable<Recurso>{
-    return this.http.get<Recurso>(`../api/v1/saldosAhorro/report`, {params: this.getHttpParams(filterParams)});
+    return this.http.get<Recurso>(`../api/v1/saldo-ahorros/report`, {params: this.getHttpParams(filterParams)});
   }
 
   public getSaldoByUsuario(idUsuario: number): Observable<SaldoAhorro[]>{
@@ -63,11 +63,11 @@ export class AhorroServicio {
 
 
   public getSaldoMesesCaja(): Observable<any>{
-    return this.http.get(`../api/v1/saldosAhorro/anual`);
+    return this.http.get(`../api/v1/saldo-ahorros/anual`);
   }
 
   public getSaldoCajaAgrupado(): Observable<SaldoAhorroCaja[]>{
-    return this.http.get<SaldoAhorroCaja[]>(`../api/v1/saldosAhorro/anual/agrupado`);
+    return this.http.get<SaldoAhorroCaja[]>(`../api/v1/saldo-ahorros/anual/agrupado`);
   }
 
 }

@@ -127,6 +127,19 @@
                                         [(maxDate)]="maxDate" bsDatepicker [(bsValue)]="antiguedad" [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" >
                                     </div>
                                 </div>
+
+                                <div class="form-group row">
+                                  <strong class="col-md-3 col-form-label">Maximo No. avales</strong>
+                                  <div class="col-md-7">
+                                      <select id="noAvles" name="noAvles" class="form-control"
+                                              [(ngModel)]="usuario.datosUsuario.NO_AVALES">
+                                              <option value="1">1 avales</option>
+                                              <option value="2">2 avales</option>
+                                              <option value="3">3 avales</option>
+                                              <option value="4">4 avales</option>
+                                          </select>
+                                  </div>
+                              </div>
                             
                             
                         </div>
@@ -184,6 +197,17 @@
                                   </div>
                                 </div>
                               </div>
+
+                              <div class="row">
+                                <div class="col"></div>
+                                <div class="col">
+                                  <button class="btn btn-primary" *ngIf="usuario.id !== undefined"
+                                  (click)="openModal('traspaso')" [disabled] = "loading"> Traspasar prestamos a avales 
+                                  <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                                  </button>
+                                </div>
+                                <div class="col"></div>
+                              </div>
                           
                         </div>
 
@@ -197,12 +221,12 @@
                     <div class="float-right slide_2">
 
                         <button class="btn btn-primary" *ngIf="usuario.id === undefined"
-                        (click)="openModal()" [disabled] = "loading"> Registrar
+                        (click)="openModal('creacion')" [disabled] = "loading"> Registrar
                         <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                         </button>
 
                         <button class="btn btn-primary" *ngIf="usuario.id !== undefined"
-                        (click)="openModal()" [disabled] = "loading"> Actualizar 
+                        (click)="openModal('actualizacion')" [disabled] = "loading"> Actualizar 
                         <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                         </button>
 
@@ -212,9 +236,6 @@
         </div>
 
     </div>
-
-
-
 
 </div>
 
@@ -229,11 +250,15 @@
           </button>
         </div>
         <div class="modal-body">
-            {{mensajeModal}}
+            <strong *ngIf="operacion === 'actualizacion'"> ¿ Estas seguro de actualizar al usuario ?</strong>
+            <strong *ngIf="operacion === 'creacion'"> ¿ Estas seguro de dar de alta al usuario ?</strong>
+            <strong *ngIf="operacion === 'traspaso'" class="text-danger"> ¿ Estas seguro de traspasar los prestamos del usuario a los avales ?</strong>
+            <p *ngIf="operacion === 'traspaso'" class="text-danger"> Una vez realizada esta accion no puede ser deshecha</p>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary"  *ngIf="usuario.id !== undefined" (click)="update()" >Si</button>
-            <button type="button" class="btn btn-primary"  *ngIf="usuario.id === undefined" (click)="register()" >Si</button>
+            <button type="button" class="btn btn-primary"  *ngIf="usuario.id !== undefined && operacion === 'actualizacion' " (click)="update()" >Si</button>
+            <button type="button" class="btn btn-primary"  *ngIf="usuario.id === undefined && operacion === 'creacion'" (click)="register()" >Si</button>
+            <button type="button" class="btn btn-primary"  *ngIf="usuario.id !== undefined && operacion === 'traspaso'" (click)="traspasarPrestamos()" >Si</button>
             <button type="button" class="btn btn-secondary" (click)="decline()" >no</button>
         </div>
       </div>
