@@ -9,6 +9,8 @@ import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 import { CatalogosService } from '../../../services/catalogos.service';
 import { ValidationService } from '../../../services/validation.service';
 import { Catalogo } from '../../../models/catalogo';
+import { Prestamo } from 'src/app/models/prestamo';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -30,6 +32,7 @@ export class UsuarioComponent implements OnInit {
   public antiguedad: Date;
   public maxDate: Date;
 
+  public operacion : string;
   public oficinas: Catalogo[] = [];
   public bancos: Catalogo[] = [];
   public cuentas: Catalogo[] = [];
@@ -72,9 +75,6 @@ export class UsuarioComponent implements OnInit {
   }
 
   private async updateUserInfo(id: number): Promise<void> {
-
-
-
     try {
       this.usuario = await this.usuarioServicio.getUsuario(id).toPromise();
       this.antiguedad = new Date(this.usuario.datosUsuario.ANTIGUEDAD);
@@ -99,16 +99,14 @@ export class UsuarioComponent implements OnInit {
   }
 
 
-  public openModal(): void {
-    if (this.usuario.id !== undefined) {
-      this.mensajeModal = '¿Actualizar usuario?';
-    } else {
-      this.mensajeModal = '¿Registrar usuario?';
-    }
+  public openModal(operacion : string): void {
+    this.operacion = operacion;
     this.modalConfirmacion.show();
   }
 
   public decline(): void {
+    this.operacion = '';
+    this.params.success = undefined;
     this.modalConfirmacion.hide();
   }
 
@@ -160,6 +158,19 @@ export class UsuarioComponent implements OnInit {
       })
       .then(() => this.router.navigate([`../${this.params.module}/usuarios`]))
       .catch(error => { this.errorMessages.push(error); this.loading = false; });
+  }
+
+  public async traspasarPrestamos(): Promise<void>{
+    try{
+      this.loading = true;
+      let prestamos = await this.usuarioServicio.traspasarPrestamosActivos(this.usuario.id).toPromise();
+      console.log(prestamos);
+      this.params.success = 'Los prestamos activos se reasignaron correctamente a los avales';
+      this.loading = false;
+    } catch(error){
+      this.loading = false;
+      this.errorMessages.push(error);
+    }
   }
 
   public register(): void {

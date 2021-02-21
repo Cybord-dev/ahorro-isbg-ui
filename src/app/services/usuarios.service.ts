@@ -7,6 +7,7 @@ import { RolCat } from '../models/rolcat';
 import { DatoUsuario } from '../models/dato-usuario';
 import { GenericPage } from '../models/generic-page';
 import { CapacidadPago } from '../models/capacidad-pago';
+import { Prestamo } from '../models/prestamo';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,11 @@ export class UsuariosService {
   }
 
   public capacidadPagoUsuario(idUsuario: number) : Observable<CapacidadPago>{
-    return this.http.get<CapacidadPago>(`../api/v1/usuarios/${idUsuario}/capacidad-pago`)
+    return this.http.get<CapacidadPago>(`../api/v1/usuarios/${idUsuario}/capacidad-pago`);
+  }
+
+  public traspasarPrestamosActivos(idUsuario: number) : Observable<Prestamo[]> {
+    return this.http.post<Prestamo[]>(`../api/v1/usuarios/${idUsuario}/traspasar-prestamo`, idUsuario);
   }
 
   public async myInfo(): Promise<any> {
@@ -56,8 +61,6 @@ export class UsuariosService {
       }
     });
   }
-
-
 
   public logout(): Observable<any> {
     return this.http.post('../logout',{});
