@@ -397,25 +397,52 @@
         <div class="col">
           <div class ="row">
             <table class="table table-borderless table-sm">
-              
                 <tr>
-                  <td>Capacidad de Pago</td>
-                  <td class="text-left">{{capacidad.capacidadPago | currency}}</td>
-                </tr>
-                <tr>
-                  <td>Sueldo</td>
-                  <td class="text-left">{{capacidad.sueldo | currency}}</td>
+                  <td>Sueldo quincenal</td>
+                  <td class="text-right">{{capacidad.sueldo | currency}}</td>
                 </tr>
                 <tr>
                   <td>Sueldo utilizable</td>
-                  <td class="text-left">{{capacidad.sueldoUtilizable | currency}}</td>
+                  <td class="text-right">{{capacidad.sueldoUtilizable | currency}}</td>
                 </tr>
-                <tr *ngIf="capacidad.ahorro != null">
+                <tr *ngIf="capacidad.ahorro != undefined">
+                  <td>Ahorro quincenal</td>
+                  <td class="text-right">{{capacidad.ahorro | currency}}</td>
+                </tr>
+                <tr>
                   <td>Capacidad de Pago</td>
-                  <td class="text-left">{{capacidad.ahorro | currency}}</td>
+                  <td class="text-right"> <strong> {{capacidad.capacidadPago | currency}} </strong> </td>
                 </tr>
             </table>
           </div>
+
+          <div class ="row">
+            <div class = "col">
+              <div class ="row">
+                Prestamos activos:
+              </div> 
+              <div *ngIf="capacidad.prestamosActivos.length == 0" class="row alert alert-primary" role="alert">
+                Este usuario no tiene prestamos activos.
+              </div>
+            </div>
+            <table *ngIf="capacidad.prestamosActivos.length > 0" class="table table-bordered table-sm">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Monto prestamo</th>
+                  <th>Deuda</th>
+                  <th>Fecha terminacion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let fila of capacidad.prestamosActivos">
+                  <td class="text-right">{{fila.monto | currency}}</td>
+                  <td class="text-right">{{fila.saldoPendiente | currency}}</td>
+                  <td class="text-right">{{fila.fechaTerminacion}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
           <div class ="row">
             <div class = "col">
               <div class ="row">
@@ -439,32 +466,6 @@
                 <tr *ngFor="let fila of capacidad.avalados">
                   <td>{{fila.nombreDeudor}}</td>
                   <td class="text-right">{{fila.montoPrestamo | currency}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class ="row">
-            <div class = "col">
-              <div class ="row">
-                Prestamos activos:
-              </div> 
-              <div *ngIf="capacidad.prestamosActivos.length == 0" class="row alert alert-primary" role="alert">
-                Este usuario no tiene prestamos activos.
-              </div>
-            </div>
-            <table *ngIf="capacidad.prestamosActivos.length > 0" class="table table-bordered table-sm">
-              <thead class="thead-dark">
-                <tr>
-                  <th>Monto prestamo</th>
-                  <th>Deuda</th>
-                  <th>Fecha terminacion</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let fila of capacidad.prestamosActivos">
-                  <td class="text-right">{{fila.monto | currency}}</td>
-                  <td class="text-right">{{fila.saldoPendiente | currency}}</td>
-                  <td class="text-right">{{fila.fechaTerminacion}}</td>
                 </tr>
               </tbody>
             </table>
