@@ -15,9 +15,40 @@
             </div>
 
             <div class="col-md-2">
-              <label for="noempleado" class="label">No. Quincenas</label>
-              <input type="text" class="form-control" fullWidth id="noemp" [(ngModel)]="filterParams.no_quincenas"
-                placeholder="No. Quincenas">
+              <label for="noempleado" class="label">Nombre del Empleado</label>
+              <input type="text" class="form-control" fullWidth id="noemp" [(ngModel)]="filterParams.nombre"
+                placeholder="Nombre empleado">
+            </div>
+
+            <div class="col-md-2">
+              <label for="inputActivo" class="label">No. de quincenas</label>
+              <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.no_quincenas">
+                <option value="">Todo</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+              </select>
             </div>
 
             <!-- <div class="col-md-2">
@@ -33,7 +64,6 @@
 
             <div class="col-md-2">
               <label for="inputActivo" class="label">Estatus</label>
-
               <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.estatus">
                 <option value="*">Todo</option>
                 <option value="SOLICITADO">Solicitado</option>
