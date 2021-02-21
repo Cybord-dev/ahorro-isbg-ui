@@ -12,6 +12,7 @@ export class SaldoPrestamo {
     public noEmpleado: string;
     public nombreEmpleado: string;
     public tipo: string;
+    public observaciones: string;
     public origen: string;
     public monto: number;
     public validado: boolean;

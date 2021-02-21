@@ -90,24 +90,13 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="col-xs-12 col-sm-12 col-md-6 text-center">
                             <strong>AJUSTE DE AHORRO</strong>
                             <br />
                             <br />
-                            <div class="form-group row">
-                                <strong class="col-md-3 col-form-label" for="ajuste">Monto ajuste</strong>
-                                <div class="col-md-9">
-                                    <input type="number" id="ajuste" name="ajuste" class="form-control"
-                                        placeholder="Monto de ajuste" [(ngModel)]="ajusteAhorro.monto">
-                                </div>
-                            </div>
-
-
-
-                            <br>
-                            <button type="button" class="btn btn-sm btn-success" (click)="openModal()"
+                            <button type="button" class="btn btn-sm btn-success" (click)="openModal('ahorros')"
                                 [disabled]="loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
-                                Ingresar ajuste
+                                Ajuste Ahorro
                                 <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                             </button>
                             <br>
@@ -126,6 +115,7 @@
                                     <tr>
                                         <th>FECHA</th>
                                         <th>TIPO</th>
+                                        <th>VALIDO</th>
                                         <th>OBSERVACIONES</th>
                                         <th>MONTO</th>
                                     </tr>
@@ -134,36 +124,27 @@
                                     <tr *ngFor="let fila of ahorros">
                                         <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
                                         <td scope="row">{{fila.tipo}}</td>
+                                        <td scope="row">{{fila.validado? 'SI' : 'NO'}}</td>
                                         <td scope="row">{{fila.observaciones}}</td>
                                         <td class="text-right" scope="row">{{fila.monto | currency }}</td>
                                     </tr>
                                     <tr>
                                         <td></td>
                                         <td></td>
+                                        <td></td>
                                         <td><strong>TOTAL</strong></td>
-                                        <td class="text-right"><strong>{{total | currency}}</strong></td>
+                                        <td class="text-right"><strong>{{totalAhorro | currency}}</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="col-xs-12 col-sm-12 col-md-6 text-center">
                             <strong>AJUSTE DE PRESTAMO</strong>
                             <br />
                             <br />
-                            <div class="form-group row">
-                                <strong class="col-md-3 col-form-label" for="ajuste">Monto ajuste</strong>
-                                <div class="col-md-9">
-                                    <input type="number" id="ajuste" name="ajuste" class="form-control"
-                                        placeholder="Monto de ajuste" [(ngModel)]="ajusteAhorro.monto">
-                                </div>
-                            </div>
-
-
-
-                            <br>
-                            <button type="button" class="btn btn-sm btn-success" (click)="openModal()"
+                            <button type="button" class="btn btn-sm btn-success" (click)="openModal('prestamos')"
                                 [disabled]="loading"><i class="fa fa-dot-circle-o"></i>&nbsp;
-                                Ingresar ajuste
+                                Ajuste Prestamo
                                 <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
                             </button>
                             <br>
@@ -182,6 +163,7 @@
                                     <tr>
                                         <th>FECHA</th>
                                         <th>TIPO</th>
+                                        <th>VALIDO</th>
                                         <th>OBSERVACIONES</th>
                                         <th>MONTO</th>
                                     </tr>
@@ -190,16 +172,19 @@
                                     <tr *ngFor="let p of prestamos">
                                         <td scope="row">{{p.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
                                         <td scope="row">PRESTAMO</td>
+                                        <td scope="row">SI</td>
                                         <td scope="row">{{p.estatus}}</td>
                                         <td class="text-right" scope="row">{{p.monto | currency }}</td>
                                     </tr>
                                     <tr *ngFor="let fila of saldoPrestamos">
                                         <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
                                         <td scope="row">{{fila.tipo}}</td>
+                                        <td scope="row">{{fila.validado? 'SI' : 'NO'}}</td>
                                         <td scope="row">{{fila.observaciones}}</td>
                                         <td class="text-right" scope="row">{{fila.monto | currency }}</td>
                                     </tr>
                                     <tr>
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td><strong>SALDO PENDIENTE</strong></td>
@@ -238,28 +223,42 @@
                 </button>
             </div>
             <div class="modal-body">
-
-                <p> <strong>{{ajustador.nombre}}</strong> esta por realizar un ajuste manual por la cantidad de <strong>
-                        {{ajusteAhorro.monto | currency}}</strong>
-                    en el ahorro de <strong>{{usuario.nombre}}</strong>.</p>
-                <p>Este moviento será registrado por el sistema con motivos de auditoria.</p>
-
-
                 <form>
                     <div class="form-group row">
-                        <label for="textarea-input" class="col-sm-2 col-form-label">Razón, motivo del ajuste</label>
-                        <div class="col-sm-10">
+                        <strong class="col-md-3 col-form-label" for="ajuste">Monto ajuste</strong>
+                        <div class="col-md-9">
+                            <input type="number" id="ajuste" name="ajuste" class="form-control"
+                                placeholder="Monto de ajuste" [(ngModel)]="montoAjuste">
+                            <small id="ammountAdjustment" class="form-text text-muted" *ngIf="montoAjuste != 0">Ingresa el monto de ajuste.</small>
+                            <small id="ammountAdjustment" class="form-text text-danger" *ngIf="montoAjuste == 0">El monto de ajuste  no puede ser igual a cero.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <strong for="debtAdjustId" class="col-sm-3 col-form-label">Prestamo a ajustar</strong>
+                        <div class="col-sm-9">
+                            <select id="debtAdjustId" class="form-control" style="display:block;" [(ngModel)]="idPrestamo" [ngModelOptions]="{standalone: true}">
+                                <option value="*">Seleccionar</option>
+                                <option *ngFor="let p of prestamos" [value]="p.id">{{p.fechaCreacion}} -- {{ p.fechaTerminacion}}, Monto:  {{p.monto | currency}} </option>
+                              </select>
+                            <small id="reasonHelp" class="form-text text-muted">Seleccione el prestamo al cual agregar el ajuste</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <strong for="textarea-input" class="col-sm-3 col-form-label">Razón, motivo del ajuste</strong>
+                        <div class="col-sm-9">
                             <textarea id="textarea-input" name="textarea-input" rows="5" class="form-control"
                                 maxlength="200" placeholder="Razón o motivo de cancelación del ahorro"
-                                [(ngModel)]="ajusteAhorro.observaciones">
-                  </textarea>
+                                [(ngModel)]="observaciones">
+                            </textarea>
                             <small id="reasonHelp" class="form-text text-muted">Especifica la razon o motivo del
                                 ajuste.</small>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="inputPassword" class="col-sm-2 col-form-label">No empleado</label>
-                        <div class="col-sm-10">
+                        <strong for="inputPassword" class="col-sm-3 col-form-label">No empleado</strong>
+                        <div class="col-sm-9">
                             <input type="password" class="form-control" id="inputPassword" [(ngModel)]="noEmpleado"
                                 [ngModelOptions]="{standalone: true}">
                             <small id="noEmpHelp" class="form-text text-muted">Ingresa tu numero de empleado para
@@ -267,11 +266,16 @@
                         </div>
                     </div>
                 </form>
+
+                <p> <strong>{{ajustador.nombre}}</strong> esta por realizar un ajuste manual por la cantidad de <strong>
+                    {{ montoAjuste | currency}}</strong>
+                en los {{tipoAjuste}} de <strong>{{usuario.nombre}}</strong>.</p>
+                <p>Este moviento será registrado por el sistema con motivos de auditoria.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn"
-                    [ngClass]="{'btn-primary': noEmpleado === ajustador.noEmpleado , 'btn-secondary' : noEmpleado !== ajustador.noEmpleado }"
-                    [disabled]="noEmpleado !== ajustador.noEmpleado" (click)="createAdjustemnt()">Ajustar</button>
+                    [ngClass]="{'btn-primary': noEmpleado === ajustador.noEmpleado && montoAjuste != 0 && idPrestamo !== '*' , 'btn-secondary' : noEmpleado !== ajustador.noEmpleado || montoAjuste == 0 || idPrestamo === '*' }"
+                    [disabled]="noEmpleado !== ajustador.noEmpleado || montoAjuste == 0 || idPrestamo === '*'" (click)="createAdjustemnt()">Ajustar</button>
                 <button type="button" class="btn btn-warning" (click)="cancelar()">Salir</button>
             </div>
         </div>

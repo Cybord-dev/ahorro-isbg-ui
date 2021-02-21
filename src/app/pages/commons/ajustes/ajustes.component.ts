@@ -28,12 +28,16 @@ export class AjustesComponent implements OnInit {
   public saldoPrestamos: SaldoPrestamo[] = [];
   public saldoPrestamo: number = 0;
 
-  
+
   public alerts: string[] = [];
   public loading = false;
 
+  public tipoAjuste: string;
+  public montoAjuste: number = 0;
   public noEmpleado = '';
-  public ajusteAhorro: SaldoAhorro = new SaldoAhorro();
+  public observaciones = '';
+  public idPrestamo = '*';
+
 
   constructor(
     private userService: UsuariosService,
@@ -57,56 +61,73 @@ export class AjustesComponent implements OnInit {
     });
   }
 
-  public async loadSaldosInfo(userId: number){
-    try{
+  public async loadSaldosInfo(userId: number) {
+    try {
 
       this.ahorros = await this.ahorroService.getSaldoByUsuario(userId).toPromise();
-      if(this.ahorros != undefined && this.ahorros.length>0){
+      if (this.ahorros != undefined && this.ahorros.length > 0) {
         this.totalAhorro = this.ahorros.map(r => r.monto).reduce((a, b) => a + b);
       }
 
       let allDebts: Prestamo[] = await this.prestamoService.getPrestamosByUsuario(userId).toPromise();
       this.prestamos = allDebts.filter(p => p.estatus.indexOf('TERMINADO') < 0);
       this.saldoPrestamos = [];
-      allDebts.forEach(p=> this.saldoPrestamos.push(...p.saldosPrestamo));
+      allDebts.forEach(p => this.saldoPrestamos.push(...p.saldosPrestamo));
 
-      if(this.prestamos != undefined && this.prestamos.length>0 && this.saldoPrestamos.length > 0){
+      if (this.prestamos != undefined && this.prestamos.length > 0) {
         this.saldoPrestamo = this.prestamos.map(r => r.monto).reduce((a, b) => a + b);
-        let saldoPago = this.saldoPrestamos.filter(p => p.tipo !== 'INTERES' && p.validado).map(p => -1* p.monto).reduce((a, b) => a + b);
-        this.saldoPrestamo += saldoPago;
+        if (this.saldoPrestamos.length > 0) {
+          let saldoPago = this.saldoPrestamos.filter(p => p.tipo !== 'INTERES').map(p => -1 * p.monto).reduce((a, b) => a + b);
+          this.saldoPrestamo += saldoPago;
+        }
       }
-
-
-
       this.loading = false;
-    }catch(error){
+    } catch (error) {
       this.loading = false;
       this.alerts.push(error);
     }
 
-    
+
   }
 
 
-  public createAdjustemnt(): void{
+  public createAdjustemnt(): void {
     this.loading = true;
-    this.ajusteAhorro.tipo = 'ajuste';
-    this.ajusteAhorro.idUsuario = this.usuario.id;
-    this.ajusteAhorro.validado = true;
-    this.ajusteAhorro.solicitante = this.ajustador.email;
-    this.ahorroService.postSaldo(this.usuario.id, this.ajusteAhorro)
-    .toPromise().then(a => console.log(a)).then(() => {
-      this.ahorroService.getSaldoByUsuario(this.usuario.id).toPromise()
-      .then(resultado => {
-        this.ahorros = resultado;
-        //this.total = resultado.map(r => r.monto).reduce((a, b) => a + b);
-        this.loading = false;
-      });
-    }).catch((error) => { this.alerts.push(error); this.loading = false;});
+
+
+    if (this.tipoAjuste === 'ahorros') {
+      let ajusteAhorro: SaldoAhorro = new SaldoAhorro();
+      ajusteAhorro.tipo = 'ajuste';
+      ajusteAhorro.idUsuario = this.usuario.id;
+      ajusteAhorro.validado = true;
+      ajusteAhorro.solicitante = this.ajustador.email;
+      this.ahorroService.postSaldo(this.usuario.id, ajusteAhorro)
+        .toPromise().then(a => this.loadSaldosInfo(this.usuario.id))
+        .catch((error) => { this.alerts.push(error); this.loading = false; });
+    } else if (this.tipoAjuste === 'prestamos') {
+      let saldoPrestamo = new SaldoPrestamo();
+      saldoPrestamo.origen = this.ajustador.email;
+      saldoPrestamo.idPrestamo = +this.idPrestamo;
+      saldoPrestamo.monto = this.montoAjuste;
+      saldoPrestamo.tipo = 'AJUSTE';
+      saldoPrestamo.validado = false;
+      saldoPrestamo.observaciones = this.observaciones;
+
+       this.prestamoService.insertSaldoPrestamo(+this.idPrestamo, saldoPrestamo)
+        .toPromise().then(a => this.loadSaldosInfo(this.usuario.id))
+        .catch((error) => { this.alerts.push(error); this.loading = false; });
+    } else {
+      this.alerts.push('No se reconoce el tipo de ajuste indicado.');
+    }
+
+
+
+
     this.modalConfirmacion.hide();
   }
 
-  public openModal(): void {
+  public openModal(tipo: string): void {
+    this.tipoAjuste = tipo;
     this.modalConfirmacion.show();
   }
 
