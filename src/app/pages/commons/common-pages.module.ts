@@ -10,6 +10,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 
 // Common components
@@ -22,9 +23,12 @@ import { ValidacionSolicitudComponent } from './validacion-solicitud/validacion-
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { ReporteAhorrosComponent } from './reporte-ahorros/reporte-ahorros.component';
-import { AjusteAhorroComponent } from './ajuste-ahorro/ajuste-ahorro.component';
+import { AjustesComponent } from './ajustes/ajustes.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoaderComponent } from './loader/loader.component';
+import { AhorroUsuarioComponent } from './ahorro-usuario/ahorro-usuario.component';
+import { PrestamoUsuarioComponent } from './prestamo-usuario/prestamo-usuario.component';
+import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos.component';
 
 
 
@@ -38,9 +42,12 @@ import { LoaderComponent } from './loader/loader.component';
     ValidacionSolicitudComponent,
     UsuariosComponent,
     UsuarioComponent,
-    AjusteAhorroComponent,
+    AjustesComponent,
     ReporteAhorrosComponent,
-    LoaderComponent],
+    LoaderComponent,
+    AhorroUsuarioComponent,
+    PrestamoUsuarioComponent,
+    ReportePrestamosComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -54,7 +61,8 @@ import { LoaderComponent } from './loader/loader.component';
     ButtonsModule.forRoot(),
     ReactiveFormsModule,
     CommonsRoutingModule,
-    CarouselModule.forRoot()
+    CarouselModule.forRoot(),
+    AutocompleteLibModule
   ],
   exports: [
     CommonModule,
@@ -64,12 +72,15 @@ import { LoaderComponent } from './loader/loader.component';
     ModalModule,
     BsDatepickerModule,
     ProfileComponent,
-    AjusteAhorroComponent,
+    AjustesComponent,
     ReporteSolicitudesComponent,
     LoaderComponent,
+    AhorroUsuarioComponent,
+    PrestamoUsuarioComponent,
     HistoricoSolicitudesComponent,
     ValidacionSolicitudComponent,
-    CarouselModule
+    CarouselModule,
+    AutocompleteLibModule
   ],
   providers: [
     DatePipe

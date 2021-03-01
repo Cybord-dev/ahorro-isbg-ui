@@ -42,7 +42,7 @@ export class ReporteSolicitudesComponent implements OnInit {
         this.filterParams.estatus = 'ValidacionTeso';
         break;
       case 'contabilidad':
-        this.filterParams.estatus = 'ValdiacionConta';
+        this.filterParams.estatus = 'ValidacionConta';
         break;
       case 'gerencia-interna':
         this.filterParams.estatus = 'ValidacionGerenciaInterna';

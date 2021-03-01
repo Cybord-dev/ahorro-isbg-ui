@@ -6,10 +6,12 @@ import { Solicitud } from '../../../models/solicitud';
 import { Usuario } from '../../../models/usuario';
 import { ValidacionesService } from '../../../services/validaciones.service';
 import { Validacion } from '../../../models/validacion';
-import { __makeTemplateObject } from 'tslib';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
-import { CatalogosService } from 'src/app/services/catalogos.service';
-import { Catalogo } from 'src/app/models/catalogo';
+import { CatalogosService } from '../../..//services/catalogos.service';
+import { Catalogo } from '../../../models/catalogo';
+import { AvalService } from 'src/app/services/aval.service';
+import { Aval } from 'src/app/models/aval';
+import { CapacidadPago } from 'src/app/models/capacidad-pago';
 
 
 @Component({
@@ -22,6 +24,7 @@ import { Catalogo } from 'src/app/models/catalogo';
 export class ValidacionSolicitudComponent implements OnInit {
 
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
+  @ViewChild('modalInformacion') public modalInformacion: ModalDirective;
 
   public module = 'usuarios';
   public submodule: string;
@@ -31,16 +34,19 @@ export class ValidacionSolicitudComponent implements OnInit {
   public razonRechazo = '';
   public solicitud: Solicitud = new Solicitud();
   public usuario: Usuario = new Usuario();
+  public aceptacionAvales: Aval[] = [];
   public loading = false;
   public alerts: string[] = [];
   public success = '';
   public validated = false;
   public noEmpleado = '';
+  public capacidad: CapacidadPago = new CapacidadPago();
 
   constructor(
     private userService: UsuariosService,
     private solicitudService: SolicitudesService,
     private validacionService: ValidacionesService,
+    private avalService: AvalService,
     private route: ActivatedRoute,
     private catService: CatalogosService,
     private router: Router,
@@ -52,7 +58,7 @@ export class ValidacionSolicitudComponent implements OnInit {
     this.module = this.router.url.split('/')[1];
     this.submodule = this.router.url.split('/')[2];
 
-    this.userService.myInfo().toPromise()
+    this.userService.myInfo()
       .then(user => this.validador = user)
       .catch(error => this.alerts.push(error));
 
@@ -73,6 +79,15 @@ export class ValidacionSolicitudComponent implements OnInit {
         .toPromise();
       this.usuario.datosUsuario.OFICINA = oficina.valor;
       this.usuario.datosUsuario.BANCO = banco.valor;
+      if(this.solicitud.tipo === 'SolicitudPrestamo'){
+        this.aceptacionAvales = await this.avalService.getAceptacionesPorSolicitud(this.solicitud.id).toPromise();
+        for(let aval of this.aceptacionAvales){
+          let pay: CapacidadPago = await this.userService.capacidadPagoUsuario(aval.idUsuarioAval).toPromise();
+          aval.capacidadPago = pay.capacidadPago;
+        }
+      }
+
+
       this.loading = false;
     } catch (error) {
       this.alerts.push(error);
@@ -115,6 +130,20 @@ export class ValidacionSolicitudComponent implements OnInit {
           this.loading = false;
           this.router.navigate([`../${this.module}/validaciones`]);
         }).catch(error => { this.alerts.push(error); this.loading = false; });
+  }
+  
+  public mostrarInfo(idAval:number): void{
+
+    this.userService.capacidadPagoUsuario(idAval).toPromise().then((result) =>{
+      this.capacidad = result;
+      this.modalInformacion.show();
+    }).catch(error => { this.alerts.push(error); this.loading = false; });
+    
+    
+  }
+
+  public cerrarInfo():void{
+    this.modalInformacion.hide();
   }
 
 }

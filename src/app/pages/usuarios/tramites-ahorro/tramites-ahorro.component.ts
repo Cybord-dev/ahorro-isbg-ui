@@ -7,8 +7,8 @@ import { AhorroServicio } from '../../../services/ahorro.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Solicitud } from '../../../models/solicitud';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
-import { CatalogosService } from 'src/app/services/catalogos.service';
-import { Catalogo } from 'src/app/models/catalogo';
+import { CatalogosService } from '../../../services/catalogos.service';
+import { Catalogo } from '../../../models/catalogo';
 
 
 @Component({
@@ -58,7 +58,7 @@ export class TramitesAhorroComponent implements OnInit {
 
   public async loadRequestInfo(): Promise<void> {
     try {
-      const user = await this.userService.myInfo().toPromise();
+      const user = await this.userService.myInfo();
       this.usuario = await this.userService.getUsuario(user.id).toPromise();
 
       const ahorros = await this.ahorroService.getSaldoByUsuario(user.id).toPromise();

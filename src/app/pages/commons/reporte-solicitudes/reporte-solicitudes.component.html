@@ -47,6 +47,7 @@
                   <option value="CancelacionAhorro">Cancelacion</option>
                   <option value="ModificacionAhorro">Modificacion</option>
                   <option value="RetiroParcialAhorro">Retiro Parcial</option>
+                  <option value="SolicitudPrestamo">Solicitud Prestamo</option>
                 </select>
               </div>
             </div>
@@ -149,8 +150,10 @@
                           AHORRO</span>
                         <span class="badge badge-primary" *ngIf="fila.tipo === 'RetiroParcialAhorro'">RETIRO
                           PARCIAL</span>
-                        <span class="badge badge-warning" *ngIf="fila.tipo === 'ModificacionAhorro'">MODIFICACION
+                        <span class="badge badge-info" *ngIf="fila.tipo === 'ModificacionAhorro'">MODIFICACION
                           AHORRO</span>
+                        <span class="badge badge-warning" *ngIf="fila.tipo === 'SolicitudPrestamo'">SOLICITUD
+                            PRESTAMO</span>
                       </td>
                       <td scope="row">{{fila.status}}</td>
                     </tr>

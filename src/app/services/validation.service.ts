@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Prestamo } from '../models/prestamo';
+import { SaldoPrestamo } from '../models/saldoprestamo';
 import { Solicitud } from '../models/solicitud';
 import { Usuario } from '../models/usuario';
-import { UsuariosComponent } from '../pages/commons/usuarios/usuarios.component';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,22 @@ export class ValidationService {
   constructor() { }
 
 
+  public validateSaldoPrestamo(saldo: SaldoPrestamo, prestamo : Prestamo): string[]{
+    const alerts: string[] = [];
+    if(saldo.monto === undefined || saldo.monto <= 10){
+      alerts.push('El monto del pago debe ser mayor a $10.00');
+    }
+    if(saldo.idPrestamo== undefined || saldo.idPrestamo === null){
+      alerts.push('La referencia del prestamo no ests ligada');
+    }
+    if(saldo.origen== undefined || saldo.origen === null){
+      alerts.push('El origen del pago no ha sido especificado');
+    }
+    if(saldo.tipo== undefined || saldo.tipo === null){
+      alerts.push('El tipo del pago no ha sido especificado');
+    }
+    return alerts;
+  }
 
   public validateSolicitud(solicitud: Solicitud, totalAhorro: number): string[] {
     const alerts: string[] = [];
@@ -29,10 +46,10 @@ export class ValidationService {
   }
 
   public validarUsuario(usuario: Usuario): string[]{
-    const alerts: string[] = []
-    const regexNombre=  new RegExp('^([0-9a-zA-ZÀ-ú.,&-_ ]+)$');
-    const regexCuenta=  new RegExp('^([0-9]{12})$');
-    const regexEmail = new RegExp('^[a-z0-9A-Z._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$');
+    const alerts: string[] = [];
+    const regexNombre = new RegExp('^([0-9a-zA-ZÀ-ú.,&-_ ]+)$');
+    const regexCuenta = new RegExp('^([0-9]{8,20})$');
+    const regexEmail  = new RegExp('^[a-z0-9A-Z._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$');
 
     if( (!regexEmail.test(usuario.email) || usuario.email === undefined)
       && usuario.email.length < 2 && usuario.email.length > 100){
@@ -45,16 +62,16 @@ export class ValidationService {
     if( usuario.noEmpleado === undefined){
       alerts.push('El No. de empleado no ha sido asignado');
     }
-    if (usuario.datosUsuario.OFICINA === "*" || usuario.datosUsuario.OFICINA === undefined){
+    if (usuario.datosUsuario.OFICINA === '*' || usuario.datosUsuario.OFICINA === undefined){
       alerts.push('La oficina no ha sido asignado');
     }
-    if (usuario.datosUsuario.BANCO === "*" || usuario.datosUsuario.BANCO === undefined){
+    if (usuario.datosUsuario.BANCO === '*' || usuario.datosUsuario.BANCO === undefined){
       alerts.push('El banco no ha sido asignado');
     }
-    if (usuario.datosUsuario.TIPO_CUENTA === "*" || usuario.datosUsuario.TIPO_CUENTA === undefined){
+    if (usuario.datosUsuario.TIPO_CUENTA === '*' || usuario.datosUsuario.TIPO_CUENTA === undefined){
       alerts.push('El tipo de cuenta no esta definido');
     }
-    if( !regexCuenta.test(usuario.datosUsuario.CUENTA)){
+    if(!regexCuenta.test(usuario.datosUsuario.CUENTA)){
       alerts.push('El no. de cuenta es invalido');
     }
     if ( Number(usuario.datosUsuario.SUELDO) < 100 ){

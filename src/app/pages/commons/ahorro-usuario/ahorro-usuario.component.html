@@ -1,0 +1,60 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header">
+          <strong>Mi reporte ahorro </strong>
+        </div>
+        <div class="card-body">
+
+          <cybord-loader *ngIf="loading"></cybord-loader>
+          <div *ngFor="let alert of alerts">
+            <alert type="danger" [dismissible]="true">{{ alert }}</alert>
+          </div>
+
+          <div class="row" *ngIf="ahorros.length === 0 && !loading">
+            <div class="col"></div>
+            <div class=" col-3 alert alert-primary" role="alert">
+              No hay registros de ahorro
+            </div>
+            <div class="col"></div>
+          </div>
+          <div class="row" *ngIf="ahorros.length > 0 && !loading">
+            <div class="col-4">
+              <strong>Mi historico de ahorro</strong>
+              <br />
+              <br />
+              <table class="table table-bordered table-striped table-sm">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>FECHA</th>
+                    <th>TIPO</th>
+                    <th>MONTO</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let fila of ahorros">
+                    <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                    <td scope="row">{{fila.tipo }}</td>
+                    <td scope="row" class="text-right">{{fila.monto | currency }}</td>
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td><strong>TOTAL</strong></td>
+                    <td class="text-right"><strong>{{total | currency}}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="chart-wrapper col-8">
+              <canvas baseChart class="chart" [datasets]="barChartData" [labels]="barChartLabels"
+                [options]="barChartOptions" [legend]="true" [chartType]="'bar'"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

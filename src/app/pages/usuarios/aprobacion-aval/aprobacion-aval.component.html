@@ -1,0 +1,160 @@
+<div class="animated fadeIn">
+  <div class="row">
+
+    <div class="col">
+      <div class="col-sm-12 col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <strong>Avales</strong>
+          </div>
+          <div class="card-body">
+            <div *ngFor="let alert of alerts">
+              <alert type="danger" [dismissible]="true">{{ alert }}</alert>
+            </div>
+            <cybord-loader *ngIf="loading"></cybord-loader>
+            <div class="row">
+              <div class="col">
+                <div *ngIf="avales.length === 0" class="alert alert-primary" role="alert">
+                  No se encontraron resultados
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+
+                <div class="table-responsive" *ngIf="avales.length >0 ">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th>Acciones</th>
+                        <th>Nombre del deudor</th>
+                        <th>Monto</th>
+                        <th>Fecha</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let aval of avales">
+
+                        <td scope="row" class="text-center">
+                          <button class="btn-sm btn-primary" (click)="mostrarInformacion(aval)"><i
+                              class="fa fa-search fa-sm"></i></button>
+                        </td>
+                        <td scope="row" class="text-left">{{aval.nombreDeudor}}</td>
+                        <td scope="row" class="text-left">$ {{aval.montoPrestamo}}</td>
+                        <td scope="row" class="text-left">{{fecha(aval.fechaCreacion)}}</td>
+                        <td scope="row" *ngIf="aval.estatus === 'SOLICITUD'"><span
+                            class="badge badge-info">PENDIENTE</span></td>
+                        <td scope="row" *ngIf="aval.estatus === 'APROBADO'"><span
+                            class="badge badge-success">ACEPTADO</span>
+                        <td scope="row" *ngIf="aval.estatus === 'RECHAZADO'"><span
+                            class="badge badge-danger">RECHAZADO</span>
+
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+                </div>
+              </div>
+            </div>
+
+            <p class="alert alert-success" *ngIf="params.success.length > 0" role="alert">{{params.success}}</p>
+          </div>
+          <cybord-loader *ngIf="loading"></cybord-loader>
+          <div class="card-footer">
+            <div class="float-right slide_2">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</div>
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog"
+  aria-labelledby="modalConfirmacion" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="cerrar()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Información del Solicitante</h5>
+        <div class="row">
+          <div class="col">
+            <div class="table-responsive">
+              <table class="table table-bordered table-sm">
+
+                <tbody>
+                  <tr>
+                    <th>Nombre</th>
+                    <td scope="row" class="text-right">{{informacion.nombreDeudor}}</td>
+                  </tr>
+                  <tr>
+                    <th>Monto</th>
+                    <td scope="row" class="text-right">{{informacion.monto | currency}}</td>
+                  </tr>
+                  <tr>
+                    <th>Fecha Inicio</th>
+                    <td scope="row" class="text-right">{{informacion.inicio}}</td>
+                  </tr>
+                  <tr>
+                    <th>No. Quincenas</th>
+                    <td scope="row" class="text-right">{{informacion.noQuincenas}}</td>
+                  </tr>
+                  <tr>
+                    <th>Descuento Quincenal</th>
+                    <td scope="row" class="text-right">{{informacion.descuento | currency}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="p-3 mb-2">
+                <p class="text-danger"><strong>
+                    Yo aval manifiesto que acepto pagar a mi entera satisfacción el saldo deudor que tenga el
+                    solicitante,
+                    de acuerdo a la parte proporcional del adeudo contraído al momento de que el solicitante no se le
+                    pueda retener de su pago de nómina por la causa que sea.
+                  </strong>
+                </p>
+              </div>
+
+
+              <form>
+                <div class="form-group row">
+                  <label for="inputPassword" class="col-sm-2 col-form-label">No. empleado</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="inputPassword" [(ngModel)]="confirmacion"
+                      [ngModelOptions]="{standalone: true}">
+                    <small id="noEmpHelp" class="form-text text-muted">Ingresa tu numero de empleado para Aceptar o
+                      Rechazar.</small>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn"
+          [ngClass]="{'btn-success': confirmacion === noEmpleado , 'btn-secondary' : confirmacion !== noEmpleado }"
+          [disabled]="confirmacion !== noEmpleado" (click)="aceptar()">Aceptar</button>
+        <button type="button" class="btn"
+          [ngClass]="{'btn-danger': confirmacion === noEmpleado , 'btn-secondary' : confirmacion !== noEmpleado }"
+          [disabled]="confirmacion !== noEmpleado" (click)="rechazar()">Rechazar</button>
+
+        <button type="button" class="btn btn-warning" (click)="cerrar()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

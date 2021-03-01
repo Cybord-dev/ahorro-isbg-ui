@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
   selector: 'cybord-usuario-invalido',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UsuarioInvalidoComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService: UsuariosService) { }
 
   ngOnInit(): void {
+  }
+
+  public logout(): void {
+    this.userService.logout().toPromise()
+    .then(() => console.log('completed logout'))
+    .then(() => {console.log('Calling logout');})
+    .catch((error) => {
+      console.log("Error request")
+      console.log(error);
+      
+    });
   }
 
 }

@@ -55,6 +55,14 @@ export class UsuariosComponent implements OnInit {
     this.router.navigate([`../contabilidad/ajustes/${id}`]);
   }
 
+  public redirectToAhorro(id:string):void{
+    this.router.navigate([`../${this.module}/saldo-ahorro/${id}`]);
+  }
+
+  public redirectToPrestamo(id:string):void{
+    this.router.navigate([`../${this.module}/prestamos-activos/${id}`]);
+  }
+
   public downloadXLSFile(): void{
     this.loading = true;
     this.filterParams.page = '0';

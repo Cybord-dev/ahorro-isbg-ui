@@ -6,8 +6,11 @@ export class SaldoAhorro {
     public monto: number;
     public validado: boolean;
     public solicitante: string;
+    public observaciones: string;
     public fechaCreacion: Date;
     public fechaActualizacion: Date;
 
-    constructor(){}
+    constructor(){
+        this.monto = 0;
+    }
 }

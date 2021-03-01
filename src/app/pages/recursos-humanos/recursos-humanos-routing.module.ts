@@ -6,6 +6,11 @@ import { UsuarioComponent } from '../commons/usuario/usuario.component';
 import { HistoricoSolicitudesComponent } from '../commons/historico-solicitudes/historico-solicitudes.component';
 import { ConciliacionRhComponent } from './conciliacion-rh/conciliacion-rh.component';
 import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
+import { AhorroUsuarioComponent } from '../commons/ahorro-usuario/ahorro-usuario.component';
+import { ReporteAhorrosComponent } from '../commons/reporte-ahorros/reporte-ahorros.component';
+import { ReportePrestamosComponent } from '../commons/reporte-prestamos/reporte-prestamos.component';
+import { PrestamoUsuarioComponent } from '../commons/prestamo-usuario/prestamo-usuario.component';
+import { AjustesComponent } from '../commons/ajustes/ajustes.component';
 
 const routes: Routes = [
   {
@@ -20,6 +25,20 @@ const routes: Routes = [
     component: HistoricoSolicitudesComponent,
     data: {
       title: 'Historico validaciones'
+    }
+  },
+  {
+    path: 'saldo-ahorro/:idUsuario',
+    component: AhorroUsuarioComponent,
+    data: {
+      title: 'Ahorro usuario'
+    }
+  },
+  {
+    path: 'prestamos-activos/:idUsuario',
+    component: PrestamoUsuarioComponent,
+    data: {
+      title: 'Prestamos usuario'
     }
   },
   {
@@ -56,7 +75,28 @@ const routes: Routes = [
     data: {
       title: 'Usario ISBG'
     }
-  }
+  },
+  {
+    path: 'reportes-ahorro',
+    component: ReporteAhorrosComponent,
+    data: {
+      title: 'Reporte de ahorro caja',
+    }
+  },
+  {
+    path: 'reportes-prestamo',
+    component: ReportePrestamosComponent,
+    data: {
+      title: 'Reporte de prestamos caja',
+    }
+  },
+  {
+    path: 'ajustes/:idUsuario',
+    component: AjustesComponent,
+    data: {
+      title: 'Ajustes de usuario'
+    }
+  },
 ];
 
 @NgModule({
