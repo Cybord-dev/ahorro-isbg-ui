@@ -8,46 +8,23 @@
           <div class="card-body">
             <div class="row slide_1">
   
-              <div class="col-md-2">
-                <label for="noempleado" class="label">No. Empleado</label>
+              <div class="col-md-4">
+                <label for="noempleado" class="label"><strong> No. Empleado</strong></label>
                 <input type="text" class="form-control"  fullWidth id="noemp" [(ngModel)]="filterParams.noEmpleado"
                   placeholder="No. Empleado">
               </div>
-
-              <div class="col-md-2">
-                <label for="inputActivo2" class="label">Tipo Empleado</label>
-                
+              <div class="col-md-4">
+                <label for="nombreempleado" class="label"><strong> Nombre usuario</strong></label>
+                <input type="text" class="form-control"  fullWidth id="nombreempleado" [(ngModel)]="filterParams.nombre"
+                  placeholder="Nombre del usuario">
+              </div>
+              <div class="col-md-2" *ngIf="module !== 'recursos-humanos' && module !== 'contabilidad'">
+                <label for="inputActivo2" class="label"><strong> {{module}}</strong></label>
                   <select id="inputActivo2" class="form-control" style="display:block;" [(ngModel)]="filterParams.tipoUsuario">
-                    <option value="*">Todo</option>
+                    <option value="*">Todos</option>
                     <option value="INTERNO">Interno</option>
                     <option value="EXTERNO">Externo</option>
                   </select>
-  
-                
-              </div>
-
-              <div class="col-md-2">
-                <label for="inputActivo" class="label">Tipo Ahorro</label>
-                
-                  <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.tipo">
-                    <option value="*">Todo</option>
-                    <option value="ahorro">Ahorro</option>
-                    <option value="deposito">Deposito</option>
-                    <option value="ajuste">Ajuste</option>
-                    <option value="retiro">Retiro</option>
-                  </select>
-              </div>
-
-              <div class="col-md-2">
-                <label for="fechacre" class="label">Fecha Creación</label>
-                <div class="form-group">
-                  <input type="text"
-                  placeholder="Fecha de creación"
-                  class="form-control"
-                  bsDaterangepicker
-                  [(ngModel)]="fechaCreacion">
-                </div>
-                
               </div>
 
               <div class="col-md-2">
@@ -89,7 +66,7 @@
                     <option *ngIf="page.number<(page.totalElements/20)" value="20">20</option>
                     <option *ngIf="page.number<(page.totalElements/50)" value="50">50</option>
                   </select>
-                  <strong class="float-right"> Tamaño Pagina &nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                  <strong class="float-right" *ngIf="page.last==false || page.first==true"> Tamaño Pagina &nbsp;&nbsp;&nbsp;&nbsp;</strong>
                 </div>
               </div>
             </div>
@@ -100,43 +77,47 @@
                   <table class="table table-bordered table-sm">
                     <thead class="thead-dark">
                       <tr>
+                        <th class="text-center">DETALLES</th>
+                        <th class="text-center">TIPO</th>
                         <th class="text-center">NO EMPLEADO</th>
-                        <th class="text-center">TIPO EMP</th>
-                        <th class="text-center">AHORRADOR</th>
-                        <th class="text-center">TIPO TRANSACCION</th>
-                        <th class="text-center">OBSERVACIONES</th>
-                        <th class="text-center">MONTO</th>
-                        <th class="text-center">FECHA</th>
+                        <th class="text-center">NOMBRE</th>
+                        <th class="text-center">AHORRO</th>
+                        <th class="text-center">INTERESES</th>
+                        <th class="text-center">AJUSTES</th>
+                        <th class="text-center">TOTAL</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let fila of page.content">
+                        <td scope="row" class="text-center">
+                          <button class="btn-sm btn-success" (click)="detalleAhorro(fila.idUsuario)"><i
+                            class="fa fa-bank fa-sm"></i></button>
+                        </td>
+                        <td scope="row">{{fila.tipoUsuario}}</td>
                         <td scope="row">{{fila.noEmpleado}}</td>
-                        <td scope="row">{{fila.tipoEmpleado}}</td>
-                        <td scope="row">{{fila.ahorrador}}</td>
-                        <td scope="row">{{fila.tipo}}</td>
-                        <td scope="row">{{fila.observaciones}}</td>
-                        <td scope="row" class="text-right">{{fila.monto | currency}}</td>
-                        <td scope="row">{{fila.fecha}}</td>
+                        <td scope="row">{{fila.nombre}}</td>
+                        <td scope="row" class="text-right">{{fila.ahorro | currency}}</td>
+                        <td scope="row" class="text-right">{{fila.interes | currency}}</td>
+                        <td scope="row" class="text-right">{{fila.ajuste | currency}}</td>
+                        <td scope="row" class="text-right">{{fila.total | currency}}</td>  
                       </tr>
                     </tbody>
                   </table>
-                  <div class="clearfix" *ngIf="page.empty == false">
-                    <ul class="pagination float-right" *ngIf="page.totalElements > 1">
-                      <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
-                          (click)="updateDataTable(0,page.size)"><i class="icon-control-rewind icons"></i></button>
-                      </li>
-                      <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
-                          (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
-                      <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
-                      <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
-                          (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
-                      <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
-                          (click)="updateDataTable(page.totalPages-1,page.size)"><i class="icon-control-forward icons"></i></button>
-                      </li>
-                    </ul>
-                  </div>
-  
+                </div>
+                <div class="clearfix" *ngIf="page.empty == false">
+                  <ul class="pagination float-right" *ngIf="page.totalElements > 1">
+                    <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
+                        (click)="updateDataTable(0,page.size)"><i class="icon-control-rewind icons"></i></button>
+                    </li>
+                    <li class="page-item" *ngIf="page.first==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button></li>
+                    <li class="page-item active"><a class="page-link"><strong>{{page.number+1}}</strong></a></li>
+                    <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button></li>
+                    <li class="page-item" *ngIf="page.last==false"><button class="btn page-link"
+                        (click)="updateDataTable(page.totalPages-1,page.size)"><i class="icon-control-forward icons"></i></button>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
