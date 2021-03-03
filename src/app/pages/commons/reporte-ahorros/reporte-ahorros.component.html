@@ -8,23 +8,35 @@
           <div class="card-body">
             <div class="row slide_1">
   
-              <div class="col-md-4">
+              <div class="col-md-2">
                 <label for="noempleado" class="label"><strong> No. Empleado</strong></label>
                 <input type="text" class="form-control"  fullWidth id="noemp" [(ngModel)]="filterParams.noEmpleado"
                   placeholder="No. Empleado">
               </div>
-              <div class="col-md-4">
+              <div class="col-md-2">
                 <label for="nombreempleado" class="label"><strong> Nombre usuario</strong></label>
                 <input type="text" class="form-control"  fullWidth id="nombreempleado" [(ngModel)]="filterParams.nombre"
                   placeholder="Nombre del usuario">
               </div>
               <div class="col-md-2" *ngIf="module !== 'recursos-humanos' && module !== 'contabilidad'">
-                <label for="inputActivo2" class="label"><strong> {{module}}</strong></label>
+                <label for="inputActivo2" class="label"><strong> Tipo</strong></label>
                   <select id="inputActivo2" class="form-control" style="display:block;" [(ngModel)]="filterParams.tipoUsuario">
                     <option value="*">Todos</option>
                     <option value="INTERNO">Interno</option>
                     <option value="EXTERNO">Externo</option>
                   </select>
+              </div>
+
+              <div class="col-md-2">
+                <label for="fechacre" class="label"><strong>Periodo de Creación</strong></label>
+                <div class="form-group">
+                  <input type="text" placeholder="Fecha de creación" class="form-control" 
+                    bsDaterangepicker
+                    [(ngModel)]="fechaCreacion"
+                    [minDate]="minDate"
+                    [maxDate]="maxDate">
+                </div>
+  
               </div>
 
               <div class="col-md-2">

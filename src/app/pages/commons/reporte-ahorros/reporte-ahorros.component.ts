@@ -6,6 +6,7 @@ import { ReporteSaldos } from '../../../models/reportesaldos';
 import { DownloadFileService } from '../../../services/download-file.service';
 import { DatePipe } from '@angular/common';
 import { ReporteAhorro } from 'src/app/models/reporte-ahorro';
+import { CatalogosService } from 'src/app/services/catalogos.service';
 
 @Component({
   selector: 'cybord-reporte-ahorros',
@@ -17,38 +18,47 @@ export class ReporteAhorrosComponent implements OnInit {
   public module = 'usuarios';
   public page: GenericPage<ReporteAhorro> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = { tipoUsuario: '*',  noEmpleado: '', nombre: '', page: '0', size: '10' };
+  public filterParams: any = { tipoUsuario: '*',  noEmpleado: '', nombre: '', page: '0', size: '10',  since: '', to: '' };
   public loading = false;
   public fechaCreacion: Date[];
+  public minDate = new Date();
+  public maxDate = new Date();
+  private meses = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
   constructor(
     private router: Router,
     public datepipe: DatePipe,
     private downloadService: DownloadFileService,
-    private ahorroService: AhorroServicio) { }
+    private ahorroService: AhorroServicio,
+    private catService: CatalogosService) { }
 
   ngOnInit(): void {
     this.module = this.router.url.split('/')[1];
-
-    switch (this.module) {
-      case 'recursos-humanos':
-        this.filterParams.tipoUsuario = 'INTERNO'
-        break;
-      case 'contabilidad':
-        this.filterParams.tipoUsuario = 'EXTERNO'
-        break;
-      default:
-        this.filterParams.tipoUsuario = '*';
-        break;
-    }
+    this.getMesCaja();
 
 
     this.updateDataTable(0, 10);
   }
 
+  public async getMesCaja(){
+    let mes = await this.catService.getCatalogoByTipoAndNombre("configuraciones", "INICIO-CAJA").toPromise();
+    var minMes = this.meses.indexOf(mes.valor);
+    var anio = this.maxDate.getFullYear();
+    if(minMes > this.maxDate.getMonth()){ anio--;}
+    this.minDate = new Date(anio, minMes, 1);
+    this.maxDate.setDate(this.maxDate.getDate() + 1);
+  }
 
   public updateDataTable(currentPage?: number, pageSize?: number): void {
     this.loading = true;
+    if (this.fechaCreacion === undefined || this.fechaCreacion === null) {
+      this.filterParams.since = '';
+      this.filterParams.to = '';
+    } else {
+      this.fechaCreacion[1].setDate(this.fechaCreacion[1].getDate() + 1);
+      this.filterParams.since = this.datepipe.transform(this.fechaCreacion[0], 'yyyy-MM-dd');
+      this.filterParams.to = this.datepipe.transform(this.fechaCreacion[1], 'yyyy-MM-dd');
+    }
     this.filterParams.page = currentPage || 0;
     this.filterParams.size = pageSize || 0 ;
     this.ahorroService.getAhorroUsuarios(this.filterParams)
