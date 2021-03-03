@@ -10,6 +10,7 @@ import { DownloadFileService } from 'src/app/services/download-file.service';
 import { PrestamosService } from 'src/app/services/prestamos.service';
 import { RecursoService } from 'src/app/services/recurso.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { CatalogosService } from '../../../services/catalogos.service';
 
 @Component({
   selector: 'cybord-reporte-prestamos',
@@ -22,16 +23,19 @@ export class ReportePrestamosComponent implements OnInit {
   public module = 'usuarios';
   public page: GenericPage<SaldoPrestamo> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = {nombre:'', no_quincenas: '', estatus: "*", noEmpleado: '', since: '', to: '', page: '0', size: '10' , toUpdate: '', sinceUpdate: ''};
+  public filterParams: any = {tipoUsuario:'*',nombre:'', no_quincenas: '', estatus: "*", noEmpleado: '', since: '', to: '', page: '0', size: '10' , toUpdate: '', sinceUpdate: ''};
   public loading = false;
   public fechaCreacion: Date[];
   public fechaActualizacion: Date[];
-
   public usuario: Usuario = new Usuario();
   public noEmpleado: string;
   public saldo: SaldoPrestamo = new SaldoPrestamo();
   public comprobanteUrl: SafeUrl;
   public message: string = '';
+
+  public minDate = new Date();
+  public maxDate = new Date();
+  private meses = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
   constructor(
     private router: Router,
@@ -40,11 +44,22 @@ export class ReportePrestamosComponent implements OnInit {
     private resourcesService: RecursoService,
     private prestamoService: PrestamosService,
     private sanitizer: DomSanitizer,
-    private userService: UsuariosService) { }
+    private userService: UsuariosService,
+    private catService: CatalogosService) { }
 
   ngOnInit(): void {
     this.userService.myInfo().then(user => this.usuario = user);
+    this.getMesCaja();
     this.updateDataTable(0, 10);
+  }
+
+  public async getMesCaja(){
+    let mes = await this.catService.getCatalogoByTipoAndNombre("configuraciones", "INICIO-CAJA").toPromise();
+    var minMes = this.meses.indexOf(mes.valor);
+    var anio = this.maxDate.getFullYear();
+    if(minMes > this.maxDate.getMonth()){ anio--;}
+    this.minDate = new Date(anio, minMes, 1);
+    this.maxDate.setDate(this.maxDate.getDate() + 1);
   }
 
   public updateDataTable(currentPage?: number, pageSize?: number): void {

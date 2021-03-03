@@ -6,103 +6,100 @@
           <strong>Reportes prestamos sistema de caja</strong>
         </div>
         <div class="card-body">
-          <div class="row slide_1">
+          
 
-            <div class="col-md-2">
-              <label for="noempleado" class="label">No. Empleado</label>
-              <input type="text" class="form-control" fullWidth id="noemp" [(ngModel)]="filterParams.noEmpleado"
-                placeholder="No. Empleado">
-            </div>
-
-            <div class="col-md-2">
-              <label for="noempleado" class="label">Nombre del Empleado</label>
-              <input type="text" class="form-control" fullWidth id="noemp" [(ngModel)]="filterParams.nombre"
-                placeholder="Nombre empleado">
-            </div>
-
-            <div class="col-md-2">
-              <label for="inputActivo" class="label">No. de quincenas</label>
-              <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.no_quincenas">
-                <option value="">Todo</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-              </select>
-            </div>
-
-            <!-- <div class="col-md-2">
-              <label for="inputActivo2" class="label">Tipo</label>
-              <select id="inputActivo2" class="form-control" style="display:block;"
-                [(ngModel)]="filterParams.tipo">
-                <option value="*">Todo</option>
-                <option value="PAGO">Pago</option>
-                <option value="INTERES">Interes</option>
-                <option value="AJUSTE">Ajuste</option>
-              </select>
-            </div> -->
-
-            <div class="col-md-2">
-              <label for="inputActivo" class="label">Estatus</label>
-              <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.estatus">
-                <option value="*">Todo</option>
-                <option value="SOLICITADO">Solicitado</option>
-                <option value="PROCESO_DE_APROBACION">Proceso de aprobacion</option>
-                <option value="ACTIVO">Activo</option>
-                <option value="SUSPENDIDO">Suspendido</option>
-                <option value="TERMINADO">Terminado</option>
-                <option value="A_PAGAR_POR_AVAL">A pagar por aval</option>
-                <option value="TRASPASADO">Traspasado</option>
-                <option value="TRASPASADO_TERMINADOO">Traspasadoo terminado</option>
-              </select>
-            </div>
-
-            <div class="col-md-2">
-              <label for="fechacre" class="label">Periodo de Creación</label>
-              <div class="form-group">
-                <input type="text" placeholder="Fecha de creación" class="form-control" bsDaterangepicker
-                  [(ngModel)]="fechaCreacion">
+            <div class="col">
+              <div class="row slide_1">
+                <div class="col-md-2">
+                  <label for="noempleado" class="label">No. Empleado</label>
+                  <input type="text" class="form-control" fullWidth id="noemp" [(ngModel)]="filterParams.noEmpleado"
+                    placeholder="No. Empleado">
+                </div>
+    
+                <div class="col-md-2">
+                  <label for="nombre" class="label">Nombre del Empleado</label>
+                  <input type="text" class="form-control" fullWidth id="noemp" [(ngModel)]="filterParams.nombre"
+                    placeholder="Nombre empleado">
+                </div>
+    
+                <div class="col-md-2">
+                  <label for="tipousu" class="label">Tipo de Usuario</label>
+                    <select id="tipousu" class="form-control" style="display:block;" [(ngModel)]="filterParams.tipoUsuario">
+                      <option value="">Todos</option>
+                      <option value="INTERNO">INTERNO</option>
+                      <option value="EXTERNO">EXTERNO</option>
+                    </select>
+                </div>
               </div>
-
             </div>
-
-            <!-- <div class="col-md-2">
-              <label for="fechaAct" class="label">Periodo de Actualizacion</label>
-              <div class="form-group">
-                <input type="text" placeholder="Fecha de creación" class="form-control" bsDaterangepicker
-                  [(ngModel)]="fechaActualizacion">
+            <div class="col">
+              <div class="row slide_1">
+                <div class="col-md-2">
+                  <label for="inputActivo" class="label">No. de quincenas</label>
+                  <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.no_quincenas">
+                    <option value="">Todos</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                  </select>
+                </div>
+    
+    
+                <div class="col-md-2">
+                  <label for="inputActivo" class="label">Estatus</label>
+                  <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.estatus">
+                    <option value="*">Todo</option>
+                    <option value="SOLICITADO">Solicitado</option>
+                    <option value="PROCESO_DE_APROBACION">Proceso de aprobacion</option>
+                    <option value="ACTIVO">Activo</option>
+                    <option value="SUSPENDIDO">Suspendido</option>
+                    <option value="TERMINADO">Terminado</option>
+                    <option value="A_PAGAR_POR_AVAL">A pagar por aval</option>
+                    <option value="TRASPASADO">Traspasado</option>
+                    <option value="TRASPASADO_TERMINADOO">Traspasadoo terminado</option>
+                  </select>
+                </div>
+    
+                <div class="col-md-2">
+                  <label for="fechacre" class="label">Periodo de Creación</label>
+                  <div class="form-group">
+                    <input type="text" placeholder="Fecha de creación" class="form-control" 
+                      bsDaterangepicker
+                      [(ngModel)]="fechaCreacion"
+                      [minDate]="minDate"
+                      [maxDate]="maxDate">
+                  </div>
+    
+                </div>
+    
+                <div class="col-md-2">
+                  <button class="btn btn-primary" [disabled]="loading" (click)="updateDataTable(0,10)"
+                    style="margin-top: 2em;">BUSCAR
+                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                </div>
               </div>
-
-            </div> -->
-
-            <div class="col-md-2">
-              <button class="btn btn-primary" [disabled]="loading" (click)="updateDataTable(0,10)"
-                style="margin-top: 2em;">BUSCAR
-                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
             </div>
-
-          </div>
-
         </div>
 
       </div>
