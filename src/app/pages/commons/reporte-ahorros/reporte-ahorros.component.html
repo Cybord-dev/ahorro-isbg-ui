@@ -76,7 +76,7 @@
                   <table class="table table-bordered table-sm">
                     <thead class="thead-dark">
                       <tr>
-                        <th class="text-center">DETALLES</th>
+                        <th class="text-center" *ngIf="module === 'contabilidad' || module === 'recursos-humanos' ">DETALLES</th>
                         <th class="text-center">TIPO</th>
                         <th class="text-center">NO EMPLEADO</th>
                         <th class="text-center">NOMBRE</th>
@@ -89,7 +89,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let fila of page.content">
-                        <td scope="row" class="text-center">
+                        <td scope="row" class="text-center" *ngIf="module === 'contabilidad' || module === 'recursos-humanos' ">
                           <button class="btn-sm btn-success" (click)="detalleAhorro(fila.idUsuario)"><i
                             class="fa fa-bank fa-sm"></i></button>
                         </td>
