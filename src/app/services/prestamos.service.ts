@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Prestamo } from '../models/prestamo';
 import { SaldoPrestamo } from '../models/saldoprestamo';
+import { ReportePrestamo } from '../models/reporte-prestamo';
 import { GenericPage } from '../models/generic-page';
 import { Recurso } from '../models/recurso';
 
@@ -30,12 +31,12 @@ export class PrestamosService {
     return this.http.get<Prestamo[]>(`../api/v1/usuarios/${idUsuario}/prestamos`);
   }
 
-  public getSaldos(filterParams?: any): Observable<GenericPage<SaldoPrestamo>>{
-    return this.http.get<GenericPage<SaldoPrestamo>>(`../api/v1/saldo-prestamos`, {params: this.getHttpParams(filterParams)});
+  public getPrestamos(filterParams?: any): Observable<GenericPage<ReportePrestamo>>{
+    return this.http.get<GenericPage<ReportePrestamo>>(`../api/v1/prestamos`, {params: this.getHttpParams(filterParams)});
   }
 
-  public getReporteSaldos(filterParams?: any): Observable<Recurso>{
-    return this.http.get<Recurso>(`../api/v1/saldo-prestamos/report`, {params: this.getHttpParams(filterParams)});
+  public getReportePrestamos(filterParams?: any): Observable<Recurso>{
+    return this.http.get<Recurso>(`../api/v1/prestamos/report`, {params: this.getHttpParams(filterParams)});
   }
 
   public getPrestamosByUsuairoAndPrestamoAndSaldo (idUsuario: number, idPrestamo: number, idSaldo: number): Observable<SaldoPrestamo[]>{

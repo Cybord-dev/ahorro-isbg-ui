@@ -4,6 +4,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { GenericPage } from 'src/app/models/generic-page';
+import { ReportePrestamo } from 'src/app/models/reporte-prestamo';
 import { SaldoPrestamo } from 'src/app/models/saldoprestamo';
 import { Usuario } from 'src/app/models/usuario';
 import { DownloadFileService } from 'src/app/services/download-file.service';
@@ -21,9 +22,9 @@ export class ReportePrestamosComponent implements OnInit {
 
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
   public module = 'usuarios';
-  public page: GenericPage<SaldoPrestamo> = new GenericPage();
+  public page: GenericPage<ReportePrestamo> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = {tipoUsuario:'*',nombre:'', no_quincenas: '', estatus: "*", noEmpleado: '', since: '', to: '', page: '0', size: '10' , toUpdate: '', sinceUpdate: ''};
+  public filterParams: any = {tipoUsuario:'*',nombre:'', idSolicitud: '', tipo: "*", noEmpleado: '', since: '', to: '', page: '0', size: '10' };
   public loading = false;
   public fechaCreacion: Date[];
   public fechaActualizacion: Date[];
@@ -33,9 +34,7 @@ export class ReportePrestamosComponent implements OnInit {
   public comprobanteUrl: SafeUrl;
   public message: string = '';
 
-  public minDate = new Date();
   public maxDate = new Date();
-  private meses = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
 
   constructor(
     private router: Router,
@@ -44,23 +43,25 @@ export class ReportePrestamosComponent implements OnInit {
     private resourcesService: RecursoService,
     private prestamoService: PrestamosService,
     private sanitizer: DomSanitizer,
-    private userService: UsuariosService,
-    private catService: CatalogosService) { }
+    private userService: UsuariosService) { }
 
   ngOnInit(): void {
     this.userService.myInfo().then(user => this.usuario = user);
-    this.getMesCaja();
+    this.module = this.router.url.split('/')[1];
+    switch (this.module) {
+      case 'recursos-humanos':
+        this.filterParams.tipoUsuario = 'INTERNO';
+        break;
+      case 'contabilidad':
+        this.filterParams.tipoUsuario = 'EXTERNO';
+        break;
+      default:
+        this.filterParams.tipoUsuario = '*';
+        break;
+    }
     this.updateDataTable(0, 10);
   }
 
-  public async getMesCaja(){
-    let mes = await this.catService.getCatalogoByTipoAndNombre("configuraciones", "INICIO-CAJA").toPromise();
-    var minMes = this.meses.indexOf(mes.valor);
-    var anio = this.maxDate.getFullYear();
-    if(minMes > this.maxDate.getMonth()){ anio--;}
-    this.minDate = new Date(anio, minMes, 1);
-    this.maxDate.setDate(this.maxDate.getDate() + 1);
-  }
 
   public updateDataTable(currentPage?: number, pageSize?: number): void {
     this.loading = true;
@@ -76,13 +77,18 @@ export class ReportePrestamosComponent implements OnInit {
     this.filterParams.page = currentPage || 0;
     this.filterParams.size = pageSize || 0;
 
-    this.prestamoService.getSaldos(this.filterParams)
+    this.prestamoService.getPrestamos(this.filterParams)
       .subscribe(data => { this.page = data; this.loading = false; });
   }
 
   public onChangePageSize(pageSize: number): void {
     this.updateDataTable(this.page.number, pageSize);
   }
+
+  public detallePrestamos(id: number){
+    this.router.navigate([`../${this.module}/prestamos-activos/${id}`]);
+  }
+
 
   public mostrarComprobante(prestamo: SaldoPrestamo) {
     this.comprobanteUrl = undefined;
@@ -176,7 +182,7 @@ export class ReportePrestamosComponent implements OnInit {
     }
     this.filterParams.page = '0';
     this.filterParams.size = '100000';
-    this.prestamoService.getReporteSaldos(this.filterParams)
+    this.prestamoService.getReportePrestamos(this.filterParams)
       .subscribe((report) => {
         this.downloadService.downloadFile(report.dato, `ReporteSaldoPrestamos-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
         this.loading = false;

@@ -10,66 +10,47 @@
 
             <div class="col">
               <div class="row slide_1">
+                <div class="col-md-1">
+                  <label for="idSolicitud" class="label"><strong>Solicitud</strong></label>
+                  <input type="text" class="form-control" fullWidth id="idSolicitud" [(ngModel)]="filterParams.idSolicitud"
+                    placeholder="No Solicitud">
+                </div>
+
                 <div class="col-md-2">
-                  <label for="noempleado" class="label">No. Empleado</label>
+                  <label for="noempleado" class="label"><strong>No. Empleado</strong></label>
                   <input type="text" class="form-control" fullWidth id="noemp" [(ngModel)]="filterParams.noEmpleado"
                     placeholder="No. Empleado">
                 </div>
     
                 <div class="col-md-2">
-                  <label for="nombre" class="label">Nombre del Empleado</label>
+                  <label for="nombre" class="label"> <strong>Nombre del Empleado</strong></label>
                   <input type="text" class="form-control" fullWidth id="noemp" [(ngModel)]="filterParams.nombre"
                     placeholder="Nombre empleado">
                 </div>
     
-                <div class="col-md-2">
-                  <label for="tipousu" class="label">Tipo de Usuario</label>
+                <div class="col-md-1">
+                  <label for="tipousu" class="label"> <strong>Tipo Usuario</strong></label>
                     <select id="tipousu" class="form-control" style="display:block;" [(ngModel)]="filterParams.tipoUsuario">
-                      <option value="">Todos</option>
+                      <option value="*">Todos</option>
                       <option value="INTERNO">INTERNO</option>
                       <option value="EXTERNO">EXTERNO</option>
                     </select>
                 </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="row slide_1">
-                <div class="col-md-2">
-                  <label for="inputActivo" class="label">No. de quincenas</label>
-                  <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.no_quincenas">
-                    <option value="">Todos</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                    <option value="24">24</option>
-                  </select>
+                
+                <div class="col-md-4">
+                  <label for="fechacre" class="label"><strong>Periodo de Creación</strong></label>
+                  <div class="form-group">
+                    <input type="text" placeholder="Fecha de creación" class="form-control" 
+                      bsDaterangepicker [maxDate]="maxDate"
+                      [(ngModel)]="fechaCreacion">
+                  </div>
+    
                 </div>
-    
-    
+
                 <div class="col-md-2">
-                  <label for="inputActivo" class="label">Estatus</label>
-                  <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.estatus">
-                    <option value="*">Todo</option>
+                  <label for="inputActivo" class="label"><strong>Estatus</strong></label>
+                  <select id="inputActivo" class="form-control" style="display:block;" [(ngModel)]="filterParams.tipo">
+                    <option value="*">Todos</option>
                     <option value="SOLICITADO">Solicitado</option>
                     <option value="PROCESO_DE_APROBACION">Proceso de aprobacion</option>
                     <option value="ACTIVO">Activo</option>
@@ -80,23 +61,19 @@
                     <option value="TRASPASADO_TERMINADOO">Traspasadoo terminado</option>
                   </select>
                 </div>
-    
-                <div class="col-md-2">
-                  <label for="fechacre" class="label">Periodo de Creación</label>
-                  <div class="form-group">
-                    <input type="text" placeholder="Fecha de creación" class="form-control" 
-                      bsDaterangepicker
-                      [(ngModel)]="fechaCreacion"
-                      [minDate]="minDate"
-                      [maxDate]="maxDate">
-                  </div>
-    
+
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <div class="col">
                 </div>
-    
-                <div class="col-md-2">
+                <div class="col-2">
                   <button class="btn btn-primary" [disabled]="loading" (click)="updateDataTable(0,10)"
                     style="margin-top: 2em;">BUSCAR
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                </div>
+                <div class="col">
                 </div>
               </div>
             </div>
@@ -143,18 +120,21 @@
                 <table class="table table-bordered table-sm">
                   <thead class="thead-dark">
                     <tr>
-                      <th class="text-center">APROBACION</th>
-                      <th class="text-center">PAGO VALIDADO</th>
-                      <th class="text-center">MONTO PAGO</th>
-                      <th class="text-center">NO QUINCENAS</th>
-                      <th class="text-center">TASA</th>
+                      <th class="text-center">ACCIONES</th>
+                      <th class="text-center">ID SOLICITUD</th>
+                      <th class="text-center">TIPO USUARIO</th>
                       <th class="text-center">NO EMPLEADO</th>
                       <th class="text-center">NOMBRE</th>
-                      <th class="text-center">MONTO PRESTAMO</th>
-                      <th class="text-center">SALDO PENDIENTE</th>
                       <th class="text-center">TIPO</th>
-                      <th class="text-center">ESTATUS</th>
-                      <th class="text-center">MODIFICADO</th>
+                      <th class="text-center">TASA</th>
+                      <th class="text-center">NO QUINCENAS</th>
+                      <th class="text-center">MONTO PRESTAMO</th>
+                      <th class="text-center">INTERES TOTAL</th>
+                      <th class="text-center">MONTO PAGOS</th>
+                      <th class="text-center">MONTO INTERES</th>
+                      <th class="text-center">MONTO AJUSTES</th>
+                      <th class="text-center">SALDO PENDIENTE</th>
+                      <th class="text-center">TOTAL PAGADO</th>
                       <th class="text-center">CREACION</th>
                       <th class="text-center">ACTUALIZACION</th>
                     </tr>
@@ -162,28 +142,28 @@
                   <tbody>
                     <tr *ngFor="let fila of page.content">
                       <td scope="row" class="text-center">
-                        <button type="button" class="btn btn-sm" [ngClass]="{'btn-success': !fila.validado , 'btn-secondary' : fila.validado }" (click)="openModal(fila)"
-                          [disabled]="fila.validado || loading"><i class="fa fa fa-search"></i>
-                        </button>
+                        <button class="btn-sm btn-success" (click)="detallePrestamos(fila.idUsuario)"><i
+                          class="fa fa-credit-card fa-sm"></i></button>
                       </td>
-                      <td scope="row">
-                        <p *ngIf="fila.validado">SI</p>
-                        <p *ngIf="!fila.validado">NO</p>
-                      </td>
-                      <td scope="row" class="text-right">{{fila.monto | currency}}</td>
-                      <td scope="row">{{fila.noQuincenas}}</td>
-                      <td scope="row">{{fila.tasaInteres / 100 | percent}}</td>
+                      <td scope="row">{{fila.idSolicitud}}</td>
+                      <td scope="row">{{fila.tipoUsuario}}</td>
                       <td scope="row">{{fila.noEmpleado}}</td>
-                      <td scope="row">{{fila.nombreEmpleado}}</td>
-                      <td scope="row" class="text-right">{{fila.montoPrestamo | currency}}</td>
-                      <td scope="row" class="text-right">{{fila.saldoPendiente | currency}}</td>
+                      <td scope="row">{{fila.nombre}}</td>
                       <td scope="row">{{fila.tipo}}</td>
-                      <td scope="row">{{fila.estatus}}</td>
-                      <td scope="row">{{fila.origen}}</td>
+                      <td scope="row">{{fila.tasaInteres / 100 | percent}}</td>
+                      <td scope="row">{{fila.noQuincenas}}</td>
+                      
+                      <td scope="row" class="text-right">{{fila.montoPrestamo | currency}}</td>
+                      <td scope="row" class="text-right">{{fila.interesPrestamo | currency}}</td>
+                      <td scope="row" class="text-right">{{fila.pagos | currency}}</td>
+                      <td scope="row" class="text-right">{{fila.interes | currency}}</td>
+                      <td scope="row" class="text-right">{{fila.ajuste | currency}}</td>
+                      <td scope="row" class="text-right">{{fila.saldoPendiente | currency}}</td>
+                      <td scope="row" class="text-right">{{fila.totalPagado | currency}}</td>
                       <td scope="row">{{fila.fechaCreacion | date:
-                        'dd/MM/yyyy HH:mm' }}</td>
+                        'dd-MM-yyyy' }}</td>
                       <td scope="row">{{fila.fechaActualizacion| date:
-                        'dd/MM/yyyy HH:mm'}}</td>
+                        'dd-MM-yyyy HH:mm'}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -217,7 +197,7 @@
 </div>
 
 
-<div bsModal #modalConfirmacion="bs-modal" class="modal fade modal-info"
+<!--div bsModal #modalConfirmacion="bs-modal" class="modal fade modal-info"
   id="modalConfirmacion" tabindex="-1"
   role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -306,4 +286,4 @@
       </div>
     </div>
   </div>
-</div>
+</div-->

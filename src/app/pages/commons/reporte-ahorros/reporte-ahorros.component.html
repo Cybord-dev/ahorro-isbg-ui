@@ -8,17 +8,17 @@
           <div class="card-body">
             <div class="row slide_1">
   
-              <div class="col-md-2">
+              <div class="col-md-4">
                 <label for="noempleado" class="label"><strong> No. Empleado</strong></label>
                 <input type="text" class="form-control"  fullWidth id="noemp" [(ngModel)]="filterParams.noEmpleado"
                   placeholder="No. Empleado">
               </div>
-              <div class="col-md-2">
+              <div class="col-md-4">
                 <label for="nombreempleado" class="label"><strong> Nombre usuario</strong></label>
                 <input type="text" class="form-control"  fullWidth id="nombreempleado" [(ngModel)]="filterParams.nombre"
                   placeholder="Nombre del usuario">
               </div>
-              <div class="col-md-2" *ngIf="module !== 'recursos-humanos' && module !== 'contabilidad'">
+              <div class="col-md-2">
                 <label for="inputActivo2" class="label"><strong> Tipo</strong></label>
                   <select id="inputActivo2" class="form-control" style="display:block;" [(ngModel)]="filterParams.tipoUsuario">
                     <option value="*">Todos</option>
@@ -26,19 +26,6 @@
                     <option value="EXTERNO">Externo</option>
                   </select>
               </div>
-
-              <div class="col-md-2">
-                <label for="fechacre" class="label"><strong>Periodo de Creación</strong></label>
-                <div class="form-group">
-                  <input type="text" placeholder="Fecha de creación" class="form-control" 
-                    bsDaterangepicker
-                    [(ngModel)]="fechaCreacion"
-                    [minDate]="minDate"
-                    [maxDate]="maxDate">
-                </div>
-  
-              </div>
-
               <div class="col-md-2">
                   <button class="btn btn-primary" [disabled] = "loading" (click)="updateDataTable(0,10)" style="margin-top: 2em;" >BUSCAR
                     <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
@@ -95,6 +82,7 @@
                         <th class="text-center">NOMBRE</th>
                         <th class="text-center">AHORRO</th>
                         <th class="text-center">INTERESES</th>
+                        <th class="text-center">RETIRO</th>
                         <th class="text-center">AJUSTES</th>
                         <th class="text-center">TOTAL</th>
                       </tr>
@@ -110,6 +98,7 @@
                         <td scope="row">{{fila.nombre}}</td>
                         <td scope="row" class="text-right">{{fila.ahorro | currency}}</td>
                         <td scope="row" class="text-right">{{fila.interes | currency}}</td>
+                        <td scope="row" class="text-right">{{fila.retiro | currency}}</td>
                         <td scope="row" class="text-right">{{fila.ajuste | currency}}</td>
                         <td scope="row" class="text-right">{{fila.total | currency}}</td>  
                       </tr>
