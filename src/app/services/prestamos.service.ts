@@ -39,6 +39,10 @@ export class PrestamosService {
     return this.http.get<Recurso>(`../api/v1/prestamos/report`, {params: this.getHttpParams(filterParams)});
   }
 
+  public getSaldosByIdPrestamoAndNoPago(idPrestamo: number, noPago: number): Observable<SaldoPrestamo[]>{
+    return this.http.get<SaldoPrestamo[]>(`../api/v1/prestamos/${idPrestamo}/pagos/${noPago}`);
+  }
+
   public getSaldoPrestamos(filterParams?: any): Observable<GenericPage<SaldoPrestamo>>{
     return this.http.get<GenericPage<SaldoPrestamo>>(`../api/v1/saldo-prestamos`, {params: this.getHttpParams(filterParams)});
   }
@@ -59,8 +63,8 @@ export class PrestamosService {
     return this.http.get<Prestamo[]>(`../api/v1/usuarios/${idUsuario}/prestamos/pendientes`);
   }
 
-  public updateSaldoPrestamo(idSaldo: number, prestamo: SaldoPrestamo): Observable<SaldoPrestamo>{
-    return this.http.put<SaldoPrestamo>(`../api/v1/saldo-prestamos/${idSaldo}`, prestamo);
+  public aprobarPagoPrestamo(idPrestamo: number, noPago: number, validador: string): Observable<Prestamo>{
+    return this.http.put<Prestamo>(`../api/v1/prestamos/${idPrestamo}/pagos/${noPago}`, validador);
   }
 
 }

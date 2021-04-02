@@ -23,7 +23,7 @@ export class ConciliacionPrestamosComponent implements OnInit {
   public module = 'usuarios';
   public page: GenericPage<SaldoPrestamo> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = { tipoUsuario: '*',  noEmpleado: '', nombre: '', page: '0', size: '10',  since: '', to: '' };
+  public filterParams: any = {tipoUsuario:'*',nombre:'', idSolicitud: '', estatus: "*",validado:'EN_VALIDACION',tipo:'*', noEmpleado: '', since: '', to: '', page: '0', size: '10' };
   public loading = false;
   public fechaCreacion: Date[];
   public minDate = new Date();
@@ -33,6 +33,7 @@ export class ConciliacionPrestamosComponent implements OnInit {
   public noEmpleado: string;
   public saldo: SaldoPrestamo = new SaldoPrestamo();
   public comprobanteUrl: SafeUrl;
+  public pagos : SaldoPrestamo[] = [];
   public message = '';
 
   constructor(
@@ -106,6 +107,8 @@ export class ConciliacionPrestamosComponent implements OnInit {
   }
 
   public mostrarComprobante(prestamo: SaldoPrestamo) {
+    this.prestamosService.getSaldosByIdPrestamoAndNoPago(prestamo.idPrestamo,prestamo.noPago)
+    .subscribe(saldos => this.pagos = saldos);
     this.comprobanteUrl = undefined;
     if (prestamo.origen !== 'SISTEMA') {
       this.resourcesService.getRecurso(prestamo.id, 'PRESTAMO', 'IMAGEN').subscribe(
@@ -124,6 +127,7 @@ export class ConciliacionPrestamosComponent implements OnInit {
 
   public salir(): void {
     this.message = '';
+    this.pagos = [];
     this.saldo = new SaldoPrestamo();
     this.modalConfirmacion.hide();
   }
@@ -132,9 +136,9 @@ export class ConciliacionPrestamosComponent implements OnInit {
     try {
       this.loading = true;
       let s = { ...this.saldo };
-      s.validado = true;
+      s.validado = 'EN_VALIDACION';
       s.origen = this.usuario.email;
-      //this.saldo = await this.prestamoService.updateSaldoPrestamo(this.saldo.id, s).toPromise();
+      await this.prestamosService.aprobarPagoPrestamo(this.saldo.idPrestamo, this.saldo.noPago, this.usuario.email).toPromise();
       this.message = 'Pago aprobado correctamente';
       this.saldo = new SaldoPrestamo();
       this.modalConfirmacion.hide();
@@ -144,45 +148,11 @@ export class ConciliacionPrestamosComponent implements OnInit {
       this.message = error;
     }
   }
-
-  //TODO talvez mover a servicio de descarga de imagenes
+  
   public async downloadImage() {
     let resource = await this.resourcesService.getRecurso(this.saldo.id, 'PRESTAMO', 'IMAGEN').toPromise();
-    const blobData = this.convertBase64ToBlobData(resource.dato.replace(/^data:image\/(png|jpeg|jpg);base64,/, ''));
-    let filename = `comprobantePago.jpeg`;
-    let contentType = 'image/jpeg';
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(blobData, filename);
-    } else {
-      const blob = new Blob([blobData], { type: contentType });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      link.click();
-    }
+    let dataType = resource.dato.split(';base64,')[0].replace('data:',''); 
+    console.log('Downloading file : ', dataType);
+    this.downloadService.downloadFile(resource.dato.split(';base64,')[1],`${this.saldo.noEmpleado}-${this.saldo.montoPrestamo}-${this.saldo.noPago}.${dataType.split('/')[1]}`,dataType);   
   }
-
-  public convertBase64ToBlobData(base64Data: string, contentType: string = 'image/png', sliceSize = 512) {
-    const byteCharacters = atob(base64Data);
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-
-      byteArrays.push(byteArray);
-    }
-
-    const blob = new Blob(byteArrays, { type: contentType });
-    return blob;
-  }
-
-
 }

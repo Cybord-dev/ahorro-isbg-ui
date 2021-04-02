@@ -1,6 +1,5 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { GenericPage } from '../../../models/generic-page';
@@ -9,9 +8,7 @@ import { SaldoPrestamo } from '../../../models/saldoprestamo';
 import { Usuario } from '../../../models/usuario';
 import { DownloadFileService } from '../../../services/download-file.service';
 import { PrestamosService } from '../../../services/prestamos.service';
-import { RecursoService } from '../../../services/recurso.service';
 import { UsuariosService } from '../../../services/usuarios.service';
-import { CatalogosService } from '../../../services/catalogos.service';
 
 @Component({
   selector: 'cybord-reporte-prestamos',
@@ -24,14 +21,13 @@ export class ReportePrestamosComponent implements OnInit {
   public module = 'usuarios';
   public page: GenericPage<ReportePrestamo> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = {tipoUsuario:'*',nombre:'', idSolicitud: '', tipo: "*", noEmpleado: '', since: '', to: '', page: '0', size: '10' };
+  public filterParams: any = {tipoUsuario:'*',nombre:'', idSolicitud: '', estatus: "*", noEmpleado: '', since: '', to: '', page: '0', size: '10' };
   public loading = false;
   public fechaCreacion: Date[];
   public fechaActualizacion: Date[];
   public usuario: Usuario = new Usuario();
   public noEmpleado: string;
   public saldo: SaldoPrestamo = new SaldoPrestamo();
-  public comprobanteUrl: SafeUrl;
   public message = '';
 
   public maxDate = new Date();
@@ -40,9 +36,7 @@ export class ReportePrestamosComponent implements OnInit {
     private router: Router,
     public datepipe: DatePipe,
     private downloadService: DownloadFileService,
-    private resourcesService: RecursoService,
     private prestamoService: PrestamosService,
-    private sanitizer: DomSanitizer,
     private userService: UsuariosService) { }
 
   ngOnInit(): void {
@@ -88,87 +82,6 @@ export class ReportePrestamosComponent implements OnInit {
   public detallePrestamos(id: number){
     this.router.navigate([`../${this.module}/prestamos-activos/${id}`]);
   }
-
-
-  public mostrarComprobante(prestamo: SaldoPrestamo) {
-    this.comprobanteUrl = undefined;
-    if (prestamo.origen !== 'SISTEMA') {
-      this.resourcesService.getRecurso(prestamo.id, 'PRESTAMO', 'IMAGEN').subscribe(
-        (file) => {
-          this.comprobanteUrl = this.sanitizer.bypassSecurityTrustUrl(file.dato);
-        });
-    }
-  }
-
-  public openModal(prestamo: SaldoPrestamo): void {
-    this.saldo = prestamo;
-    this.message = '';
-    this.modalConfirmacion.show();
-    this.mostrarComprobante(prestamo);
-  }
-
-  public salir(): void {
-    this.message = '';
-    this.saldo = new SaldoPrestamo();
-    this.modalConfirmacion.hide();
-  }
-
-  public async aprobarPago(): Promise<void> {
-    try {
-      this.loading = true;
-      let s = { ...this.saldo };
-      s.validado = true;
-      s.origen = this.usuario.email;
-      this.saldo = await this.prestamoService.updateSaldoPrestamo(this.saldo.id, s).toPromise();
-      this.message = 'Pago aprobado correctamente';
-      this.saldo = new SaldoPrestamo();
-      this.modalConfirmacion.hide();
-      this.updateDataTable(this.page.number, this.page.size);
-    } catch (error) {
-      this.loading = false;
-      this.message = error;
-    }
-  }
-
-  //TODO talvez mover a servicio de descarga de imagenes
-  public async downloadImage() {
-    let resource = await this.resourcesService.getRecurso(this.saldo.id, 'PRESTAMO', 'IMAGEN').toPromise();
-    const blobData = this.convertBase64ToBlobData(resource.dato.replace(/^data:image\/(png|jpeg|jpg);base64,/, ''));
-    let filename = `comprobantePago.jpeg`;
-    let contentType = 'image/jpeg';
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(blobData, filename);
-    } else {
-      const blob = new Blob([blobData], { type: contentType });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      link.click();
-    }
-  }
-
-  public convertBase64ToBlobData(base64Data: string, contentType: string = 'image/png', sliceSize = 512) {
-    const byteCharacters = atob(base64Data);
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-
-      byteArrays.push(byteArray);
-    }
-
-    const blob = new Blob(byteArrays, { type: contentType });
-    return blob;
-  }
-
 
   public downloadXLSFile(): void {
     this.loading = true;

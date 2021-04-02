@@ -131,7 +131,7 @@
 
                                     <tr *ngFor="let fila of prestamo.saldosPrestamo">
                                         <td scope="row" class="text-left">{{fila.tipo}}</td>
-                                        <td scope="row" class="text-left">{{ fila.validado ? 'SI' : 'NO'}}</td>
+                                        <td scope="row" class="text-left">{{ fila.validado}}</td>
                                         <td scope="row" class="text-left">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}
                                         </td>
                                         <td scope="row" class="text-right">{{fila.monto | currency}}</td>

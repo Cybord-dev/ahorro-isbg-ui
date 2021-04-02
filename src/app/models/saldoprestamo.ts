@@ -18,7 +18,7 @@ export class SaldoPrestamo {
     public observaciones: string;
     public origen: string;
     public monto: number;
-    public validado: boolean;
+    public validado: string;
     public fechaCreacion: Date;
     public fechaActualizacion: Date;
     constructor() {

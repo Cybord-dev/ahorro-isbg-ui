@@ -6,33 +6,90 @@
                     <strong>Conciliacion de pagos prestamos</strong>
                 </div>
                 <div class="card-body">
-                    <div class="row slide_1">
+                    <div class="col">
+                        <div class="row slide_1">
+                            <div class="col-md-1">
+                                <label for="payType" class="label"><strong>Tipo pago</strong></label>
+                                <select id="payType" class="form-control" style="display:block;"
+                                    [(ngModel)]="filterParams.tipo">
+                                    <option value="*">TODOS</option>
+                                    <option value="PAGO">PAGO</option>
+                                    <option value="AJUSTE">AJUSTE</option>
+                                    <option value="INTERES">INTERES</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1">
+                                <label for="payType" class="label"><strong>Validado</strong></label>
+                                <select id="payType" class="form-control" style="display:block;"
+                                    [(ngModel)]="filterParams.validado">
+                                    <option value="*">TODOS</option>
+                                    <option value="VALIDO">VALIDO</option>
+                                    <option value="RECHAZADO">RECHAZADO</option>
+                                    <option value="EN_VALIDACION">EN VALIDACION</option>
+                                </select>
+                            </div>
 
-                        <div class="col-md-4">
-                            <label for="noempleado" class="label"><strong> No. Empleado</strong></label>
-                            <input type="text" class="form-control" fullWidth id="noemp"
-                                [(ngModel)]="filterParams.noEmpleado" placeholder="No. Empleado">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="nombreempleado" class="label"><strong> Nombre usuario</strong></label>
-                            <input type="text" class="form-control" fullWidth id="nombreempleado"
-                                [(ngModel)]="filterParams.nombre" placeholder="Nombre del usuario">
-                        </div>
-                        <div class="col-md-2">
-                            <label for="inputActivo2" class="label"><strong> Tipo</strong></label>
-                            <select id="inputActivo2" class="form-control" style="display:block;"
-                                [(ngModel)]="filterParams.tipoUsuario">
-                                <option value="*">Todos</option>
-                                <option value="INTERNO">Interno</option>
-                                <option value="EXTERNO">Externo</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-primary" [disabled]="loading" (click)="updateDataTable(0,10)"
-                                style="margin-top: 2em;">BUSCAR
-                                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
-                        </div>
+                            <div class="col-md-2">
+                                <label for="noempleado" class="label"><strong>No. Empleado</strong></label>
+                                <input type="text" class="form-control" fullWidth id="noemp"
+                                    [(ngModel)]="filterParams.noEmpleado" placeholder="No. Empleado">
+                            </div>
 
+                            <div class="col-md-2">
+                                <label for="nombre" class="label"> <strong>Nombre del Empleado</strong></label>
+                                <input type="text" class="form-control" fullWidth id="noemp"
+                                    [(ngModel)]="filterParams.nombre" placeholder="Nombre empleado">
+                            </div>
+
+                            <div class="col-md-1">
+                                <label for="tipousu" class="label"> <strong>Tipo Usuario</strong></label>
+                                <select id="tipousu" class="form-control" style="display:block;"
+                                    [(ngModel)]="filterParams.tipoUsuario">
+                                    <option value="*">Todos</option>
+                                    <option value="INTERNO">INTERNO</option>
+                                    <option value="EXTERNO">EXTERNO</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="fechacre" class="label"><strong>Periodo de Creación</strong></label>
+                                <div class="form-group">
+                                    <input type="text" placeholder="Fecha de creación" class="form-control"
+                                        bsDaterangepicker [maxDate]="maxDate" [(ngModel)]="fechaCreacion">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-2">
+                                <label for="inputActivo" class="label"><strong>Estatus</strong></label>
+                                <select id="inputActivo" class="form-control" style="display:block;"
+                                    [(ngModel)]="filterParams.estatus">
+                                    <option value="*">Todos</option>
+                                    <option value="SOLICITADO">Solicitado</option>
+                                    <option value="PROCESO_DE_APROBACION">Proceso de aprobacion</option>
+                                    <option value="ACTIVO">Activo</option>
+                                    <option value="SUSPENDIDO">Suspendido</option>
+                                    <option value="TERMINADO">Terminado</option>
+                                    <option value="A_PAGAR_POR_AVAL">A pagar por aval</option>
+                                    <option value="TRASPASADO">Traspaso</option>
+                                    <option value="TRASPASADO_TERMINADOO">Traspaso terminado</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-primary" [disabled]="loading" (click)="updateDataTable(0,10)"
+                                    style="margin-top: 2em;">BUSCAR
+                                    <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                            </div>
+                            <div class="col">
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -105,14 +162,15 @@
                                         <tr *ngFor="let fila of page.content">
                                             <td scope="row" class="text-center"
                                                 *ngIf="module === 'contabilidad' || module === 'recursos-humanos' ">
-                                                <button type="button" class="btn btn-sm btn-success" (click)="openModal(fila)"
-                                                [disabled]="loading"><i class="fa fa fa-search"></i>
+                                                <button type="button" class="btn btn-sm btn-success"
+                                                    (click)="openModal(fila)" [disabled]="loading"><i
+                                                        class="fa fa fa-search"></i>
                                                 </button>
                                             </td>
                                             <td scope="row" class="text-right bg-light">{{fila.monto | currency}}</td>
                                             <td scope="row">{{fila.noPago}}</td>
                                             <td scope="row">{{fila.tipo}}</td>
-                                            <td scope="row">{{fila.validado ? 'SI': 'NO'}}</td>
+                                            <td scope="row">{{fila.validado}}</td>
                                             <td scope="row">{{fila.noQuincenas}}</td>
                                             <td scope="row" class="text-right">{{fila.montoPrestamo | currency}}</td>
                                             <td scope="row" class="text-right">{{fila.saldoPendiente | currency}}</td>
@@ -183,41 +241,54 @@
                     <tbody>
                         <tr>
                             <th>No empleado</th>
-                            <td scope="row" class="text-left">{{saldo.noEmpleado}}</td>
+                            <td scope="row" class="text-right">{{saldo.noEmpleado}}</td>
                         </tr>
                         <tr>
                             <th>Nombre</th>
-                            <td scope="row" class="text-left">{{saldo.nombreEmpleado}}</td>
+                            <td scope="row" class="text-right">{{saldo.nombreEmpleado}}</td>
                         </tr>
                         <tr>
                             <th>Tipo</th>
-                            <td scope="row" class="text-left">{{saldo.tipo}}</td>
+                            <td scope="row" class="text-right">{{saldo.tipo}}</td>
                         </tr>
                         <tr>
                             <th>Estatus prestamo</th>
-                            <td scope="row" class="text-left">{{saldo.estatus}}</td>
-                        </tr>
-                        <tr>
-                            <th>Monto Pago</th>
-                            <td scope="row" class="text-left">{{saldo.monto | currency}} de {{saldo.montoPrestamo}}</td>
+                            <td scope="row" class="text-right">{{saldo.estatus}}</td>
                         </tr>
                         <tr>
                             <th>Tasa de interes</th>
-                            <td scope="row" class="text-left">{{saldo.tasaInteres / 100 | percent}}</td>
+                            <td scope="row" class="text-right">{{saldo.tasaInteres / 100 | percent}}</td>
+                        </tr>
+                        <tr>
+                            <th>Monto Prestamo</th>
+                            <td scope="row" class="text-right">{{saldo.montoPrestamo}}</td>
                         </tr>
                         <tr>
                             <th>Observaciones</th>
-                            <td scope="row" class="text-left">{{saldo.observaciones}}</td>
+                            <td scope="row" class="text-right">{{saldo.observaciones}}</td>
                         </tr>
                         <tr>
                             <th>Ultima modificacion</th>
-                            <td scope="row" class="text-left">{{saldo.origen}}</td>
+                            <td scope="row" class="text-right">{{saldo.origen}}</td>
                         </tr>
                         <tr>
                             <th>No. Quincenas</th>
-                            <td scope="row" class="text-left">{{saldo.noQuincenas}}</td>
+                            <td scope="row" class="text-right">{{saldo.noQuincenas}}</td>
                         </tr>
-
+                        <tr>
+                            <th>No. de pago</th>
+                            <td scope="row" class="text-right">{{saldo.noPago}}</td>
+                        </tr>
+                        <tr>
+                            <th>Monto Pago</th>
+                            <td scope="row" class="text-right">{{saldo.monto | currency}}</td>
+                        </tr>
+                        <tr>
+                            <th>Detalles del pago</th>
+                            <td scope="row" class="text-right">
+                                <p *ngFor="let p of pagos">{{p.tipo}} - {{p.monto | currency}}</p>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 

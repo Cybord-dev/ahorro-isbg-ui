@@ -181,7 +181,7 @@ export class PrestamoUsuarioComponent implements OnInit {
   public async sendPayment() {
     this.pago.idPrestamo = this.prestamo.id;
     this.pago.tipo = 'PAGO';
-    this.pago.validado = false;
+    this.pago.validado = 'EN_VALIDACION';
     this.pago.origen = this.usuario.email;
     try {
       this.alerts = this.validationService.validateSaldoPrestamo(this.pago, this.prestamo);
