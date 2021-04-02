@@ -1,47 +1,46 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { GenericPage } from '../../../models/generic-page';
-import { ReportePrestamo } from '../../../models/reporte-prestamo';
-import { SaldoPrestamo } from '../../../models/saldoprestamo';
-import { Usuario } from '../../../models/usuario';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { DownloadFileService } from '../../../services/download-file.service';
 import { PrestamosService } from '../../../services/prestamos.service';
+import { SaldoPrestamo } from '../../../models/saldoprestamo';
+import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
+import { Usuario } from '../../../models/usuario';
+import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
 import { RecursoService } from '../../../services/recurso.service';
 import { UsuariosService } from '../../../services/usuarios.service';
-import { CatalogosService } from '../../../services/catalogos.service';
 
 @Component({
-  selector: 'cybord-reporte-prestamos',
-  templateUrl: './reporte-prestamos.component.html',
-  styleUrls: ['./reporte-prestamos.component.scss']
+  selector: 'cybord-conciliacion-prestamos',
+  templateUrl: './conciliacion-prestamos.component.html',
+  styleUrls: ['./conciliacion-prestamos.component.scss']
 })
-export class ReportePrestamosComponent implements OnInit {
+export class ConciliacionPrestamosComponent implements OnInit {
 
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
+
   public module = 'usuarios';
-  public page: GenericPage<ReportePrestamo> = new GenericPage();
+  public page: GenericPage<SaldoPrestamo> = new GenericPage();
   public pageSize = '10';
-  public filterParams: any = {tipoUsuario:'*',nombre:'', idSolicitud: '', tipo: "*", noEmpleado: '', since: '', to: '', page: '0', size: '10' };
+  public filterParams: any = { tipoUsuario: '*',  noEmpleado: '', nombre: '', page: '0', size: '10',  since: '', to: '' };
   public loading = false;
   public fechaCreacion: Date[];
-  public fechaActualizacion: Date[];
+  public minDate = new Date();
+  public maxDate = new Date();
+
   public usuario: Usuario = new Usuario();
   public noEmpleado: string;
   public saldo: SaldoPrestamo = new SaldoPrestamo();
   public comprobanteUrl: SafeUrl;
   public message = '';
 
-  public maxDate = new Date();
-
   constructor(
     private router: Router,
     public datepipe: DatePipe,
     private downloadService: DownloadFileService,
+    private prestamosService: PrestamosService,
     private resourcesService: RecursoService,
-    private prestamoService: PrestamosService,
     private sanitizer: DomSanitizer,
     private userService: UsuariosService) { }
 
@@ -73,22 +72,38 @@ export class ReportePrestamosComponent implements OnInit {
       this.filterParams.since = this.datepipe.transform(this.fechaCreacion[0], 'yyyy-MM-dd');
       this.filterParams.to = this.datepipe.transform(this.fechaCreacion[1], 'yyyy-MM-dd');
     }
-
     this.filterParams.page = currentPage || 0;
-    this.filterParams.size = pageSize || 0;
-
-    this.prestamoService.getPrestamos(this.filterParams)
-      .subscribe(data => { this.page = data; this.loading = false; });
+    this.filterParams.size = pageSize || 0 ;
+    this.prestamosService.getSaldoPrestamos(this.filterParams)
+    .subscribe(data => {this.page = data; this.loading = false;});
   }
 
   public onChangePageSize(pageSize: number): void {
     this.updateDataTable(this.page.number, pageSize);
   }
 
-  public detallePrestamos(id: number){
-    this.router.navigate([`../${this.module}/prestamos-activos/${id}`]);
+  public detalleAhorro(id: string): void{
+    this.router.navigate([`../${this.module}/saldo-ahorro/${id}`]);
   }
 
+  public downloadXLSFile(): void{
+    this.loading = true;
+    if (this.fechaCreacion === undefined  || this.fechaCreacion === null){
+      this.filterParams.since = '';
+      this.filterParams.to = '';
+    }else{
+      this.fechaCreacion[1].setDate(this.fechaCreacion[1].getDate() + 1);
+      this.filterParams.since =  this.datepipe.transform(this.fechaCreacion[0], 'yyyy-MM-dd');
+      this.filterParams.to = this.datepipe.transform(this.fechaCreacion[1], 'yyyy-MM-dd');
+    }
+    this.filterParams.page = '0';
+    this.filterParams.size = '100000';
+    this.prestamosService.getReporteSaldoPrestamos(this.filterParams)
+      .subscribe((report) => {
+        this.downloadService.downloadFile(report.dato, `ReportePagosPrestamos-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
+        this.loading = false;
+      });
+  }
 
   public mostrarComprobante(prestamo: SaldoPrestamo) {
     this.comprobanteUrl = undefined;
@@ -119,7 +134,7 @@ export class ReportePrestamosComponent implements OnInit {
       let s = { ...this.saldo };
       s.validado = true;
       s.origen = this.usuario.email;
-      this.saldo = await this.prestamoService.updateSaldoPrestamo(this.saldo.id, s).toPromise();
+      //this.saldo = await this.prestamoService.updateSaldoPrestamo(this.saldo.id, s).toPromise();
       this.message = 'Pago aprobado correctamente';
       this.saldo = new SaldoPrestamo();
       this.modalConfirmacion.hide();
@@ -170,22 +185,4 @@ export class ReportePrestamosComponent implements OnInit {
   }
 
 
-  public downloadXLSFile(): void {
-    this.loading = true;
-    if (this.fechaCreacion === undefined || this.fechaCreacion === null) {
-      this.filterParams.since = '';
-      this.filterParams.to = '';
-    } else {
-      this.fechaCreacion[1].setDate(this.fechaCreacion[1].getDate() + 1);
-      this.filterParams.since = this.datepipe.transform(this.fechaCreacion[0], 'yyyy-MM-dd');
-      this.filterParams.to = this.datepipe.transform(this.fechaCreacion[1], 'yyyy-MM-dd');
-    }
-    this.filterParams.page = '0';
-    this.filterParams.size = '100000';
-    this.prestamoService.getReportePrestamos(this.filterParams)
-      .subscribe((report) => {
-        this.downloadService.downloadFile(report.dato, `ReporteSaldoPrestamos-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
-        this.loading = false;
-      });
-  }
 }

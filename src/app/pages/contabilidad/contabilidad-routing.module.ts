@@ -4,6 +4,7 @@ import { ReporteSolicitudesComponent } from '../commons/reporte-solicitudes/repo
 import { HistoricoSolicitudesComponent } from '../commons/historico-solicitudes/historico-solicitudes.component';
 import { ConciliacionContaComponent } from './conciliacion-conta/conciliacion-conta.component';
 import { AhorroExternosComponent } from './ahorro-externos/ahorro-externos.component';
+import { ConciliacionPrestamosComponent } from '../commons/conciliacion-prestamos/conciliacion-prestamos.component';
 import { UsuariosComponent } from '../commons/usuarios/usuarios.component';
 import { UsuarioComponent } from '../commons/usuario/usuario.component';
 import { ValidacionSolicitudComponent } from '../commons/validacion-solicitud/validacion-solicitud.component';
@@ -75,6 +76,13 @@ const routes: Routes = [
     component: ConciliacionContaComponent,
     data: {
       title: 'Conciliaciones Contabilidad'
+    }
+  },
+  {
+    path: 'conciliacion-prestamos',
+    component: ConciliacionPrestamosComponent,
+    data: {
+      title: 'Conciliaciones prestamos'
     }
   },
   {

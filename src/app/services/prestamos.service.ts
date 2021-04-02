@@ -27,7 +27,7 @@ export class PrestamosService {
     return pageParams;
   }
 
-  public getPrestamosByUsuario (idUsuario: number): Observable<Prestamo[]>{
+  public getPrestamosByUsuario(idUsuario: number): Observable<Prestamo[]>{
     return this.http.get<Prestamo[]>(`../api/v1/usuarios/${idUsuario}/prestamos`);
   }
 
@@ -39,14 +39,22 @@ export class PrestamosService {
     return this.http.get<Recurso>(`../api/v1/prestamos/report`, {params: this.getHttpParams(filterParams)});
   }
 
+  public getSaldoPrestamos(filterParams?: any): Observable<GenericPage<SaldoPrestamo>>{
+    return this.http.get<GenericPage<SaldoPrestamo>>(`../api/v1/saldo-prestamos`, {params: this.getHttpParams(filterParams)});
+  }
+
+  public getReporteSaldoPrestamos(filterParams?: any): Observable<Recurso>{
+    return this.http.get<Recurso>(`../api/v1/saldo-prestamos/report`, {params: this.getHttpParams(filterParams)});
+  }
+
   public getPrestamosByUsuairoAndPrestamoAndSaldo (idUsuario: number, idPrestamo: number, idSaldo: number): Observable<SaldoPrestamo[]>{
     return this.http.get<SaldoPrestamo[]>(`../api/v1/usuarios/${idUsuario}/prestamos/${idPrestamo}/saldos/${idSaldo}`);
   }
-  
+
   public insertSaldoPrestamo (idPrestamo: number, prestamo: SaldoPrestamo): Observable<SaldoPrestamo>{
     return this.http.post<SaldoPrestamo>(`../api/v1/prestamos/${idPrestamo}/saldos`, prestamo);
   }
-  
+
   public getPrestamosPendientesByUsuario (idUsuario: number): Observable<Prestamo[]>{
     return this.http.get<Prestamo[]>(`../api/v1/usuarios/${idUsuario}/prestamos/pendientes`);
   }

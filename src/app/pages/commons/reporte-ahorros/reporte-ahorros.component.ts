@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AhorroServicio } from '../../../services/ahorro.service';
 import { DownloadFileService } from '../../../services/download-file.service';
 import { DatePipe } from '@angular/common';
-import { ReporteAhorro } from 'src/app/models/reporte-ahorro';
+import { ReporteAhorro } from '../../../models/reporte-ahorro';
 
 @Component({
   selector: 'cybord-reporte-ahorros',
@@ -66,7 +66,7 @@ export class ReporteAhorrosComponent implements OnInit {
     this.updateDataTable(this.page.number, pageSize);
   }
 
-  public detalleAhorro(id:string):void{
+  public detalleAhorro(id: string): void{
     this.router.navigate([`../${this.module}/saldo-ahorro/${id}`]);
   }
 
@@ -84,7 +84,6 @@ export class ReporteAhorrosComponent implements OnInit {
     this.filterParams.size = '100000';
     this.ahorroService.getReporteAhorroUsuarios(this.filterParams)
       .subscribe((report) => {
-        
         this.downloadService.downloadFile(report.dato, `ReporteAhorros-${this.datepipe.transform(Date.now(), 'yyyy-MM-dd')}.xls`, 'application/vnd.ms-excel');
         this.loading = false;
       });

@@ -29,6 +29,7 @@ import { LoaderComponent } from './loader/loader.component';
 import { AhorroUsuarioComponent } from './ahorro-usuario/ahorro-usuario.component';
 import { PrestamoUsuarioComponent } from './prestamo-usuario/prestamo-usuario.component';
 import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos.component';
+import { ConciliacionPrestamosComponent } from './conciliacion-prestamos/conciliacion-prestamos.component';
 
 
 
@@ -47,7 +48,8 @@ import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos
     LoaderComponent,
     AhorroUsuarioComponent,
     PrestamoUsuarioComponent,
-    ReportePrestamosComponent],
+    ReportePrestamosComponent,
+    ConciliacionPrestamosComponent],
   imports: [
     CommonModule,
     FormsModule,

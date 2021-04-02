@@ -9,7 +9,7 @@ import { menu } from '../../mock-data/menus';
 })
 export class DefaultLayoutComponent implements OnInit {
 
-  public sidebarMinimized = false;
+  public sidebarMinimized = true;
   public usuario = new Usuario();
 
 
@@ -27,9 +27,7 @@ export class DefaultLayoutComponent implements OnInit {
     .then(() => console.log('completed logout'))
     .then(() => {console.log('Calling logout');})
     .catch((error) => {
-      console.log("Error request")
-      console.log(error);
-      
+      console.log('Error request', error);
     });
   }
 
