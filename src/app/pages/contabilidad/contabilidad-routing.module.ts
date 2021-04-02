@@ -79,10 +79,10 @@ const routes: Routes = [
     }
   },
   {
-    path: 'conciliacion-prestamos',
+    path: 'pagos-prestamos',
     component: ConciliacionPrestamosComponent,
     data: {
-      title: 'Conciliaciones prestamos'
+      title: 'Conciliacion pago prestamos'
     }
   },
   {

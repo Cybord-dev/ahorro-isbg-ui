@@ -148,6 +148,23 @@ export class ConciliacionPrestamosComponent implements OnInit {
       this.message = error;
     }
   }
+
+  public async rechazarPago(): Promise<void> {
+    try {
+      this.loading = true;
+      let s = { ...this.saldo };
+      s.validado = 'EN_VALIDACION';
+      s.origen = this.usuario.email;
+      await this.prestamosService.rechazarPagoPrestamo(this.saldo.idPrestamo, this.saldo.noPago, this.usuario.email).toPromise();
+      this.message = 'Pago rechazado correctamente';
+      this.saldo = new SaldoPrestamo();
+      this.modalConfirmacion.hide();
+      this.updateDataTable(this.page.number, this.page.size);
+    } catch (error) {
+      this.loading = false;
+      this.message = error;
+    }
+  }
   
   public async downloadImage() {
     let resource = await this.resourcesService.getRecurso(this.saldo.id, 'PRESTAMO', 'IMAGEN').toPromise();

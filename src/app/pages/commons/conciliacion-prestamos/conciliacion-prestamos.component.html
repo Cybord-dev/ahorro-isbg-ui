@@ -137,8 +137,7 @@
                                 <table class="table table-bordered table-sm">
                                     <thead class="thead-dark">
                                         <tr>
-                                            <th class="text-center"
-                                                *ngIf="module === 'contabilidad' || module === 'recursos-humanos' ">
+                                            <th class="text-center">
                                                 DETALLES</th>
                                             <th class="text-center">MONTO PAGO</th>
                                             <th class="text-center">NO PAGO</th>
@@ -160,8 +159,7 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let fila of page.content">
-                                            <td scope="row" class="text-center"
-                                                *ngIf="module === 'contabilidad' || module === 'recursos-humanos' ">
+                                            <td scope="row" class="text-center">
                                                 <button type="button" class="btn btn-sm btn-success"
                                                     (click)="openModal(fila)" [disabled]="loading"><i
                                                         class="fa fa fa-search"></i>
@@ -319,8 +317,11 @@
                 <button type="button" class="btn btn-success" *ngIf="comprobanteUrl!== undefined"
                     (click)="downloadImage()">Descargar comprobante</button>
                 <button type="button" class="btn"
-                    [ngClass]="{'btn-primary': noEmpleado === usuario.noEmpleado && !saldo.validado , 'btn-secondary' : noEmpleado !== usuario.noEmpleado || saldo.validado }"
+                    [ngClass]="{'btn-success': noEmpleado === usuario.noEmpleado, 'btn-secondary' : noEmpleado !== usuario.noEmpleado}"
                     [disabled]="noEmpleado !== usuario.noEmpleado" (click)="aprobarPago()">Aprobar Pago</button>
+                <button type="button" class="btn"
+                    [ngClass]="{'btn-danger': noEmpleado === usuario.noEmpleado, 'btn-secondary' : noEmpleado !== usuario.noEmpleado}"
+                    [disabled]="noEmpleado !== usuario.noEmpleado" (click)="rechazarPago()">Rechazar Pago</button>
                 <button type="button" class="btn btn-warning" (click)="salir()">Salir</button>
             </div>
         </div>

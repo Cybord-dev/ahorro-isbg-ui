@@ -64,7 +64,11 @@ export class PrestamosService {
   }
 
   public aprobarPagoPrestamo(idPrestamo: number, noPago: number, validador: string): Observable<Prestamo>{
-    return this.http.put<Prestamo>(`../api/v1/prestamos/${idPrestamo}/pagos/${noPago}`, validador);
+    return this.http.put<Prestamo>(`../api/v1/prestamos/${idPrestamo}/pagos/${noPago}/aprobar`, validador);
+  }
+
+  public rechazarPagoPrestamo(idPrestamo: number, noPago: number, validador: string): Observable<Prestamo>{
+    return this.http.put<Prestamo>(`../api/v1/prestamos/${idPrestamo}/pagos/${noPago}/rechazar`, validador);
   }
 
 }

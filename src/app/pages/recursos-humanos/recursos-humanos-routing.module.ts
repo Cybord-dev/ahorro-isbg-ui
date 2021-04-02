@@ -11,6 +11,7 @@ import { ReporteAhorrosComponent } from '../commons/reporte-ahorros/reporte-ahor
 import { ReportePrestamosComponent } from '../commons/reporte-prestamos/reporte-prestamos.component';
 import { PrestamoUsuarioComponent } from '../commons/prestamo-usuario/prestamo-usuario.component';
 import { AjustesComponent } from '../commons/ajustes/ajustes.component';
+import { ConciliacionPrestamosComponent } from '../commons/conciliacion-prestamos/conciliacion-prestamos.component';
 
 const routes: Routes = [
   {
@@ -88,6 +89,13 @@ const routes: Routes = [
     component: ReportePrestamosComponent,
     data: {
       title: 'Reporte de prestamos caja',
+    }
+  },
+  {
+    path: 'pagos-prestamos',
+    component: ConciliacionPrestamosComponent,
+    data: {
+      title: 'Conciliacion pago prestamos'
     }
   },
   {
