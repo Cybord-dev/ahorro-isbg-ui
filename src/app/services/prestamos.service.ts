@@ -71,4 +71,8 @@ export class PrestamosService {
     return this.http.put<Prestamo>(`../api/v1/prestamos/${idPrestamo}/pagos/${noPago}/rechazar`, validador);
   }
 
+  public generarInteresesAhorradores(tipo : string): Observable<any>{
+    return this.http.post('..api/v1/generacion-renglon-interes',{tipoUsuario:tipo});
+  }
+
 }

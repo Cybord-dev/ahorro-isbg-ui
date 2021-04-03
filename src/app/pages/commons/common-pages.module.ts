@@ -9,6 +9,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
@@ -30,7 +31,6 @@ import { AhorroUsuarioComponent } from './ahorro-usuario/ahorro-usuario.componen
 import { PrestamoUsuarioComponent } from './prestamo-usuario/prestamo-usuario.component';
 import { ReportePrestamosComponent } from './reporte-prestamos/reporte-prestamos.component';
 import { ConciliacionPrestamosComponent } from './conciliacion-prestamos/conciliacion-prestamos.component';
-
 
 
 
@@ -61,6 +61,7 @@ import { ConciliacionPrestamosComponent } from './conciliacion-prestamos/concili
     ChartsModule,
     BsDropdownModule,
     ButtonsModule.forRoot(),
+    TabsModule.forRoot(),
     ReactiveFormsModule,
     CommonsRoutingModule,
     CarouselModule.forRoot(),

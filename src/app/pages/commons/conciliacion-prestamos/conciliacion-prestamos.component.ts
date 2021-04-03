@@ -17,8 +17,9 @@ import { UsuariosService } from '../../../services/usuarios.service';
   styleUrls: ['./conciliacion-prestamos.component.scss']
 })
 export class ConciliacionPrestamosComponent implements OnInit {
-
+  
   @ViewChild('modalConfirmacion') public modalConfirmacion: ModalDirective;
+  @ViewChild('modalAprobal') public modalAprobal: ModalDirective;
 
   public module = 'usuarios';
   public page: GenericPage<SaldoPrestamo> = new GenericPage();
@@ -35,6 +36,7 @@ export class ConciliacionPrestamosComponent implements OnInit {
   public comprobanteUrl: SafeUrl;
   public pagos : SaldoPrestamo[] = [];
   public message = '';
+  public messageGeneration = '';
 
   constructor(
     private router: Router,
@@ -121,7 +123,7 @@ export class ConciliacionPrestamosComponent implements OnInit {
   public openModal(prestamo: SaldoPrestamo): void {
     this.saldo = prestamo;
     this.message = '';
-    this.modalConfirmacion.show();
+    this.modalAprobal.show();
     this.mostrarComprobante(prestamo);
   }
 
@@ -129,7 +131,7 @@ export class ConciliacionPrestamosComponent implements OnInit {
     this.message = '';
     this.pagos = [];
     this.saldo = new SaldoPrestamo();
-    this.modalConfirmacion.hide();
+    this.modalAprobal.hide();
   }
 
   public async aprobarPago(): Promise<void> {
@@ -141,7 +143,7 @@ export class ConciliacionPrestamosComponent implements OnInit {
       await this.prestamosService.aprobarPagoPrestamo(this.saldo.idPrestamo, this.saldo.noPago, this.usuario.email).toPromise();
       this.message = 'Pago aprobado correctamente';
       this.saldo = new SaldoPrestamo();
-      this.modalConfirmacion.hide();
+      this.modalAprobal.hide();
       this.updateDataTable(this.page.number, this.page.size);
     } catch (error) {
       this.loading = false;
@@ -158,7 +160,7 @@ export class ConciliacionPrestamosComponent implements OnInit {
       await this.prestamosService.rechazarPagoPrestamo(this.saldo.idPrestamo, this.saldo.noPago, this.usuario.email).toPromise();
       this.message = 'Pago rechazado correctamente';
       this.saldo = new SaldoPrestamo();
-      this.modalConfirmacion.hide();
+      this.modalAprobal.hide();
       this.updateDataTable(this.page.number, this.page.size);
     } catch (error) {
       this.loading = false;
@@ -172,4 +174,34 @@ export class ConciliacionPrestamosComponent implements OnInit {
     console.log('Downloading file : ', dataType);
     this.downloadService.downloadFile(resource.dato.split(';base64,')[1],`${this.saldo.noEmpleado}-${this.saldo.montoPrestamo}-${this.saldo.noPago}.${dataType.split('/')[1]}`,dataType);   
   }
+
+  public openModalGeneracion(): void {
+    this.messageGeneration = '';
+    this.modalConfirmacion.show();
+  }
+
+  public async aprobarGenerarIntereses(){
+    try{
+      this.loading= true;
+      let tipo = ''
+      if(this.module === 'recursos-humanos'){
+        tipo = 'INTERNO';
+      }
+      if(this.module === 'contabilidad'){
+        tipo = 'EXTERNO'
+      }
+      await this.prestamosService.generarInteresesAhorradores(tipo).toPromise();
+      this.loading = false;
+      this.modalConfirmacion.hide();
+      this.messageGeneration = 'La generacion de intereses se realizo correctamente';
+    } catch(error){
+      this.messageGeneration = error;
+      this.loading = false;
+    }
+  }
+
+  public decline(){
+    this.modalConfirmacion.hide();
+  }
+
 }
