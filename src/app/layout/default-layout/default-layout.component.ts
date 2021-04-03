@@ -9,7 +9,7 @@ import { menu } from '../../mock-data/menus';
 })
 export class DefaultLayoutComponent implements OnInit {
 
-  public sidebarMinimized = true;
+  public sidebarMinimized = false;
   public usuario = new Usuario();
 
 

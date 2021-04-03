@@ -7,6 +7,7 @@ import { CommonsPagesModule } from '../commons/common-pages.module';
 
 import { TramitesPrestamoComponent } from './tramites-prestamo/tramites-prestamo.component';
 import { AprobacionAvalComponent } from './aprobacion-aval/aprobacion-aval.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 
 @NgModule({
@@ -14,6 +15,7 @@ import { AprobacionAvalComponent } from './aprobacion-aval/aprobacion-aval.compo
   imports: [
     CommonsPagesModule,
     UsuariosRoutingModule,
+    TabsModule.forRoot(),
   ],
   providers: [
     DatePipe

@@ -72,7 +72,7 @@ export class PrestamosService {
   }
 
   public generarInteresesAhorradores(tipo : string): Observable<any>{
-    return this.http.post('..api/v1/generacion-renglon-interes',{tipoUsuario:tipo});
+    return this.http.post('../api/v1/generacion-renglon-interes',{tipoUsuario:tipo});
   }
 
 }
