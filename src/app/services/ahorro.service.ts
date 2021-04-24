@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ReporteSaldos } from '../models/reportesaldos';
+import { ReporteAhorro } from '../models/reporte-ahorro';
 import { SaldoAhorro } from '../models/saldoahorro';
 import { Conciliador } from 'src/app/models/conciliador';
 import { SaldoAhorroCaja } from '../models/saldoahorrocaja';
@@ -28,12 +28,12 @@ export class AhorroServicio {
     return pageParams;
   }
 
-  public getSaldos(filterParams?: any): Observable<GenericPage<ReporteSaldos>>{
-    return this.http.get<GenericPage<ReporteSaldos>>(`../api/v1/saldo-ahorros`, {params: this.getHttpParams(filterParams)});
+  public getAhorroUsuarios(filterParams?: any): Observable<GenericPage<ReporteAhorro>>{
+    return this.http.get<GenericPage<ReporteAhorro>>(`../api/v1/ahorros`, {params: this.getHttpParams(filterParams)});
   }
 
-  public getReporteSaldos(filterParams?: any): Observable<Recurso>{
-    return this.http.get<Recurso>(`../api/v1/saldo-ahorros/report`, {params: this.getHttpParams(filterParams)});
+  public getReporteAhorroUsuarios(filterParams?: any): Observable<Recurso>{
+    return this.http.get<Recurso>(`../api/v1/ahorros/report`, {params: this.getHttpParams(filterParams)});
   }
 
   public getSaldoByUsuario(idUsuario: number): Observable<SaldoAhorro[]>{

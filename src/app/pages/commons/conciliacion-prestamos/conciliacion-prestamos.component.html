@@ -1,0 +1,384 @@
+<div class="animated fadeIn">
+
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Resultados</strong>
+                </div>
+                <div class="card-body bg-gray-100">
+                    <tabset #staticTabs>
+                        <tab>
+                            <ng-template tabHeading><i class="icon-docs"></i>&nbsp; Validación de pagos</ng-template>
+
+                            <div class="col">
+                                <div class="row slide_1">
+                                    <div class="col-md-2">
+                                        <label for="payType" class="label"><strong>Tipo pago</strong></label>
+                                        <select id="payType" class="form-control" style="display:block;"
+                                            [(ngModel)]="filterParams.tipo">
+                                            <option value="*">TODOS</option>
+                                            <option value="PAGO">PAGO</option>
+                                            <option value="AJUSTE">AJUSTE</option>
+                                            <option value="INTERES">INTERES</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="payType" class="label"><strong>Validado</strong></label>
+                                        <select id="payType" class="form-control" style="display:block;"
+                                            [(ngModel)]="filterParams.validado">
+                                            <option value="*">TODOS</option>
+                                            <option value="VALIDO">VALIDO</option>
+                                            <option value="RECHAZADO">RECHAZADO</option>
+                                            <option value="EN_VALIDACION">EN VALIDACION</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="noempleado" class="label"><strong>No. Empleado</strong></label>
+                                        <input type="text" class="form-control" fullWidth id="noemp"
+                                            [(ngModel)]="filterParams.noEmpleado" placeholder="No. Empleado">
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <label for="nombre" class="label"> <strong>Nombre del Empleado</strong></label>
+                                        <input type="text" class="form-control" fullWidth id="noemp"
+                                            [(ngModel)]="filterParams.nombre" placeholder="Nombre empleado">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label for="tipousu" class="label"> <strong>Tipo Usuario</strong></label>
+                                        <select id="tipousu" class="form-control" style="display:block;"
+                                            [(ngModel)]="filterParams.tipoUsuario">
+                                            <option value="*">Todos</option>
+                                            <option value="INTERNO">INTERNO</option>
+                                            <option value="EXTERNO">EXTERNO</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="fechacre" class="label"><strong>Periodo de Creación</strong></label>
+                                        <div class="form-group">
+                                            <input type="text" placeholder="Fecha de creación" class="form-control"
+                                                bsDaterangepicker [maxDate]="maxDate" [(ngModel)]="fechaCreacion">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="inputActivo" class="label"><strong>Estatus</strong></label>
+                                        <select id="inputActivo" class="form-control" style="display:block;"
+                                            [(ngModel)]="filterParams.estatus">
+                                            <option value="*">Todos</option>
+                                            <option value="SOLICITADO">Solicitado</option>
+                                            <option value="PROCESO_DE_APROBACION">Proceso de aprobacion</option>
+                                            <option value="ACTIVO">Activo</option>
+                                            <option value="SUSPENDIDO">Suspendido</option>
+                                            <option value="TERMINADO">Terminado</option>
+                                            <option value="A_PAGAR_POR_AVAL">A pagar por aval</option>
+                                            <option value="TRASPASADO">Traspaso</option>
+                                            <option value="TRASPASADO_TERMINADOO">Traspaso terminado</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-2">
+                                        <button class="btn btn-primary" [disabled]="loading"
+                                            (click)="updateDataTable(0,10)" style="margin-top: 2em;">BUSCAR
+                                            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="row">
+
+                                
+                                    <div class="col">
+
+                                        <div *ngIf="page.empty === true" class="alert alert-primary" role="alert">
+                                            No se encontraron resultados
+                                        </div>
+                                        <div class="clearfix" *ngIf="page.empty === false">
+                                            <button class="btn-sm btn-success float-right"
+                                                (click)="downloadXLSFile()"><i
+                                                    class="fa fa-file-excel-o fa-sm"></i></button>
+                                            <select id="inputunidad"
+                                                style="display:block;width: 95px; margin-right: 15px;"
+                                                class="float-right form-control form-control-sm"
+                                                [(ngModel)]="filterParams.size"
+                                                *ngIf="page.last==false || page.first==true"
+                                                (change)="onChangePageSize($event.target.value)">
+                                                <option value="10">10</option>
+                                                <option *ngIf="page.number<(page.totalElements/20)" value="20">20
+                                                </option>
+                                                <option *ngIf="page.number<(page.totalElements/50)" value="50">50
+                                                </option>
+                                            </select>
+                                            <strong class="float-right" *ngIf="page.last==false || page.first==true">
+                                                Tamaño Pagina
+                                                &nbsp;&nbsp;&nbsp;&nbsp;</strong>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+
+                                    <div class="table-responsive" *ngIf="page.empty == false">
+                                        <table class="table table-bordered table-sm">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th class="text-center">
+                                                        DETALLES</th>
+                                                    <th class="text-center">MONTO PAGO</th>
+                                                    <th class="text-center">NO PAGO</th>
+                                                    <th class="text-center">TIPO</th>
+                                                    <th class="text-center">VALIDADO</th>
+                                                    <th class="text-center">NO QUINCENAS</th>
+                                                    <th class="text-center">MONTO PRESTAMO</th>
+                                                    <th class="text-center">SALDO PENDIENTE</th>
+                                                    <th class="text-center">TIPO USUARIO</th>
+                                                    <th class="text-center">NO EMPLEADO</th>
+                                                    <th class="text-center">NOMBRE</th>
+                                                    <th class="text-center">ORIGEN</th>
+                                                    <th class="text-center">ESTATUS</th>
+                                                    <th class="text-center">OBSERVACIONES</th>
+
+                                                    <th class="text-center">CREACION</th>
+                                                    <th class="text-center">ACTUALIZACION</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let fila of page.content">
+                                                    <td scope="row" class="text-center">
+                                                        <button type="button" class="btn btn-sm btn-success"
+                                                            (click)="openModal(fila)" [disabled]="loading"><i
+                                                                class="fa fa fa-search"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td scope="row" class="text-right bg-light">{{fila.monto |
+                                                        currency}}</td>
+                                                    <td scope="row">{{fila.noPago}}</td>
+                                                    <td scope="row">{{fila.tipo}}</td>
+                                                    <td scope="row">{{fila.validado}}</td>
+                                                    <td scope="row">{{fila.noQuincenas}}</td>
+                                                    <td scope="row" class="text-right">{{fila.montoPrestamo |
+                                                        currency}}</td>
+                                                    <td scope="row" class="text-right">{{fila.saldoPendiente |
+                                                        currency}}</td>
+                                                    <td scope="row">{{fila.tipoUsuario}}</td>
+                                                    <td scope="row">{{fila.noEmpleado}}</td>
+                                                    <td scope="row">{{fila.nombreEmpleado}}</td>
+                                                    <td scope="row">{{fila.origen}}</td>
+                                                    <td scope="row">{{fila.estatus}}</td>
+                                                    <td scope="row">{{fila.observaciones}}</td>
+
+                                                    <td scope="row">{{fila.fechaCreacion | date:'dd-MM-yyyy' }}</td>
+                                                    <td scope="row">{{fila.fechaActualizacion| date:'dd-MM-yyyy
+                                                        HH:mm'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="clearfix" *ngIf="page.empty == false">
+                                        <ul class="pagination float-right" *ngIf="page.totalElements > 1">
+                                            <li class="page-item" *ngIf="page.first==false"><button
+                                                    class="btn page-link" (click)="updateDataTable(0,page.size)"><i
+                                                        class="icon-control-rewind icons"></i></button>
+                                            </li>
+                                            <li class="page-item" *ngIf="page.first==false"><button
+                                                    class="btn page-link"
+                                                    (click)="updateDataTable(page.number-1,page.size)">{{page.number}}</button>
+                                            </li>
+                                            <li class="page-item active"><a
+                                                    class="page-link"><strong>{{page.number+1}}</strong></a></li>
+                                            <li class="page-item" *ngIf="page.last==false"><button
+                                                    class="btn page-link"
+                                                    (click)="updateDataTable(page.number+1,page.size)">{{page.number+2}}</button>
+                                            </li>
+                                            <li class="page-item" *ngIf="page.last==false"><button
+                                                    class="btn page-link"
+                                                    (click)="updateDataTable(page.totalPages-1,page.size)"><i
+                                                        class="icon-control-forward icons"></i></button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </tab>
+                        <tab *ngIf="module === 'recursos-humanos' || module === 'contabilidad'">
+                            <ng-template tabHeading><i class="icon-refresh"></i>&nbsp; Generación Intereses ahorradores
+                            </ng-template>
+                            <h5>GENERACION INTERESES AHORRADORES</h5>
+                            <br>
+                            <br>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <strong>En esta sección se corre el proceso que genera los intereses de los ahorradores en base a los intereses efectivamente cobrados de los prestamos,  
+                                    es importrante que antes de correr el proceso  se hallan validado todos los pagos, si exite un pago que no se valide, la siguiente vez que se corra 
+                                    el proceso ignorara los pagos no validados en la ultima corrida.</strong>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="row">
+                                <div class="col"></div>
+                                <div class="col">
+                                    <button class="btn btn-success" [disabled]="loading"
+                                            (click)="openModalGeneracion()">GENERAR INTERESES
+                                            <i class="fa fa-spinner fa-spin" *ngIf="loading"></i></button>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                        </tab>
+
+                    </tabset>
+
+
+                </div><!-- body-->
+                <cybord-loader *ngIf="loading"></cybord-loader>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>
+
+<div bsModal #modalConfirmacion="bs-modal" class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacion" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="decline()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <strong class="text-danger"> ¿ Estas seguro realizar el calculo de intereses ?</strong>
+            <p class="text-danger"> Una vez realizada esta accion no puede ser deshecha</p>
+            <br>
+            <div class="alert alert-info" *ngIf="messageGeneration.length > 0" role="alert">
+                <p>{{messageGeneration}}</p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary"  (click)="aprobarGenerarIntereses()" >Si</button>
+            <button type="button" class="btn btn-secondary" (click)="decline()" >no</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div bsModal #modalAprobal="bs-modal" class="modal fade modal-info" id="modalAprobal" tabindex="-1"
+    role="dialog" aria-labelledby="modalAprobal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalConfirmacionLabel">Confirmacion</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="salir()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img class="card-img-top" [src]="comprobanteUrl" style="height: 300px;width: 470px;"
+                    alt="Card image cap" *ngIf="comprobanteUrl!== undefined">
+                <h5 class="card-header" *ngIf="comprobanteUrl === undefined" class="text-danger">SIN COMPROBANTE DE PAGO
+                </h5>
+
+
+                <table class="table table-bordered table-sm">
+
+                    <tbody>
+                        <tr>
+                            <th>No empleado</th>
+                            <td scope="row" class="text-right">{{saldo.noEmpleado}}</td>
+                        </tr>
+                        <tr>
+                            <th>Nombre</th>
+                            <td scope="row" class="text-right">{{saldo.nombreEmpleado}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tipo</th>
+                            <td scope="row" class="text-right">{{saldo.tipo}}</td>
+                        </tr>
+                        <tr>
+                            <th>Estatus prestamo</th>
+                            <td scope="row" class="text-right">{{saldo.estatus}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tasa de interes</th>
+                            <td scope="row" class="text-right">{{saldo.tasaInteres / 100 | percent}}</td>
+                        </tr>
+                        <tr>
+                            <th>Monto Prestamo</th>
+                            <td scope="row" class="text-right">{{saldo.montoPrestamo}}</td>
+                        </tr>
+                        <tr>
+                            <th>Observaciones</th>
+                            <td scope="row" class="text-right">{{saldo.observaciones}}</td>
+                        </tr>
+                        <tr>
+                            <th>Ultima modificacion</th>
+                            <td scope="row" class="text-right">{{saldo.origen}}</td>
+                        </tr>
+                        <tr>
+                            <th>No. Quincenas</th>
+                            <td scope="row" class="text-right">{{saldo.noQuincenas}}</td>
+                        </tr>
+                        <tr>
+                            <th>No. de pago</th>
+                            <td scope="row" class="text-right">{{saldo.noPago}}</td>
+                        </tr>
+                        <tr>
+                            <th>Monto Pago</th>
+                            <td scope="row" class="text-right">{{saldo.monto | currency}}</td>
+                        </tr>
+                        <tr>
+                            <th>Detalles del pago</th>
+                            <td scope="row" class="text-right">
+                                <p *ngFor="let p of pagos">{{p.tipo}} - {{p.monto | currency}}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+                <p> <strong>{{usuario.nombre}} aprobará</strong> el pago al prestamo.</p>
+                <p>Al <strong>APROBAR</strong> el pago, el sistema registra la persona y el momento en que realiza la
+                    transacción.</p>
+
+
+                <form>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">No empleado</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="inputPassword" [(ngModel)]="noEmpleado"
+                                [ngModelOptions]="{standalone: true}">
+                            <small id="noEmpHelp" class="form-text text-muted">Ingresa tu numero de empleado para
+                                desbloquear.</small>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="alert alert-info" *ngIf="message.length > 0" role="alert">
+                    <p>{{message}}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" *ngIf="comprobanteUrl!== undefined"
+                    (click)="downloadImage()">Descargar comprobante</button>
+                <button type="button" class="btn"
+                    [ngClass]="{'btn-success': noEmpleado === usuario.noEmpleado, 'btn-secondary' : noEmpleado !== usuario.noEmpleado}"
+                    [disabled]="noEmpleado !== usuario.noEmpleado" (click)="aprobarPago()">Aprobar Pago</button>
+                <button type="button" class="btn"
+                    [ngClass]="{'btn-danger': noEmpleado === usuario.noEmpleado, 'btn-secondary' : noEmpleado !== usuario.noEmpleado}"
+                    [disabled]="noEmpleado !== usuario.noEmpleado" (click)="rechazarPago()">Rechazar Pago</button>
+                <button type="button" class="btn btn-warning" (click)="salir()">Salir</button>
+            </div>
+        </div>
+    </div>
+</div>
