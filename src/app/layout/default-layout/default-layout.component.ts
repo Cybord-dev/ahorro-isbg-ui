@@ -27,9 +27,7 @@ export class DefaultLayoutComponent implements OnInit {
     .then(() => console.log('completed logout'))
     .then(() => {console.log('Calling logout');})
     .catch((error) => {
-      console.log("Error request")
-      console.log(error);
-      
+      console.log('Error request', error);
     });
   }
 

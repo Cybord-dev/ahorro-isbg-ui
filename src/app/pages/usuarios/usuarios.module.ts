@@ -5,10 +5,9 @@ import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { TramitesAhorroComponent } from './tramites-ahorro/tramites-ahorro.component';
 import { CommonsPagesModule } from '../commons/common-pages.module';
 
-import { ChartsModule } from 'ng2-charts';
-import { TabsModule } from 'ngx-bootstrap/tabs';
 import { TramitesPrestamoComponent } from './tramites-prestamo/tramites-prestamo.component';
 import { AprobacionAvalComponent } from './aprobacion-aval/aprobacion-aval.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 
 @NgModule({
@@ -16,8 +15,7 @@ import { AprobacionAvalComponent } from './aprobacion-aval/aprobacion-aval.compo
   imports: [
     CommonsPagesModule,
     UsuariosRoutingModule,
-    ChartsModule,
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
   ],
   providers: [
     DatePipe

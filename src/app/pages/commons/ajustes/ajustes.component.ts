@@ -113,7 +113,7 @@ export class AjustesComponent implements OnInit {
       saldoPrestamo.idPrestamo = +this.idPrestamo;
       saldoPrestamo.monto = this.montoAjuste;
       saldoPrestamo.tipo = 'AJUSTE';
-      saldoPrestamo.validado = false;
+      saldoPrestamo.validado = 'EN_VALIDACION';
       saldoPrestamo.observaciones = this.observaciones;
 
        this.prestamoService.insertSaldoPrestamo(+this.idPrestamo, saldoPrestamo)

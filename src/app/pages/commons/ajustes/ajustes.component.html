@@ -124,7 +124,7 @@
                                     <tr *ngFor="let fila of ahorros">
                                         <td scope="row">{{fila.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
                                         <td scope="row">{{fila.tipo}}</td>
-                                        <td scope="row">{{fila.validado? 'SI' : 'NO'}}</td>
+                                        <td scope="row">{{fila.validado}}</td>
                                         <td scope="row">{{fila.observaciones}}</td>
                                         <td class="text-right" scope="row">{{fila.monto | currency }}</td>
                                     </tr>
